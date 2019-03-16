@@ -7,7 +7,7 @@ Este proyecto recién se inicia y está en una etapa embrionaria (alpha version)
 
 ### Instalar
 1. clonar repositorio
-2. ```cd app``` (directorio raiz)
+2. ```cd src``` (directorio raiz)
 3. ```npm install && npm start```
 
 ### Comandos
