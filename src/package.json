@@ -1,0 +1,43 @@
+{
+      "name": "duchamp-lc",
+      "author": "Andres Senn",
+      "license": "ISC",
+      "version": "0.0.1",
+      "description": "p5 livecoding",
+      "main": "main.js",
+      "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1",
+            "start": "electron .",
+            "dist-win": "electron-builder --win",
+            "dist-linux": "electron-builder --linux",
+            "dist-mac": "electron-builder --mac"
+      },
+      "keywords": [
+            "livecoding",
+            "p5js",
+            "processing"
+      ],
+      "build": {
+            "appId": "com.jumelab.muestra-archivo",
+            "productName": "Duchamp Livecoding p5js",
+            "directories": {
+                  "output": "../dist"
+            },
+            "win": {
+                  "target": "zip"
+            },
+            "linux": {
+                  "target": "AppImage"
+            },
+            "mac": {
+                  "target": "zip"
+            }
+      },
+      "devDependencies": {
+            "electron": "^4.0.8",
+            "electron-builder": "^20.38.5"
+      },
+      "dependencies": {
+            "js-beautify": "^1.9.0"
+      }
+}

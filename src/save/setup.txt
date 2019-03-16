@@ -1,0 +1,7 @@
+// Hola Duchamp!
+background(0)
+colorMode(HSB)
+imageMode(CENTER)
+smooth()
+s = 0
+noStroke()

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Duchamp - live coding - P5js</title>
+	<!-- <link rel="stylesheet" href="libs/jquery-ui.min.css"> -->
+	<link rel="stylesheet" href="css/index.min.css">
+</head>
+
+<body>
+	<main>
+		<div id="win">
+			<span class="pannel-title" id="setup-title"><span id="setup-change"></span>setup:</span><br>
+			<div class="dp5-code-parent">
+				<pre id="dp5-setup" contenteditable="true">// Hola Duchamp!</pre><br>
+			</div>
+			<span class="pannel-title" id="draw-title"><span id="draw-change"></span>loop:</span><br>
+			<div class="dp5-code-parent">
+				<pre id="dp5-draw" contenteditable="true"></pre><br>
+			</div>
+			<span id="dp5-console">
+				<span id="os-ram"></span>
+				<span id="os-fps"></span>
+				<span id="console-out"></span>
+			</span>
+			<span class="pannel-title" id="global-title"><span id="global-change"></span>global:</span><br>
+			<div class="dp5-code-parent">
+				<pre id="dp5-global" contenteditable="true">// Globales</pre><br>
+			</div>
+		</div>
+	</main>
+	<script>window.$ = window.jQuery = require('./libs/jquery.min.js');</script>
+	<script src="libs/p5/p5.min.js"></script>
+	<script src="libs/p5/p5.dom.min.js"></script>
+	<script src="libs/p5/p5.sound.min.js"></script>
+	<script src="libs/jsbeautify.min.js"></script>
+	<script src="renderer.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+//Ready para livecodear?
+//bg(0)
+zoom(0.05)
+fill(random(360), 100, 100)
+for (let i = 0; i < 2; i++) {
+   let d = random(10, 200)
+   circle(random(width), random(height), d)
+}
+caleido2()
