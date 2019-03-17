@@ -9,11 +9,8 @@ Este proyecto recién se inicia y está en una etapa embrionaria (beta version)
 
 ## Uso
 
+<<<<<<< HEAD
 ### Instalación
-
-#### Bajar compilación
-
->Compilado para Linux / Win / Mac
 
 #### Bajar fuente
 
