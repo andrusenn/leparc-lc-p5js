@@ -3,13 +3,13 @@
 Entorno multiplataforma para ejecutar código p5js en tiempo real. Desarrollado en html5 y electron.js
 Este proyecto recién se inicia y está en una etapa embrionaria (beta version)
 
-![Image](http://andressenn.com/duchamp-lc/captura.jpg)
+![Image](http://andressenn.com/duchamp-lc/captura2.jpg)
+![Image](http://andressenn.com/duchamp-lc/captura.jpg) 
 
 ----
 
 ## Uso
 
-<<<<<<< HEAD
 ### Instalación
 
 #### Bajar fuente
