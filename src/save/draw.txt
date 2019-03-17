@@ -1,9 +1,8 @@
-//Ready para livecodear?
-//bg(0)
-zoom(0.05)
-fill(random(360), 100, 100)
-for (let i = 0; i < 2; i++) {
-   let d = random(10, 200)
-   circle(random(width), random(height), d)
-}
-caleido2()
+// Hora de livecoding!
+zoom(0.01)
+if(frameCount % 100 == 0) bg(0)
+let d = random(10,height)
+noFill()
+stroke(255)
+circle(width*0.33,height*0.33,d)
+kaleido()

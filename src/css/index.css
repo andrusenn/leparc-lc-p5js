@@ -1,15 +1,14 @@
-@font-face {
-  font-family: 'Inconsolata';
-  src: url("fonts/Inconsolata/Inconsolata-Regular.ttf") format("truetype");
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
 
+[contenteditable] {
+  caret-color: transparent;
+}
+
 html,
 body {
-  font-family: Inconsolata, monospace;
+  font-family: monospace;
   padding: 0;
   margin: 0;
   font-size: 22px;
@@ -28,7 +27,8 @@ main {
   outline: none;
 }
 
-video {
+video,
+img {
   display: none;
 }
 
@@ -45,7 +45,7 @@ canvas {
 }
 
 .dp5-code-parent {
-  padding: 4px 10px;
+  padding: 4px 40px;
 }
 
 .pannel-title {
@@ -72,16 +72,12 @@ canvas {
   background: #000;
 }
 
-@-webkit-keyframes blink-animation {
-  to {
-    visibility: hidden;
-  }
-}
-
-@keyframes blink-animation {
-  to {
-    visibility: hidden;
-  }
+.CodeMirror-line span {
+  padding: 3px 0;
+  line-height: 1.5rem;
+  text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
 }
 
 #win {
@@ -101,37 +97,6 @@ canvas {
   overflow: auto;
 }
 
-#win #dp5-setup,
-#win #dp5-draw,
-#win #dp5-global {
-  position: relative;
-  display: inline;
-  padding: 4px;
-  padding-right: 10px;
-  border: none;
-  font-size: 1rem;
-  font-family: Inconsole, monospace;
-  text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
-  line-height: 1.4rem;
-  background: rgba(0, 0, 0, 0.4);
-  color: white;
-  overflow: hidden;
-}
-
-#win #dp5-setup::-moz-selection,
-#win #dp5-draw::-moz-selection,
-#win #dp5-global::-moz-selection {
-  background: #000;
-  color: #fff;
-}
-
-#win #dp5-setup::selection,
-#win #dp5-draw::selection,
-#win #dp5-global::selection {
-  background: #000;
-  color: #fff;
-}
-
 #win #console-title {
   display: block;
   padding: 10px;
@@ -148,7 +113,8 @@ canvas {
   line-height: 30px;
   position: fixed;
   background: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.4);
+  text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+  color: rgba(255, 255, 255, 0.6);
   bottom: 0;
 }
 /*# sourceMappingURL=index.css.map */

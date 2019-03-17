@@ -18,7 +18,7 @@ function createWindow() {
       })
       mainWindow.setMenu(null);
       mainWindow.setMenuBarVisibility(false)
-      
+
       // mainWindow.webContents.setFrameRate(300)
       if (app.isPackaged) {
             // Crea carpeta config
@@ -66,6 +66,9 @@ app.on('activate', function () {
             createWindow()
       }
 })
+exports.exit = function () {
+      app.exit();
+}
 exports.setFull = function () {
       mainWindow.setKiosk(true)
       mainWindow.setMenu(null);

@@ -1,19 +1,19 @@
-@font-face {
-      font-family: 'Inconsolata';
-      src: url('fonts/Inconsolata/Inconsolata-Regular.ttf') format('truetype');
-}
+// @font-face {
+//       font-family: 'Inconsolata';
+//       src: url('fonts/Inconsolata/Inconsolata-Regular.ttf') format('truetype');
+// }
 
 ::-webkit-scrollbar {
       display: none;
 }
 
-// [contenteditable] {
-//       caret-color: #fff;
-//       cursor:text;
-// }
+[contenteditable] {
+      caret-color: transparent;
+}
+
 html,
 body {
-      font-family: Inconsolata, monospace;
+      font-family: monospace;
       padding: 0;
       margin: 0;
       font-size: 22px;
@@ -32,7 +32,8 @@ main {
       outline: none;
 }
 
-video {
+video,
+img {
       display: none;
 }
 
@@ -49,7 +50,7 @@ canvas {
 }
 
 .dp5-code-parent {
-      padding: 4px 10px;
+      padding: 4px 40px;
 }
 
 .pannel-title {
@@ -76,12 +77,43 @@ canvas {
       background: #000;
 }
 
-@keyframes blink-animation {
-      to {
-            visibility: hidden;
+// .caret {
+//       display: none;
+//       position: absolute;
+//       transform-origin: 0 0;
+//       top: -10px;
+//       left: -10px;
+//       width: 3px;
+//       background: #fff;
+//       height: 26px;
+//       z-index: 9999;
+//       visibility: visible;
+//       animation: blinker 0.8s steps(1) infinite;
+// }
+
+// @keyframes blinker {
+//       50% {
+//             visibility: hidden;
+//       }
+// }
+
+// .line-wrap {
+//       font-size: 1rem;
+//       font-family: Inconsole, monospace;
+//       text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+//       line-height: 1.5rem;
+//       background: rgba(#000, 0.4);
+//       color: rgba(#fff, 1);
+// }
+.CodeMirror-line {
+      span{
+            padding:3px 0;
+            line-height:1.5rem;
+            text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+            background: rgba(#000, 0.4);
+            color: rgba(#fff, 1);
       }
 }
-
 #win {
       user-select: none;
       position: fixed;
@@ -89,55 +121,44 @@ canvas {
       height: 95%;
       width: 100%;
       top: 0;
-      left: 0; // padding: 0;
+      left: 0;
       margin: 0;
       z-index: 998;
       background: transparent;
-      overflow: auto; // #global {
-      //       background: transparent; // flex-grow: 3;
-      //       overflow-y: auto;
-      //       padding:10px;
-      //       border-bottom:2px solid #fff;
-      //       background:rgba(#000,0.4);
-      // }
+      overflow: auto;
       #dp5-setup,
       #dp5-draw,
       #dp5-global {
-            position: relative;
-            display: inline; // height: auto;
-            // width: auto;
-            padding: 4px;
-            padding-right: 10px;
-            border: none;
-            font-size: 1rem;
-            font-family: Inconsole, monospace;
-            text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
-            line-height: 1.4rem;
-            background: rgba(#000, 0.4);
-            color: rgba(#fff, 1);
-            overflow: hidden;
-            &::selection{
-                  background: #000;
-                  color:#fff;
-
-            }
-      } // #dp5-global {
-      //       position: relative;
-      //       display: inline;
-      //       resize: none;
-      //       padding: 10px;
-      //       right: 0;
-      //       top: 38px;
-      //       border: none;
-      //       font-size: 1rem;
-      //       font-family: Inconsole, monospace;
-      //       line-height: 1.1rem;
-      //       background: rgba(#000, 0.4);
-      //       color: rgba(#fff, 1);
-      //       overflow: hidden;
-      //       white-space: pre;
-      //       overflow-wrap: normal;
-      // }
+            // transform-origin: 0 0;
+            // position: relative;
+            // overflow: hidden;
+            // display: inline; // height: auto;
+            // // width: auto;
+            // padding: 3px; // padding-right: 10px;
+            // border: none;
+            // font-size: 1rem;
+            // font-family: Inconsole, monospace;
+            // text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+            // line-height: 1.5rem;
+            // background: rgba(#000, 0.4);
+            // color: rgba(#fff, 1);
+            // overflow: hidden;
+            // // br {
+            // //       margin: 0 !important;
+            // //       display: block !important;
+            // //       clear: both;
+            // //       width:40px;
+            // //       background:#fff !important;
+            // //       content:" " !important;
+            // // }
+            // &::selection {
+            //       background: #fff;
+            //       color: #000;
+            //       text-shadow: none;
+            //       height: 26px;
+            //       padding: 0 0 5px 0;
+            // }
+      }
       #console-title {
             display: block;
             padding: 10px;
@@ -153,7 +174,8 @@ canvas {
             line-height: 30px;
             position: fixed;
             background: rgba(#000, 0.4);
-            color: rgba(#fff, 0.4);
+            text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+            color: rgba(#fff, 0.6);
             bottom: 0;
       }
 }
