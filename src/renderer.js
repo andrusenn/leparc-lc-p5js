@@ -1,24 +1,37 @@
 // Duchamp Object
 let Dp5 = {
       main: require('electron').remote.require('./main'),
-      fullscreen: true,
+      fullscreen: false,
       devtools: false,
       fps: 0,
       // DOM en index.html
       cmSetup: null,
       cmDraw: null,
-      cmGlobal: null,
+      cmAux: null,
+      cmSetupCp: {
+            line: 0,
+            ch: 0
+      },
+      cmDrawCp: {
+            line: 0,
+            ch: 0
+      },
+      cmAuxCp: {
+            line: 0,
+            ch: 0
+      },
+      panelIndex: 0,
       codeSetup: document.getElementById('dp5-setup'),
       codeDraw: document.getElementById('dp5-draw'),
-      codeGlobal: document.getElementById('dp5-global'),
+      codeAux: document.getElementById('dp5-aux'),
       consoleView: document.getElementById('dp5-console'),
       // Almacena los codigos a evaluar
       validCodeDraw: '',
       renderCodeDraw: '',
       validCodeSetup: '',
       renderCodeSetup: '',
-      validCodeGlobal: '',
-      renderCodeGlobal: '',
+      validCodeAux: '',
+      renderCodeAux: '',
       setupTxt: '',
       drawTxt: '',
       glogalTxt: '',
@@ -26,12 +39,14 @@ let Dp5 = {
       scale_st: 1,
       scale_dr: 1,
       scale_gl: 1,
+      // bg alfa
+      bg_code_alpha: 0.4,
       // p5 externas
       setup: null,
       // Mostrar ventanas
       showSetupWin: true,
       showDrawWin: true,
-      showGlobalWin: true,
+      showAuxWin: true,
       showWin: true,
       // Funciones
       beautify_js: function (data) {
@@ -45,6 +60,9 @@ let Dp5 = {
             let len = el.getValue().length;
             el.setCursor(len)
       },
+      addSysName: function (name) {
+            this.prog.push(name)
+      },
       prog:
             [
                   'draw',
@@ -54,7 +72,7 @@ let Dp5 = {
                   'createCanvas'
             ]
 }
-
+let img;
 // function updateCaretCoords() {
 //       Dp5.setCaretCoords()
 //       requestAnimationFrame(updateCaretCoords);
@@ -73,20 +91,29 @@ $(document).ready(function () {
 
             $('#dp5-console>#os-fps').text('| fps:' + Dp5.fps)
       }, 500)
-
 });
 
 // -----------------------------------------------------
 // P5 --------------------------------------------------
 function preload() {
+      Dp5.main.loadImgsBank((imgs) => {
+            for (let i = 0; i < imgs.length; i++) {
+                  let img = loadImage('custom/imgs/' + imgs[i]);
+                  ___pics.push(img);
+            }
+      })
       // Code mirror
       Dp5.cmSetup = CodeMirror(Dp5.codeSetup, {
             mode: "javascript"
       });
+      // Init cursor
+      Dp5.cmSetup.focus()
+      Dp5.cmSetup.setCursor({ line: 0, ch: 0 })
+
       Dp5.cmDraw = CodeMirror(Dp5.codeDraw, {
             mode: "javascript"
       });
-      Dp5.cmGlobal = CodeMirror(Dp5.codeGlobal, {
+      Dp5.cmAux = CodeMirror(Dp5.codeAux, {
             mode: "javascript"
       });
       Dp5.setupTxt = loadStrings('save/setup.txt', () => {
@@ -97,7 +124,7 @@ function preload() {
             try {
                   // Dp5.codeSetup.innerText = Dp5.beautify_js(txt.trim())
                   if (txt != '') {
-                        Dp5.cmSetup.setValue(txt);
+                        Dp5.cmSetup.setValue(txt.trim());
                   } else {
                         Dp5.cmSetup.setValue('// Hola Duchamp!!');
                   }
@@ -122,15 +149,15 @@ function preload() {
                   console.log(e)
             }
       })
-      Dp5.globalTxt = loadStrings('save/global.txt', () => {
+      Dp5.auxTxt = loadStrings('save/aux.txt', () => {
             let txt = '';
-            for (let i = 0; i < Dp5.globalTxt.length; i++) {
-                  txt += Dp5.globalTxt[i] + '\n';
+            for (let i = 0; i < Dp5.auxTxt.length; i++) {
+                  txt += Dp5.auxTxt[i] + '\n';
             }
             try {
-                  // Dp5.codeGlobal.innerHTML = Dp5.beautify_js(txt.trim())
+                  // Dp5.codeAux.innerHTML = Dp5.beautify_js(txt.trim())
                   if (txt != '') {
-                        Dp5.cmGlobal.setValue(txt);
+                        Dp5.cmAux.setValue(txt.trim());
                   } else {
                         Dp5.cmSetup.setValue('// Hola Duchamp!!');
                   }
@@ -144,13 +171,16 @@ function setup() {
       // Init
       // Webcam/video capture
       ___webcam = null;
+      if(___audio != null ){
+            ___audio.disconnect();
+      }
       // default fps
       setFrameRate(60)
       imageMode(CORNER)
       rectMode(CORNER)
       ellipseMode(CENTER)
       background(0);
-      colorMode(RGB, 255, 255, 255)
+      colorMode(RGB, 255)
       new Function(Dp5.validCodeSetup)();
       // Live --------------------------------
       try {
@@ -215,58 +245,69 @@ function windowResized() {
 }
 // -----------------------------------------------------
 // EVENTS ----------------------------------------------
-// GLOBALS EVENTS --------------------------------------
-Dp5.codeGlobal.addEventListener('keyup', (ev) => {
-      //Verifica si se escribio algo
-      if (Dp5.cmGlobal.getValue() == '') {
-            Dp5.cmGlobal.setValue('// Code!');
-            Dp5.caretEnd(Dp5.cmGlobal);
+// AUXILIAR EVENTS -------------------------------------
+
+Dp5.codeAux.addEventListener('click', (ev) => {
+      // Obtiene la ultima posicion del cursor
+      Dp5.cmAuxCp.line = Dp5.cmAux.getCursor().line;
+      Dp5.cmAuxCp.ch = Dp5.cmAux.getCursor().ch;
+      Dp5.panelIndex = 2
+})
+Dp5.codeAux.addEventListener('keyup', (ev) => {
+      // Obtiene la ultima posicion del cursor
+      Dp5.cmAuxCp.line = Dp5.cmAux.getCursor().line;
+      Dp5.cmAuxCp.ch = Dp5.cmAux.getCursor().ch;
+
+      if (Dp5.cmAux.getValue() == '') {
+            Dp5.cmAux.setValue('// Code!');
+            Dp5.caretEnd(Dp5.cmAux);
       }
-      if (Dp5.validCodeGlobal != Dp5.cmGlobal.getValue()) {
-            $('#global-change').html('*&nbsp;&nbsp;');
+      //Verifica si se escribio algo
+      if (Dp5.validCodeAux != Dp5.cmAux.getValue()) {
+            $('#aux-change').html('*&nbsp;&nbsp;');
       } else {
-            $('#global-change').html('');
+            $('#aux-change').html('');
       }
       if (ev.ctrlKey && ev.keyCode == 13) {
-            Dp5.renderCodeGlobal = Dp5.cmGlobal.getValue();
+            Dp5.renderCodeAux = Dp5.cmAux.getValue();
             // Live --------------------------------
             try {
                   let valid = true;
                   let word = '';
                   for (let i = 0; i < Dp5.prog.length; i++) {
-                        if (Dp5.renderCodeGlobal.includes(Dp5.prog[i])) {
+                        if (Dp5.renderCodeAux.includes(Dp5.prog[i])) {
                               valid = false;
                               word = Dp5.prog[i];
-                              $('#console-out').html('en global:' + word + ' no puede ser reescrita');
+                              $('#console-out').html('en aux:' + word + ' no puede ser reescrita');
                         }
                   }
                   if (valid) {
-                        new Function(Dp5.renderCodeGlobal)();
-                        Dp5.validCodeGlobal = Dp5.renderCodeGlobal;
+                        new Function(Dp5.renderCodeAux)();
+                        Dp5.validCodeAux = Dp5.renderCodeAux;
                         // try {
-                        //       Dp5.codeGlobal.innerHTML = Dp5.beautify_js(Dp5.codeGlobal.innerText)
+                        //       Dp5.codeAux.innerHTML = Dp5.beautify_js(Dp5.codeAux.innerText)
                         // } catch (e) {
                         //       console.log(e)
                         // }
-                        $('#dp5-global').parent().removeClass('error');
+                        $('#dp5-aux').parent().removeClass('error');
                         $('#console-out').html('');
                   }
             } catch (e) {
-                  Dp5.renderCodeGlobal = Dp5.validCodeGlobal;
+                  Dp5.renderCodeAux = Dp5.validCodeAux;
                   console.log('en setup eval ' + e);
-                  $('#console-out').html('en global:' + e)
-                  $('#dp5-global').parent().addClass('error');
+                  $('#console-out').html('en aux:' + e)
+                  $('#dp5-aux').parent().addClass('error');
             }
-            Dp5.main.saveCode('global', Dp5.renderCodeGlobal)
+            Dp5.main.saveCode('aux', Dp5.renderCodeAux)
       }
 }, false);
-Dp5.codeGlobal.addEventListener('keydown', (ev) => {
+Dp5.codeAux.addEventListener('keydown', (ev) => {
       if (ev.keyCode == 9) {
             ev.preventDefault();
             document.execCommand('insertText', false, '\t');
       }
 }, false);
-Dp5.codeGlobal.addEventListener("mousewheel", (ev) => {
+Dp5.codeAux.addEventListener("mousewheel", (ev) => {
       if (ev.ctrlKey) {
             var dir = Math.sign(ev.deltaY);
             if (dir == 1) {
@@ -276,16 +317,26 @@ Dp5.codeGlobal.addEventListener("mousewheel", (ev) => {
                   Dp5.scale_gl += 0.1;
             }
             if (Dp5.scale_gl > 0.05) {
-                  Dp5.codeGlobal.style.fontSize = Dp5.scale_gl + "rem";
-                  Dp5.codeGlobal.style.lineHeight = (Dp5.scale_gl * 1.4) + "rem";
-                  Dp5.cmGlobal.refresh()
+                  Dp5.codeAux.style.fontSize = Dp5.scale_gl + "rem";
+                  Dp5.codeAux.style.lineHeight = (Dp5.scale_gl * 1.4) + "rem";
+                  Dp5.cmAux.refresh()
             } else {
                   Dp5.scale_gl = 0.05;
             }
       }
 }, false);
 // SETUP EVENTS ----------------------------------------
+Dp5.codeSetup.addEventListener('click', (ev) => {
+      // Obtiene la ultima posicion del cursor
+      Dp5.cmSetupCp.line = Dp5.cmSetup.getCursor().line;
+      Dp5.cmSetupCp.ch = Dp5.cmSetup.getCursor().ch;
+      Dp5.panelIndex = 0
+})
 Dp5.codeSetup.addEventListener('keyup', (ev) => {
+      // Obtiene la ultima posicion del cursor
+      Dp5.cmSetupCp.line = Dp5.cmSetup.getCursor().line;
+      Dp5.cmSetupCp.ch = Dp5.cmSetup.getCursor().ch;
+
       if (Dp5.cmSetup.getValue() == '') {
             Dp5.cmSetup.setValue('// Hola Duchamp!');
             Dp5.caretEnd(Dp5.cmSetup);
@@ -333,7 +384,18 @@ Dp5.codeSetup.addEventListener("mousewheel", (ev) => {
 }, false);
 // -----------------------------------------------------
 // DRAW EVENTS -----------------------------------------
+
+Dp5.codeDraw.addEventListener('click', (ev) => {
+      // Obtiene la ultima posicion del cursor
+      Dp5.cmDrawCp.line = Dp5.cmDraw.getCursor().line;
+      Dp5.cmDrawCp.ch = Dp5.cmDraw.getCursor().ch;
+      Dp5.panelIndex = 1
+});
 Dp5.codeDraw.addEventListener('keyup', (ev) => {
+      // Obtiene la ultima posicion del cursor
+      Dp5.cmDrawCp.line = Dp5.cmDraw.getCursor().line;
+      Dp5.cmDrawCp.ch = Dp5.cmDraw.getCursor().ch;
+
       if (Dp5.cmDraw.getValue() == '') {
             Dp5.cmDraw.setValue('// Hora de livecoding!');
             Dp5.caretEnd(Dp5.cmDraw);
@@ -389,8 +451,8 @@ Dp5.codeDraw.addEventListener("paste", (ev) => {
       //Dp5.cmDraw.setValue(ev.clipboardData.getData('text/plain'))
 }, false);
 
-Dp5.codeGlobal.addEventListener("paste", (ev) => {
-      //Dp5.cmGlobal.setValue(ev.clipboardData.getData('text/plain'))
+Dp5.codeAux.addEventListener("paste", (ev) => {
+      //Dp5.cmAux.setValue(ev.clipboardData.getData('text/plain'))
 }, false);
 // ------------------------------------------------
 document.addEventListener('keyup', (ev) => {
@@ -436,21 +498,12 @@ document.addEventListener('keyup', (ev) => {
             }
       }
       if (ev.keyCode == 114) {
-            if (Dp5.showGlobalWin) {
-                  $('#dp5-global').css('display', 'none');
-                  Dp5.showGlobalWin = false;
+            if (Dp5.showAuxWin) {
+                  $('#dp5-aux').css('display', 'none');
+                  Dp5.showAuxWin = false;
             } else {
-                  $('#dp5-global').css('display', 'inline');
-                  Dp5.showGlobalWin = true;
-            }
-      }
-      if (ev.keyCode == 114) {
-            if (Dp5.showGlobalWin) {
-                  $('#dp5-global').css('display', 'none');
-                  Dp5.showGlobalWin = false;
-            } else {
-                  $('#dp5-global').css('display', 'inline');
-                  Dp5.showGlobalWin = true;
+                  $('#dp5-aux').css('display', 'inline');
+                  Dp5.showAuxWin = true;
             }
       }
       if (ev.ctrlKey && ev.keyCode == 72) {
@@ -468,7 +521,74 @@ document.addEventListener('keyup', (ev) => {
             }
 
       }
+      // Focus panels
+      if (ev.ctrlKey && (ev.keyCode == 32)) {
+            Dp5.panelIndex++
+            ev.preventDefault();
+            if (Dp5.panelIndex > 2) Dp5.panelIndex = 0;
+            //console.log(Dp5.panelIndex)
+            if (Dp5.panelIndex == 0) {
+                  Dp5.cmSetup.focus()
+                  Dp5.cmSetup.setCursor({ line: Dp5.cmSetupCp.line, ch: Dp5.cmSetupCp.ch })
+            }
+            if (Dp5.panelIndex == 1) {
+                  Dp5.cmDraw.focus()
+                  Dp5.cmDraw.setCursor({ line: Dp5.cmDrawCp.line, ch: Dp5.cmDrawCp.ch })
+            }
+            if (Dp5.panelIndex == 2) {
+                  Dp5.cmAux.focus()
+                  Dp5.cmAux.setCursor({ line: Dp5.cmAuxCp.line, ch: Dp5.cmAuxCp.ch })
+            }
+      }
+
 });
+document.addEventListener('keydown', function (ev) {
+
+      // Focus panels
+      if (ev.ctrlKey && (ev.keyCode == 38 || ev.keyCode == 40)) {
+            ev.preventDefault()
+            if (ev.keyCode == 40) {
+                  Dp5.panelIndex++
+            } else if(ev.keyCode == 38){
+                  Dp5.panelIndex--
+            }
+            if (Dp5.panelIndex > 2) Dp5.panelIndex = 0;
+            if (Dp5.panelIndex < 0) Dp5.panelIndex = 2;
+            //console.log(Dp5.panelIndex)
+            if (Dp5.panelIndex == 0) {
+                  Dp5.cmSetup.focus()
+                  Dp5.cmSetup.setCursor({ line: Dp5.cmSetupCp.line, ch: Dp5.cmSetupCp.ch })
+            }
+            if (Dp5.panelIndex == 1) {
+                  Dp5.cmDraw.focus()
+                  Dp5.cmDraw.setCursor({ line: Dp5.cmDrawCp.line, ch: Dp5.cmDrawCp.ch })
+            }
+            if (Dp5.panelIndex == 2) {
+                  Dp5.cmAux.focus()
+                  Dp5.cmAux.setCursor({ line: Dp5.cmAuxCp.line, ch: Dp5.cmAuxCp.ch })
+            }
+      }
+})
+document.addEventListener("mousewheel", (ev) => {
+      if (ev.altKey) {
+            ev.preventDefault()
+            var dir = Math.sign(ev.deltaY);
+            if (dir == 1) {
+                  Dp5.bg_code_alpha -= 0.03;
+            }
+            if (dir == -1) {
+                  Dp5.bg_code_alpha += 0.03;
+            }
+            if (Dp5.bg_code_alpha < 0.0) {
+                  Dp5.bg_code_alpha = 0.0;
+            }
+            if (Dp5.bg_code_alpha > 1.0) {
+                  Dp5.bg_code_alpha = 1.0;
+            }
+            $(".CodeMirror-line").find('>span').css("background", "rgba(0,0,0," + Dp5.bg_code_alpha + ")");
+
+      }
+}, false);
 // -----------------------------------------------------
 // -----------------------------------------------------
 

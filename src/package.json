@@ -1,16 +1,19 @@
 {
       "name": "duchamp-lc",
-      "author": "Andres Senn",
-      "license": "ISC",
-      "version": "0.1.0",
+      "author": {
+            "name": "Andres Senn",
+            "email": "hola@andressenn.com"
+      },
+      "license": "MIT",
+      "homepage": "http://andressenn.com",
+      "version": "0.1.1",
       "description": "p5 livecoding",
       "main": "main.js",
       "scripts": {
-            "test": "echo \"Error: no test specified\" && exit 1",
             "start": "electron .",
             "dist-win": "electron-builder --win",
             "dist-linux": "electron-builder --linux",
-            "dist-mac": "electron-builder --mac"
+            "dist-mac": "electron-builder --dmg"
       },
       "keywords": [
             "livecoding",
@@ -28,11 +31,25 @@
                   "icon": "assets/icon.ico"
             },
             "linux": {
-                  "target": "AppImage",
+                  "target": [
+                        "AppImage",
+                        "deb"
+                  ],
                   "icon": "assets/icon.png"
             },
-            "mac": {
-                  "target": "zip"
+            "dmg": {
+                  "contents": [
+                        {
+                              "x": 110,
+                              "y": 150
+                        },
+                        {
+                              "x": 240,
+                              "y": 150,
+                              "type": "link",
+                              "path": "/Applications"
+                        }
+                  ]
             }
       },
       "devDependencies": {

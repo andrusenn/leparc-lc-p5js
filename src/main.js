@@ -6,8 +6,8 @@ const path = require('path')
 
 // Paths
 let appPath = app.getAppPath();
-let savePath = (app.isPackaged) ? path.resolve(__dirname, '..', '..') + "" : appPath;
-let resourcesPath = (app.isPackaged) ? path.resolve(__dirname, '..', '..') + "" : appPath;
+let savePath = (app.isPackaged) ? path.resolve(__dirname, '..', '..', '..', '..') + "" : appPath;
+let resourcesPath = (app.isPackaged) ? path.resolve(__dirname, '..', '..', '..', '..') + "" : appPath;
 
 let mainWindow
 
@@ -17,22 +17,23 @@ function createWindow() {
             height: 600
       })
       mainWindow.setMenu(null);
-      mainWindow.setMenuBarVisibility(false)
-
+      mainWindow.center();
+      //mainWindow.setAlwaysOnTop(true);
+      mainWindow.setMenuBarVisibility(false);
       // mainWindow.webContents.setFrameRate(300)
-      if (app.isPackaged) {
-            // Crea carpeta config
-            let save_path = savePath + '/save/';
-            fs.mkdir(save_path, err => {
-                  if (!err) {
-                        fs.chmod(save_path, '0777', function (err) {
-                              if (!err) {
-                                    console.log('cmod')
-                              }
-                        });
-                  }
-            });
-      }
+      //if (app.isPackaged) {
+      // Crea carpeta config
+      // let save_path = savePath + '/save/';
+      // fs.mkdir(save_path, err => {
+      //       if (!err) {
+      //             fs.chmod(save_path, '0777', function (err) {
+      //                   if (!err) {
+      //                         console.log('cmod')
+      //                   }
+      //             });
+      //       }
+      // });
+      //}
       // Menu.setApplicationMenu(Menu.buildFromTemplate([
       //       {
       //             label: 'Files',
@@ -69,6 +70,9 @@ app.on('activate', function () {
 exports.exit = function () {
       app.exit();
 }
+// exports.debug = function(data){
+//       return savePath;
+// }
 exports.setFull = function () {
       mainWindow.setKiosk(true)
       mainWindow.setMenu(null);
@@ -89,6 +93,16 @@ exports.saveCode = (file, data) => {
             //console.log("datos guardados");
       });
 }
+exports.resizeWin = function (w, h) {
+      if (mainWindow.isMaximized()) {
+            mainWindow.unmaximize();
+      }else
+      if (mainWindow.isKiosk()) {
+            mainWindow.setKiosk(false)
+      }
+      mainWindow.setBounds({ width: w, height: h });
+      mainWindow.center()
+}
 exports.devTools = function (open) {
       if (open) {
             mainWindow.webContents.openDevTools({ mode: 'right' });
@@ -98,4 +112,14 @@ exports.devTools = function (open) {
 }
 exports.reload = function () {
       mainWindow.loadFile('index.html');
+}
+exports.loadImgsBank = function (fn) {
+      fs.readdir(appPath + '/custom/imgs/', (err, files) => {
+            if (!err) {
+                  if(typeof fn == 'function'){
+                        fn(files)
+                  }
+            }
+            return false;
+      });
 }

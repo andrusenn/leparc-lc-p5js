@@ -64,7 +64,7 @@ canvas {
 }
 
 .error {
-  border-left: 2px solid #f00 !important;
+  border-left: 6px solid rgba(255, 0, 0, 0.5) !important;
 }
 
 .console-out-error {
@@ -72,9 +72,9 @@ canvas {
   background: #000;
 }
 
-.CodeMirror-line span {
-  padding: 3px 0;
-  line-height: 1.5rem;
+.CodeMirror-line > span {
+  padding: 4px 10px;
+  line-height: 1.7rem;
   text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
   background: rgba(0, 0, 0, 0.4);
   color: white;

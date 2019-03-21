@@ -69,46 +69,17 @@ canvas {
 }
 
 .error {
-      border-left: 2px solid #f00 !important;
+      border-left: 6px solid rgba(255, 0, 0,0.5) !important;
 }
 
 .console-out-error {
       color: #f00;
       background: #000;
 }
-
-// .caret {
-//       display: none;
-//       position: absolute;
-//       transform-origin: 0 0;
-//       top: -10px;
-//       left: -10px;
-//       width: 3px;
-//       background: #fff;
-//       height: 26px;
-//       z-index: 9999;
-//       visibility: visible;
-//       animation: blinker 0.8s steps(1) infinite;
-// }
-
-// @keyframes blinker {
-//       50% {
-//             visibility: hidden;
-//       }
-// }
-
-// .line-wrap {
-//       font-size: 1rem;
-//       font-family: Inconsole, monospace;
-//       text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
-//       line-height: 1.5rem;
-//       background: rgba(#000, 0.4);
-//       color: rgba(#fff, 1);
-// }
 .CodeMirror-line {
-      span{
-            padding:3px 0;
-            line-height:1.5rem;
+      >span{
+            padding:4px 10px;
+            line-height:1.7rem;
             text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
             background: rgba(#000, 0.4);
             color: rgba(#fff, 1);
@@ -126,39 +97,6 @@ canvas {
       z-index: 998;
       background: transparent;
       overflow: auto;
-      #dp5-setup,
-      #dp5-draw,
-      #dp5-global {
-            // transform-origin: 0 0;
-            // position: relative;
-            // overflow: hidden;
-            // display: inline; // height: auto;
-            // // width: auto;
-            // padding: 3px; // padding-right: 10px;
-            // border: none;
-            // font-size: 1rem;
-            // font-family: Inconsole, monospace;
-            // text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
-            // line-height: 1.5rem;
-            // background: rgba(#000, 0.4);
-            // color: rgba(#fff, 1);
-            // overflow: hidden;
-            // // br {
-            // //       margin: 0 !important;
-            // //       display: block !important;
-            // //       clear: both;
-            // //       width:40px;
-            // //       background:#fff !important;
-            // //       content:" " !important;
-            // // }
-            // &::selection {
-            //       background: #fff;
-            //       color: #000;
-            //       text-shadow: none;
-            //       height: 26px;
-            //       padding: 0 0 5px 0;
-            // }
-      }
       #console-title {
             display: block;
             padding: 10px;
