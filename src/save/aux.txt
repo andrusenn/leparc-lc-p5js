@@ -1,3 +1,0 @@
-// Code!
-linein(1)
-winSize(1280,720)

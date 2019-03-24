@@ -1,6 +1,0 @@
-// Hola Duchamp!
-colorMode(HSB)
-bg(0)
-noStroke()
-smooth()
-linein(1)

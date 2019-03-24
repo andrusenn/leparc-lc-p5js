@@ -6,14 +6,14 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "description": "p5 livecoding",
       "main": "main.js",
       "scripts": {
             "start": "electron .",
             "dist-win": "electron-builder --win",
             "dist-linux": "electron-builder --linux",
-            "dist-mac": "electron-builder --dmg"
+            "dist-mac": "electron-builder --mac"
       },
       "keywords": [
             "livecoding",
@@ -22,7 +22,7 @@
       ],
       "build": {
             "appId": "com.andrusenn.duchamplc",
-            "productName": "Duchamp Livecoding p5js",
+            "productName": "Duchamp-LC",
             "directories": {
                   "output": "../dist"
             },
@@ -37,19 +37,9 @@
                   ],
                   "icon": "assets/icon.png"
             },
-            "dmg": {
-                  "contents": [
-                        {
-                              "x": 110,
-                              "y": 150
-                        },
-                        {
-                              "x": 240,
-                              "y": 150,
-                              "type": "link",
-                              "path": "/Applications"
-                        }
-                  ]
+            "mac": {
+                  "target": "zip",
+                  "icon": "assets/icon.icns"
             }
       },
       "devDependencies": {

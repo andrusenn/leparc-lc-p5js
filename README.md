@@ -1,6 +1,8 @@
 # Duchamp p5 livecoding
 
-Entorno multiplataforma para ejecutar código p5js en tiempo real.
+> (Español) - [English](https://github.com/andrusenn/duchamp-lc-p5js/blob/master/README.en.md)
+
+Entorno multiplataforma para ejecutar código [p5js](http://p5js.org/) en tiempo real.
 
 ![Image](http://andressenn.com/duchamp-lc/captura2.jpg)
 ![Image](http://andressenn.com/duchamp-lc/captura.jpg)
@@ -26,18 +28,22 @@ Entorno multiplataforma para ejecutar código p5js en tiempo real.
 
 ### Comandos
 
-- `Ctrl+Enter` Evaluar código
+- `Ctrl+Enter` Evaluar bloque de código
+- `Alt+Enter` Evaluar línea de código (solo en setup() y aux())
 - `Ctrl+H` Mostrar/ocultar código
 - Mostrar/ocultar paneles `F1` (setup)`F2` (draw)`F3` (aux)
 - `F11` Pantalla completa (fullscreen)
-- `F10` Muestra/oculta herramientas de desarrollo para debug (dev tools) 
-- `F5` Recarga pantalla 
-- `Ctrl+mousewheel` Aumenta/disminuye tamaño del código 
+- `F10` Muestra/oculta herramientas de desarrollo para debug (dev tools)
+- `F5` Recarga pantalla
+- `Ctrl+mousewheel` Aumenta/disminuye tamaño del código
 - `Alt+mousewheel` Modifica la transparencia del fondo del códivo
+- `Ctrl+Alt+mousewheel` Modifica valor seleccionado suma/resta 1
+- `Ctrl+Alt+Shift+mousewheel` Modifica valor seleccionado suma/resta 0.1
 
 ### Bloques de código
 
->Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos
+>Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
+>Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
 
 - `setup:` -> `setup(){ // }`
 - `draw:` -> `draw(){ // }`
@@ -46,16 +52,19 @@ Entorno multiplataforma para ejecutar código p5js en tiempo real.
 
 Para acceder a variables desde otros bloques, la declaración no debe llevar `var`,`let` o `const`
 Lo mismo para las funciones:
-~~~
+
+~~~js
+x = 'code'
+
 mifunc = function(){
       console.log('Hola Duchamp!')
 }
+
 ~~~
 
 ### Funciones extendidas de p5j
 
-
-- `mirrorX()` Espejo - Invierte la imagen desde la mitad sobre el eje X 
+- `mirrorX()` Espejo - Invierte la imagen desde la mitad sobre el eje X
 - `mirrorY()` Espejo - Invierte la imagen desde la mitad sobre el eje Y
 - `kaleido()` = `mirrorX()`+`mirrorY()` Efecto caleidoscopio 4 caras
 - `zoom(escala)` Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`
@@ -69,3 +78,7 @@ mifunc = function(){
 
 - En setup: `useCam([ancho,alto])`
 - En draw: `getCam(x,y)`
+
+##### Audio
+
+- En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)

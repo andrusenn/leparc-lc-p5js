@@ -5,46 +5,41 @@ const path = require('path')
 
 
 // Paths
+// let appPath = (app.isPackaged) ? path.resolve(__dirname) : app.getAppPath();
+// let savePath = (app.isPackaged) ? path.resolve(__dirname,"..","..") + "" : app.getAppPath();
+// let resourcesPath = (app.isPackaged) ? path.resolve(__dirname,"..","..") + "" : app.getAppPath();
 let appPath = app.getAppPath();
-let savePath = (app.isPackaged) ? path.resolve(__dirname, '..', '..', '..', '..') + "" : appPath;
-let resourcesPath = (app.isPackaged) ? path.resolve(__dirname, '..', '..', '..', '..') + "" : appPath;
+let savePath = (app.isPackaged) ? app.getPath("home") + "" : app.getAppPath();
+let resourcesPath = (app.isPackaged) ? path.resolve(__dirname, "..", "..") + "" : app.getAppPath();
 
 let mainWindow
 
 function createWindow() {
       mainWindow = new BrowserWindow({
-            width: 800,
-            height: 600
+            width: 1280,
+            height: 720,
+            icon: appPath + '/assets/icon.png'
       })
       mainWindow.setMenu(null);
       mainWindow.center();
       //mainWindow.setAlwaysOnTop(true);
       mainWindow.setMenuBarVisibility(false);
       // mainWindow.webContents.setFrameRate(300)
-      //if (app.isPackaged) {
-      // Crea carpeta config
-      // let save_path = savePath + '/save/';
-      // fs.mkdir(save_path, err => {
-      //       if (!err) {
-      //             fs.chmod(save_path, '0777', function (err) {
-      //                   if (!err) {
-      //                         console.log('cmod')
-      //                   }
-      //             });
-      //       }
-      // });
-      //}
-      // Menu.setApplicationMenu(Menu.buildFromTemplate([
-      //       {
-      //             label: 'Files',
-      //             submenu: [
-      //                   {
-      //                         label: 'New',
-      //                         click: () => console.log("Hello world")
-      //                   }
-      //             ]
-      //       }
-      // ]))
+      if (app.isPackaged) {
+            // Directorio duchamplc-resources
+            mkdir(savePath + '/duchamplc-resources/', () => {
+                  // Directorio -> duchamplc-resources/save
+                  mkdir(savePath + '/duchamplc-resources/save/', () => {
+                        writef(savePath + '/duchamplc-resources/save/setup.txt', '// Hola Duchamp!!');
+                        writef(savePath + '/duchamplc-resources/save/aux.txt', '// Hola Duchamp!!');
+                        writef(savePath + '/duchamplc-resources/save/draw.txt', '// Hola Duchamp!!');
+                  })
+                  // Directorio -> duchamplc-resources/libs
+                  mkdir(savePath + '/duchamplc-resources/libs/')
+                  // Directorio -> duchamplc-resources/images 
+                  mkdir(savePath + '/duchamplc-resources/images/')
+            })
+      }
       mainWindow.loadFile('index.html')
 
       //mainWindow.webContents.openDevTools()
@@ -70,9 +65,7 @@ app.on('activate', function () {
 exports.exit = function () {
       app.exit();
 }
-// exports.debug = function(data){
-//       return savePath;
-// }
+
 exports.setFull = function () {
       mainWindow.setKiosk(true)
       mainWindow.setMenu(null);
@@ -88,18 +81,17 @@ exports.getMemory = function () {
 }
 
 exports.saveCode = (file, data) => {
-      fs.writeFile(appPath + "/save/" + file + ".txt", data, function (err) {
+      fs.writeFile(savePath + "/duchamplc-resources/save/" + file + ".txt", data, function (err) {
             if (err) throw err;
-            //console.log("datos guardados");
       });
 }
 exports.resizeWin = function (w, h) {
       if (mainWindow.isMaximized()) {
             mainWindow.unmaximize();
-      }else
-      if (mainWindow.isKiosk()) {
-            mainWindow.setKiosk(false)
-      }
+      } else
+            if (mainWindow.isKiosk()) {
+                  mainWindow.setKiosk(false)
+            }
       mainWindow.setBounds({ width: w, height: h });
       mainWindow.center()
 }
@@ -113,13 +105,51 @@ exports.devTools = function (open) {
 exports.reload = function () {
       mainWindow.loadFile('index.html');
 }
-exports.loadImgsBank = function (fn) {
-      fs.readdir(appPath + '/custom/imgs/', (err, files) => {
+exports.loadImgsBank = function () {
+      let source = appPath + '/duchamplc-resources/images/'
+      const isDirectory = source => lstatSync(source).isDirectory()
+      const getDirectories = source =>readdirSync(source).map(name => join(source, name)).filter(isDirectory)
+      return getDirectories
+      // fs.readdir(appPath + '/duchamplc-resources/images/', (err, files) => {
+      //       if (!err) {
+      //             for (let i = 0; i < files.length; i++) {
+      //                   fs.readdir(appPath + '/duchamplc-resources/images/' + files[i], (err, files) => {
+      //                         if (!err) {
+      //                               if (typeof fn == 'function') {
+      //                                     fn(files)
+      //                               }
+      //                         }
+      //                         return false;
+      //                   });
+      //             }
+      //       }
+      //       return false;
+      // });
+}
+exports.savePath = function () {
+      return savePath;
+}
+
+// Utils
+function mkdir(path, fn) {
+      fs.mkdir(path, err => {
             if (!err) {
-                  if(typeof fn == 'function'){
-                        fn(files)
+                  fs.chmod(path, '0777', function (err) {
+                        if (!err) {
+                              if (typeof fn == 'function') {
+                                    fn()
+                              }
+                        }
+                  });
+            }
+      });
+}
+function writef(path, content, fn) {
+      fs.writeFile(path, content, function (err) {
+            if (!err) {
+                  if (typeof fn == 'function') {
+                        fn()
                   }
             }
-            return false;
       });
 }

@@ -14,23 +14,35 @@
 <body>
 	<main>
 		<div id="win">
-			<span class="pannel-title" id="setup-title"><span id="setup-change"></span>setup:</span><br>
+
+			<!-- setup pannel -->
+			<span class="pannel-title" id="setup-title"><span id="setup-change"></span>setup{</span><br>
 			<div class="dp5-code-parent">
 				<div id="dp5-setup"></div><br>
 			</div>
-			<span class="pannel-title" id="draw-title"><span id="draw-change"></span>draw:</span><br>
+			<span class="pannel-title">}</span><br>
+
+			<!-- draw pannel -->
+			<span class="pannel-title" id="draw-title"><span id="draw-change"></span>draw{</span><br>
 			<div class="dp5-code-parent">
 				<div id="dp5-draw"></div><br>
 			</div>
-			<span id="dp5-console">
-				<span id="os-ram"></span>
-				<span id="os-fps"></span>
-				<span id="console-out"></span>
-			</span>
-			<span class="pannel-title" id="aux-title"><span id="aux-change"></span>aux:</span><br>
+			<span class="pannel-title">}</span><br>
+
+			<!-- aux pannel -->
+			<span class="pannel-title" id="aux-title"><span id="aux-change"></span>aux{</span><br>
 			<div class="dp5-code-parent">
 				<div id="dp5-aux"></div><br>
 			</div>
+			<span class="pannel-title">}</span><br>
+
+			<!-- console pannel -->
+			<span id="dp5-console">
+					<span id="dp5-os-ram"></span>
+					<span id="dp5-os-fps"></span>
+					<span id="dp5-console-out"></span>
+					<span id="dp5-console-sound-out"></span>
+				</span>
 		</div>
 	</main>
 	<script>window.$ = window.jQuery = require('./libs/jquery.min.js');</script>

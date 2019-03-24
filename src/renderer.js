@@ -1,10 +1,14 @@
-// Duchamp Object
+// -----------------------------------------------------
+// Duchamp Object --------------------------------------
+// -----------------------------------------------------
 let Dp5 = {
+      // mian.js
       main: require('electron').remote.require('./main'),
       fullscreen: false,
       devtools: false,
       fps: 0,
-      // DOM en index.html
+      historyChanges:0,
+      // Codemirror
       cmSetup: null,
       cmDraw: null,
       cmAux: null,
@@ -21,11 +25,16 @@ let Dp5 = {
             ch: 0
       },
       panelIndex: 0,
+      cmSelect: '',
+      // DOM en index.html
       codeSetup: document.getElementById('dp5-setup'),
       codeDraw: document.getElementById('dp5-draw'),
       codeAux: document.getElementById('dp5-aux'),
       consoleView: document.getElementById('dp5-console'),
       // Almacena los codigos a evaluar
+      isValidCodeAux: true,
+      isValidCodeSetup: true,
+      isValidCodeDraw: true,
       validCodeDraw: '',
       renderCodeDraw: '',
       validCodeSetup: '',
@@ -38,7 +47,7 @@ let Dp5 = {
       // Escala de los campos a
       scale_st: 1,
       scale_dr: 1,
-      scale_gl: 1,
+      scale_ax: 1,
       // bg alfa
       bg_code_alpha: 0.4,
       // p5 externas
@@ -48,6 +57,8 @@ let Dp5 = {
       showDrawWin: true,
       showAuxWin: true,
       showWin: true,
+      // Imagenes
+      // imagesBank: new Array(),
       // Funciones
       beautify_js: function (data) {
             let ob = {
@@ -56,6 +67,9 @@ let Dp5 = {
             }
             return js_beautify(data, ob);
       },
+      el: function (id) {
+            return document.getElementById(id)
+      },
       caretEnd(el) {
             let len = el.getValue().length;
             el.setCursor(len)
@@ -63,45 +77,44 @@ let Dp5 = {
       addSysName: function (name) {
             this.prog.push(name)
       },
+      changeBgLineAlpha: function(){
+            let els = document.querySelectorAll(".CodeMirror-line>span")
+            for(let i = 0; i < els.length;i++){
+                  els[i].style.backgroundColor =  "rgba(0,0,0," + this.bg_code_alpha + ")";
+            }
+      },
+      // Palabras reservadas
       prog:
             [
                   'draw',
                   'setup',
                   'preload',
                   'canvas',
-                  'createCanvas'
+                  'createCanvas',
             ]
 }
-let img;
-// function updateCaretCoords() {
-//       Dp5.setCaretCoords()
-//       requestAnimationFrame(updateCaretCoords);
-// }
-// requestAnimationFrame(updateCaretCoords);
-// -----------------------------------------------------
-// -----------------------------------------------------
-
-$(document).ready(function () {
-      //////
-      // Cargar ultimo -------------------------
+// Init
+window.addEventListener('load', function () {
       setInterval(() => {
-            $('#dp5-console>#os-ram').text('| free ram:' + Dp5.main.getMemory() + "%")
+            // Memoria
+            Dp5.el('dp5-os-ram').innerText = '| free ram:' + Dp5.main.getMemory() + "%";
       }, 2000)
       setInterval(() => {
-
-            $('#dp5-console>#os-fps').text('| fps:' + Dp5.fps)
+            // FPS
+            Dp5.el('dp5-os-fps').innerText = '| fps:' + Math.round(Dp5.fps);
       }, 500)
 });
 
-// -----------------------------------------------------
-// P5 --------------------------------------------------
+// ********************************************************************
+// P5js ***************************************************************
+// ********************************************************************
 function preload() {
-      Dp5.main.loadImgsBank((imgs) => {
-            for (let i = 0; i < imgs.length; i++) {
-                  let img = loadImage('custom/imgs/' + imgs[i]);
-                  ___pics.push(img);
-            }
-      })
+      // try {
+      //       console.log(Dp5.main.loadImgsBank())
+      // } catch (e) {
+      //       console.log(e)
+      // }
+
       // Code mirror
       Dp5.cmSetup = CodeMirror(Dp5.codeSetup, {
             mode: "javascript"
@@ -116,7 +129,7 @@ function preload() {
       Dp5.cmAux = CodeMirror(Dp5.codeAux, {
             mode: "javascript"
       });
-      Dp5.setupTxt = loadStrings('save/setup.txt', () => {
+      Dp5.setupTxt = loadStrings(Dp5.main.savePath() + '/duchamplc-resources/save/setup.txt', () => {
             let txt = '';
             for (let i = 0; i < Dp5.setupTxt.length; i++) {
                   txt += Dp5.setupTxt[i] + '\n';
@@ -128,12 +141,17 @@ function preload() {
                   } else {
                         Dp5.cmSetup.setValue('// Hola Duchamp!!');
                   }
+                  // Carga en setup
+                  // Dp5.renderCodeSetup = txt.trim()
+                  // Llama a setup
+                  // setup()
             } catch (e) {
                   console.log(e)
+                  //Dp5.main.saveCode('setup', '// Hola Duchamp!!')
             }
 
       })
-      Dp5.drawTxt = loadStrings('save/draw.txt', () => {
+      Dp5.drawTxt = loadStrings(Dp5.main.savePath() + '/duchamplc-resources/save/draw.txt', () => {
             let txt = '';
             for (let i = 0; i < Dp5.drawTxt.length; i++) {
                   txt += Dp5.drawTxt[i] + '\n';
@@ -145,11 +163,13 @@ function preload() {
                   } else {
                         Dp5.cmSetup.setValue('// Hola Duchamp!!');
                   }
+                  // Dp5.renderCodeDraw = txt.trim()
             } catch (e) {
                   console.log(e)
+                  //Dp5.main.saveCode('draw', '// Hola Duchamp!!')
             }
       })
-      Dp5.auxTxt = loadStrings('save/aux.txt', () => {
+      Dp5.auxTxt = loadStrings(Dp5.main.savePath() + '/duchamplc-resources/save/aux.txt', () => {
             let txt = '';
             for (let i = 0; i < Dp5.auxTxt.length; i++) {
                   txt += Dp5.auxTxt[i] + '\n';
@@ -163,16 +183,20 @@ function preload() {
                   }
             } catch (e) {
                   console.log(e)
+                  //Dp5.main.saveCode('aux', '// Hola Duchamp!!')
             }
       })
 }
 function setup() {
+      // Init setup --------------------------
       createCanvas(windowWidth, windowHeight);
-      // Init
       // Webcam/video capture
       ___webcam = null;
-      if(___audio != null ){
-            ___audio.disconnect();
+      // Audio
+      if (___audio != null) {
+            ___audio.disconnect()
+            ___audio = null
+            ___fft = null
       }
       // default fps
       setFrameRate(60)
@@ -181,59 +205,16 @@ function setup() {
       ellipseMode(CENTER)
       background(0);
       colorMode(RGB, 255)
-      new Function(Dp5.validCodeSetup)();
       // Live --------------------------------
-      try {
-            let valid = true;
-            let word = '';
-            for (let i = 0; i < Dp5.prog.length; i++) {
-                  if (Dp5.renderCodeSetup.includes(Dp5.prog[i])) {
-                        valid = false;
-                        word = Dp5.prog[i];
-                        $('#console-out').html('en setup:' + word + ' no puede ser reescrita');
-                  }
-            }
-            if (valid) {
-                  new Function(Dp5.renderCodeSetup)();
-                  Dp5.validCodeSetup = Dp5.renderCodeSetup;
-                  $('#dp5-setup').parent().removeClass('error');
-                  $('#console-out').html('');
-            } else {
-                  new Function(Dp5.validCodeSetup)();
-                  $('#dp5-setup').parent().addClass('error');
-            }
-      } catch (e) {
-            Dp5.renderCodeSetup = Dp5.validCodeSetup;
-            $('#console-out').html('setup:' + e)
-            $('#dp5-setup').parent().addClass('error');
-      }
+      new Function(Dp5.validCodeSetup)();
+
 
 }
 function draw() {
+      // FPS
       Dp5.fps = getFrameRate();
       // Live --------------------------------
-      try {
-            let valid = true;
-            let word = '';
-            for (let i = 0; i < Dp5.prog.length; i++) {
-                  if (Dp5.renderCodeDraw.includes(Dp5.prog[i])) {
-                        valid = false;
-                        word = Dp5.prog[i];
-                        $('#console-out').html('en draw:' + word + ' no puede ser reescrita');
-                  }
-            }
-            if (valid) {
-                  new Function(Dp5.renderCodeDraw)();
-                  Dp5.validCodeDraw = Dp5.renderCodeDraw;
-            } else {
-                  new Function(Dp5.validCodeDraw)();
-                  $('#dp5-draw').parent().addClass('error');
-            }
-      } catch (e) {
-            $('#dp5-draw').parent().addClass('error');
-            Dp5.renderCodeDraw = Dp5.validCodeDraw;
-            $('#console-out').html('draw:' + e)
-      }
+      new Function(Dp5.validCodeDraw)();
 }
 function windowResized() {
       try {
@@ -243,8 +224,14 @@ function windowResized() {
             console.log('en resize ' + e);
       }
 }
+// ********************************************************************
+// ********************************************************************
+// ********************************************************************
+
 // -----------------------------------------------------
 // EVENTS ----------------------------------------------
+
+// -----------------------------------------------------
 // AUXILIAR EVENTS -------------------------------------
 
 Dp5.codeAux.addEventListener('click', (ev) => {
@@ -264,10 +251,51 @@ Dp5.codeAux.addEventListener('keyup', (ev) => {
       }
       //Verifica si se escribio algo
       if (Dp5.validCodeAux != Dp5.cmAux.getValue()) {
-            $('#aux-change').html('*&nbsp;&nbsp;');
+            Dp5.el('aux-change').innerHTML = '*&nbsp;&nbsp;';
       } else {
-            $('#aux-change').html('');
+            Dp5.el('aux-change').innerHTML = '';
       }
+      // Evalua linea ---------------------------------------------------
+      if (ev.altKey && ev.keyCode == 13) {
+            Dp5.renderCodeAux = Dp5.cmAux.getLine(Dp5.cmAuxCp.line)
+            try {
+                  let valid = true;
+                  let word = '';
+                  for (let i = 0; i < Dp5.prog.length; i++) {
+                        if (Dp5.renderCodeAux.match(`(\n| ){1,}${Dp5.prog[i]}`)) {
+                              let r = new RegExp(`('|") {0,}${Dp5.prog[i]} {0,}('|")`)
+                              if (!Dp5.renderCodeAux.match(r)) {
+                                    valid = false;
+                                    word = Dp5.prog[i];
+                                    Dp5.el('dp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser reescrita';
+                              }
+                        }
+                  }
+                  if (valid) {
+                        Dp5.validCodeAux = Dp5.renderCodeAux;
+                        new Function(Dp5.validCodeAux)();
+                        Dp5.el('dp5-aux').classList.remove("error");
+                        Dp5.el('dp5-console-out').innerHTML = '';
+                  }
+            } catch (e) {
+                  console.log('en aux eval ' + e);
+                  Dp5.el('dp5-console-out').innerHTML = 'en aux: ' + e
+                  Dp5.el('dp5-aux').parentElement.classList.add('error');
+            }
+      }
+      // Evalua bloque ---------------------------------------------------
+      // function checkValidWord(code, word) {
+      //       if (code.match(`(\n| ){1,}${word}`)) {
+      //             let r = new RegExp(`('|") {0,}${word} {0,}('|")`)
+      //             if (!code.match(r)) {
+      //                   //word = word;
+      //                   Dp5.el('dp5-draw').innerHTML ='en draw:' + word + ' no puede ser reescrita'
+      //                   return false;
+      //             } else {
+      //                   return true;
+      //             }
+      //       }
+      // }
       if (ev.ctrlKey && ev.keyCode == 13) {
             Dp5.renderCodeAux = Dp5.cmAux.getValue();
             // Live --------------------------------
@@ -275,56 +303,55 @@ Dp5.codeAux.addEventListener('keyup', (ev) => {
                   let valid = true;
                   let word = '';
                   for (let i = 0; i < Dp5.prog.length; i++) {
-                        if (Dp5.renderCodeAux.includes(Dp5.prog[i])) {
-                              valid = false;
-                              word = Dp5.prog[i];
-                              $('#console-out').html('en aux:' + word + ' no puede ser reescrita');
+                        //valid = checkValidWord(Dp5.renderCodeAux, Dp5.prog[i]);
+                        if (Dp5.renderCodeAux.match(`(\n| ){1,}${Dp5.prog[i]}`)) {
+                              let r = new RegExp(`('|") {0,}${Dp5.prog[i]} {0,}('|")`)
+                              if (!Dp5.renderCodeAux.match(r)) {
+                                    valid = false;
+                                    word = Dp5.prog[i];
+                                    Dp5.el('dp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser reescrita'
+                              }
                         }
                   }
                   if (valid) {
-                        new Function(Dp5.renderCodeAux)();
                         Dp5.validCodeAux = Dp5.renderCodeAux;
+                        new Function(Dp5.validCodeAux)();
                         // try {
                         //       Dp5.codeAux.innerHTML = Dp5.beautify_js(Dp5.codeAux.innerText)
                         // } catch (e) {
                         //       console.log(e)
                         // }
-                        $('#dp5-aux').parent().removeClass('error');
-                        $('#console-out').html('');
+                        Dp5.el('dp5-aux').parentElement.classList.remove('error');
+                        Dp5.el('dp5-console-out').innerHTML = ''
+                        Dp5.main.saveCode('aux', Dp5.renderCodeAux)
+                        Dp5.historyChanges++
                   }
             } catch (e) {
-                  Dp5.renderCodeAux = Dp5.validCodeAux;
-                  console.log('en setup eval ' + e);
-                  $('#console-out').html('en aux:' + e)
-                  $('#dp5-aux').parent().addClass('error');
+                  console.log('en aux: ' + e);
+                  Dp5.el('dp5-console-out').innerHTML = 'en aux:' + e
+                  Dp5.el('dp5-aux').parentElement.classList.add('error');
             }
-            Dp5.main.saveCode('aux', Dp5.renderCodeAux)
       }
-}, false);
-Dp5.codeAux.addEventListener('keydown', (ev) => {
-      if (ev.keyCode == 9) {
-            ev.preventDefault();
-            document.execCommand('insertText', false, '\t');
-      }
-}, false);
+});
 Dp5.codeAux.addEventListener("mousewheel", (ev) => {
-      if (ev.ctrlKey) {
+      if (ev.ctrlKey && !ev.altKey) {
             var dir = Math.sign(ev.deltaY);
             if (dir == 1) {
-                  Dp5.scale_gl -= 0.1;
+                  Dp5.scale_ax -= 0.1;
             }
             if (dir == -1) {
-                  Dp5.scale_gl += 0.1;
+                  Dp5.scale_ax += 0.1;
             }
-            if (Dp5.scale_gl > 0.05) {
-                  Dp5.codeAux.style.fontSize = Dp5.scale_gl + "rem";
-                  Dp5.codeAux.style.lineHeight = (Dp5.scale_gl * 1.4) + "rem";
+            if (Dp5.scale_ax > 0.05) {
+                  Dp5.codeAux.style.fontSize = Dp5.scale_ax + "rem";
+                  Dp5.codeAux.style.lineHeight = (Dp5.scale_ax * 1.4) + "rem";
                   Dp5.cmAux.refresh()
             } else {
-                  Dp5.scale_gl = 0.05;
+                  Dp5.scale_ax = 0.05;
             }
       }
-}, false);
+});
+// -----------------------------------------------------
 // SETUP EVENTS ----------------------------------------
 Dp5.codeSetup.addEventListener('click', (ev) => {
       // Obtiene la ultima posicion del cursor
@@ -343,10 +370,42 @@ Dp5.codeSetup.addEventListener('keyup', (ev) => {
       }
       // Verifica si se escribio algo
       if (Dp5.validCodeSetup != Dp5.cmSetup.getValue()) {
-            $('#setup-change').html('*&nbsp;&nbsp;');
+            Dp5.el('setup-change').innerHTML = '*&nbsp;&nbsp;';
       } else {
-            $('#setup-change').html('');
+            Dp5.el('setup-change').innerHTML = '';
       }
+      // Evalua linea ---------------------------------------------------
+      if (ev.altKey && ev.keyCode == 13) {
+            Dp5.renderCodeSetup = Dp5.cmSetup.getLine(Dp5.cmSetupCp.line)
+            // Dp5.renderCodeSetup = Dp5.cmSetup.getValue();
+            try {
+                  let valid = true;
+                  let word = '';
+                  for (let i = 0; i < Dp5.prog.length; i++) {
+                        if (Dp5.renderCodeSetup.match(`(\n| ){1,}${Dp5.prog[i]}`)) {
+                              let r = new RegExp(`('|") {0,}${Dp5.prog[i]} {0,}('|")`)
+                              if (!Dp5.renderCodeSetup.match(r)) {
+                                    valid = false;
+                                    word = Dp5.prog[i];
+                                    Dp5.el('dp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser reescrita'
+                              }
+                        }
+                  }
+                  if (valid) {
+                        Dp5.validCodeSetup = Dp5.renderCodeSetup;
+                        Dp5.el('dp5-setup').parentElement.classList.remove('error');
+                        Dp5.el('dp5-console-out').innerHTML = ''
+                        new Function(Dp5.validCodeSetup)()
+                        //Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+                  } else {
+                        Dp5.el('dp5-setup').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  Dp5.el('dp5-console-out').innerHTML = 'setup: ' + e
+                  Dp5.el('dp5-setup').parentElement.classList.add('error');
+            }
+      }
+      // Evalua bloque ----------------------------------------------------------
       if (ev.ctrlKey && ev.keyCode == 13) {
             Dp5.renderCodeSetup = Dp5.cmSetup.getValue();
             // try {
@@ -354,18 +413,37 @@ Dp5.codeSetup.addEventListener('keyup', (ev) => {
             // } catch (e) {
             //       console.log(e)
             // }
-            Dp5.main.saveCode('setup', Dp5.renderCodeSetup)
-            setup();
+            try {
+                  let valid = true;
+                  let word = '';
+                  for (let i = 0; i < Dp5.prog.length; i++) {
+                        if (Dp5.renderCodeSetup.match(`(\n| ){1,}${Dp5.prog[i]}`)) {
+                              let r = new RegExp(`('|") {0,}${Dp5.prog[i]} {0,}('|")`)
+                              if (!Dp5.renderCodeSetup.match(r)) {
+                                    valid = false;
+                                    word = Dp5.prog[i];
+                                    Dp5.el('dp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser reescrita'
+                              }
+                        }
+                  }
+                  if (valid) {
+                        Dp5.validCodeSetup = Dp5.renderCodeSetup;
+                        Dp5.el('dp5-setup').parentElement.classList.remove('error');
+                        Dp5.el('dp5-console-out').innerHTML = ''
+                        Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+                        Dp5.historyChanges++
+                        setup();
+                  } else {
+                        Dp5.el('dp5-setup').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  Dp5.el('dp5-console-out').innerHTML = 'setup: ' + e
+                  Dp5.el('dp5-setup').parentElement.classList.add('error');
+            }
       }
-}, false);
-Dp5.codeSetup.addEventListener('keydown', (ev) => {
-      if (ev.keyCode == 9) {
-            ev.preventDefault();
-            document.execCommand('insertText', false, '\t');
-      }
-}, false);
+});
 Dp5.codeSetup.addEventListener("mousewheel", (ev) => {
-      if (ev.ctrlKey) {
+      if (ev.ctrlKey && !ev.altKey) {
             var dir = Math.sign(ev.deltaY);
             if (dir == 1) {
                   Dp5.scale_st -= 0.1;
@@ -381,10 +459,10 @@ Dp5.codeSetup.addEventListener("mousewheel", (ev) => {
                   Dp5.scale_st = 0.05;
             }
       }
-}, false);
+});
+
 // -----------------------------------------------------
 // DRAW EVENTS -----------------------------------------
-
 Dp5.codeDraw.addEventListener('click', (ev) => {
       // Obtiene la ultima posicion del cursor
       Dp5.cmDrawCp.line = Dp5.cmDraw.getCursor().line;
@@ -401,11 +479,11 @@ Dp5.codeDraw.addEventListener('keyup', (ev) => {
             Dp5.caretEnd(Dp5.cmDraw);
       }
       // Verifica si se escribio algo
-      if (Dp5.validCodeDraw != Dp5.cmDraw.getValue()) {
-            $('#draw-change').html('*&nbsp;&nbsp;');
-      } else {
-            $('#draw-change').html('');
-      }
+      // if (Dp5.validCodeDraw != Dp5.cmDraw.getValue()) {
+      //       $('#draw-change').html('*&nbsp;&nbsp;');
+      // } else {
+      //       $('#draw-change').html('');
+      // }
       if (ev.ctrlKey && ev.keyCode == 13) {
             Dp5.renderCodeDraw = Dp5.cmDraw.getValue();
             // try {
@@ -413,19 +491,44 @@ Dp5.codeDraw.addEventListener('keyup', (ev) => {
             // } catch (e) {
             //       console.log(e)
             // }
-            Dp5.main.saveCode('draw', Dp5.renderCodeDraw)
-            $('#dp5-draw').parent().removeClass('error');
+            try {
+                  let valid = true;
+                  let word = '';
+                  for (let i = 0; i < Dp5.prog.length; i++) {
+                        if (Dp5.renderCodeDraw.match(`(\n| ){1,}${Dp5.prog[i]}`)) {
+                              let r = new RegExp(`('|") {0,}${Dp5.prog[i]} {0,}('|")`)
+                              if (!Dp5.renderCodeDraw.match(r)) {
+                                    valid = false;
+                                    word = Dp5.prog[i];
+                                    Dp5.el('dp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser reescrita'
+                              }
+                        }
+                  }
+                  // Try eval
+                  // Verificar que se ejecuta correctamente
+                  try {
+                        new Function(Dp5.renderCodeDraw)()
+                  } catch (e) {
+                        valid = false
+                        Dp5.el('dp5-console-out').innerHTML = 'draw:' + e
+                  }
+                  if (valid) {
+                        Dp5.validCodeDraw = Dp5.renderCodeDraw;
+                        Dp5.el('dp5-draw').parentElement.classList.remove('error');
+                        Dp5.main.saveCode('draw', Dp5.validCodeDraw)
+                        Dp5.historyChanges++
+                  } else {
+                        Dp5.el('dp5-draw').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  Dp5.el('dp5-draw').parentElement.classList.add('error');
+                  Dp5.el('dp5-console-out').innerHTML = 'draw: ' + e
+            }
       }
-}, false);
-Dp5.codeDraw.addEventListener('keydown', (ev) => {
-      if (ev.keyCode == 9) {
-            ev.preventDefault();
-            document.execCommand('insertText', false, '\t');
-      }
-}, false);
+});
 
 Dp5.codeDraw.addEventListener("mousewheel", (ev) => {
-      if (ev.ctrlKey) {
+      if (ev.ctrlKey && !ev.altKey) {
             var dir = Math.sign(ev.deltaY);
             if (dir == 1) {
                   Dp5.scale_dr -= 0.1;
@@ -441,23 +544,32 @@ Dp5.codeDraw.addEventListener("mousewheel", (ev) => {
                   Dp5.scale_dr = 0.05;
             }
       }
-}, false);
+});
 // Paste ------------------------------------------
 Dp5.codeSetup.addEventListener("paste", (ev) => {
       //Dp5.cmSetup.setValue(ev.clipboardData.getData('text/plain'))
-}, false);
+});
 
 Dp5.codeDraw.addEventListener("paste", (ev) => {
       //Dp5.cmDraw.setValue(ev.clipboardData.getData('text/plain'))
-}, false);
+});
 
 Dp5.codeAux.addEventListener("paste", (ev) => {
       //Dp5.cmAux.setValue(ev.clipboardData.getData('text/plain'))
-}, false);
-// ------------------------------------------------
-document.addEventListener('keyup', (ev) => {
-      console.log(ev.keyCode)
+});
+// -----------------------------------------------------
+// -----------------------------------------------------
 
+// -----------------------------------------------------
+// Global keyup event ----------------------------------
+document.addEventListener('keyup', (ev) => {
+      //console.log(ev.keyCode)
+      if(ev.ctrlKey && ev.keyCode == 90){
+            ev.preventDefault();
+            return false
+      }
+
+      // Fullscreen ----------------------------
       if (ev.keyCode == 122) {
             if (!Dp5.fullscreen) {
                   Dp5.main.setFull();
@@ -467,6 +579,7 @@ document.addEventListener('keyup', (ev) => {
                   Dp5.fullscreen = false;
             }
       }
+      // Chrome Devtools ----------------------------
       if (ev.keyCode == 121) {
             if (!Dp5.devtools) {
                   Dp5.main.devTools(true);
@@ -476,9 +589,11 @@ document.addEventListener('keyup', (ev) => {
                   Dp5.devtools = false;
             }
       }
+      // Recargar
       if (ev.keyCode == 116) {
             Dp5.main.reload();
       }
+      // Mostrar/ocultar paneles
       if (ev.keyCode == 112) {
             if (Dp5.showSetupWin) {
                   $('#dp5-setup').css('display', 'none');
@@ -506,6 +621,7 @@ document.addEventListener('keyup', (ev) => {
                   Dp5.showAuxWin = true;
             }
       }
+      // Mostrar/ocultar codigo
       if (ev.ctrlKey && ev.keyCode == 72) {
             if (Dp5.showWin) {
                   $('#win').css('display', 'none');
@@ -515,18 +631,18 @@ document.addEventListener('keyup', (ev) => {
                   Dp5.showWin = true;
             }
       }
+      // Exit
       if (ev.keyCode == 27) {
             if (confirm(":( salir de la aplicación??")) {
                   Dp5.main.exit();
             }
 
       }
-      // Focus panels
+      // Focus panels ---------------------------------------------------------------------
       if (ev.ctrlKey && (ev.keyCode == 32)) {
             Dp5.panelIndex++
             ev.preventDefault();
             if (Dp5.panelIndex > 2) Dp5.panelIndex = 0;
-            //console.log(Dp5.panelIndex)
             if (Dp5.panelIndex == 0) {
                   Dp5.cmSetup.focus()
                   Dp5.cmSetup.setCursor({ line: Dp5.cmSetupCp.line, ch: Dp5.cmSetupCp.ch })
@@ -542,19 +658,23 @@ document.addEventListener('keyup', (ev) => {
       }
 
 });
+// Global keydown event -----------------------------------
 document.addEventListener('keydown', function (ev) {
-
+      //console.log(ev.keyCode)
+      if(ev.ctrlKey && ev.keyCode == 90){
+            ev.preventDefault();
+            return false
+      }
       // Focus panels
       if (ev.ctrlKey && (ev.keyCode == 38 || ev.keyCode == 40)) {
             ev.preventDefault()
             if (ev.keyCode == 40) {
                   Dp5.panelIndex++
-            } else if(ev.keyCode == 38){
+            } else if (ev.keyCode == 38) {
                   Dp5.panelIndex--
             }
             if (Dp5.panelIndex > 2) Dp5.panelIndex = 0;
             if (Dp5.panelIndex < 0) Dp5.panelIndex = 2;
-            //console.log(Dp5.panelIndex)
             if (Dp5.panelIndex == 0) {
                   Dp5.cmSetup.focus()
                   Dp5.cmSetup.setCursor({ line: Dp5.cmSetupCp.line, ch: Dp5.cmSetupCp.ch })
@@ -569,8 +689,48 @@ document.addEventListener('keydown', function (ev) {
             }
       }
 })
+// Global select event -----------------------------------
+document.addEventListener("select", (ev) => {
+      if (Dp5.cmDraw.hasFocus()) Dp5.cmSelect = new Number(Dp5.cmDraw.getSelection())
+      if (Dp5.cmSetup.hasFocus()) Dp5.cmSelect = new Number(Dp5.cmSetup.getSelection())
+      if (Dp5.cmAux.hasFocus()) Dp5.cmSelect = new Number(Dp5.cmAux.getSelection())
+})
+// Global mousewheel event -----------------------------------
 document.addEventListener("mousewheel", (ev) => {
-      if (ev.altKey) {
+      if (ev.altKey && ev.ctrlKey) {
+            if (
+                  Dp5.cmSetup.somethingSelected() ||
+                  Dp5.cmDraw.somethingSelected() ||
+                  Dp5.cmAux.somethingSelected()
+            ) {
+                  ev.preventDefault()
+                  var dir = Math.sign(ev.deltaY);
+                  if (!isNaN(Dp5.cmSelect)) {
+                        if (dir == 1) {
+                              if (ev.shiftKey) {
+                                    Dp5.cmSelect -= 0.1
+                                    Dp5.cmSelect = parseFloat(Dp5.cmSelect.toFixed(3))
+                              } else {
+                                    Dp5.cmSelect--
+                              }
+                        }
+                        if (dir == -1) {
+                              if (ev.shiftKey) {
+                                    Dp5.cmSelect += 0.1
+                                    Dp5.cmSelect = parseFloat(Dp5.cmSelect.toFixed(3))
+                              } else {
+                                    Dp5.cmSelect++
+                              }
+                        }
+                        if (Dp5.cmDraw.hasFocus()) Dp5.cmDraw.replaceSelection(Dp5.cmSelect.toString(), "around")
+                        if (Dp5.cmSetup.hasFocus()) Dp5.cmSetup.replaceSelection(Dp5.cmSelect.toString(), "around")
+                        if (Dp5.cmAux.hasFocus()) Dp5.cmAux.replaceSelection(Dp5.cmSelect.toString(), "around")
+                        // Refresca el fondo ya que el el replace se elimina el atributo
+                        Dp5.changeBgLineAlpha()
+                  }
+            }
+      }
+      if (ev.altKey && !ev.ctrlKey &&  !ev.shiftKey) {
             ev.preventDefault()
             var dir = Math.sign(ev.deltaY);
             if (dir == 1) {
@@ -585,10 +745,7 @@ document.addEventListener("mousewheel", (ev) => {
             if (Dp5.bg_code_alpha > 1.0) {
                   Dp5.bg_code_alpha = 1.0;
             }
-            $(".CodeMirror-line").find('>span').css("background", "rgba(0,0,0," + Dp5.bg_code_alpha + ")");
-
+            Dp5.changeBgLineAlpha()
       }
-}, false);
+});
 // -----------------------------------------------------
-// -----------------------------------------------------
-
