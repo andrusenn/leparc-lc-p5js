@@ -298,17 +298,21 @@ p5.prototype.freq = function () {
  */
 p5.prototype.useLib = function (name) {
       let path = Dp5.main.savePath() + '/duchamplc-resources/libs/' + name + '/' + name + '.js'
-      loadStrings(path, (data) => {
-            let code = '';
-            for (let i = 0; i < data.length; i++) {
-                  code += data[i] + '\n';
-            }
-            try {
-                  new Function(code)();
-            } catch (e) {
-                  $('#console-out').html('useLib(name) -> problemas para cargar:' + name);
-            }
-      })
+      try {
+            loadStrings(path, (data) => {
+                  let code = '';
+                  for (let i = 0; i < data.length; i++) {
+                        code += data[i] + '\n';
+                  }
+                  try {
+                        new Function(code)();
+                  } catch (e) {
+                        Dp5.el('dp5-console-out').html('useLib(name) -> problemas para cargar:' + name);
+                  }
+            })
+      } catch (e) {
+
+      }
 }
 
 /**
@@ -361,7 +365,7 @@ p5.prototype.img = function (i, fn) {
 //       if (arg.length == 3 && ___pics.length > 0) {
 //             image(___pics[arg[0]], arg[1] - ___pics[arg[0]].width / 2, arg[2] - ___pics[arg[0]].height / 2)
 //       } else {
-//             $('#console-out').html('Se requieren 3 argumentos -> pic(index,x,y)');
+//             Dp5.el('dp5-console-out').innerHTML = 'Se requieren 3 argumentos -> pic(index,x,y)'
 //       }
 // }
 // p5.prototype.useIBank = function () {
@@ -424,7 +428,7 @@ p5.prototype.useCam = function () {
 p5.prototype.getCam = function () {
       let arg = arguments;
       if (___webcam == null) {
-            $('#console-out').html('useCam() no esta declarado');
+            Dp5.el('dp5-console-out').innerHTML = 'useCam() no esta declarado'
       }
       if (arg.length == 2 && ___webcam != null) {
             push()
@@ -474,7 +478,7 @@ p5.prototype.useAudio = function (source = 0, smoothing = 0.3) {
                   ___audio.setSource(source)
                   ___fft.setInput(___audio)
             } else {
-                  $('#console-out').html('No hay fuentes disponibles o configuradas');
+                  Dp5.el('dp5-console-out').innerHTML = 'No hay fuentes disponibles o configuradas';
             }
       })
 }
@@ -489,7 +493,7 @@ p5.prototype.audioVol = function () {
       if (___fft != null && ___audio != null) {
             return ___audio.getLevel()
       } else {
-            $('#console-out').html('getVolume() -> linein() no esta declarado');
+            Dp5.el('dp5-console-out').innerHTML = 'getVolume() -> linein() no esta declarado'
             return null;
       }
 }
@@ -508,7 +512,7 @@ p5.prototype.audioBeat = function (band) {
             if (band > spectrum.length) band = spectrum.length
             return spectrum[band] + 140
       } else {
-            $('#console-out').html('audioBeat() -> useAudio() no esta declarado');
+            Dp5.el('dp5-console-out').innerHTML = 'audioBeat() -> useAudio() no esta declarado'
             return null;
       }
 }
@@ -526,7 +530,7 @@ p5.prototype.audioEnergy = function (f1, f2 = null) {
             ___fft.analyze();
             return ___fft.getEnergy(f1, f2)
       } else {
-            $('#console-out').html('audioEnergy() -> useAudio() no esta declarado');
+            Dp5.el('dp5-console-out').innerHTML = 'audioEnergy() -> useAudio() no esta declarado'
             return null;
       }
 }
