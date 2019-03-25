@@ -1,11 +1,11 @@
 # TODO / Para hacer
 
->Español
+> Español
 
 - Carga dinamica de archivos con códigos o snippets
 - Carga dinamica de bancos de imagenes para utilizar
 
->English
+> English
 
 - Load dynamically files whit code snippets
 - Load dynamically images banks to use
