@@ -326,7 +326,7 @@ Dp5.codeAux.addEventListener('keyup', (ev) => {
                         // }
                         Dp5.el('dp5-aux').parentElement.classList.remove('error');
                         Dp5.el('dp5-console-out').innerHTML = ''
-                        // Dp5.main.saveCode('aux', Dp5.renderCodeAux)
+                        Dp5.main.saveCode('aux', Dp5.renderCodeAux)
                         Dp5.historyChanges++
                   }
             } catch (e) {
@@ -399,7 +399,8 @@ Dp5.codeSetup.addEventListener('keyup', (ev) => {
                         Dp5.el('dp5-setup').parentElement.classList.remove('error');
                         Dp5.el('dp5-console-out').innerHTML = ''
                         new Function(Dp5.validCodeSetup)()
-                        //Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+                        Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+                        Dp5.historyChanges++
                   } else {
                         Dp5.el('dp5-setup').parentElement.classList.add('error');
                   }
@@ -433,7 +434,7 @@ Dp5.codeSetup.addEventListener('keyup', (ev) => {
                         Dp5.validCodeSetup = Dp5.renderCodeSetup;
                         Dp5.el('dp5-setup').parentElement.classList.remove('error');
                         Dp5.el('dp5-console-out').innerHTML = ''
-                        // Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+                        Dp5.main.saveCode('setup', Dp5.validCodeSetup)
                         Dp5.historyChanges++
                         setup();
                   } else {
@@ -518,7 +519,7 @@ Dp5.codeDraw.addEventListener('keyup', (ev) => {
                   if (valid) {
                         Dp5.validCodeDraw = Dp5.renderCodeDraw;
                         Dp5.el('dp5-draw').parentElement.classList.remove('error');
-                        // Dp5.main.saveCode('draw', Dp5.validCodeDraw)
+                        Dp5.main.saveCode('draw', Dp5.validCodeDraw)
                         Dp5.historyChanges++
                   } else {
                         Dp5.el('dp5-draw').parentElement.classList.add('error');
