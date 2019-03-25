@@ -68,6 +68,23 @@ canvas {
       color: #f00;
       background: #000;
 }
+.console-out {
+      .error{
+            background:rgba(255, 0, 0,0.5);
+            color: #fff;
+            text-shadow: none;
+      }
+      .warning{
+            background:rgba(251, 255, 0, 0.5);
+            color: #fff;
+            text-shadow: none;
+      }
+      .info{
+            background:rgba(255, 255, 255, 0.5) !important;
+            color: #333;
+            text-shadow: none;
+      }
+}
 .CodeMirror-line {
       >span{
             padding:4px 10px;
