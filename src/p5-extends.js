@@ -255,7 +255,7 @@ p5.prototype.kaleido = function () {
  * Metodo abreviado de la sentencia -> sin(frameCount * n)
  * 
  * @method osc
- * @param {Number} n          multiplicador para reducir frecuencia
+ * @param {Number}  n          multiplicador para reducir frecuencia
  * @param {Number}  amp        amplitud
  */
 p5.prototype.osc = function () {
@@ -301,17 +301,18 @@ p5.prototype.useLib = function (name) {
       try {
             loadStrings(path, (data) => {
                   let code = '';
+                  console_msg('Cargado -> ' + name, 'info')
                   for (let i = 0; i < data.length; i++) {
                         code += data[i] + '\n';
                   }
                   try {
                         new Function(code)();
                   } catch (e) {
-                        Dp5.el('dp5-console-out').html('useLib(name) -> problemas para cargar:' + name);
+                        console_msg('useLib(name) -> problemas para cargar:' + name,'error')
                   }
             })
       } catch (e) {
-
+            Dp5.el('dp5-console-out').innerHTML = 'useLib(name): ' + e
       }
 }
 
@@ -354,6 +355,29 @@ p5.prototype.img = function (i, fn) {
       })
 }
 
+/**
+ * Obtiene la ruta a duchamplc-resources/libs/
+ * 
+ * @method libPath
+ * @param {String} name      nombre de la libreria sin extension .js
+ */
+p5.prototype.console_msg = function (msj = '', type = null) {
+      let sclass = ''
+      if(type == 'info'){
+            sclass = 'info'
+      }
+      if(type == 'error'){
+            sclass = 'error'
+      }
+      if(type == 'warning'){
+            sclass = 'warning'
+      }
+      if (msj != '') {
+            Dp5.el('dp5-console-out').innerHTML = '<span class="' + sclass + '">' + msj + '</span>'
+      } else {
+            Dp5.el('dp5-console-out').innerHTML = ''
+      }
+}
 /**
  * // NO IMPLEMENTADO
  * Metodo carga banco de imagenes
