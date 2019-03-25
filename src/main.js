@@ -31,8 +31,8 @@ function createWindow() {
                   // Directorio -> duchamplc-resources/save
                   mkdir(savePath + '/duchamplc-resources/save/', () => {
                         writef(savePath + '/duchamplc-resources/save/setup.txt', '// Hola Duchamp!!');
-                        writef(savePath + '/duchamplc-resources/save/aux.txt', '// Hola Duchamp!!');
-                        writef(savePath + '/duchamplc-resources/save/draw.txt', '// Hola Duchamp!!');
+                        writef(savePath + '/duchamplc-resources/save/aux.txt', '// Hora de livecoding!!');
+                        writef(savePath + '/duchamplc-resources/save/draw.txt', '// Code!!');
                   })
                   // Directorio -> duchamplc-resources/libs
                   mkdir(savePath + '/duchamplc-resources/libs/')
