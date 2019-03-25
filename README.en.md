@@ -39,6 +39,8 @@ Cross platform environment to run [p5js](http://p5js.org/) code in real time.
 - `Alt+mousewheel` Change transparency of code background
 - `Ctrl+Alt+mousewheel` Change selected number value by 1 (-1/+1)
 - `Ctrl+Alt+Shift+mousewheel` Change selected number value by 0.1 (-0.1/+0.1)
+- `Ctrl+ArrowUP` Change cursor/focus to the next up pannel
+- `Ctrl+ArrowDOWN` Change cursor/focus to the next down pannel
 
 ### Code blocks
 
@@ -65,7 +67,7 @@ myfunc = function(){
 
 - `mirrorX()` Mirror - Invert image from X axis
 - `mirrorY()` Mirror - Invert image from Y axis
-- `kaleido()` = `mirrorX()` + `mirrorY()` kaleidoscope fx 4 faces
+- `kaleido()` kaleidoscope fx 4 faces (left up cut is repeated)
 - `zoom(scale)` Add zoom in or zoom out (scale each frame by..): `zoom(0.01)` or negative `zoom(-0.01)`
 - `displace(velx,vely)` Displace all screen to `velx` and `vely` (+ or -)
 - `displace(x,y,w,h,velx,vely)` Cut an image portion and displace it
@@ -81,3 +83,4 @@ myfunc = function(){
 ##### Audio
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
+- En draw: `oudioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies (0-255)

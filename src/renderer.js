@@ -2,6 +2,8 @@
 // Duchamp Object --------------------------------------
 // -----------------------------------------------------
 let Dp5 = {
+      // Canvas
+      canvas:null,
       // mian.js
       main: require('electron').remote.require('./main'),
       fullscreen: false,
@@ -189,7 +191,8 @@ function preload() {
 }
 function setup() {
       // Init setup --------------------------
-      createCanvas(windowWidth, windowHeight);
+      let cnv = createCanvas(windowWidth, windowHeight);
+      Dp5.canvas = cnv.elt
       // Webcam/video capture
       ___webcam = null;
       // Audio
@@ -219,7 +222,7 @@ function draw() {
 function windowResized() {
       try {
             resizeCanvas(windowWidth, windowHeight);
-            setup();
+            //setup();
       } catch (e) {
             console.log('en resize ' + e);
       }
@@ -323,7 +326,7 @@ Dp5.codeAux.addEventListener('keyup', (ev) => {
                         // }
                         Dp5.el('dp5-aux').parentElement.classList.remove('error');
                         Dp5.el('dp5-console-out').innerHTML = ''
-                        Dp5.main.saveCode('aux', Dp5.renderCodeAux)
+                        // Dp5.main.saveCode('aux', Dp5.renderCodeAux)
                         Dp5.historyChanges++
                   }
             } catch (e) {
@@ -430,7 +433,7 @@ Dp5.codeSetup.addEventListener('keyup', (ev) => {
                         Dp5.validCodeSetup = Dp5.renderCodeSetup;
                         Dp5.el('dp5-setup').parentElement.classList.remove('error');
                         Dp5.el('dp5-console-out').innerHTML = ''
-                        Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+                        // Dp5.main.saveCode('setup', Dp5.validCodeSetup)
                         Dp5.historyChanges++
                         setup();
                   } else {
@@ -515,7 +518,7 @@ Dp5.codeDraw.addEventListener('keyup', (ev) => {
                   if (valid) {
                         Dp5.validCodeDraw = Dp5.renderCodeDraw;
                         Dp5.el('dp5-draw').parentElement.classList.remove('error');
-                        Dp5.main.saveCode('draw', Dp5.validCodeDraw)
+                        // Dp5.main.saveCode('draw', Dp5.validCodeDraw)
                         Dp5.historyChanges++
                   } else {
                         Dp5.el('dp5-draw').parentElement.classList.add('error');
@@ -596,38 +599,38 @@ document.addEventListener('keyup', (ev) => {
       // Mostrar/ocultar paneles
       if (ev.keyCode == 112) {
             if (Dp5.showSetupWin) {
-                  $('#dp5-setup').css('display', 'none');
+                  Dp5.el('dp5-setup').style.display = 'none';
                   Dp5.showSetupWin = false;
             } else {
-                  $('#dp5-setup').css('display', 'inline');
+                  Dp5.el('dp5-setup').style.display = 'inline';
                   Dp5.showSetupWin = true;
             }
       }
       if (ev.keyCode == 113) {
             if (Dp5.showDrawWin) {
-                  $('#dp5-draw').css('display', 'none');
+                  Dp5.el('dp5-draw').style.display = 'none';
                   Dp5.showDrawWin = false;
             } else {
-                  $('#dp5-draw').css('display', 'inline');
+                  Dp5.el('dp5-draw').style.display = 'inline';
                   Dp5.showDrawWin = true;
             }
       }
       if (ev.keyCode == 114) {
             if (Dp5.showAuxWin) {
-                  $('#dp5-aux').css('display', 'none');
+                  Dp5.el('dp5-aux').style.display = 'none';
                   Dp5.showAuxWin = false;
             } else {
-                  $('#dp5-aux').css('display', 'inline');
+                  Dp5.el('dp5-aux').style.display = 'inline';
                   Dp5.showAuxWin = true;
             }
       }
       // Mostrar/ocultar codigo
       if (ev.ctrlKey && ev.keyCode == 72) {
             if (Dp5.showWin) {
-                  $('#win').css('display', 'none');
+                  Dp5.el('win').style.display = 'none';
                   Dp5.showWin = false;
             } else {
-                  $('#win').css('display', 'inline');
+                  Dp5.el('win').style.display = 'inline';
                   Dp5.showWin = true;
             }
       }
@@ -656,11 +659,18 @@ document.addEventListener('keyup', (ev) => {
                   Dp5.cmAux.setCursor({ line: Dp5.cmAuxCp.line, ch: Dp5.cmAuxCp.ch })
             }
       }
+      Dp5.changeBgLineAlpha()
 
 });
 // Global keydown event -----------------------------------
 document.addEventListener('keydown', function (ev) {
       //console.log(ev.keyCode)
+      // Salvar codigo --------------------
+      if(ev.ctrlKey && ev.keyCode == 83){
+            if(Dp5.validCodeSetup != '')   Dp5.main.saveCode('setup', Dp5.validCodeSetup)
+            if(Dp5.validCodeDraw  != '')   Dp5.main.saveCode('draw' , Dp5.validCodeDraw)
+            if(Dp5.validCodeAux   != '')   Dp5.main.saveCode('aux'  , Dp5.validCodeAux)
+      }
       if(ev.ctrlKey && ev.keyCode == 90){
             ev.preventDefault();
             return false
@@ -688,6 +698,8 @@ document.addEventListener('keydown', function (ev) {
                   Dp5.cmAux.setCursor({ line: Dp5.cmAuxCp.line, ch: Dp5.cmAuxCp.ch })
             }
       }
+      // Refrescar fondo lineas
+      Dp5.changeBgLineAlpha()
 })
 // Global select event -----------------------------------
 document.addEventListener("select", (ev) => {

@@ -530,3 +530,9 @@ p5.prototype.audioEnergy = function (f1, f2 = null) {
             return null;
       }
 }
+
+// p5.prototype.mouseMoved = function (o) {
+//       Dp5.canvas.addEventListener('mousemove',function(){
+//             new Function(o)()
+//       })
+// }

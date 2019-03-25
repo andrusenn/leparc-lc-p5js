@@ -39,6 +39,8 @@ Entorno multiplataforma para ejecutar código [p5js](http://p5js.org/) en tiempo
 - `Alt+mousewheel` Modifica la transparencia del fondo del códivo
 - `Ctrl+Alt+mousewheel` Modifica valor seleccionado suma/resta 1
 - `Ctrl+Alt+Shift+mousewheel` Modifica valor seleccionado suma/resta 0.1
+- `Ctrl+ArrowUP` Cambia el cursor/foco de panel hacia arriba
+- `Ctrl+ArrowDOWN` Cambia el cursor/foco de panel hacia abajo
 
 ### Bloques de código
 
@@ -66,7 +68,7 @@ mifunc = function(){
 
 - `mirrorX()` Espejo - Invierte la imagen desde la mitad sobre el eje X
 - `mirrorY()` Espejo - Invierte la imagen desde la mitad sobre el eje Y
-- `kaleido()` = `mirrorX()`+`mirrorY()` Efecto caleidoscopio 4 caras
+- `kaleido()` Efecto caleidoscopio 4 caras (repite la cara superior derecha)
 - `zoom(escala)` Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`
 - `displace(velx,vely)` Desplaza la pantalla en la direccion `velx` y `vely` (+ o -)
 - `displace(x,y,w,h,velx,vely)` Recorta una porcion de la imagen y la desplaza
@@ -82,3 +84,4 @@ mifunc = function(){
 ##### Audio
 
 - En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
+- En draw: `oudioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias (0-255)
