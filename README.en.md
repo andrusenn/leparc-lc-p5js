@@ -71,7 +71,9 @@ myfunc = function(){
 - `zoom(scale)` Add zoom in or zoom out (scale each frame by..): `zoom(0.01)` or negative `zoom(-0.01)`
 - `displace(velx,vely)` Displace all screen to `velx` and `vely` (+ or -)
 - `displace(x,y,w,h,velx,vely)` Cut an image portion and displace it
-- `beginRot(vel_in_radians,[scale])` y `endRot()` Rotate all between functions
+- `beginRot(vel_in_radians,[scale])` and `endRot()` Rotate all between functions
+- `freq(mult)` Shorthand of `frameCount * mult`
+- `osc([amp[,mult]])` Shorthand of `sin( frameCount * mult ) * amp`
 
 #### Media
 

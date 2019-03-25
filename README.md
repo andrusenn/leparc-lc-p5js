@@ -73,6 +73,8 @@ mifunc = function(){
 - `displace(velx,vely)` Desplaza la pantalla en la direccion `velx` y `vely` (+ o -)
 - `displace(x,y,w,h,velx,vely)` Recorta una porcion de la imagen y la desplaza
 - `beginRot(vel_in_radians[,scale])` y `endRot()` rota lo que está contenido entre esas dos funciones
+- `freq(mult)` Abreviación de la sentencia `frameCount * mult`
+- `osc([amp[,mult]])` Abreviacion de `sin( frameCount * mult ) * amp`
 
 #### Media
 
