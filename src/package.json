@@ -6,7 +6,7 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.0.1-pr",
+      "version": "0.0.1-alpha",
       "description": "p5 livecoding",
       "main": "main.js",
       "scripts": {
