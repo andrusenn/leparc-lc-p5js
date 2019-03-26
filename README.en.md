@@ -41,6 +41,7 @@ Cross platform environment to run [p5js](http://p5js.org/) code in real time.
 - `Ctrl+Alt+Shift+mousewheel` Change selected number value by 0.1 (-0.1/+0.1)
 - `Ctrl+ArrowUP` Change cursor/focus to the next up pannel
 - `Ctrl+ArrowDOWN` Change cursor/focus to the next down pannel
+- `Ctrl+F` Beautify code block
 
 ### Code blocks
 
@@ -73,7 +74,8 @@ myfunc = function(){
 - `displace(x,y,w,h,velx,vely)` Cut an image portion and displace it
 - `beginRot(vel_in_radians,[scale])` and `endRot()` Rotate all between functions
 - `freq(mult)` Shorthand of `frameCount * mult`
-- `osc([amp[,mult]])` Shorthand of `sin( frameCount * mult ) * amp`
+- `osc([freq])` Shorthand of `sin( frameCount * freq )`
+- `cosc([freq])` Shorthand of `{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}`
 
 #### Media
 

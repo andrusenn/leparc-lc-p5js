@@ -41,6 +41,7 @@ Entorno multiplataforma para ejecutar código [p5js](http://p5js.org/) en tiempo
 - `Ctrl+Alt+Shift+mousewheel` Modifica valor seleccionado suma/resta 0.1
 - `Ctrl+ArrowUP` Cambia el cursor/foco de panel hacia arriba
 - `Ctrl+ArrowDOWN` Cambia el cursor/foco de panel hacia abajo
+- `Ctrl+F` Formatea el código bloque
 
 ### Bloques de código
 
@@ -74,7 +75,8 @@ mifunc = function(){
 - `displace(x,y,w,h,velx,vely)` Recorta una porcion de la imagen y la desplaza
 - `beginRot(vel_in_radians[,scale])` y `endRot()` rota lo que está contenido entre esas dos funciones
 - `freq(mult)` Abreviación de la sentencia `frameCount * mult`
-- `osc([amp[,mult]])` Abreviacion de `sin( frameCount * mult ) * amp`
+- `osc([freq])` Abreviacion de `sin( frameCount * freq )`
+- `cosc([freq])` Abreviación de `{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}`
 
 #### Media
 
@@ -87,3 +89,11 @@ mifunc = function(){
 
 - En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
 - En draw: `oudioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias (0-255)
+
+### Ventana de configuraciones
+
+- `Ctrl+TAB` Abre popup de configuraciones
+
+#### Compilado automatico
+
+> **RENDER DRAW ON FLY** -> Solo es funcional en el bloque de `draw(){}`
