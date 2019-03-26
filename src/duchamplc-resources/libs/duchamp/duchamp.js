@@ -9,7 +9,6 @@
  * 
  * 
  */
-
 class Duchamp {
       constructor() {
             this.i = null
