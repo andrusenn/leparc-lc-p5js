@@ -9,8 +9,10 @@
  * @param {Number} w          ancho
  * @param {Number} h          alto
  */
-p5.prototype.winSize = function (w, h) {
-      Dp5.main.resizeWin(w, h)
+if (!p5.prototype.hasOwnProperty('winSize')) {
+      p5.prototype.winSize = function (w, h) {
+            Dp5.main.resizeWin(w, h)
+      }
 }
 
 /**
@@ -28,19 +30,20 @@ p5.prototype.winSize = function (w, h) {
  * @param {Number} b          azul  | b brillo
  * @param {Number} a          alfa
  */
-p5.prototype.bg = function () {
-      let arg = arguments;
-      if (arg.length == 1) {
-            background(arg[0])
-      }
-      if (arg.length == 3) {
-            background(arg[0], arg[1], arg[2])
-      }
-      if (arg.length == 4) {
-            background(arg[0], arg[1], arg[2], arg[3])
+if (!p5.prototype.hasOwnProperty('bg')) {
+      p5.prototype.bg = function () {
+            let arg = arguments;
+            if (arg.length == 1) {
+                  background(arg[0])
+            }
+            if (arg.length == 3) {
+                  background(arg[0], arg[1], arg[2])
+            }
+            if (arg.length == 4) {
+                  background(arg[0], arg[1], arg[2], arg[3])
+            }
       }
 }
-
 
 /**
  * Fundido
@@ -48,27 +51,28 @@ p5.prototype.bg = function () {
  * @param {Number} c          color
  * @param {Number} a          alfa
  */
-p5.prototype.fade = function () {
-      let arg = arguments;
-      if (arg.length == 1) {
-            push()
-            colorMode(RGB, 255)
-            noStroke()
-            rectMode(CORNER)
-            fill(0, arg[0])
-            rect(0, 0, width, height)
-            pop()
-      }
-      if (arg.length == 2) {
-            push()
-            noStroke()
-            rectMode(CORNER)
-            fill(arg[0], arg[1])
-            rect(0, 0, width, height)
-            pop()
+if (!p5.prototype.hasOwnProperty('fade')) {
+      p5.prototype.fade = function () {
+            let arg = arguments;
+            if (arg.length == 1) {
+                  push()
+                  colorMode(RGB, 255)
+                  noStroke()
+                  rectMode(CORNER)
+                  fill(0, arg[0])
+                  rect(0, 0, width, height)
+                  pop()
+            }
+            if (arg.length == 2) {
+                  push()
+                  noStroke()
+                  rectMode(CORNER)
+                  fill(red(arg[0]), green(arg[0]), blue(arg[0]), arg[1])
+                  rect(0, 0, width, height)
+                  pop()
+            }
       }
 }
-
 /**
  * Variacion de elleipse()
  * @method circle
@@ -76,13 +80,14 @@ p5.prototype.fade = function () {
  * @param {Number} y          posicion y
  * @param {Number} d          diametro
  */
-p5.prototype.circle = function () {
-      let arg = arguments;
-      if (arg.length == 3) {
-            ellipse(arg[0], arg[1], arg[2], arg[2])
+if (!p5.prototype.hasOwnProperty('circle')) {
+      p5.prototype.circle = function () {
+            let arg = arguments;
+            if (arg.length == 3) {
+                  ellipse(arg[0], arg[1], arg[2], arg[2])
+            }
       }
 }
-
 /**
  * Desplaza salida del canvas o un recorte
  * @method displace
@@ -99,27 +104,29 @@ p5.prototype.circle = function () {
  * @param {Number} velx       velocidad de desplazo en x
  * @param {Number} vely       velocidad de desplazo en y
  */
-p5.prototype.displace = function () {
-      let arg = arguments;
-      if (arg.length == 6) {
-            let i = get(arg[0], arg[1], arg[2], arg[3])
-            push()
-            imageMode(CORNER);
-            image(i, arg[0] + arg[4], arg[1] + arg[5])
-            pop()
-      } else
-            if (arg.length == 2) {
-                  let i = get()
+
+if (!p5.prototype.hasOwnProperty('displace')) {
+      p5.prototype.displace = function () {
+            let arg = arguments;
+            if (arg.length == 6) {
+                  let i = get(arg[0], arg[1], arg[2], arg[3])
                   push()
                   imageMode(CORNER);
-                  image(i, arg[0], arg[1])
+                  image(i, arg[0] + arg[4], arg[1] + arg[5])
                   pop()
-            } else {
-                  console.log('no entra')
-            }
-      return this;
+            } else
+                  if (arg.length == 2) {
+                        let i = get()
+                        push()
+                        imageMode(CORNER);
+                        image(i, arg[0], arg[1])
+                        pop()
+                  } else {
+                        console.log('no entra')
+                  }
+            return this;
+      }
 }
-
 /**
  * beginRot(vel) y endRot() se utilizan
  * juntas
@@ -132,22 +139,23 @@ p5.prototype.displace = function () {
  * @param {Number} centrox    punto ancla de referencia x
  * @param {Number} centroy    punto ancla de referencia y
  */
-p5.prototype.beginRot = function () {
-      let arg = arguments;
-      if (arg.length == 1) {
-            push();
-            translate(width / 2, height / 2);
-            rotate(arg[0])
-            translate(-width / 2, -height / 2);
-      }
-      if (arg.length == 3) {
-            push();
-            translate(arg[1], arg[2]);
-            rotate(arg[0])
-            translate(-arg[1], -arg[2]);
+if (!p5.prototype.hasOwnProperty('beginRot')) {
+      p5.prototype.beginRot = function () {
+            let arg = arguments;
+            if (arg.length == 1) {
+                  push();
+                  translate(width / 2, height / 2);
+                  rotate(arg[0])
+                  translate(-width / 2, -height / 2);
+            }
+            if (arg.length == 3) {
+                  push();
+                  translate(arg[1], arg[2]);
+                  rotate(arg[0])
+                  translate(-arg[1], -arg[2]);
+            }
       }
 }
-
 /**
  * beginRot(vel) y endRot() se utilizan
  * juntas
@@ -252,25 +260,44 @@ p5.prototype.kaleido = function () {
 }
 
 /**
- * Metodo abreviado de la sentencia -> sin(frameCount * n)
+ * Metodo abreviado de la sentencia -> sin(frameCount)
  * 
  * @method osc
- * @param {Number}  n          multiplicador para reducir frecuencia
- * @param {Number}  amp        amplitud
+ * @param {Number}  n          multiplicador frecuencia
+ * @return {Number}
  */
-p5.prototype.osc = function () {
-      let arg = arguments
-      let freq = 1
-      let amp = 1
-      if (arg.length == 1) {
-            freq = frameCount * 0.01
-            amp = arg[0]
+if (!p5.prototype.hasOwnProperty('osc')) {
+      p5.prototype.osc = function () {
+            let arg = arguments
+            let freq = 1
+            if (arg.length == 0) {
+                  freq = frameCount * 0.001 * 10
+            }
+            if (arg.length == 1) {
+                  freq = frameCount * 0.001 * arg[0]
+            }
+            return sin(freq);
       }
-      if (arg.length == 2) {
-            freq = frameCount * arg[1]
-            amp = arg[0]
+}
+/**
+ * Metodo abreviado de la sentencia -> {sin: sin(frameCount * n), cos: cos(frameCount * n)}
+ * 
+ * @method cosc
+ * @param {Number}  n          multiplicador frecuencia
+ * @return {Object} 
+ */
+if (!p5.prototype.hasOwnProperty('cosc')) {
+      p5.prototype.cosc = function () {
+            let arg = arguments
+            let freq = 1
+            if (arg.length == 0) {
+                  freq = frameCount * 0.001 * 10
+            }
+            if (arg.length == 1) {
+                  freq = frameCount * 0.001 * arg[0]
+            }
+            return { sin: sin(freq), cos: cos(freq) };
       }
-      return sin(freq) * amp;
 }
 /**
  * Metodo abreviado de la sentencia -> frameCount * n
@@ -278,16 +305,17 @@ p5.prototype.osc = function () {
  * @method freq
  * @param {Number} m      multiplicador para reducir frameCount
  */
-p5.prototype.freq = function () {
-      let arg = arguments
-      let freq
-      if (arg.length == 1) {
-            freq = arg[0]
-            return frameCount * arg[0]
+if (!p5.prototype.hasOwnProperty('freq')) {
+      p5.prototype.freq = function () {
+            let arg = arguments
+            let freq
+            if (arg.length == 1) {
+                  freq = arg[0]
+                  return frameCount * arg[0]
+            }
+            return 1;
       }
-      return 1;
 }
-
 /**
  * Metodo carga un archivo js externo
  * el archivo debe se guardado dentro de un
@@ -296,26 +324,27 @@ p5.prototype.freq = function () {
  * @method useLib
  * @param {String} name      nombre del archivo sin extension .js
  */
-p5.prototype.useLib = function (name) {
-      let path = Dp5.main.savePath() + '/duchamplc-resources/libs/' + name + '/' + name + '.js'
-      try {
-            loadStrings(path, (data) => {
-                  let code = '';
-                  console_msg('Cargado -> ' + name, 'info')
-                  for (let i = 0; i < data.length; i++) {
-                        code += data[i] + '\n';
-                  }
-                  try {
-                        new Function(code)();
-                  } catch (e) {
-                        console_msg('useLib(name) -> problemas para cargar:' + name,'error')
-                  }
-            })
-      } catch (e) {
-            Dp5.el('dp5-console-out').innerHTML = 'useLib(name): ' + e
+if (!p5.prototype.hasOwnProperty('useLib')) {
+      p5.prototype.useLib = function (name) {
+            let path = Dp5.main.savePath() + '/duchamplc-resources/libs/' + name + '/' + name + '.js'
+            try {
+                  loadStrings(path, (data) => {
+                        let code = '';
+                        console_msg('Cargado -> ' + name, 'info')
+                        for (let i = 0; i < data.length; i++) {
+                              code += data[i] + '\n';
+                        }
+                        try {
+                              new Function(code)();
+                        } catch (e) {
+                              console_msg('useLib(name) -> problemas para cargar:' + name, 'error')
+                        }
+                  })
+            } catch (e) {
+                  Dp5.el('dp5-console-out').innerHTML = 'useLib(name): ' + e
+            }
       }
 }
-
 /**
  * Obtiene la ruta a duchamplc-resources/libs/
  * 
@@ -363,13 +392,13 @@ p5.prototype.img = function (i, fn) {
  */
 p5.prototype.console_msg = function (msj = '', type = null) {
       let sclass = ''
-      if(type == 'info'){
+      if (type == 'info') {
             sclass = 'info'
       }
-      if(type == 'error'){
+      if (type == 'error') {
             sclass = 'error'
       }
-      if(type == 'warning'){
+      if (type == 'warning') {
             sclass = 'warning'
       }
       if (msj != '') {
