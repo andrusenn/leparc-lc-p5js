@@ -13,24 +13,34 @@
 
 <body>
 	<main>
+		<div id="cnf" class="modal">
+			<div class="modal-win">
+				<table>
+					<tr class="modal-content">
+						<td><input id="cnf-renderonfly" type="checkbox"></td>
+						<td><label for="cnf-renderonfly">RENDER DRAW ON FLY</label></td>
+					</tr>
+				</table>
+			</div>
+		</div>
 		<div id="win">
 
 			<!-- setup pannel -->
-			<span class="pannel-title" id="setup-title"><span id="setup-change"></span>setup{</span><br>
+			<span class="pannel-title" id="setup-title"><span id="setup-change"></span>setup(){</span><br>
 			<div class="dp5-code-parent">
 				<div id="dp5-setup"></div><br>
 			</div>
 			<span class="pannel-title">}</span><br>
 
 			<!-- draw pannel -->
-			<span class="pannel-title" id="draw-title"><span id="draw-change"></span>draw{</span><br>
+			<span class="pannel-title" id="draw-title"><span id="draw-change"></span>draw(){</span><br>
 			<div class="dp5-code-parent">
 				<div id="dp5-draw"></div><br>
 			</div>
 			<span class="pannel-title">}</span><br>
 
 			<!-- aux pannel -->
-			<span class="pannel-title" id="aux-title"><span id="aux-change"></span>aux{</span><br>
+			<span class="pannel-title" id="aux-title"><span id="aux-change"></span>aux(){</span><br>
 			<div class="dp5-code-parent">
 				<div id="dp5-aux"></div><br>
 			</div>
@@ -38,10 +48,10 @@
 
 			<!-- console pannel -->
 			<span id="dp5-console" class="console-out">
-					<span id="dp5-os-ram"></span>
-					<span id="dp5-os-fps"></span>
-					<span id="dp5-console-out"></span>
-					<span id="dp5-console-sound-out"></span>
+				<span id="dp5-os-ram"></span>
+				<span id="dp5-os-fps"></span>
+				<span id="dp5-console-out"></span>
+				<span id="dp5-console-sound-out"></span>
 			</span>
 		</div>
 	</main>
