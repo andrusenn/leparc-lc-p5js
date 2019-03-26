@@ -43,7 +43,28 @@ canvas {
 }
 
 .dp5-code-parent {
+  position: relative;
   padding: 4px 40px;
+  border-left: 0 solid rgba(0, 0, 0, 0) !important;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.dp5-code-parent::before {
+  position: absolute;
+  display: block;
+  height: 100%;
+  content: "";
+  left: 0;
+  width: 5px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  opacity: 0.0;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.change::before {
+  opacity: 1.0;
 }
 
 .pannel-title {
@@ -54,10 +75,6 @@ canvas {
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
   clear: both;
-}
-
-.change {
-  border-bottom: 2px solid #00f !important;
 }
 
 .error {
@@ -85,6 +102,52 @@ canvas {
   background: rgba(255, 255, 255, 0.5) !important;
   color: #333;
   text-shadow: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  background: transparent;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.modal .modal-win {
+  border-radius: 8px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid #333;
+  position: fixed;
+  top: 100%;
+  left: 50%;
+  color: #fff;
+  -webkit-transform: translate(-50%, -100%);
+          transform: translate(-50%, -100%);
+  padding: 10px;
+}
+
+.modal .modal-win .modal-content {
+  border-top: 1px solid #000;
+}
+
+.modal .modal-win label,
+.modal .modal-win input {
+  cursor: pointer;
+}
+
+.modal .modal-win a {
+  text-decoration: none;
+  color: #fff;
 }
 
 .CodeMirror-line > span {
