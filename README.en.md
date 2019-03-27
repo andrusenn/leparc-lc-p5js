@@ -1,11 +1,11 @@
-# Duchamp p5 livecoding
+# LeParc p5 livecoding
 
-> (English) - [Español](https://github.com/andrusenn/duchamp-lc-p5js/blob/master/README.en.md)
+> (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
 
 Cross platform environment to run [p5js](http://p5js.org/) code in real time.
 
-![Image](http://andressenn.com/duchamp-lc/captura2.jpg)
-![Image](http://andressenn.com/duchamp-lc/captura.jpg)
+![Image](http://andressenn.com/leparc-lc/captura2.jpg)
+![Image](http://andressenn.com/leparc-lc/captura.jpg)
 
 ----
 
@@ -59,7 +59,7 @@ Same for functions:
 ~~~js
 
 myfunc = function(){
-      console.log('Hello Duchamp!')
+      console.log('Hello LeParc!')
 }
 
 ~~~
