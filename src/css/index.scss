@@ -41,14 +41,14 @@ canvas {
       background: transparent;
 }
 
-.dp5-code-parent {
+.lp5-code-parent {
       position: relative;
       padding: 4px 40px;
       border-left: 0 solid rgba(0, 0, 0, 0.0) !important;
       transition: all 0.3s ease-in-out;
 }
 
-.dp5-code-parent::before {
+.lp5-code-parent::before {
       position: absolute;
       display: block;
       height: 100%;
@@ -243,7 +243,7 @@ canvas {
             bottom: 80px;
       }
 
-      #dp5-console {
+      #lp5-console {
             overflow: hidden;
             font-size: 0.8rem;
             height: 30px;
