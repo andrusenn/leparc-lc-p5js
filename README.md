@@ -4,8 +4,10 @@
 
 Entorno multiplataforma para ejecutar código [p5js](http://p5js.org/) en tiempo real.
 
-![Image](http://andressenn.com/leparc-lc/captura2.jpg)
-![Image](http://andressenn.com/leparc-lc/captura.jpg)
+![Image](http://andressenn.com/leparc-lc/c1.jpg)
+![Image](http://andressenn.com/leparc-lc/c2.jpg)
+![Image](http://andressenn.com/leparc-lc/c3.jpg)
+![Image](http://andressenn.com/leparc-lc/c4.jpg)
 
 ----
 
