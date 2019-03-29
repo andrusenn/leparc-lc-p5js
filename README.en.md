@@ -66,8 +66,10 @@ myfunc = function(){
 
 ### Extended functions p5j
 
-- `mirrorX()` Mirror - Invert image from X axis
-- `mirrorY()` Mirror - Invert image from Y axis
+- `mirrorX()` Mirror - Reflect image from X axis
+- `mirrorY()` Mirror - Reflect image from Y axis
+- `imirrorX()` Invert Mirror - Reflect image from X axis inverted
+- `imirrorY()` Invert Mirror - Reflect image from Y axis inverted
 - `kaleido()` kaleidoscope fx 4 faces (left up cut is repeated)
 - `zoom(scale)` Add zoom in or zoom out (scale each frame by..): `zoom(0.01)` or negative `zoom(-0.01)`
 - `displace(velx,vely)` Displace all screen to `velx` and `vely` (+ or -)

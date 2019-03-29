@@ -67,8 +67,10 @@ mifunc = function(){
 
 ### Funciones extendidas de p5j
 
-- `mirrorX()` Espejo - Invierte la imagen desde la mitad sobre el eje X
-- `mirrorY()` Espejo - Invierte la imagen desde la mitad sobre el eje Y
+- `mirrorX()` Espejo - Refleja la imagen desde la mitad sobre el eje X
+- `mirrorY()` Espejo - Refleja la imagen desde la mitad sobre el eje Y
+- `imirrorX()` Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
+- `imirrorY()` Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
 - `kaleido()` Efecto caleidoscopio 4 caras (repite la cara superior derecha)
 - `zoom(escala)` Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`
 - `displace(velx,vely)` Desplaza la pantalla en la direccion `velx` y `vely` (+ o -)
