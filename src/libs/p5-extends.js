@@ -354,7 +354,7 @@ if (!p5.prototype.hasOwnProperty('freq')) {
  */
 if (!p5.prototype.hasOwnProperty('useLib')) {
       p5.prototype.useLib = function (name) {
-            let path = Dp5.main.savePath() + '/leparc_resources/libs/' + name + '/' + name + '.js'
+            let path = Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','libs', name, name + '.js')
             try {
                   loadStrings(path, (data) => {
                         let code = '';
@@ -383,7 +383,7 @@ if (!p5.prototype.hasOwnProperty('libPath')) {
       p5.prototype.libPath = function () {
             let arg = arguments
             if (arg.length == 1) {
-                  return Dp5.main.savePath() + '/leparc_resources/libs/' + arg[0] + '/'
+                  return Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','libs', arg[0])
             }
             return null;
       }
@@ -399,16 +399,35 @@ if (!p5.prototype.hasOwnProperty('imgPath')) {
             let arg = arguments
 
             if (arg.length == 0) {
-                  return Dp5.main.savePath() + '/leparc_resources/images/'
+                  return Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','images')
             }
             if (arg.length == 1) {
-                  return Dp5.main.savePath() + '/leparc_resources/images/' + arg[0] + '/'
+                  return Dp5.main.path().join(Dp5.main.resourcesPath(), 'leparc_resources','images',arg[0])
+            }
+            return null;
+      }
+}
+/**
+ * Obtiene la ruta a leparc_resources/images/
+ * 
+ * @method mediaPath
+ * @param {String} name      nombre del directorio
+ */
+if (!p5.prototype.hasOwnProperty('mediaPath')) {
+      p5.prototype.mediaPath = function () {
+            let arg = arguments
+
+            if (arg.length == 0) {
+                  return Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','media')
+            }
+            if (arg.length == 1) {
+                  return Dp5.main.path().join(Dp5.main.resourcesPath(), 'leparc_resources','media',arg[0])
             }
             return null;
       }
 }
 // p5.prototype.img = function (i, fn) {
-//       loadImage(Dp5.main.savePath() + '/leparc_resources/images/' + i, (__img) => {
+//       loadImage(Dp5.main.resourcesPath() + '/leparc_resources/images/' + i, (__img) => {
 //             if (typeof fn == 'function') {
 //                   fn(__img)
 //             }
@@ -457,7 +476,7 @@ if (!p5.prototype.hasOwnProperty('console_msg')) {
 // p5.prototype.useIBank = function () {
 //       let arg = arguments
 //       if (arg.length == 1) {
-//             Dp5.imagesBankPath[arg[0]] = Dp5.main.savePath() + '/leparc_resources/images/' + arg[0] + '/'
+//             Dp5.imagesBankPath[arg[0]] = Dp5.main.resourcesPath() + '/leparc_resources/images/' + arg[0] + '/'
 //       }
 //       return null;
 // }
@@ -634,16 +653,3 @@ if (!p5.prototype.hasOwnProperty('audioEnergy')) {
             }
       }
 }
-// p5.prototype.mouseMoved = function (o) {
-//       Dp5.canvas.addEventListener('mousemove',function(){
-//             new Function(o)()
-//       })
-// }
-
-// if (!p5.prototype.hasOwnProperty('usePort')) {
-//       p5.prototype.usePOrt = function (port) {
-//            if(app){
-//                  app.set('port',port)
-//            }
-//       }
-// }
