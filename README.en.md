@@ -91,4 +91,4 @@ myfunc = function(){
 ##### Audio
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
-- En draw: `oudioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies (0-255)
+- En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies (0-255)
