@@ -1,16 +1,12 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, dialog } = require('electron')
 const os = require("os")
+const ip = require("ip")
 const fs = require('fs')
 const path = require('path')
 
-
 // Paths
-// let appPath = (app.isPackaged) ? path.resolve(__dirname) : app.getAppPath();
-// let savePath = (app.isPackaged) ? path.resolve(__dirname,"..","..") + "" : app.getAppPath();
-// let resourcesPath = (app.isPackaged) ? path.resolve(__dirname,"..","..") + "" : app.getAppPath();
 let appPath = app.getAppPath();
-let savePath = (app.isPackaged) ? app.getPath("home") + "" : app.getAppPath();
-let resourcesPath = (app.isPackaged) ? path.resolve(__dirname, "..", "..") + "" : app.getAppPath();
+let resourcesPath = (app.isPackaged) ? app.getPath("home") + "" : app.getAppPath();
 
 let mainWindow
 
@@ -18,7 +14,7 @@ function createWindow() {
       mainWindow = new BrowserWindow({
             width: 1280,
             height: 720,
-            icon: appPath + '/assets/icon.png'
+            icon: path.join(appPath, 'assets', 'icon.png')
       })
       mainWindow.setMenu(null);
       mainWindow.center();
@@ -26,18 +22,26 @@ function createWindow() {
       mainWindow.setMenuBarVisibility(false);
       // mainWindow.webContents.setFrameRate(300)
       if (app.isPackaged) {
-            // Directorio duchamplc-resources
-            mkdir(savePath + '/duchamplc-resources/', () => {
-                  // Directorio -> duchamplc-resources/save
-                  mkdir(savePath + '/duchamplc-resources/save/', () => {
-                        writef(savePath + '/duchamplc-resources/save/setup.txt', '// Hola Duchamp!!');
-                        writef(savePath + '/duchamplc-resources/save/aux.txt', '// Code!!');
-                        writef(savePath + '/duchamplc-resources/save/draw.txt', '// Hora de livecoding!!');
+            // Directorio leparc_resources
+            mkdir(path.join(resourcesPath, 'leparc_resources'), () => {
+                  // Directorio -> leparc_resources/save
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'save'), () => {
+                        writef(path.join(resourcesPath, 'leparc_resources', 'save', 'setup.txt'), '// Hola LeParc!!');
+                        writef(path.join(resourcesPath, 'leparc_resources', 'save', 'auxcode.txt'), '// !!');
+                        writef(path.join(resourcesPath, 'leparc_resources', 'save', 'draw.txt'), '// Hora de livecoding!!');
                   })
-                  // Directorio -> duchamplc-resources/libs
-                  mkdir(savePath + '/duchamplc-resources/libs/')
-                  // Directorio -> duchamplc-resources/images 
-                  mkdir(savePath + '/duchamplc-resources/images/')
+                  // Directorio -> leparc_resources/libs
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'libs'))
+                  // Directorio -> leparc_resources/images 
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'images'))
+                  // Directorio -> leparc_resources/config
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'config'), () => {
+                        writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.txt'), "server-ip=127.0.0.1\nport=7777")
+                  })
+                  // Directorio -> leparc_resources/extends
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'extends'), () => {
+                        writef(path.join(resourcesPath, 'leparc_resources', 'extends', 'lp-extends.js'), "");
+                  })
             })
       }
       mainWindow.loadFile('index.html')
@@ -65,7 +69,9 @@ app.on('activate', function () {
 exports.exit = function () {
       app.exit();
 }
-
+exports.path = function () {
+      return path
+}
 exports.setFull = function () {
       mainWindow.setKiosk(true)
       mainWindow.setMenu(null);
@@ -79,9 +85,12 @@ exports.setUnFull = function () {
 exports.getMemory = function () {
       return Math.round((os.freemem() / os.totalmem()) * 100);
 }
+exports.getIP = function () {
+      return ip.address()
+}
 
 exports.saveCode = (file, data) => {
-      fs.writeFile(savePath + "/duchamplc-resources/save/" + file + ".txt", data, function (err) {
+      fs.writeFile(path.join(resourcesPath, 'leparc_resources', 'save', file + ".txt"), data, function (err) {
             if (err) throw err;
       });
 }
@@ -106,14 +115,14 @@ exports.reload = function () {
       mainWindow.loadFile('index.html');
 }
 exports.loadImgsBank = function () {
-      let source = appPath + '/duchamplc-resources/images/'
+      let source = path.join(resourcesPath, 'leparc_resources', 'images')
       const isDirectory = source => lstatSync(source).isDirectory()
-      const getDirectories = source =>readdirSync(source).map(name => join(source, name)).filter(isDirectory)
+      const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory)
       return getDirectories
-      // fs.readdir(appPath + '/duchamplc-resources/images/', (err, files) => {
+      // fs.readdir(appPath + '/leparc_resources/images/', (err, files) => {
       //       if (!err) {
       //             for (let i = 0; i < files.length; i++) {
-      //                   fs.readdir(appPath + '/duchamplc-resources/images/' + files[i], (err, files) => {
+      //                   fs.readdir(appPath + '/leparc_resources/images/' + files[i], (err, files) => {
       //                         if (!err) {
       //                               if (typeof fn == 'function') {
       //                                     fn(files)
@@ -126,8 +135,8 @@ exports.loadImgsBank = function () {
       //       return false;
       // });
 }
-exports.savePath = function () {
-      return savePath;
+exports.resourcesPath = function () {
+      return resourcesPath;
 }
 
 // Utils
@@ -147,9 +156,13 @@ function mkdir(path, fn) {
 function writef(path, content, fn) {
       fs.writeFile(path, content, function (err) {
             if (!err) {
-                  if (typeof fn == 'function') {
-                        fn()
-                  }
+                  fs.chmod(path, '0777', function (err) {
+                        if (!err) {
+                              if (typeof fn == 'function') {
+                                    fn()
+                              }
+                        }
+                  });
             }
       });
 }

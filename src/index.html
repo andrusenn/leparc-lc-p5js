@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Duchamp - livecoding - P5js</title>
+	<title>LeParc - livecoding - P5js</title>
 	<link rel="stylesheet" href="libs/codemirror/codemirror.css">
 	<!-- <link rel="stylesheet" href="libs/jquery-ui.min.css"> -->
 	<link rel="stylesheet" href="css/index.min.css">
@@ -13,16 +13,6 @@
 
 <body>
 	<main>
-		<div id="cnf" class="modal">
-			<div class="modal-win">
-				<table>
-					<tr class="modal-content">
-						<td><input id="cnf-renderonfly" type="checkbox"></td>
-						<td><label for="cnf-renderonfly">RENDER DRAW ON FLY</label></td>
-					</tr>
-				</table>
-			</div>
-		</div>
 		<div id="win">
 
 			<!-- setup pannel -->
@@ -50,18 +40,54 @@
 			<span id="dp5-console" class="console-out">
 				<span id="dp5-os-ram"></span>
 				<span id="dp5-os-fps"></span>
+				<span id="dp5-os-ip"></span>
 				<span id="dp5-console-out"></span>
 				<span id="dp5-console-sound-out"></span>
 			</span>
 		</div>
+
+		<!-- // modals -->
+
+		<div id="cnf" class="modal">
+			<div class="modal-win">
+				<table>
+					<tr>
+						<td class="col1"><input id="cnf-renderonfly" type="checkbox" /></td>
+						<td class="col2"><label for="cnf-renderonfly">AUTO RENDER</label></td>
+					</tr>
+					<tr>
+						<td class="col1">
+							<select id="cnf-server">
+								<option value="LOCAL">LOCAL</option>
+								<option value="SERVER">SERVER</option>
+								<option value="CLIENT">CLIENT</option>
+							</select>
+						</td>
+						<td class="col2"><label for="cnf-server">MODE (net)</label></td>
+					</tr>
+					<tr>
+						<td class="col1"><input id="cnf-sync" type="checkbox" /></td>
+						<td class="col2"><label for="cnf-sync">SYNC (net)</label></td>
+					</tr>
+					<tr>
+						<td class="col1">
+							<input type="text" id="cnf-name" />
+						</td>
+						<td class="col2"><label for="cnf-server">NAME (net)</label></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
 	</main>
+	<script src="libs/socket.io.js"></script>
 	<script src="libs/p5/p5.min.js"></script>
 	<script src="libs/p5/p5.dom.min.js"></script>
 	<script src="libs/p5/p5.sound.min.js"></script>
-	<script src="p5-extends.js"></script>
+	<script src="libs/p5-extends.js"></script>
 	<script src="libs/codemirror/codemirror.js"></script>
 	<script src="libs/jsbeautify.min.js"></script>
-	<script src="renderer.js"></script>
+	<script src="libs/renderer.js"></script>
 </body>
 
 </html>

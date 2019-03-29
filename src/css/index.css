@@ -63,6 +63,27 @@ canvas {
   background: rgba(255, 255, 255, 0.3);
 }
 
+.client-cursor {
+  position: relative !important;
+  height: 10px;
+  width: 0;
+  background: #fff;
+  border-left: 1px solid #fff;
+}
+
+.client-cursor .label {
+  font-size: 0.8rem !important;
+  display: inline-block !important;
+  width: auto;
+  background: rgba(15, 15, 15, 0.4);
+  color: rgba(255, 255, 255, 0.6);
+  border-left: 1px solid #fff;
+  position: absolute;
+  left: -1px;
+  z-index: 9999 !important;
+  top: -30px;
+}
+
 .change::before {
   opacity: 1.0;
 }
@@ -84,6 +105,10 @@ canvas {
 .console-out-error {
   color: #f00;
   background: #000;
+}
+
+.console-out {
+  font-size: 0.9rem;
 }
 
 .console-out .error {
@@ -108,7 +133,7 @@ canvas {
   display: none;
   position: fixed;
   background: transparent;
-  z-index: 9999;
+  z-index: 1024;
   top: 0;
   left: 0;
   bottom: 0;
@@ -125,11 +150,12 @@ canvas {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  background: rgba(255, 255, 255, 0.2);
+  background: #000;
   border: 1px solid #333;
   position: fixed;
   top: 100%;
   left: 50%;
+  font-size: 0.8rem;
   color: #fff;
   -webkit-transform: translate(-50%, -100%);
           transform: translate(-50%, -100%);
@@ -150,12 +176,44 @@ canvas {
   color: #fff;
 }
 
+.modal .modal-win input[type=text], .modal .modal-win select {
+  width: 100%;
+}
+
+.modal .modal-win table tr {
+  min-width: 350px;
+}
+
+.modal .modal-win table tr td {
+  padding: 3px;
+}
+
+.modal .modal-win table tr .col1 {
+  text-align: right;
+  min-width: 150px;
+}
+
+.modal .modal-win table tr .col2 {
+  min-width: 150px;
+}
+
 .CodeMirror-line > span {
   padding: 4px 10px;
   line-height: 1.7rem;
   text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
   background-color: rgba(0, 0, 0, 0.4);
   color: white;
+}
+
+.D-cursor {
+  z-index: 333;
+  position: relative;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+  border-left: 3px solid white;
+  border-right: none;
+  width: 0px;
 }
 
 #win {
