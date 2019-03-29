@@ -1,5 +1,0 @@
-// Hora de livecoding!
-bg(11)
-beginRot(freq(0.1))
-duchamp.rotorelief(width/2,height/2)
-endRot()
