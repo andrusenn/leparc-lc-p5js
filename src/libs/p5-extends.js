@@ -724,28 +724,3 @@ if (!p5.prototype.hasOwnProperty('audioEnergy')) {
             }
       }
 }
-// Ramp
-
-// if (
-//       !p5.prototype.hasOwnProperty('ramp_i') && 
-//       !p5.prototype.hasOwnProperty('ramp_f') && 
-//       !p5.prototype.hasOwnProperty('ramp_t') 
-            
-// ) {
-//       p5.prototype.ramp_i = 0
-//       p5.prototype.ramp_f = 0
-//       p5.prototype.ramp_t = 0
-// }
-// if (!p5.prototype.hasOwnProperty('ramp')) {
-//       p5.prototype.ramp = function (f, t, i) {
-//             let dif = t - f
-//             ramp_f = (frameCount * i) + frameCount * i
-//             if (ramp_f > (frameCount * i) + t ) {
-//                   f += i
-//             } else {
-//                   f = t
-//             }
-//             return ramp_f
-
-//       }
-// }
