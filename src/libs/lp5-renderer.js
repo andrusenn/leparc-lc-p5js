@@ -866,7 +866,7 @@ document.addEventListener('keydown', function (ev) {
       if (ev.ctrlKey && ev.keyCode == 83) {
             if (Lp5.validCodeSetup != '') Lp5.main.saveCode('setup', Lp5.validCodeSetup)
             if (Lp5.validCodeDraw != '') Lp5.main.saveCode('draw', Lp5.validCodeDraw)
-            if (Lp5.validCodeAux != '') Lp5.main.saveCode('aux', Lp5.validCodeAux)
+            if (Lp5.validCodeAux != '') Lp5.main.saveCode('auxcode', Lp5.validCodeAux)
       }
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
