@@ -17,7 +17,8 @@
             "start": "electron .",
             "dist-win": "electron-builder --win",
             "dist-linux": "electron-builder --linux",
-            "dist-mac": "electron-builder --mac"
+            "dist-mac": "electron-builder --mac",
+            "dist-all": "electron-builder -mwl"
       },
       "keywords": [
             "livecoding",
