@@ -113,3 +113,14 @@ console.log(lp.x) // out -> code
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
 - En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies (0-255)
+
+### Config window
+
+- `Ctrl+TAB` open/close
+  - **AUTO RENDER** -> Only in `draw(){}`
+  - **MODE (net)**
+    - LOCAL -> Default
+    - SERVER -> Server mode
+    - CLIENT -> Client mode
+  - **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
+  - **NAME (net)** -> Client node name (Default: id socket)

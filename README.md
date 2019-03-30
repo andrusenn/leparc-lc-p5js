@@ -117,7 +117,10 @@ console.log(lp.x) // salida -> code
 ### Ventana de configuraciones
 
 - `Ctrl+TAB` Abre popup de configuraciones
-
-#### Compilado automatico
-
-> **RENDER DRAW ON FLY** -> Solo es funcional en el bloque de `draw(){}`
+  - **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
+  - **MODE (net)**
+    - LOCAL -> Por defecto
+    - SERVER -> Activa el modo servidor
+    - CLIENT -> Activa el modo cliente
+  - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
+  - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
