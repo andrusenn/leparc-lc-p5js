@@ -2,11 +2,13 @@
 
 ## Version 0.0.4-alpha
 
-- [es]
+> [es]
+
 - Cambio de nombre del objeto Dp5 a Lp5
 - Bug: Rutas a las carpetas de leparc_resources
   
-- [en]
+> [en]
+
 - Object rename Dp5 to Lp5
 - Bug: Paths to leparc_resources folder
   
