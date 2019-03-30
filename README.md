@@ -60,6 +60,10 @@ El proyecto está compilado [Electronjs](https://electronjs.org/)
 
 - `setup:` -> `setup(){ // }`
 - `draw:` -> `draw(){ // }`
+  
+#### Diferencia entre setup(){} y aux(){}
+
+El bloque `setup` reinicializa varios objetos y funciones de p5, mientras que `aux` no.
 
 ### Variables y funciones globales
 

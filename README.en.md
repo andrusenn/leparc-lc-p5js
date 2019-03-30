@@ -61,6 +61,10 @@ This project uses [Electronjs](https://electronjs.org/)
 - `setup:` -> `setup(){ // }`
 - `draw:` -> `draw(){ // }`
 
+#### setup(){} vs aux(){}
+
+Evaluating `setup` some objects and functions of p5 are reseted, while in `aux` not.
+
 ### Global vars and functions
 
 For global acces from other blocks, you can declare vars without `var`,`let` o `const`. But this is risky, because you can re-declare a property of `window` global object.
