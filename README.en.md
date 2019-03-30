@@ -128,3 +128,9 @@ In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **p
     - CLIENT -> Client mode
   - **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
   - **NAME (net)** -> Client node name (Default: id socket)
+  
+----
+
+### Examples
+
+> [Examples](https://github.com/andrusenn/leparc-lc-p5js/wiki)

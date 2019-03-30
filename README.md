@@ -128,3 +128,9 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
     - CLIENT -> Activa el modo cliente
   - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
   - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
+
+----
+
+### Ejemplos
+
+> [Ejemplos](https://github.com/andrusenn/leparc-lc-p5js/wiki)
