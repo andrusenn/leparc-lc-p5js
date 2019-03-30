@@ -803,14 +803,17 @@ document.addEventListener('keyup', (ev) => {
             if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
             if (Lp5.panelIndex == 0) {
                   Lp5.cmSetup.focus()
+                  Lp5.cmFocused = 'setup'
                   Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
             }
             if (Lp5.panelIndex == 1) {
                   Lp5.cmDraw.focus()
+                  Lp5.cmFocused = 'draw'
                   Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
             }
             if (Lp5.panelIndex == 2) {
                   Lp5.cmAux.focus()
+                  Lp5.cmFocused = 'aux'
                   Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
             }
       }
@@ -884,14 +887,17 @@ document.addEventListener('keydown', function (ev) {
             if (Lp5.panelIndex < 0) Lp5.panelIndex = 2;
             if (Lp5.panelIndex == 0) {
                   Lp5.cmSetup.focus()
+                  Lp5.cmFocused = 'setup'
                   Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
             }
             if (Lp5.panelIndex == 1) {
                   Lp5.cmDraw.focus()
+                  Lp5.cmFocused = 'draw'
                   Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
             }
             if (Lp5.panelIndex == 2) {
                   Lp5.cmAux.focus()
+                  Lp5.cmFocused = 'aux'
                   Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
             }
       }
