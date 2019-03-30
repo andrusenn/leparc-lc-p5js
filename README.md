@@ -55,23 +55,35 @@ El proyecto está compilado [Electronjs](https://electronjs.org/)
 
 ### Bloques de código
 
->Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
->Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
+> Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
+> Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
 
 - `setup:` -> `setup(){ // }`
 - `draw:` -> `draw(){ // }`
 
 ### Variables y funciones globales
 
-Para acceder a variables desde otros bloques, la declaración no debe llevar `var`,`let` o `const`
-Lo mismo para las funciones:
+Para acceder a variables desde otros bloques, se pueden declarar variables y funciones sin `var`,`let` o `const`, estas se almacenan en el objeto `window`. Pero el riesgo que se corre es sobreescribir otras variables globales.
+Para evitar esto, se provee un objeto global para utilizar: `lp`
+
+> En aux
 
 ~~~js
-x = 'code'
 
-mifunc = function(){
+lp.x = 'code'
+
+lp.miFuncion = function(){
       console.log('Hola LeParc!')
 }
+
+~~~
+
+> En draw
+
+~~~js
+
+lp.miFuncion() // salida -> Hola LeParc!
+console.log(lp.x) // salida -> code
 
 ~~~
 

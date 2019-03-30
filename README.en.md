@@ -55,22 +55,35 @@ This project uses [Electronjs](https://electronjs.org/)
 
 ### Code blocks
 
->Each block are evaluated separately. There is an extra block `aux:` to run code outside from setup() and draw()
->You can use functions/methods of p5js in any block
+> Each block are evaluated separately. There is an extra block `aux:` to run code outside from setup() and draw()
+> You can use functions/methods of p5js in any block
 
 - `setup:` -> `setup(){ // }`
 - `draw:` -> `draw(){ // }`
 
 ### Global vars and functions
 
-For global acces from other blocks, declere vars without `var`,`let` o `const`
-Same for functions:
+For global acces from other blocks, you can declare vars without `var`,`let` o `const`. But this is risky, because you can re-declare a property of `window` global object.
+In order to avoid this, an object is provided: `lp`
+
+> En aux
 
 ~~~js
 
-myfunc = function(){
-      console.log('Hello LeParc!')
+lp.x = 'code'
+
+lp.miFuncion = function(){
+      console.log('Hola LeParc!')
 }
+
+~~~
+
+> En draw
+
+~~~js
+
+lp.miFuncion() // out -> Hola LeParc!
+console.log(lp.x) // out -> code
 
 ~~~
 
