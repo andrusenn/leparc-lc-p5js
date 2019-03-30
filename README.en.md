@@ -3,6 +3,7 @@
 > (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
 
 Cross platform environment to run [p5js](http://p5js.org/) code in real time.
+This project uses [Electronjs](https://electronjs.org/)
 
 ![Image](http://andressenn.com/leparc-lc/c1.jpg)
 ![Image](http://andressenn.com/leparc-lc/c2.jpg)
@@ -14,6 +15,13 @@ Cross platform environment to run [p5js](http://p5js.org/) code in real time.
 ## Use
 
 ### Install
+
+#### Releases
+
+[download](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
+
+- On first run, a folder call "leparc_resources" will be created in "home" or user account
+- linux users: AppImage > change permission to make it "executable"
 
 #### Download source
 

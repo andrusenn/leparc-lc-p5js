@@ -3,6 +3,7 @@
 > (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
 
 Entorno multiplataforma para ejecutar código [p5js](http://p5js.org/) en tiempo real.
+El proyecto está compilado [Electronjs](https://electronjs.org/)
 
 ![Image](http://andressenn.com/leparc-lc/c1.jpg)
 ![Image](http://andressenn.com/leparc-lc/c2.jpg)
@@ -14,6 +15,13 @@ Entorno multiplataforma para ejecutar código [p5js](http://p5js.org/) en tiempo
 ## Uso
 
 ### Instalación
+
+#### Descarga compilado
+
+[descarga](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
+
+- En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo
+- Usuarios linux: AppImage deberán seleccionar "ejecutar como programa"
 
 #### Bajar fuente
 
