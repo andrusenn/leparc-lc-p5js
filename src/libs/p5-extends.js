@@ -3,6 +3,32 @@
  * Funcionalidades que extienden p5js
  */
 // --------------------------------------------------
+
+/**
+ * Obtiene la ruta a leparc_resources/libs/
+ * 
+ * @method libPath
+ * @param {String} name      nombre de la libreria sin extension .js
+ */
+if (!p5.prototype.hasOwnProperty('console_msg')) {
+      p5.prototype.console_msg = function (msj = '', type = null) {
+            let sclass = ''
+            if (type == 'info') {
+                  sclass = 'info'
+            }
+            if (type == 'error') {
+                  sclass = 'error'
+            }
+            if (type == 'warning') {
+                  sclass = 'warning'
+            }
+            if (msj != '') {
+                  Lp5.el('lp5-console-out').innerHTML = '<span class="' + sclass + '">' + msj + '</span>'
+            } else {
+                  Lp5.el('lp5-console-out').innerHTML = ''
+            }
+      }
+}
 /**
  * Setea el ancho y alto de la ventana (electron)
  * @method winSize
@@ -11,7 +37,7 @@
  */
 if (!p5.prototype.hasOwnProperty('winSize')) {
       p5.prototype.winSize = function (w, h) {
-            Dp5.main.resizeWin(w, h)
+            Lp5.main.resizeWin(w, h)
       }
 }
 
@@ -56,7 +82,7 @@ if (!p5.prototype.hasOwnProperty('fade')) {
             let arg = arguments;
             if (arg.length == 1) {
                   push()
-                  colorMode(RGB, 255)
+                  colorMode(RGB, 255, 255, 255)
                   noStroke()
                   rectMode(CORNER)
                   fill(0, arg[0])
@@ -65,6 +91,7 @@ if (!p5.prototype.hasOwnProperty('fade')) {
             }
             if (arg.length == 2) {
                   push()
+                  colorMode(RGB, 255, 255, 255)
                   noStroke()
                   rectMode(CORNER)
                   fill(red(arg[0]), green(arg[0]), blue(arg[0]), arg[1])
@@ -134,10 +161,18 @@ if (!p5.prototype.hasOwnProperty('displace')) {
  * @method beginRot
  * 1 parametro
  * @param {Number} velr       velocidad rotacion en radianes
+ * 2 parametros
+ * @param {Number} velr       velocidad rotacion en radianes
+ * @param {Number} scale      escala
  * 3 parametros
  * @param {Number} velr       velocidad rotacion en radianes
  * @param {Number} centrox    punto ancla de referencia x
  * @param {Number} centroy    punto ancla de referencia y
+ * 4 parametros
+ * @param {Number} velr       velocidad rotacion en radianes
+ * @param {Number} centrox    punto ancla de referencia x
+ * @param {Number} centroy    punto ancla de referencia y
+ * @param {Number} scale      escala
  */
 if (!p5.prototype.hasOwnProperty('beginRot')) {
       p5.prototype.beginRot = function () {
@@ -148,9 +183,23 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
                   rotate(arg[0])
                   translate(-width / 2, -height / 2);
             }
+            if (arg.length == 2) {
+                  push();
+                  translate(width / 2, height / 2);
+                  scale(arg[1])
+                  rotate(arg[0])
+                  translate(-width / 2, -height / 2);
+            }
             if (arg.length == 3) {
                   push();
                   translate(arg[1], arg[2]);
+                  rotate(arg[0])
+                  translate(-arg[1], -arg[2]);
+            }
+            if (arg.length == 4) {
+                  push();
+                  translate(arg[1], arg[2]);
+                  scale(arg[3])
                   rotate(arg[0])
                   translate(-arg[1], -arg[2]);
             }
@@ -162,10 +211,11 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
  * 
  * @method endRot
  */
-p5.prototype.endRot = function () {
-      pop();
+if (!p5.prototype.hasOwnProperty('endRot')) {
+      p5.prototype.endRot = function () {
+            pop();
+      }
 }
-
 /**
  * Efecto de zoom
  * 
@@ -175,118 +225,137 @@ p5.prototype.endRot = function () {
  * 
  * ZOOM es una variable global que almacena la referencia inicial
  */
-p5.prototype.ZOOM_SCALE = 1;
-p5.prototype.zoom = function () {
-      this.s = 1;
-      let arg = arguments;
-      if (arg[1] != null) {
-            this.s = arg[1];
-      }
-      if (arg.length > 0) {
-            let i = get()
-            push()
-            imageMode(CORNER)
-            translate(width / 2, height / 2)
-            scale(ZOOM_SCALE)
-            translate(-width / 2, -height / 2)
-            image(i, 0, 0)
-            ZOOM_SCALE = this.s
-            pop()
-            ZOOM_SCALE += arg[0]
+
+if (!p5.prototype.hasOwnProperty('zoom')) {
+      p5.prototype.ZOOM_SCALE = 1;
+      p5.prototype.zoom = function () {
+            this.s = 1;
+            let arg = arguments;
+            if (arg[1] != null) {
+                  this.s = arg[1];
+            }
+            if (arg.length > 0) {
+                  let i = get()
+                  push()
+                  imageMode(CORNER)
+                  translate(width / 2, height / 2)
+                  scale(ZOOM_SCALE)
+                  translate(-width / 2, -height / 2)
+                  image(i, 0, 0)
+                  ZOOM_SCALE = this.s
+                  pop()
+                  ZOOM_SCALE += arg[0]
+            }
       }
 }
-
 /**
  * Efecto de espejo sobre eje de Y
  * 
  * @method mirrorY
  */
-p5.prototype.mirrorY = function () {
-      let i = get(0, 0, width / 2, height);
-      push()
-      imageMode(CORNER)
-      translate(width, 0)
-      scale(-1, 1)
-      image(i, 0, 0)
-      pop()
-}
 
+if (!p5.prototype.hasOwnProperty('mirrorY')) {
+      p5.prototype.mirrorY = function () {
+            let i = get(0, 0, width / 2, height);
+            push()
+            imageMode(CORNER)
+            translate(width, 0)
+            scale(-1, 1)
+            image(i, 0, 0)
+            pop()
+      }
+}
 /**
  * Efecto de espejo sobre eje de Y invertido
  * 
  * @method imirrorY
  */
-p5.prototype.imirrorY = function () {
-      let i = get(0, 0, width / 2, height);
-      push()
-      imageMode(CORNER)
-      translate(width, height)
-      scale(-1, -1)
-      image(i, 0, 0)
-      pop()
+
+if (!p5.prototype.hasOwnProperty('imirrorY')) {
+      p5.prototype.imirrorY = function () {
+            let i = get(0, 0, width / 2, height);
+            push()
+            imageMode(CORNER)
+            translate(width, height)
+            scale(-1, -1)
+            image(i, 0, 0)
+            pop()
+      }
 }
 /**
  * Efecto de espejo sobre eje de X
  * 
  * @method mirrorX
  */
-p5.prototype.mirrorX = function () {
-      let i = get(0, 0, width, height / 2);
-      push()
-      imageMode(CORNER)
-      translate(0, height)
-      scale(1, -1)
-      image(i, 0, 0)
-      pop()
+if (!p5.prototype.hasOwnProperty('mirrorX')) {
+      p5.prototype.mirrorX = function () {
+            let i = get(0, 0, width, height / 2);
+            push()
+            imageMode(CORNER)
+            translate(0, height)
+            scale(1, -1)
+            image(i, 0, 0)
+            pop()
+      }
 }
-
 /**
  * Efecto de espejo sobre eje de X invertido
  * 
  * @method imirrorX
  */
-p5.prototype.imirrorX = function () {
-      let i = get(0, 0, width, height / 2);
-      push()
-      imageMode(CORNER)
-      translate(width, height)
-      scale(-1, -1)
-      image(i, 0, 0)
-      pop()
+
+if (!p5.prototype.hasOwnProperty('imirrorX')) {
+      p5.prototype.imirrorX = function () {
+            let i = get(0, 0, width, height / 2);
+            push()
+            imageMode(CORNER)
+            translate(width, height)
+            scale(-1, -1)
+            image(i, 0, 0)
+            pop()
+      }
 }
 /**
  * Efecto de caleidoscopio 4 caras
  * 
  * @method kaleido
  * 
- * TODO: no utilizar mirror, es redundante en el corte de la imagen
- * y quita recursos
  */
-p5.prototype.kaleido = function () {
-      let i = get(0, 0, width / 2, height / 2);
-      push()
-      translate(0, 0)
-      translate(width - 1, 0)
-      scale(-1, 1)
-      image(i, 0, 0)
-      pop()
 
-      push()
-      translate(0, 0)
-      translate(0, height - 1)
-      scale(1, -1)
-      image(i, 0, 0)
-      pop()
+if (!p5.prototype.hasOwnProperty('kaleido')) {
+      p5.prototype.kaleido = function () {
+            let i = get(0, 0, width / 2, height / 2);
 
-      push()
-      translate(0, 0)
-      translate(width - 1, height - 1)
-      scale(-1, -1)
-      image(i, 0, 0)
-      pop()
+            push()
+            translate(0, 0)
+            translate(- 1, 0)
+            scale(1, 1)
+            image(i, 0, 0)
+            pop()
 
+            push()
+            translate(0, 0)
+            translate(width - 1, 0)
+            scale(-1, 1)
+            image(i, 0, 0)
+            pop()
+
+            push()
+            translate(0, 0)
+            translate(0, height - 1)
+            scale(1, -1)
+            image(i, 0, 0)
+            pop()
+
+            push()
+            translate(0, 0)
+            translate(width - 1, height - 1)
+            scale(-1, -1)
+            image(i, 0, 0)
+            pop()
+
+      }
 }
-
 /**
  * Metodo abreviado de la sentencia -> sin(frameCount)
  * 
@@ -354,7 +423,7 @@ if (!p5.prototype.hasOwnProperty('freq')) {
  */
 if (!p5.prototype.hasOwnProperty('useLib')) {
       p5.prototype.useLib = function (name) {
-            let path = Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','libs', name, name + '.js')
+            let path = Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs', name, name + '.js')
             try {
                   loadStrings(path, (data) => {
                         let code = '';
@@ -369,7 +438,7 @@ if (!p5.prototype.hasOwnProperty('useLib')) {
                         }
                   })
             } catch (e) {
-                  Dp5.el('dp5-console-out').innerHTML = 'useLib(name): ' + e
+                  Lp5.el('lp5-console-out').innerHTML = 'useLib(name): ' + e
             }
       }
 }
@@ -383,7 +452,7 @@ if (!p5.prototype.hasOwnProperty('libPath')) {
       p5.prototype.libPath = function () {
             let arg = arguments
             if (arg.length == 1) {
-                  return Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','libs', arg[0])
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs', arg[0])
             }
             return null;
       }
@@ -399,10 +468,10 @@ if (!p5.prototype.hasOwnProperty('imgPath')) {
             let arg = arguments
 
             if (arg.length == 0) {
-                  return Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','images')
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'images')
             }
             if (arg.length == 1) {
-                  return Dp5.main.path().join(Dp5.main.resourcesPath(), 'leparc_resources','images',arg[0])
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'images', arg[0])
             }
             return null;
       }
@@ -418,47 +487,22 @@ if (!p5.prototype.hasOwnProperty('mediaPath')) {
             let arg = arguments
 
             if (arg.length == 0) {
-                  return Dp5.main.path().join(Dp5.main.resourcesPath(),'leparc_resources','media')
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'media')
             }
             if (arg.length == 1) {
-                  return Dp5.main.path().join(Dp5.main.resourcesPath(), 'leparc_resources','media',arg[0])
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'media', arg[0])
             }
             return null;
       }
 }
 // p5.prototype.img = function (i, fn) {
-//       loadImage(Dp5.main.resourcesPath() + '/leparc_resources/images/' + i, (__img) => {
+//       loadImage(Lp5.main.resourcesPath() + '/leparc_resources/images/' + i, (__img) => {
 //             if (typeof fn == 'function') {
 //                   fn(__img)
 //             }
 //       })
 // }
 
-/**
- * Obtiene la ruta a leparc_resources/libs/
- * 
- * @method libPath
- * @param {String} name      nombre de la libreria sin extension .js
- */
-if (!p5.prototype.hasOwnProperty('console_msg')) {
-      p5.prototype.console_msg = function (msj = '', type = null) {
-            let sclass = ''
-            if (type == 'info') {
-                  sclass = 'info'
-            }
-            if (type == 'error') {
-                  sclass = 'error'
-            }
-            if (type == 'warning') {
-                  sclass = 'warning'
-            }
-            if (msj != '') {
-                  Dp5.el('dp5-console-out').innerHTML = '<span class="' + sclass + '">' + msj + '</span>'
-            } else {
-                  Dp5.el('dp5-console-out').innerHTML = ''
-            }
-      }
-}
 /**
  * // NO IMPLEMENTADO
  * Metodo carga banco de imagenes
@@ -470,13 +514,13 @@ if (!p5.prototype.hasOwnProperty('console_msg')) {
 //       if (arg.length == 3 && ___pics.length > 0) {
 //             image(___pics[arg[0]], arg[1] - ___pics[arg[0]].width / 2, arg[2] - ___pics[arg[0]].height / 2)
 //       } else {
-//             Dp5.el('dp5-console-out').innerHTML = 'Se requieren 3 argumentos -> pic(index,x,y)'
+//             Lp5.el('lp5-console-out').innerHTML = 'Se requieren 3 argumentos -> pic(index,x,y)'
 //       }
 // }
 // p5.prototype.useIBank = function () {
 //       let arg = arguments
 //       if (arg.length == 1) {
-//             Dp5.imagesBankPath[arg[0]] = Dp5.main.resourcesPath() + '/leparc_resources/images/' + arg[0] + '/'
+//             Lp5.imagesBankPath[arg[0]] = Lp5.main.resourcesPath() + '/leparc_resources/images/' + arg[0] + '/'
 //       }
 //       return null;
 // }
@@ -512,15 +556,19 @@ p5.prototype.___webcam = null;
 
 if (!p5.prototype.hasOwnProperty('useCam')) {
       p5.prototype.useCam = function () {
-            let arg = arguments;
-            if (arg.length == 0) {
-                  ___webcam = createCapture(VIDEO);
-                  ___webcam.size(320, 240);
-                  ___webcam.hide()
-            }
-            if (arg.length == 2) {
-                  ___webcam = createCapture(VIDEO);
-                  ___webcam.size(arg[0], arg[0]);
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
+                  let arg = arguments;
+                  if (arg.length == 0) {
+                        ___webcam = createCapture(VIDEO);
+                        ___webcam.size(320, 240);
+                        ___webcam.hide()
+                  }
+                  if (arg.length == 2) {
+                        ___webcam = createCapture(VIDEO);
+                        ___webcam.size(arg[0], arg[0]);
+                  }
+            } else {
+                  console_msg('useCam() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
             }
       }
 }
@@ -532,17 +580,22 @@ if (!p5.prototype.hasOwnProperty('useCam')) {
  * @param {Number} y      posicion en y
  */
 
-if (!p5.prototype.hasOwnProperty('useCam')) {
+if (!p5.prototype.hasOwnProperty('getCam')) {
       p5.prototype.getCam = function () {
-            let arg = arguments;
-            if (___webcam == null) {
-                  Dp5.el('dp5-console-out').innerHTML = 'useCam() no esta declarado'
-            }
-            if (arg.length == 2 && ___webcam != null) {
-                  push()
-                  translate(arg[0], arg[1])
-                  image(___webcam, 0, 0)
-                  pop()
+
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
+                  let arg = arguments;
+                  if (___webcam == null) {
+                        console_msg('useCam() no esta declarado')
+                  }
+                  if (arg.length == 2 && ___webcam != null) {
+                        push()
+                        translate(arg[0], arg[1])
+                        image(___webcam, 0, 0)
+                        pop()
+                  }
+            } else {
+                  console_msg('useCam() - Solo puede conectarse en modo LOCAL o SERVER', 'warning');
             }
       }
 }
@@ -585,17 +638,21 @@ if (!p5.prototype.hasOwnProperty('___fft')) {
 
 if (!p5.prototype.hasOwnProperty('useAudio')) {
       p5.prototype.useAudio = function (source = 0, smoothing = 0.3) {
-            ___audio = new p5.AudioIn()
-            ___fft = new p5.FFT(smoothing)
-            ___audio.start()
-            ___audio.getSources(function (deviceList) {
-                  if (deviceList.length > 0) {
-                        ___audio.setSource(source)
-                        ___fft.setInput(___audio)
-                  } else {
-                        Dp5.el('dp5-console-out').innerHTML = 'No hay fuentes disponibles o configuradas';
-                  }
-            })
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
+                  ___audio = new p5.AudioIn()
+                  ___fft = new p5.FFT(smoothing)
+                  ___audio.start()
+                  ___audio.getSources(function (deviceList) {
+                        if (deviceList.length > 0) {
+                              ___audio.setSource(source)
+                              ___fft.setInput(___audio)
+                        } else {
+                              console_msg('No hay fuentes disponibles o configuradas');
+                        }
+                  })
+            } else {
+                  console_msg('useAudio() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+            }
       }
 }
 /**
@@ -605,12 +662,16 @@ if (!p5.prototype.hasOwnProperty('useAudio')) {
  */
 if (!p5.prototype.hasOwnProperty('audioVol')) {
       p5.prototype.audioVol = function () {
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
 
-            if (___fft != null && ___audio != null) {
-                  return ___audio.getLevel()
+                  if (___fft != null && ___audio != null) {
+                        return ___audio.getLevel()
+                  } else {
+                        console_msg('getVolume() -> linein() no esta declarado')
+                        return null;
+                  }
             } else {
-                  Dp5.el('dp5-console-out').innerHTML = 'getVolume() -> linein() no esta declarado'
-                  return null;
+                  console_msg('audioVol() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
             }
       }
 }
@@ -624,13 +685,18 @@ if (!p5.prototype.hasOwnProperty('audioVol')) {
  */
 if (!p5.prototype.hasOwnProperty('audioBeat')) {
       p5.prototype.audioBeat = function (band) {
-            if (___fft != null && ___audio != null) {
-                  let spectrum = ___fft.analyze(128, 'db');
-                  if (band > spectrum.length) band = spectrum.length
-                  return spectrum[band] + 140
+
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
+                  if (___fft != null && ___audio != null) {
+                        let spectrum = ___fft.analyze(128, 'db');
+                        if (band > spectrum.length) band = spectrum.length
+                        return spectrum[band] + 140
+                  } else {
+                        console_msg('audioBeat() -> useAudio() no esta declarado')
+                        return null;
+                  }
             } else {
-                  Dp5.el('dp5-console-out').innerHTML = 'audioBeat() -> useAudio() no esta declarado'
-                  return null;
+                  console_msg('Solo puede conectarse en modo LOCAL o SERVER');
             }
       }
 }
@@ -643,13 +709,43 @@ if (!p5.prototype.hasOwnProperty('audioBeat')) {
  */
 if (!p5.prototype.hasOwnProperty('audioEnergy')) {
       p5.prototype.audioEnergy = function (f1, f2 = null) {
-            if (___fft != null && ___audio != null) {
-                  f2 = (f2 == null) ? f1 : f2
-                  ___fft.analyze();
-                  return ___fft.getEnergy(f1, f2)
+
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
+                  if (___fft != null && ___audio != null) {
+                        f2 = (f2 == null) ? f1 : f2
+                        ___fft.analyze();
+                        return ___fft.getEnergy(f1, f2)
+                  } else {
+                        console_msg('audioEnergy() -> useAudio() no esta declarado')
+                        return null;
+                  }
             } else {
-                  Dp5.el('dp5-console-out').innerHTML = 'audioEnergy() -> useAudio() no esta declarado'
-                  return null;
+                  console_msg('Solo puede conectarse en modo LOCAL o SERVER', 'warning');
             }
       }
 }
+// Ramp
+
+// if (
+//       !p5.prototype.hasOwnProperty('ramp_i') && 
+//       !p5.prototype.hasOwnProperty('ramp_f') && 
+//       !p5.prototype.hasOwnProperty('ramp_t') 
+            
+// ) {
+//       p5.prototype.ramp_i = 0
+//       p5.prototype.ramp_f = 0
+//       p5.prototype.ramp_t = 0
+// }
+// if (!p5.prototype.hasOwnProperty('ramp')) {
+//       p5.prototype.ramp = function (f, t, i) {
+//             let dif = t - f
+//             ramp_f = (frameCount * i) + frameCount * i
+//             if (ramp_f > (frameCount * i) + t ) {
+//                   f += i
+//             } else {
+//                   f = t
+//             }
+//             return ramp_f
+
+//       }
+// }
