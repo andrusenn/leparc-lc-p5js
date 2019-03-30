@@ -7,8 +7,8 @@
 - Bug: Rutas a las carpetas de leparc_resources
   
 - [en]
-- Onject rename Dp5 to Lp5
-- BUb: Paths to leparc_resources folder
+- Object rename Dp5 to Lp5
+- Bug: Paths to leparc_resources folder
   
 ## Version 0.0.3-alpha
 
