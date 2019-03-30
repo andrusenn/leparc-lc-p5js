@@ -10,7 +10,7 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version:'0.0.4-alpha',
+      version: '0.0.4-alpha',
       // Canvas
       canvas: null,
       // mian.js
@@ -241,6 +241,13 @@ let Lp5 = {
                   'canvas',
                   'createCanvas',
             ]
+}
+
+// Global var scope --------------------------------------------
+if (!window.hasOwnProperty('lp')) {
+      window.lp = {}
+} else {
+      console.log('no se pudo crear el objeto global "lp"')
 }
 // Init
 window.addEventListener('load', function () {
