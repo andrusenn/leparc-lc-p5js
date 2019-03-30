@@ -114,6 +114,10 @@ console.log(lp.x) // salida -> code
 - En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
 - En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias (0-255)
 
+### Modo cliente/servidor
+
+Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE, modificar la variable **server-ip** y **port** en *leparc_resources/config/config.txt*
+
 ### Ventana de configuraciones
 
 - `Ctrl+TAB` Abre popup de configuraciones
