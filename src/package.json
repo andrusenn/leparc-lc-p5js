@@ -6,8 +6,12 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.0.3-alpha",
+      "version": "0.0.4-alpha",
       "description": "p5 livecoding",
+      "repository": {
+            "type": "git",
+            "url": "https://github.com/andrusenn/leparc-lc-p5js.git"
+      },
       "main": "main.js",
       "scripts": {
             "start": "electron .",
@@ -32,7 +36,14 @@
             },
             "linux": {
                   "target": [
-                        "AppImage"
+                        {
+                              "target": "AppImage",
+                              "arch": [
+                                    "x64",
+                                    "armv7l",
+                                    "arm64"
+                              ]
+                        }
                   ],
                   "icon": "assets/icon.png"
             },
@@ -42,8 +53,8 @@
             }
       },
       "devDependencies": {
-            "electron": "^4.0.8",
-            "electron-builder": "^20.38.5"
+            "electron": "^4.1.2",
+            "electron-builder": "^20.39.0"
       },
       "dependencies": {
             "express": "^4.16.4",
