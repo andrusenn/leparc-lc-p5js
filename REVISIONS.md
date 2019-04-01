@@ -1,5 +1,21 @@
 # REVISIONES / REVISIONS
 
+## Version 0.0.5-alpha
+
+> [es]
+
+- Se agrego reset en draw de `blendMode(NORMAL)`
+- Se agrego reset en setup de `lp = {}`, `angleMode(RADIANS)`
+- se agrego el directorio *media*, que es mas general que *images
+- Se agrego `use3d()` y `use2d()`
+  
+> [en]
+
+- Reset added on draw of `blendMode(NORMAL)`
+- Reset added on setup of `lp = {}`, `angleMode(RADIANS)`
+- Directory added *media*, it is most general purpose than *images*
+- `use3d()` and `use2d()` added
+  
 ## Version 0.0.4-alpha
 
 > [es]
