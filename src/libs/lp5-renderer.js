@@ -36,6 +36,7 @@ let Lp5 = {
       historyChangesSetup: 0,
       historyChangesDraw: 0,
       historyChangesAux: 0,
+      // cnvEvents: [],
       drawOnFly: false,
       // Codemirror
       cmFocused: null,
@@ -126,7 +127,15 @@ let Lp5 = {
                   'setup',
                   'preload',
                   'canvas',
-                  'createCanvas'
+                  'createCanvas',
+                  'remove',
+                  'mouseClicked',
+                  'mouseMoved',
+                  'mouseDragged',
+                  'mousePressed',
+                  'mouseReleased', 
+                  'doubleClicked', 
+                  'mouseWheel'
             ],
             draw: [
                   'draw',
@@ -137,7 +146,15 @@ let Lp5 = {
                   'use2d',
                   'use3d',
                   'useCam',
-                  'useAudio'
+                  'useAudio',
+                  'remove',
+                  'mouseClicked',
+                  'mouseMoved',
+                  'mouseDragged',
+                  'mousePressed',
+                  'mouseReleased', 
+                  'doubleClicked', 
+                  'mouseWheel'
             ],
             aux: [
                   'draw',
@@ -148,15 +165,39 @@ let Lp5 = {
                   'use2d',
                   'use3d',
                   'useCam',
-                  'useAudio'
+                  'useAudio',
+                  'remove'
             ]
       },
       checkProgWord: function (_word) {
             return `('|") {0,}${_word} {0,}('|")`
       },
-      // hasProgWord: function (_word) {
-      //       return `(\n| ){1,}${_word}`
+      // hasEvt: function (ev) {
+      //       for (let i = 0; i < this.cnvEvents.length; i++) {
+      //             if (this.cnvEvents[i].evt == ev) {
+      //                   return true
+      //             } else {
+      //                   return false
+      //             }
+      //       }
       // },
+      // clearEvts: function () {
+      //       // Evt ---------------------------------
+      //       for (let i = 0; i < this.cnvEvents.length; i++) {
+      //             console.log('clear ' + this.cnvEvents[i].evt)
+      //             this.el('main').removeEventListener(this.cnvEvents[i].evt, this.cnvEvents[i].fn)
+      //       }
+      // },
+      clearEvts: function(){
+            // p5js events prop
+            mouseClicked = null
+            mouseMoved = null
+            mouseDragged = null
+            mousePressed = null
+            mouseReleased = null
+            doubleClicked = null
+            mouseWheel = null
+      },
       evalDraw: function () {
             this.renderCodeDraw = this.cmDraw.getValue();
             try {
@@ -184,8 +225,7 @@ let Lp5 = {
                         this.validCodeDraw = this.renderCodeDraw;
                         this.el('lp5-draw').parentElement.classList.remove('error');
                         this.el('lp5-draw').parentElement.classList.remove('change');
-                        this.main.saveCode('draw', this.validCodeDraw)
-                        this.historyChangesDraw = 0
+                        //this.main.saveCode('draw', this.validCodeDraw)
                   } else {
                         this.el('lp5-draw').parentElement.classList.add('error');
                   }
@@ -210,13 +250,14 @@ let Lp5 = {
                         }
                   }
                   if (valid) {
+                        this.clearEvts()
                         this.validCodeAux = this.renderCodeAux;
                         new Function(this.validCodeAux)();
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
-                        this.historyChangesAux = 0
                         this.el('lp5-console-out').innerHTML = ''
-                        this.main.saveCode('auxcode', this.validCodeAux)
+                        
+                        //this.main.saveCode('auxcode', this.validCodeAux)
                   }
             } catch (e) {
                   console.log('en aux: ' + e);
@@ -244,8 +285,7 @@ let Lp5 = {
                         this.el('lp5-setup').parentElement.classList.remove('error');
                         this.el('lp5-setup').parentElement.classList.remove('change');
                         this.el('lp5-console-out').innerHTML = ''
-                        this.main.saveCode('setup', this.validCodeSetup)
-                        this.historyChangesSetup = 0
+                        //this.main.saveCode('setup', this.validCodeSetup)
                         setup();
                   } else {
                         this.el('lp5-setup').parentElement.classList.add('error');
@@ -409,7 +449,6 @@ function setup() {
             ___audio = null
             ___fft = null
       }
-      // reset -------------------------------
       try {
             if (!___webgl) blendMode(NORMAL)
       } catch (e) {
@@ -436,17 +475,23 @@ function setup() {
 function draw() {
       // FPS
       Lp5.fps = getFrameRate();
+      if ((Lp5.historyChangesSetup + Lp5.historyChangesDraw + Lp5.historyChangesAux) > 0) {
+            Lp5.el('lp5-os-status').classList.add('unsave')
+      } else {
+            Lp5.el('lp5-os-status').classList.remove('unsave')
+      }
       // reset -------------------------------
       noTint()
       // funciones no soportadas en WEBGL ----
       try {
-            if (!___webgl) { 
-                  blendMode(NORMAL) 
+            if (!___webgl) {
+                  blendMode(NORMAL)
             } else {
-                  // en use3d
-                  // ambientLight(0, 0)
-                  // directionalLight(color(0,0,0,0), 0, 0, 0)
-                  // ambientMaterial(color(167,167,167))
+                  // en use3d -> default
+                  directionalLight(100, 100, 100, 1, 1, 0)
+                  ambientLight(50)
+                  colorMode(RGB, 255, 255, 255)
+                  ambientMaterial(color(167, 167, 167))
             }
       } catch (e) {
             //
@@ -501,8 +546,6 @@ function draw() {
 function windowResized() {
       try {
             resizeCanvas(windowWidth, windowHeight, true);
-            //setup();
-            //Lp5.evalAux()
       } catch (e) {
             console.log('en resize ' + e);
       }
@@ -559,6 +602,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                         }
                   }
                   if (valid) {
+                        Lp5.clearEvts()
                         Lp5.validCodeAux = Lp5.renderCodeAux;
                         new Function(Lp5.validCodeAux)();
                         Lp5.el('lp5-aux').parentElement.classList.remove("error");
@@ -655,8 +699,7 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
                         Lp5.el('lp5-setup').parentElement.classList.remove('change');
                         Lp5.el('lp5-console-out').innerHTML = ''
                         new Function(Lp5.validCodeSetup)()
-                        Lp5.main.saveCode('setup', Lp5.validCodeSetup)
-                        Lp5.historyChangesSetup = 0
+                        //Lp5.main.saveCode('setup', Lp5.validCodeSetup)
                   } else {
                         Lp5.el('lp5-setup').parentElement.classList.add('error');
                   }
@@ -933,9 +976,13 @@ document.addEventListener('keydown', function (ev) {
       }
       // Salvar codigo --------------------
       if (ev.ctrlKey && ev.keyCode == 83) {
-            if (Lp5.validCodeSetup != '') Lp5.main.saveCode('setup', Lp5.validCodeSetup)
-            if (Lp5.validCodeDraw != '') Lp5.main.saveCode('draw', Lp5.validCodeDraw)
-            if (Lp5.validCodeAux != '') Lp5.main.saveCode('auxcode', Lp5.validCodeAux)
+            // if (Lp5.validCodeSetup != '') 
+            Lp5.main.saveCode('setup', Lp5.cmSetup.getValue())
+            // if (Lp5.validCodeDraw != '') 
+            Lp5.main.saveCode('draw', Lp5.cmDraw.getValue())
+            // if (Lp5.validCodeAux != '') 
+            Lp5.main.saveCode('auxcode', Lp5.cmAux.getValue())
+            console_msg('Guardado')
       }
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
