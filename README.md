@@ -91,6 +91,23 @@ console.log(lp.x) // salida -> code
 
 ~~~
 
+### Eventos
+
+Se pueden declarar los eventos en el bloque `aux`
+
+~~~js
+
+mouseClicked = function(){
+  console.log('evt click')
+}
+
+mouseMoved = function(){
+  console.log('evt mousemove')
+}
+
+// Etc
+~~~
+
 ### Funciones extendidas de p5j
 
 - `mirrorX()` Espejo - Refleja la imagen desde la mitad sobre el eje X

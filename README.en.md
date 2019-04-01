@@ -91,6 +91,23 @@ console.log(lp.x) // out -> code
 
 ~~~
 
+### Events
+
+You can declare events in `aux` block
+
+~~~js
+
+mouseClicked = function(){
+  console.log('evt click')
+}
+
+mouseMoved = function(){
+  console.log('evt mousemove')
+}
+
+// Etc
+~~~
+
 ### Extended functions p5j
 
 - `mirrorX()` Mirror - Reflect image from X axis
