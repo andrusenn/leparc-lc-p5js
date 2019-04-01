@@ -10,7 +10,7 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.0.4-alpha',
+      version: '0.0.5-a',
       // Canvas
       canvas: null,
       // mian.js
@@ -136,7 +136,8 @@ let Lp5 = {
                   'createCanvas',
                   'use2d',
                   'use3d',
-                  'useCam'
+                  'useCam',
+                  'useAudio'
             ],
             aux: [
                   'draw',
@@ -146,7 +147,8 @@ let Lp5 = {
                   'createCanvas',
                   'use2d',
                   'use3d',
-                  'useCam'
+                  'useCam',
+                  'useAudio'
             ]
       },
       checkProgWord: function (_word) {
@@ -302,7 +304,7 @@ window.addEventListener('load', function () {
       Lp5.IP = Lp5.main.getIP()
       Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
       // Tit
-      document.title = 'LeParc - livecoding - P5js - v' + Lp5.version
+      document.title = 'LeParc - livecoder - P5js - v' + Lp5.version
 });
 
 // ********************************************************************
@@ -438,7 +440,14 @@ function draw() {
       noTint()
       // funciones no soportadas en WEBGL ----
       try {
-            if (!___webgl) blendMode(NORMAL)
+            if (!___webgl) { 
+                  blendMode(NORMAL) 
+            } else {
+                  // en use3d
+                  // ambientLight(0, 0)
+                  // directionalLight(color(0,0,0,0), 0, 0, 0)
+                  // ambientMaterial(color(167,167,167))
+            }
       } catch (e) {
             //
       }
@@ -538,11 +547,11 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   let valid = true;
                   let word = '';
                   for (let i = 0; i < Lp5.prog.aux.length; i++) {
-                        if (Lp5.renderCodeAux.match(Lp5.hasProgWord(Lp5.prog.aux[i]))) {
+                        word = Lp5.prog.aux[i];
+                        if (Lp5.renderCodeAux.includes(word)) {
                               let r = new RegExp(Lp5.checkProgWord(Lp5.prog.aux[i]))
                               if (!Lp5.renderCodeAux.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog.aux[i];
                                     Lp5.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser utilizada en este bloque';
                               }
                         }
@@ -627,11 +636,11 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
                   let valid = true;
                   let word = '';
                   for (let i = 0; i < Lp5.prog.setup.length; i++) {
-                        if (Lp5.renderCodeSetup.match(Lp5.hasProgWord(Lp5.prog.setup[i]))) {
+                        word = Lp5.prog.setup[i];
+                        if (Lp5.renderCodeSetup.includes(word)) {
                               let r = new RegExp(Lp5.checkProgWord(Lp5.prog.setup[i]))
                               if (!Lp5.renderCodeSetup.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog.setup[i];
                                     Lp5.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser utilizada en este bloque'
                               }
                         }
