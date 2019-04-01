@@ -525,10 +525,12 @@ Lp5.codeAux.addEventListener('click', (ev) => {
 
       Lp5.cmFocused = 'aux';
 })
-Lp5.codeAux.addEventListener('keydown', (ev) => {
+Lp5.codeAux.addEventListener('keyup', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
+})
+Lp5.codeAux.addEventListener('keydown', (ev) => {
 
       // Verifica si hubo cambios
       if (Lp5.validCodeAux != Lp5.cmAux.getValue()) {
@@ -613,10 +615,12 @@ Lp5.codeSetup.addEventListener('click', (ev) => {
 
       Lp5.cmFocused = 'setup';
 })
-Lp5.codeSetup.addEventListener('keydown', (ev) => {
+Lp5.codeSetup.addEventListener('keyup', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmSetupCp.line = Lp5.cmSetup.getCursor().line;
       Lp5.cmSetupCp.ch = Lp5.cmSetup.getCursor().ch;
+})
+Lp5.codeSetup.addEventListener('keydown', (ev) => {
 
       // Verifica si hubo cambios
       if (Lp5.validCodeSetup != Lp5.cmSetup.getValue()) {
@@ -706,10 +710,12 @@ Lp5.codeDraw.addEventListener('click', (ev) => {
 
       Lp5.cmFocused = 'draw';
 });
-Lp5.codeDraw.addEventListener('keydown', (ev) => {
+Lp5.codeDraw.addEventListener('keyup', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmDrawCp.line = Lp5.cmDraw.getCursor().line;
       Lp5.cmDrawCp.ch = Lp5.cmDraw.getCursor().ch;
+})
+Lp5.codeDraw.addEventListener('keydown', (ev) => {
 
       // Verifica si hubo cambios
       if (Lp5.validCodeDraw != Lp5.cmDraw.getValue()) {
@@ -804,28 +810,28 @@ document.addEventListener('keyup', (ev) => {
       // Mostrar/ocultar paneles
       if (ev.keyCode == 112) {
             if (Lp5.showSetupWin) {
-                  Lp5.el('lp5-setup').style.display = 'none';
+                  Lp5.el('lp5-setup-pannel').style.display = 'none';
                   Lp5.showSetupWin = false;
             } else {
-                  Lp5.el('lp5-setup').style.display = 'inline';
+                  Lp5.el('lp5-setup-pannel').style.display = 'inline';
                   Lp5.showSetupWin = true;
             }
       }
       if (ev.keyCode == 113) {
             if (Lp5.showDrawWin) {
-                  Lp5.el('lp5-draw').style.display = 'none';
+                  Lp5.el('lp5-draw-pannel').style.display = 'none';
                   Lp5.showDrawWin = false;
             } else {
-                  Lp5.el('lp5-draw').style.display = 'inline';
+                  Lp5.el('lp5-draw-pannel').style.display = 'inline';
                   Lp5.showDrawWin = true;
             }
       }
       if (ev.keyCode == 114) {
             if (Lp5.showAuxWin) {
-                  Lp5.el('lp5-aux').style.display = 'none';
+                  Lp5.el('lp5-aux-pannel').style.display = 'none';
                   Lp5.showAuxWin = false;
             } else {
-                  Lp5.el('lp5-aux').style.display = 'inline';
+                  Lp5.el('lp5-aux-pannel').style.display = 'inline';
                   Lp5.showAuxWin = true;
             }
       }
@@ -837,6 +843,16 @@ document.addEventListener('keyup', (ev) => {
             } else {
                   Lp5.el('win').style.display = 'inline';
                   Lp5.showWin = true;
+
+                  // Vuelve a mostrar todos
+                  Lp5.el('lp5-setup-pannel').style.display = 'inline';
+                  Lp5.showSetupWin = true;
+
+                  Lp5.el('lp5-draw-pannel').style.display = 'inline';
+                  Lp5.showDrawWin = true;
+
+                  Lp5.el('lp5-aux-pannel').style.display = 'inline';
+                  Lp5.showAuxWin = true;
             }
       }
       // Exit
@@ -936,19 +952,19 @@ document.addEventListener('keydown', function (ev) {
             if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
             if (Lp5.panelIndex < 0) Lp5.panelIndex = 2;
             if (Lp5.panelIndex == 0) {
+                  Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
                   Lp5.cmSetup.focus()
                   Lp5.cmFocused = 'setup'
-                  Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
             }
             if (Lp5.panelIndex == 1) {
+                  Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
                   Lp5.cmDraw.focus()
                   Lp5.cmFocused = 'draw'
-                  Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
             }
             if (Lp5.panelIndex == 2) {
+                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
                   Lp5.cmAux.focus()
                   Lp5.cmFocused = 'aux'
-                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
             }
       }
       // Refrescar fondo lineas
