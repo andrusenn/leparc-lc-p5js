@@ -119,104 +119,138 @@ let Lp5 = {
                   els[i].style.backgroundColor = "rgba(0,0,0," + this.bg_code_alpha + ")";
             }
       },
+      // Palabras reservadas
+      prog: {
+            setup: [
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas'
+            ],
+            draw: [
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'use2d',
+                  'use3d',
+                  'useCam'
+            ],
+            aux: [
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'use2d',
+                  'use3d',
+                  'useCam'
+            ]
+      },
+      checkProgWord: function (_word) {
+            return `('|") {0,}${_word} {0,}('|")`
+      },
+      // hasProgWord: function (_word) {
+      //       return `(\n| ){1,}${_word}`
+      // },
       evalDraw: function () {
-            Lp5.renderCodeDraw = Lp5.cmDraw.getValue();
+            this.renderCodeDraw = this.cmDraw.getValue();
             try {
                   let valid = true;
                   let word = '';
-                  for (let i = 0; i < Lp5.prog.length; i++) {
-                        if (Lp5.renderCodeDraw.match(`(\n| ){1,}${Lp5.prog[i]}`)) {
-                              let r = new RegExp(`('|") {0,}${Lp5.prog[i]} {0,}('|")`)
-                              if (!Lp5.renderCodeDraw.match(r)) {
+                  for (let i = 0; i < this.prog.draw.length; i++) {
+                        word = this.prog.draw[i]
+                        if (this.renderCodeDraw.includes(word)) {
+                              let r = new RegExp(this.checkProgWord(word))
+                              if (!this.renderCodeDraw.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog[i];
-                                    Lp5.el('lp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser reescrita'
+                                    this.el('lp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser utilizada en este bloque'
                               }
                         }
                   }
                   // Try eval
                   // Verificar que se ejecuta correctamente
                   try {
-                        new Function(Lp5.renderCodeDraw)()
+                        new Function(this.renderCodeDraw)()
                   } catch (e) {
                         valid = false
-                        Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
+                        this.el('lp5-console-out').innerHTML = 'draw: ' + e
                   }
                   if (valid) {
-                        Lp5.validCodeDraw = Lp5.renderCodeDraw;
-                        Lp5.el('lp5-draw').parentElement.classList.remove('error');
-                        Lp5.el('lp5-draw').parentElement.classList.remove('change');
-                        Lp5.main.saveCode('draw', Lp5.validCodeDraw)
-                        Lp5.historyChangesDraw = 0
+                        this.validCodeDraw = this.renderCodeDraw;
+                        this.el('lp5-draw').parentElement.classList.remove('error');
+                        this.el('lp5-draw').parentElement.classList.remove('change');
+                        this.main.saveCode('draw', this.validCodeDraw)
+                        this.historyChangesDraw = 0
                   } else {
-                        Lp5.el('lp5-draw').parentElement.classList.add('error');
+                        this.el('lp5-draw').parentElement.classList.add('error');
                   }
             } catch (e) {
-                  Lp5.el('lp5-draw').parentElement.classList.add('error');
-                  Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
+                  this.el('lp5-draw').parentElement.classList.add('error');
+                  this.el('lp5-console-out').innerHTML = 'draw: ' + e
             }
       },
       evalAux: function () {
-            Lp5.renderCodeAux = Lp5.cmAux.getValue();
-            // Live --------------------------------
+            this.renderCodeAux = this.cmAux.getValue();
             try {
                   let valid = true;
                   let word = '';
-                  for (let i = 0; i < Lp5.prog.length; i++) {
-                        if (Lp5.renderCodeAux.match(`(\n| ){1,}${Lp5.prog[i]}`)) {
-                              let r = new RegExp(`('|") {0,}${Lp5.prog[i]} {0,}('|")`)
-                              if (!Lp5.renderCodeAux.match(r)) {
+                  for (let i = 0; i < this.prog.aux.length; i++) {
+                        word = this.prog.aux[i]
+                        if (this.renderCodeAux.includes(word)) {
+                              let r = new RegExp(this.checkProgWord(word))
+                              if (!this.renderCodeAux.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog[i];
-                                    Lp5.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser reescrita'
+                                    this.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser utilizada en este bloque'
                               }
                         }
                   }
                   if (valid) {
-                        Lp5.validCodeAux = Lp5.renderCodeAux;
-                        new Function(Lp5.validCodeAux)();
-                        Lp5.el('lp5-aux').parentElement.classList.remove('error');
-                        Lp5.el('lp5-aux').parentElement.classList.remove('change');
-                        Lp5.historyChangesAux = 0
-                        Lp5.el('lp5-console-out').innerHTML = ''
-                        Lp5.main.saveCode('auxcode', Lp5.validCodeAux)
+                        this.validCodeAux = this.renderCodeAux;
+                        new Function(this.validCodeAux)();
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
+                        this.historyChangesAux = 0
+                        this.el('lp5-console-out').innerHTML = ''
+                        this.main.saveCode('auxcode', this.validCodeAux)
                   }
             } catch (e) {
                   console.log('en aux: ' + e);
-                  Lp5.el('lp5-console-out').innerHTML = 'en aux:' + e
-                  Lp5.el('lp5-aux').parentElement.classList.add('error');
+                  this.el('lp5-console-out').innerHTML = 'en aux:' + e
+                  this.el('lp5-aux').parentElement.classList.add('error');
             }
       },
       evalSetup: function () {
-            Lp5.renderCodeSetup = Lp5.cmSetup.getValue();
+            this.renderCodeSetup = this.cmSetup.getValue();
             try {
                   let valid = true;
                   let word = '';
-                  for (let i = 0; i < Lp5.prog.length; i++) {
-                        if (Lp5.renderCodeSetup.match(`(\n| ){1,}${Lp5.prog[i]}`)) {
-                              let r = new RegExp(`('|") {0,}${Lp5.prog[i]} {0,}('|")`)
-                              if (!Lp5.renderCodeSetup.match(r)) {
+                  for (let i = 0; i < this.prog.setup.length; i++) {
+                        word = this.prog.setup[i];
+                        if (this.renderCodeSetup.includes(word)) {
+                              let r = new RegExp(this.checkProgWord(word))
+                              if (!this.renderCodeSetup.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog[i];
-                                    Lp5.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser reescrita'
+                                    this.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser utilizada en este bloque'
                               }
                         }
                   }
                   if (valid) {
-                        Lp5.validCodeSetup = Lp5.renderCodeSetup;
-                        Lp5.el('lp5-setup').parentElement.classList.remove('error');
-                        Lp5.el('lp5-setup').parentElement.classList.remove('change');
-                        Lp5.el('lp5-console-out').innerHTML = ''
-                        Lp5.main.saveCode('setup', Lp5.validCodeSetup)
-                        Lp5.historyChangesSetup = 0
-                        // eval se ejecuta dentro de setup()
+                        this.validCodeSetup = this.renderCodeSetup;
+                        this.el('lp5-setup').parentElement.classList.remove('error');
+                        this.el('lp5-setup').parentElement.classList.remove('change');
+                        this.el('lp5-console-out').innerHTML = ''
+                        this.main.saveCode('setup', this.validCodeSetup)
+                        this.historyChangesSetup = 0
                         setup();
                   } else {
-                        Lp5.el('lp5-setup').parentElement.classList.add('error');
+                        this.el('lp5-setup').parentElement.classList.add('error');
                   }
             } catch (e) {
-                  Lp5.el('lp5-console-out').innerHTML = 'setup: ' + e
-                  Lp5.el('lp5-setup').parentElement.classList.add('error');
+                  this.el('lp5-console-out').innerHTML = 'setup: ' + e
+                  this.el('lp5-setup').parentElement.classList.add('error');
             }
       },
       // Config
@@ -229,18 +263,10 @@ let Lp5 = {
       },
       // Modo: CLIENTE-SERVIDOR
       evalConn: function (block) {
-            if (Lp5.mode == 'CLIENT') Lp5.client.eval(block)
-            if (Lp5.mode == 'SERVER') Lp5.server.eval(block)
-      },
-      // Palabras reservadas
-      prog:
-            [
-                  'draw',
-                  'setup',
-                  'preload',
-                  'canvas',
-                  'createCanvas',
-            ]
+            if (this.mode == 'CLIENT') this.client.eval(block)
+            if (this.mode == 'SERVER') this.server.eval(block)
+      }
+
 }
 
 // Global var scope --------------------------------------------
@@ -372,8 +398,7 @@ function preload() {
 }
 function setup() {
       // Init setup --------------------------
-      let cnv = createCanvas(windowWidth, windowHeight);
-      Lp5.canvas = cnv.elt
+      Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
       // Webcam/video capture
       ___webcam = null;
       // Audio
@@ -382,18 +407,25 @@ function setup() {
             ___audio = null
             ___fft = null
       }
-      // default fps
+      // reset -------------------------------
+      try {
+            if (!___webgl) blendMode(NORMAL)
+      } catch (e) {
+            //
+      }
       setFrameRate(60)
       imageMode(CORNER)
+      angleMode(RADIANS)
       rectMode(CORNER)
       ellipseMode(CENTER)
       background(0);
-      colorMode(RGB, 255)
+      colorMode(RGB, 255, 255, 255)
+      lp = {}
       // Live --------------------------------
       try {
             new Function(Lp5.validCodeSetup)();
       } catch (e) {
-            console_msg('setup: ' + e)
+            console_msg('setup: ' + e.stack)
       }
 
 
@@ -402,6 +434,14 @@ function setup() {
 function draw() {
       // FPS
       Lp5.fps = getFrameRate();
+      // reset -------------------------------
+      noTint()
+      // funciones no soportadas en WEBGL ----
+      try {
+            if (!___webgl) blendMode(NORMAL)
+      } catch (e) {
+            //
+      }
       // Live --------------------------------
       if (!Lp5.drawOnFly) {
             try {
@@ -417,13 +457,13 @@ function draw() {
             try {
                   let valid = true;
                   let word = '';
-                  for (let i = 0; i < Lp5.prog.length; i++) {
-                        if (Lp5.renderCodeDraw.match(`(\n| ){1,}${Lp5.prog[i]}`)) {
-                              let r = new RegExp(`('|") {0,}${Lp5.prog[i]} {0,}('|")`)
+                  for (let i = 0; i < Lp5.prog.draw.length; i++) {
+                        word = Lp5.prog.draw[i];
+                        if (Lp5.renderCodeDraw.includes(word)) {
+                              let r = new RegExp(Lp5.checkProgWord(word))
                               if (!Lp5.renderCodeDraw.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog[i];
-                                    Lp5.el('lp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser reescrita'
+                                    Lp5.el('lp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser utilizada en este bloque'
                               }
                         }
                   }
@@ -451,8 +491,9 @@ function draw() {
 }
 function windowResized() {
       try {
-            resizeCanvas(windowWidth, windowHeight);
-            setup();
+            resizeCanvas(windowWidth, windowHeight, true);
+            //setup();
+            //Lp5.evalAux()
       } catch (e) {
             console.log('en resize ' + e);
       }
@@ -496,13 +537,13 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
             try {
                   let valid = true;
                   let word = '';
-                  for (let i = 0; i < Lp5.prog.length; i++) {
-                        if (Lp5.renderCodeAux.match(`(\n| ){1,}${Lp5.prog[i]}`)) {
-                              let r = new RegExp(`('|") {0,}${Lp5.prog[i]} {0,}('|")`)
+                  for (let i = 0; i < Lp5.prog.aux.length; i++) {
+                        if (Lp5.renderCodeAux.match(Lp5.hasProgWord(Lp5.prog.aux[i]))) {
+                              let r = new RegExp(Lp5.checkProgWord(Lp5.prog.aux[i]))
                               if (!Lp5.renderCodeAux.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog[i];
-                                    Lp5.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser reescrita';
+                                    word = Lp5.prog.aux[i];
+                                    Lp5.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser utilizada en este bloque';
                               }
                         }
                   }
@@ -585,13 +626,13 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
             try {
                   let valid = true;
                   let word = '';
-                  for (let i = 0; i < Lp5.prog.length; i++) {
-                        if (Lp5.renderCodeSetup.match(`(\n| ){1,}${Lp5.prog[i]}`)) {
-                              let r = new RegExp(`('|") {0,}${Lp5.prog[i]} {0,}('|")`)
+                  for (let i = 0; i < Lp5.prog.setup.length; i++) {
+                        if (Lp5.renderCodeSetup.match(Lp5.hasProgWord(Lp5.prog.setup[i]))) {
+                              let r = new RegExp(Lp5.checkProgWord(Lp5.prog.setup[i]))
                               if (!Lp5.renderCodeSetup.match(r)) {
                                     valid = false;
-                                    word = Lp5.prog[i];
-                                    Lp5.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser reescrita'
+                                    word = Lp5.prog.setup[i];
+                                    Lp5.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser utilizada en este bloque'
                               }
                         }
                   }
