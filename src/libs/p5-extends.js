@@ -575,15 +575,50 @@ if (!p5.prototype.hasOwnProperty('getCam')) {
                   if (___webcam == null) {
                         console_msg('useCam() no esta declarado')
                   }
+                  if (arg.length == 1 && ___webcam != null) {
+                        arg[0].push()
+                        arg[0].image(___webcam, 0, 0)
+                        arg[0].pop()
+                  }
                   if (arg.length == 2 && ___webcam != null) {
                         push()
                         translate(arg[0], arg[1])
                         image(___webcam, 0, 0)
                         pop()
                   }
+                  if (arg.length == 3 && ___webcam != null) {
+                        arg[0].push()
+                        arg[0].translate(arg[1], arg[2])
+                        arg[0].image(___webcam, 0, 0)
+                        arg[0].pop()
+                  }
             } else {
                   console_msg('useCam() - Solo puede conectarse en modo LOCAL o SERVER', 'warning');
             }
+      }
+}
+
+/**
+ * Metodo que devuelve la captura
+ * 
+ * @method imgCam
+ * @return image
+ */
+
+if (!p5.prototype.hasOwnProperty('imgCam')) {
+      p5.prototype.imgCam = function () {
+
+            if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
+                  let arg = arguments;
+                  if (___webcam == null) {
+                        console_msg('useCam() no esta declarado')
+                  }
+                  return ___webcam
+            } else {
+                  console_msg('useCam() - Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  return null
+            }
+            return null
       }
 }
 /******************************************************/
@@ -713,9 +748,9 @@ if (!p5.prototype.hasOwnProperty('audioEnergy')) {
 }
 
 /**
- * Crea un canvas con WEBGL
+ * Almacena verdadero si el render en webgl
  * 
- * @method use3D
+ * @property ___webgl
  */
 
 if (!p5.prototype.hasOwnProperty('___webgl')) {
@@ -725,11 +760,25 @@ if (!p5.prototype.hasOwnProperty('___webgl')) {
             p5.prototype.___webgl = true
       }
 }
+
+/**
+ * Crea un canvas con WEBGL
+ * Recarga la pantalla
+ * 
+ * @method use3D
+ */
 if (!p5.prototype.hasOwnProperty('use3d')) {
       p5.prototype.use3d = function () {
             if (Lp5.main.globalSettings().renderer == 'p2d') Lp5.main.reload('webgl')
       }
 }
+
+/**
+ * Crea un canvas con P2D
+ * Recarga la pantalla
+ * 
+ * @method use2d
+ */
 if (!p5.prototype.hasOwnProperty('use2d')) {
       p5.prototype.use2d = function () {
             if (Lp5.main.globalSettings().renderer == 'webgl') Lp5.main.reload('p2d')
