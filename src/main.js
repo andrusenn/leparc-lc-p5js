@@ -45,7 +45,9 @@ function createWindow() {
             })
       }
       mainWindow.loadFile('index.html')
-
+      global.settings = {
+            renderer: 'p2d'
+      }
       //mainWindow.webContents.openDevTools()
       // mainWindow.webContents.openDevTools({ mode: 'detach' })
 
@@ -71,6 +73,9 @@ exports.exit = function () {
 }
 exports.path = function () {
       return path
+}
+exports.globalSettings = function(){
+      return global.settings
 }
 exports.setFull = function () {
       mainWindow.setKiosk(true)
@@ -112,6 +117,9 @@ exports.devTools = function (open) {
       }
 }
 exports.reload = function () {
+      if(arguments.length == 1){
+            global.settings.renderer = arguments[0]
+      } 
       mainWindow.loadFile('index.html');
 }
 exports.loadImgsBank = function () {
