@@ -177,6 +177,12 @@ if (!p5.prototype.hasOwnProperty('displace')) {
 if (!p5.prototype.hasOwnProperty('beginRot')) {
       p5.prototype.beginRot = function () {
             let arg = arguments;
+            if (arg.length == 0) {
+                  push();
+                  translate(width / 2, height / 2);
+                  rotate(freq(0.01))
+                  translate(-width / 2, -height / 2);
+            }
             if (arg.length == 1) {
                   push();
                   translate(width / 2, height / 2);
@@ -325,7 +331,7 @@ if (!p5.prototype.hasOwnProperty('imirrorX')) {
 if (!p5.prototype.hasOwnProperty('kaleido')) {
       p5.prototype.kaleido = function () {
             let i = get(0, 0, width / 2, height / 2);
-
+            imageMode(CORNER)
             push()
             translate(0, 0)
             translate(- 1, 0)
@@ -342,14 +348,14 @@ if (!p5.prototype.hasOwnProperty('kaleido')) {
 
             push()
             translate(0, 0)
-            translate(0, height - 1)
+            translate(0, height)
             scale(1, -1)
             image(i, 0, 0)
             pop()
 
             push()
             translate(0, 0)
-            translate(width - 1, height - 1)
+            translate(width - 1, height)
             scale(-1, -1)
             image(i, 0, 0)
             pop()
@@ -453,25 +459,6 @@ if (!p5.prototype.hasOwnProperty('libPath')) {
             let arg = arguments
             if (arg.length == 1) {
                   return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs', arg[0])
-            }
-            return null;
-      }
-}
-/**
- * Obtiene la ruta a leparc_resources/images/
- * 
- * @method imgsPath
- * @param {String} name      nombre del directorio
- */
-if (!p5.prototype.hasOwnProperty('imgPath')) {
-      p5.prototype.imgPath = function () {
-            let arg = arguments
-
-            if (arg.length == 0) {
-                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'images')
-            }
-            if (arg.length == 1) {
-                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'images', arg[0])
             }
             return null;
       }
@@ -722,5 +709,29 @@ if (!p5.prototype.hasOwnProperty('audioEnergy')) {
             } else {
                   console_msg('Solo puede conectarse en modo LOCAL o SERVER', 'warning');
             }
+      }
+}
+
+/**
+ * Crea un canvas con WEBGL
+ * 
+ * @method use3D
+ */
+
+if (!p5.prototype.hasOwnProperty('___webgl')) {
+      if (Lp5.main.globalSettings().renderer == 'p2d') {
+            p5.prototype.___webgl = false
+      } else {
+            p5.prototype.___webgl = true
+      }
+}
+if (!p5.prototype.hasOwnProperty('use3d')) {
+      p5.prototype.use3d = function () {
+            if (Lp5.main.globalSettings().renderer == 'p2d') Lp5.main.reload('webgl')
+      }
+}
+if (!p5.prototype.hasOwnProperty('use2d')) {
+      p5.prototype.use2d = function () {
+            if (Lp5.main.globalSettings().renderer == 'webgl') Lp5.main.reload('p2d')
       }
 }
