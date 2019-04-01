@@ -258,6 +258,14 @@ canvas {
             text-shadow: none;
             color: rgba(#fff, 0.6);
             bottom: 0;
+            #lp5-os-status{
+                  width:20;
+                  background:transparent;
+                  color:#000;
+            }
+            .unsave{
+                  background:rgba(255, 255, 255, 0.6) !important;
+            }
       }
 }
 

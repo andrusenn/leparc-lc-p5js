@@ -257,6 +257,16 @@ canvas {
   bottom: 0;
 }
 
+#win #lp5-console #lp5-os-status {
+  width: 20;
+  background: transparent;
+  color: #000;
+}
+
+#win #lp5-console .unsave {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
 .spectrum-bands {
   display: inline-block;
   width: 35px;
