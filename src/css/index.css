@@ -37,9 +37,11 @@ canvas {
   pointer-events: none;
   top: 50%;
   left: 50%;
+  width: 100%;
+  height: 100%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  background: transparent;
+  background: none;
 }
 
 .lp5-code-parent {
@@ -109,6 +111,7 @@ canvas {
 
 .console-out {
   font-size: 0.9rem;
+  text-shadow: none;
 }
 
 .console-out .error {
@@ -249,7 +252,7 @@ canvas {
   line-height: 30px;
   position: fixed;
   background: rgba(0, 0, 0, 0.4);
-  text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
+  text-shadow: none;
   color: rgba(255, 255, 255, 0.6);
   bottom: 0;
 }
