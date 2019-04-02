@@ -133,7 +133,21 @@ mouseMoved = function(){
 ##### Audio
 
 - En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
-- En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias (0-255)
+- En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias. Retorna de 0 a 255
+
+##### Carga archivos externos
+
+Para la carga de archivos (imágenes, videos, sonidos), se utiliza el directorio *media*.
+El método `mediaPath()` devuelve la ruta absoluta a ese directorio.
+
+~~~js
+
+// ~home/leparc_resources/media/
+loadImage( mediaPath() + '/miImagen.jpg',(i)=>{
+  lp.im = i
+})
+
+~~~
 
 ### Modo cliente/servidor
 

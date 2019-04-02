@@ -133,8 +133,22 @@ mouseMoved = function(){
 ##### Audio
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
-- En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies (0-255)
-  
+- In draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies. Return 0 to 255.
+
+##### External media files
+
+Assets must be placed in *media* dir.
+The method `mediaPath()` return absolute path to *media*.
+
+~~~js
+
+// ~home/leparc_resources/media/
+loadImage( mediaPath() + '/myImage.jpg',(i)=>{
+  lp.im = i
+})
+
+~~~
+
 ### Client/Server mode
 
 In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **port** in *leparc_resources/config/config.txt*
