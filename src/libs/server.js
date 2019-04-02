@@ -53,7 +53,7 @@ function initServer(_lp5) {
                   codeDraw: lp5.cmDraw.getValue(),
                   codeAux: lp5.cmAux.getValue()
             }
-            socket.broadcast.emit('broadcast', o)
+            sio.emit('broadcast', o)
             //----------------------------------------
 
             // recive desde cliente
