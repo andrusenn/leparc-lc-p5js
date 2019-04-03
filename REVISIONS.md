@@ -8,6 +8,8 @@
 - Se agrego reset en setup de `lp = {}`, `angleMode(RADIANS)`
 - se agrego el directorio *media*, que es mas general que *images
 - Se agrego `use3d()` y `use2d()`
+- Traduccion EN/ES de la interfaz
+- Comentar codigo
   
 > [en]
 
@@ -15,6 +17,8 @@
 - Reset added on setup of `lp = {}`, `angleMode(RADIANS)`
 - Directory added *media*, it is most general purpose than *images*
 - `use3d()` and `use2d()` added
+- Interface translations EN/ES
+- Comment/Uncomment code
   
 ## Version 0.0.4-alpha
 
