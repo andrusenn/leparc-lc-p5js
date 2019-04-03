@@ -52,6 +52,7 @@ El proyecto está compilado [Electronjs](https://electronjs.org/)
 - `Ctrl+ArrowUP` Cambia el cursor/foco de panel hacia arriba
 - `Ctrl+ArrowDOWN` Cambia el cursor/foco de panel hacia abajo
 - `Ctrl+F` Formatea el código bloque
+- `Ctrl+Shift+C` Comenta/Desomenta código
 
 ### Bloques de código
 

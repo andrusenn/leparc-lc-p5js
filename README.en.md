@@ -52,6 +52,7 @@ This project uses [Electronjs](https://electronjs.org/)
 - `Ctrl+ArrowUP` Change cursor/focus to the next up pannel
 - `Ctrl+ArrowDOWN` Change cursor/focus to the next down pannel
 - `Ctrl+F` Beautify code block
+- `Ctrl+Shift+C` Comment/Uncomment code
 
 ### Code blocks
 
