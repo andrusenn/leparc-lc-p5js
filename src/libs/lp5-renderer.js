@@ -33,6 +33,7 @@ let Lp5 = {
       fullscreen: false,
       devtools: false,
       fps: 0,
+      looping: true,
       historyChangesSetup: 0,
       historyChangesDraw: 0,
       historyChangesAux: 0,
@@ -133,8 +134,8 @@ let Lp5 = {
                   'mouseMoved',
                   'mouseDragged',
                   'mousePressed',
-                  'mouseReleased', 
-                  'doubleClicked', 
+                  'mouseReleased',
+                  'doubleClicked',
                   'mouseWheel'
             ],
             draw: [
@@ -152,8 +153,8 @@ let Lp5 = {
                   'mouseMoved',
                   'mouseDragged',
                   'mousePressed',
-                  'mouseReleased', 
-                  'doubleClicked', 
+                  'mouseReleased',
+                  'doubleClicked',
                   'mouseWheel'
             ],
             aux: [
@@ -188,7 +189,7 @@ let Lp5 = {
       //             this.el('main').removeEventListener(this.cnvEvents[i].evt, this.cnvEvents[i].fn)
       //       }
       // },
-      clearEvts: function(){
+      clearEvts: function () {
             // p5js events prop
             mouseClicked = null
             mouseMoved = null
@@ -209,7 +210,7 @@ let Lp5 = {
                               let r = new RegExp(this.checkProgWord(word))
                               if (!this.renderCodeDraw.match(r)) {
                                     valid = false;
-                                    this.el('lp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser utilizada en este bloque'
+                                    this.el('lp5-console-out').innerHTML =  '| draw: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -231,7 +232,7 @@ let Lp5 = {
                   }
             } catch (e) {
                   this.el('lp5-draw').parentElement.classList.add('error');
-                  this.el('lp5-console-out').innerHTML = 'draw: ' + e
+                  this.el('lp5-console-out').innerHTML = '| draw: ' + e
             }
       },
       evalAux: function () {
@@ -245,7 +246,7 @@ let Lp5 = {
                               let r = new RegExp(this.checkProgWord(word))
                               if (!this.renderCodeAux.match(r)) {
                                     valid = false;
-                                    this.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser utilizada en este bloque'
+                                    this.el('lp5-console-out').innerHTML =   '| aux: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -256,12 +257,12 @@ let Lp5 = {
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
                         this.el('lp5-console-out').innerHTML = ''
-                        
+
                         //this.main.saveCode('auxcode', this.validCodeAux)
                   }
             } catch (e) {
-                  console.log('en aux: ' + e);
-                  this.el('lp5-console-out').innerHTML = 'en aux:' + e
+                  console.trace('en aux: ' + e);
+                  this.el('lp5-console-out').innerHTML = '| aux: ' + e
                   this.el('lp5-aux').parentElement.classList.add('error');
             }
       },
@@ -276,7 +277,7 @@ let Lp5 = {
                               let r = new RegExp(this.checkProgWord(word))
                               if (!this.renderCodeSetup.match(r)) {
                                     valid = false;
-                                    this.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser utilizada en este bloque'
+                                    this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -315,7 +316,7 @@ let Lp5 = {
 if (!window.hasOwnProperty('lp')) {
       window.lp = {}
 } else {
-      console.log('no se pudo crear el objeto global "lp"')
+      console.trace('no se pudo crear el objeto global "lp"')
 }
 // Init
 window.addEventListener('load', function () {
@@ -323,7 +324,7 @@ window.addEventListener('load', function () {
       try {
             require(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'extends', 'lp-extends.js'))
       } catch (e) {
-            console.log('No se pudo cargar lp-extends.js')
+            console.trace('No se pudo cargar lp-extends.js')
       }
       // ----------------------------------------------------
       setInterval(() => {
@@ -332,7 +333,9 @@ window.addEventListener('load', function () {
       }, 2000)
       setInterval(() => {
             // FPS
-            Lp5.el('lp5-os-fps').innerText = '| fps:' + Math.round(Lp5.fps);
+            let osfps = Math.round(Lp5.fps);
+            if (!Lp5.looping) osfps = '<span class="info">NO LOOP</span>'
+            Lp5.el('lp5-os-fps').innerHTML = '| fps:' + osfps;
       }, 500)
       Lp5.toggleModal('cnf')
 
@@ -345,6 +348,14 @@ window.addEventListener('load', function () {
       Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
       // Tit
       document.title = 'LeParc - livecoder - P5js - v' + Lp5.version
+      // Lang
+      if (localStorage.lang == 'es') {
+            Lp5.el('cnf-lang').options[0].selected = true
+      }
+      if (localStorage.lang == 'en') {
+            Lp5.el('cnf-lang').options[1].selected = true
+      }
+      console.log(localStorage.lang)
 });
 
 // ********************************************************************
@@ -360,6 +371,7 @@ function preload() {
       // Code mirror
       Lp5.cmSetup = CodeMirror(Lp5.codeSetup, {
             mode: "javascript"
+
       });
       // Init cursor
       Lp5.cmSetup.focus()
@@ -391,7 +403,7 @@ function preload() {
                   // Llama a setup
                   // setup()
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
 
       })
@@ -410,7 +422,7 @@ function preload() {
                   }
                   // Lp5.renderCodeDraw = txt.trim()
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
       })
       loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'save', 'auxcode.txt'), (file) => {
@@ -427,7 +439,7 @@ function preload() {
                         Lp5.cmSetup.setValue(' ');
                   }
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
       })
       loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'config', 'config.txt'), (file) => {
@@ -439,6 +451,19 @@ function preload() {
       })
 }
 function setup() {
+      // Init loop (default)
+      p5.looping = true
+      loop()
+
+      // Checkea si toma muchos recursos y para el loop
+
+      // let cfps = setInterval(function () {
+      //       if (getFrameRate() < _targetFrameRate * 0.1) {
+      //             noLoop()
+      //             Lp5.looping = false
+      //       }
+      // },2000)
+
       // Init setup --------------------------
       Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
       // Webcam/video capture
@@ -475,6 +500,7 @@ function setup() {
 function draw() {
       // FPS
       Lp5.fps = getFrameRate();
+      // Revisar
       if ((Lp5.historyChangesSetup + Lp5.historyChangesDraw + Lp5.historyChangesAux) > 0) {
             Lp5.el('lp5-os-status').classList.add('unsave')
       } else {
@@ -517,7 +543,7 @@ function draw() {
                               let r = new RegExp(Lp5.checkProgWord(word))
                               if (!Lp5.renderCodeDraw.match(r)) {
                                     valid = false;
-                                    Lp5.el('lp5-console-out').innerHTML = 'en draw: ' + word + ' no puede ser utilizada en este bloque'
+                                    Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + lang_msg.priv_words
                               }
                         }
                   }
@@ -547,7 +573,7 @@ function windowResized() {
       try {
             resizeCanvas(windowWidth, windowHeight, true);
       } catch (e) {
-            console.log('en resize ' + e);
+            console.trace('en resize ' + e);
       }
 }
 // ********************************************************************
@@ -597,7 +623,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                               let r = new RegExp(Lp5.checkProgWord(Lp5.prog.aux[i]))
                               if (!Lp5.renderCodeAux.match(r)) {
                                     valid = false;
-                                    Lp5.el('lp5-console-out').innerHTML = 'en aux: ' + word + ' no puede ser utilizada en este bloque';
+                                    Lp5.el('lp5-console-out').innerHTML = '| aux: ' + word + lang_msg.priv_words
                               }
                         }
                   }
@@ -610,8 +636,8 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                         Lp5.el('lp5-console-out').innerHTML = '';
                   }
             } catch (e) {
-                  console.log('en aux eval ' + e);
-                  Lp5.el('lp5-console-out').innerHTML = 'en aux: ' + e
+                  console.trace('en aux eval ' + e);
+                  Lp5.el('lp5-console-out').innerHTML = '| aux: ' + e
                   Lp5.el('lp5-aux').parentElement.classList.add('error');
             }
       }
@@ -627,7 +653,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
                   Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
       }
 });
@@ -689,7 +715,7 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
                               let r = new RegExp(Lp5.checkProgWord(Lp5.prog.setup[i]))
                               if (!Lp5.renderCodeSetup.match(r)) {
                                     valid = false;
-                                    Lp5.el('lp5-console-out').innerHTML = 'en setup: ' + word + ' no puede ser utilizada en este bloque'
+                                    Lp5.el('lp5-console-out').innerHTML = '| setup: ' + word + lang_msg.priv_words
                               }
                         }
                   }
@@ -720,7 +746,7 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
                   Lp5.cmSetup.setValue(Lp5.beautify_js(Lp5.cmSetup.getValue()))
                   Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: 0 })
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
       }
 });
@@ -770,6 +796,8 @@ Lp5.codeDraw.addEventListener('keydown', (ev) => {
       }
       if (ev.ctrlKey && ev.keyCode == 13) {
             Lp5.evalDraw()
+            // Redraw si no esta loopeando
+            if (!Lp5.looping) redraw()
             Lp5.evalConn('draw')
       }
       if (ev.ctrlKey && ev.keyCode == 70) {
@@ -779,7 +807,7 @@ Lp5.codeDraw.addEventListener('keydown', (ev) => {
                   Lp5.cmDraw.setValue(Lp5.beautify_js(Lp5.cmDraw.getValue()))
                   Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: 0 })
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
       }
 });
@@ -944,6 +972,25 @@ document.addEventListener('keyup', (ev) => {
 // Global keydown event -----------------------------------
 document.addEventListener('keydown', function (ev) {
       //console.log(ev.keyCode)
+      // Comment ----------------------
+      if (ev.shiftKey && !ev.altKey && ev.ctrlKey && ev.keyCode == 67) {
+            ev.preventDefault();
+            if (Lp5.cmFocused == 'draw') {
+                  Lp5.cmDraw.toggleComment({
+                        lineComment: '//'
+                  })
+            }
+            if (Lp5.cmFocused == 'aux') {
+                  Lp5.cmAux.toggleComment({
+                        lineComment: '//'
+                  })
+            }
+            if (Lp5.cmFocused == 'setup') {
+                  Lp5.cmSetup.toggleComment({
+                        lineComment: '//'
+                  })
+            }
+      }
       // Format code ----------------------
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
@@ -965,7 +1012,7 @@ document.addEventListener('keydown', function (ev) {
                         Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
                   }
             } catch (e) {
-                  console.log(e)
+                  console.trace(e)
             }
       }
       // ----------------------------------
@@ -973,6 +1020,16 @@ document.addEventListener('keydown', function (ev) {
       if (ev.ctrlKey && ev.keyCode == 9) {
             ev.preventDefault();
             Lp5.toggleModal('cnf')
+      }
+      // Panic Loop --------------------
+      if (ev.ctrlKey && ev.keyCode == 76) {
+            if (Lp5.looping) {
+                  noLoop()
+                  Lp5.looping = false
+            } else {
+                  loop()
+                  Lp5.looping = true
+            }
       }
       // Salvar codigo --------------------
       if (ev.ctrlKey && ev.keyCode == 83) {
@@ -982,7 +1039,7 @@ document.addEventListener('keydown', function (ev) {
             Lp5.main.saveCode('draw', Lp5.cmDraw.getValue())
             // if (Lp5.validCodeAux != '') 
             Lp5.main.saveCode('auxcode', Lp5.cmAux.getValue())
-            console_msg('Guardado')
+            console_msg(lang_msg.saved)
       }
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
@@ -1102,6 +1159,12 @@ Lp5.el('cnf-sync').addEventListener('click', () => {
       } else {
             Lp5.sync = false
       }
+});
+
+Lp5.el('cnf-lang').addEventListener('change', () => {
+      localStorage.lang = Lp5.el('cnf-lang').value
+      console.log(localStorage.lang)
+      Lp5.main.reload()
 });
 Lp5.el('cnf-server').addEventListener('change', (ev) => {
 
