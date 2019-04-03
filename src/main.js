@@ -28,7 +28,7 @@ function createWindow() {
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'save'), () => {
                         writef(path.join(resourcesPath, 'leparc_resources', 'save', 'setup.txt'), '// Hola LeParc!!');
                         writef(path.join(resourcesPath, 'leparc_resources', 'save', 'auxcode.txt'), '// !!');
-                        writef(path.join(resourcesPath, 'leparc_resources', 'save', 'draw.txt'), '// Hora de livecoding!!');
+                        writef(path.join(resourcesPath, 'leparc_resources', 'save', 'draw.txt'), '// ');
                   })
                   // Directorio -> leparc_resources/libs
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'libs'))
