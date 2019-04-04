@@ -10,6 +10,8 @@
 - Se agrego `use3d()` y `use2d()`
 - Traduccion EN/ES de la interfaz
 - Comentar codigo
+- Declaraciones globales con el prefijo `$`
+- Carga snippets `snip(nombre)`
   
 > [en]
 
@@ -19,6 +21,8 @@
 - `use3d()` and `use2d()` added
 - Interface translations EN/ES
 - Comment/Uncomment code
+- Global declarations with `$` prefix
+- Load snippets `snip(name)`
   
 ## Version 0.0.4-alpha
 
