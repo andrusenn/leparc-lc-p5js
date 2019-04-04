@@ -4,7 +4,6 @@
  * Objeto Lp5 y todas las funcionalidades (core)
  * 
  */
-
 // -----------------------------------------------------
 // LeParc Object --------------------------------------
 // -----------------------------------------------------
@@ -173,6 +172,9 @@ let Lp5 = {
       checkProgWord: function (_word) {
             return `(' {0,}|" {0,}|\.)${_word} {0,}('|"|)`
       },
+      doGlobals: function (_code) {
+            return _code.replace(/\$/g, 'lp.')
+      },
       clearEvts: function () {
             // p5js events prop
             mouseClicked = null
@@ -184,7 +186,7 @@ let Lp5 = {
             mouseWheel = null
       },
       evalDraw: function () {
-            this.renderCodeDraw = this.cmDraw.getValue();
+            this.renderCodeDraw = this.doGlobals("'use strict';" + this.cmDraw.getValue());
             try {
                   let valid = true;
                   let word = '';
@@ -220,7 +222,7 @@ let Lp5 = {
             }
       },
       evalAux: function () {
-            this.renderCodeAux = this.cmAux.getValue();
+            this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
             try {
                   let valid = true;
                   let word = '';
@@ -236,7 +238,7 @@ let Lp5 = {
                   }
                   if (valid) {
                         this.clearEvts()
-                        this.validCodeAux = this.renderCodeAux;
+                        this.validCodeAux = this.doGlobals("'use strict';" + this.renderCodeAux);
                         new Function(this.validCodeAux)();
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
@@ -251,7 +253,7 @@ let Lp5 = {
             }
       },
       evalSetup: function () {
-            this.renderCodeSetup = this.cmSetup.getValue();
+            this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getValue());
             try {
                   let valid = true;
                   let word = '';
@@ -298,9 +300,14 @@ let Lp5 = {
 
 // Global var scope --------------------------------------------
 if (!window.hasOwnProperty('lp')) {
-      window.lp = {}
+      global.lp = {}
 } else {
       console.trace('no se pudo crear el objeto global "lp"')
+}
+if (!global.hasOwnProperty('$')) {
+      global.$ = {}
+} else {
+      console.trace('no se pudo crear el objeto global "$"')
 }
 // Init
 window.addEventListener('load', function () {
@@ -467,7 +474,6 @@ function setup() {
       ellipseMode(CENTER)
       colorMode(RGB, 255, 255, 255)
       background(0);
-      lp = {}
       // Live --------------------------------
       try {
             new Function(Lp5.validCodeSetup)();
@@ -514,7 +520,7 @@ function draw() {
             /**************
              * DRAW ON FLY
              **************/
-            Lp5.renderCodeDraw = Lp5.cmDraw.getValue();
+            Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.cmDraw.getValue());
             try {
                   let valid = true;
                   let word = '';
@@ -594,7 +600,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
       }
       // Evalua linea ---------------------------------------------------
       if (ev.altKey && ev.keyCode == 13) {
-            Lp5.renderCodeAux = Lp5.cmAux.getLine(Lp5.cmAuxCp.line)
+            Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.cmAux.getLine(Lp5.cmAuxCp.line))
             try {
                   let valid = true;
                   let word = '';
@@ -685,7 +691,7 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
       }
       // Evalua linea ---------------------------------------------------
       if (ev.altKey && ev.keyCode == 13) {
-            Lp5.renderCodeSetup = Lp5.cmSetup.getLine(Lp5.cmSetupCp.line)
+            Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.cmSetup.getLine(Lp5.cmSetupCp.line))
             // Lp5.renderCodeSetup = Lp5.cmSetup.getValue();
             try {
                   let valid = true;
