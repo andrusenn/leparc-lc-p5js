@@ -30,8 +30,8 @@ function createWindow() {
                         writef(path.join(resourcesPath, 'leparc_resources', 'save', 'auxcode.txt'), '// !!');
                         writef(path.join(resourcesPath, 'leparc_resources', 'save', 'draw.txt'), '// ');
                   })
-                  // Directorio -> leparc_resources/libs
-                  mkdir(path.join(resourcesPath, 'leparc_resources', 'libs'))
+                  // Directorio -> leparc_resources/snippets
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'snippets'))
                   // Directorio -> leparc_resources/media 
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'media'))
                   // Directorio -> leparc_resources/config
@@ -74,7 +74,7 @@ exports.exit = function () {
 exports.path = function () {
       return path
 }
-exports.globalSettings = function(){
+exports.globalSettings = function () {
       return global.settings
 }
 exports.setFull = function () {
@@ -106,6 +106,7 @@ exports.resizeWin = function (w, h) {
             if (mainWindow.isKiosk()) {
                   mainWindow.setKiosk(false)
             }
+      mainWindow.setMenuBarVisibility(false)
       mainWindow.setBounds({ width: w, height: h });
       mainWindow.center()
 }
@@ -117,9 +118,9 @@ exports.devTools = function (open) {
       }
 }
 exports.reload = function () {
-      if(arguments.length == 1){
+      if (arguments.length == 1) {
             global.settings.renderer = arguments[0]
-      } 
+      }
       mainWindow.loadFile('index.html');
 }
 exports.loadImgsBank = function () {
