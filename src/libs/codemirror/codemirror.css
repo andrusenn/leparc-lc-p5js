@@ -43,8 +43,8 @@
 /* CURSOR */
 
 .CodeMirror-cursor {
-  border-left: 3px solid white;
-  border-right: none;
+  border-left: 2px solid white;
+  border-right: 3px solid black;
   width: 0;
 }
 /* Shown when moving in bi-directional text */
