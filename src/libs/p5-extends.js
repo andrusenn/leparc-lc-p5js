@@ -12,6 +12,7 @@
  */
 if (!p5.prototype.hasOwnProperty('console_msg')) {
       p5.prototype.console_msg = function (msj = '', type = null) {
+            msj = msj.toString()
             let sclass = ''
             if (type == 'info') {
                   sclass = 'info'
@@ -83,9 +84,10 @@ if (!p5.prototype.hasOwnProperty('fade')) {
             if (arg.length == 1) {
                   push()
                   colorMode(RGB, 255, 255, 255)
-                  noStroke()
                   rectMode(CORNER)
                   fill(0, arg[0])
+                  strokeWeight(1)
+                  stroke(0)
                   rect(0, 0, width, height)
                   pop()
             }
@@ -94,6 +96,8 @@ if (!p5.prototype.hasOwnProperty('fade')) {
                   colorMode(RGB, 255, 255, 255)
                   noStroke()
                   rectMode(CORNER)
+                  strokeWeight(1)
+                  stroke(red(arg[0]), green(arg[0]), blue(arg[0]))
                   fill(red(arg[0]), green(arg[0]), blue(arg[0]), arg[1])
                   rect(0, 0, width, height)
                   pop()
@@ -236,18 +240,26 @@ if (!p5.prototype.hasOwnProperty('zoom')) {
       p5.prototype.ZOOM_SCALE = 1;
       p5.prototype.zoom = function () {
             this.s = 1;
+            this.c = null
             let arg = arguments;
             if (arg[1] != null) {
-                  this.s = arg[1];
+                  this.c = arg[1];
             }
             if (arg.length > 0) {
                   let i = get()
                   push()
                   imageMode(CORNER)
+                  rectMode(CORNER)
                   translate(width / 2, height / 2)
                   scale(ZOOM_SCALE)
                   translate(-width / 2, -height / 2)
                   image(i, 0, 0)
+                  if (this.c) {
+                        noFill()
+                        stroke(this.c)
+                        strokeWeight(10)
+                        rect(0, 0, width, height)
+                  }
                   ZOOM_SCALE = this.s
                   pop()
                   ZOOM_SCALE += arg[0]
@@ -427,9 +439,9 @@ if (!p5.prototype.hasOwnProperty('freq')) {
  * @method useLib
  * @param {String} name      nombre del archivo sin extension .js
  */
-if (!p5.prototype.hasOwnProperty('useLib')) {
-      p5.prototype.useLib = function (name) {
-            let path = Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs', name, name + '.js')
+if (!p5.prototype.hasOwnProperty('snip')) {
+      p5.prototype.snip = function (name, fn = null) {
+            let path = Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'snippets', name, name + '.js')
             try {
                   loadStrings(path, (data) => {
                         let code = '';
@@ -438,27 +450,30 @@ if (!p5.prototype.hasOwnProperty('useLib')) {
                               code += data[i] + '\n';
                         }
                         try {
-                              new Function(code)();
+                              new Function(Lp5.doGlobals("'use strict';" + code))();
+                              if (typeof fn == 'function') {
+                                    fn()
+                              }
                         } catch (e) {
-                              console_msg('useLib(name) -> problemas para cargar:' + name, 'error')
+                              console_msg('snip(name) -> problemas para cargar:' + name, 'error')
                         }
                   })
             } catch (e) {
-                  Lp5.el('lp5-console-out').innerHTML = 'useLib(name): ' + e
+                  Lp5.el('lp5-console-out').innerHTML = 'snip(name): ' + e
             }
       }
 }
 /**
- * Obtiene la ruta a leparc_resources/libs/
+ * Obtiene la ruta a leparc_resources/snippets/
  * 
- * @method libPath
+ * @method snipPath
  * @param {String} name      nombre de la libreria sin extension .js
  */
-if (!p5.prototype.hasOwnProperty('libPath')) {
-      p5.prototype.libPath = function () {
+if (!p5.prototype.hasOwnProperty('snipPath')) {
+      p5.prototype.snipPath = function () {
             let arg = arguments
             if (arg.length == 1) {
-                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs', arg[0])
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'snippets', arg[0])
             }
             return null;
       }
@@ -782,5 +797,38 @@ if (!p5.prototype.hasOwnProperty('use3d')) {
 if (!p5.prototype.hasOwnProperty('use2d')) {
       p5.prototype.use2d = function () {
             if (Lp5.main.globalSettings().renderer == 'webgl') Lp5.main.reload('p2d')
+      }
+}
+
+/**
+ * Emite un trigger -> true cada n fotogramas
+ * 
+ * @method pulse
+ * @param {Number} _each      numero en fotogramas
+ */
+if (!p5.prototype.hasOwnProperty('pulse')) {
+      p5.prototype.pulse = function (_each) {
+            if (frameCount % _each == 0) {
+                  return true
+            } else {
+                  return false
+            }
+      }
+}
+
+/**
+ * Emite un trigger -> true cada n fotogramas
+ * 
+ * @method gate
+ * @param {Number} _cycle      numero en fotogramas
+ * @param {Number} _duration   numero en fotogramas que dura abierto
+ */
+if (!p5.prototype.hasOwnProperty('gate')) {
+      p5.prototype.gate = function (_cycle, _duration) {
+            if (frameCount % _cycle > _cycle -_duration ) {
+                  return true
+            } else {
+                  return false
+            }
       }
 }
