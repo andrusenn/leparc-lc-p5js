@@ -108,7 +108,7 @@ Evaluating `setup` some objects and functions of p5 are reseted, while in `aux` 
 
 For global acces from other blocks, an object is provided: `lp`, or shorthand manner with `$` prefix.
 
-> En aux
+> In aux
 
 ~~~js
 
@@ -128,7 +128,7 @@ $myFunction = function(){
 
 ~~~
 
-> En draw
+> In draw
 
 ~~~js
 
