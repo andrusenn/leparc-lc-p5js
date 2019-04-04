@@ -20,7 +20,7 @@ This project use [Electronjs](https://electronjs.org/)
 
 [download](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
 
-- On first run, a folder call "leparc_resources" will be created in "home" or user account
+- On first run, a folder call "leparc_resources" will be created in "home" user account
 - linux users: AppImage > change permission to make it "executable"
 
 #### Download source
