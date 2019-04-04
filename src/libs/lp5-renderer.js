@@ -171,24 +171,8 @@ let Lp5 = {
             ]
       },
       checkProgWord: function (_word) {
-            return `('|") {0,}${_word} {0,}('|")`
+            return `(' {0,}|" {0,}|\.)${_word} {0,}('|"|)`
       },
-      // hasEvt: function (ev) {
-      //       for (let i = 0; i < this.cnvEvents.length; i++) {
-      //             if (this.cnvEvents[i].evt == ev) {
-      //                   return true
-      //             } else {
-      //                   return false
-      //             }
-      //       }
-      // },
-      // clearEvts: function () {
-      //       // Evt ---------------------------------
-      //       for (let i = 0; i < this.cnvEvents.length; i++) {
-      //             console.log('clear ' + this.cnvEvents[i].evt)
-      //             this.el('main').removeEventListener(this.cnvEvents[i].evt, this.cnvEvents[i].fn)
-      //       }
-      // },
       clearEvts: function () {
             // p5js events prop
             mouseClicked = null
@@ -210,7 +194,7 @@ let Lp5 = {
                               let r = new RegExp(this.checkProgWord(word))
                               if (!this.renderCodeDraw.match(r)) {
                                     valid = false;
-                                    this.el('lp5-console-out').innerHTML =  '| draw: ' + word + ' ' + lang_msg.priv_words
+                                    this.el('lp5-console-out').innerHTML = '| draw: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -246,7 +230,7 @@ let Lp5 = {
                               let r = new RegExp(this.checkProgWord(word))
                               if (!this.renderCodeAux.match(r)) {
                                     valid = false;
-                                    this.el('lp5-console-out').innerHTML =   '| aux: ' + word + ' ' + lang_msg.priv_words
+                                    this.el('lp5-console-out').innerHTML = '| aux: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -355,7 +339,6 @@ window.addEventListener('load', function () {
       if (localStorage.lang == 'en') {
             Lp5.el('cnf-lang').options[1].selected = true
       }
-      console.log(localStorage.lang)
 });
 
 // ********************************************************************
@@ -451,10 +434,6 @@ function preload() {
       })
 }
 function setup() {
-      // Init loop (default)
-      p5.looping = true
-      loop()
-
       // Checkea si toma muchos recursos y para el loop
 
       // let cfps = setInterval(function () {
@@ -465,7 +444,9 @@ function setup() {
       // },2000)
 
       // Init setup --------------------------
-      Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
+      if (!Lp5.canvas) {
+            Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
+      }
       // Webcam/video capture
       ___webcam = null;
       // Audio
@@ -484,8 +465,8 @@ function setup() {
       angleMode(RADIANS)
       rectMode(CORNER)
       ellipseMode(CENTER)
-      background(0);
       colorMode(RGB, 255, 255, 255)
+      background(0);
       lp = {}
       // Live --------------------------------
       try {
