@@ -3,7 +3,7 @@
 > (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
 
 Cross platform environment to run [p5js](http://p5js.org/) code in real time.
-This project uses [Electronjs](https://electronjs.org/)
+This project use [Electronjs](https://electronjs.org/)
 
 ![Image](http://andressenn.com/leparc-lc/c1.jpg)
 ![Image](http://andressenn.com/leparc-lc/c2.jpg)
