@@ -38,22 +38,59 @@ El proyecto está compilado [Electronjs](https://electronjs.org/)
 
 ### Comandos
 
-- `Ctrl+Enter` Evaluar bloque de código
-- `Alt+Enter` Evaluar línea de código (solo en setup() y aux())
-- `Ctrl+H` Mostrar/ocultar código
-- Mostrar/ocultar paneles `F1` (setup)`F2` (draw)`F3` (aux)
-- `F11` Pantalla completa (fullscreen)
-- `F10` Muestra/oculta herramientas de desarrollo para debug (dev tools)
-- `F5` Recarga pantalla
-- `Ctrl+mousewheel` Aumenta/disminuye tamaño del código
-- `Alt+mousewheel` Modifica la transparencia del fondo del códivo
-- `Ctrl+Alt+mousewheel` Modifica valor seleccionado suma/resta 1
-- `Ctrl+Alt+Shift+mousewheel` Modifica valor seleccionado suma/resta 0.1
-- `Ctrl+ArrowUP` Cambia el cursor/foco de panel hacia arriba
-- `Ctrl+ArrowDOWN` Cambia el cursor/foco de panel hacia abajo
-- `Ctrl+F` Formatea el código bloque
-- `Ctrl+F` loop()/noLoop()
-- `Ctrl+Shift+C` Comenta/Desomenta código
+<table>
+  <tr>
+    <th>Atajo de teclado</th><th>Acción</th>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Enter</code></td><td>Evaluar bloque de código</td>
+  </tr>
+  <tr>
+    <td><code>Alt+Enter</code></td><td>Evaluar línea de código (solo en setup() y aux())</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+H</code></td><td>Mostrar/ocultar código</td>
+  </tr>
+  <tr>
+    <td><code>F1 F2 F3</code></td><td>Mostrar/ocultar paneles (setup) (draw) (aux)</td>
+  </tr>
+  <tr>
+    <td><code>F11</code></td><td>Pantalla completa (fullscreen)</td>
+  </tr>
+  <tr>
+    <td><code>F10</code></td><td>Muestra/oculta herramientas de desarrollo para debug (dev tools)</td>
+  </tr>
+  <tr>
+    <td><code>F5</code></td><td>Recarga pantalla (se debe volver a evaluar)</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+mousewheel</code></td><td>Aumenta/disminuye tamaño del código</td>
+  </tr>
+  <tr>
+    <td><code>Alt+mousewheel</code></td><td>Modifica la transparencia del fondo del códivo</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Alt+mousewheel</code></td><td>Modifica valor seleccionado suma/resta 1</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Alt+Shift+mousewheel</code></td><td>Modifica valor seleccionado suma/resta 0.1</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+ArrowUP</code></td><td>Cambia el cursor/foco de panel hacia arriba</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+ArrowDOWN</code></td><td>Cambia el cursor/foco de panel hacia abajo</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+F</code></td><td>Formatea el código bloque</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+L</code></td><td>alterna loop()/noLoop()</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Shift+C</code></td><td>Comenta/Descomenta código</td>
+  </tr>
+</table>
 
 ### Bloques de código
 
@@ -69,16 +106,23 @@ El bloque `setup` reinicializa varios objetos y funciones de p5, mientras que `a
 
 ### Variables y funciones globales
 
-Para acceder a variables desde otros bloques, se pueden declarar variables y funciones sin `var`,`let` o `const`, estas se almacenan en el objeto `window`. Pero el riesgo que se corre es sobreescribir otras variables globales.
-Para evitar esto, se provee un objeto global para utilizar: `lp`
+Para acceder a variables desde otros bloques, se provee un objeto global para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
 
 > En aux
 
 ~~~js
 
-lp.x = 'code'
+x = 1 // error -> se está utilizando strict mode
+
+lp.x = 'code!'
+// o abreviada
+$x = 'code!'
 
 lp.miFuncion = function(){
+      console.log('Hola LeParc!')
+}
+// o abreviada
+$miFuncion = function(){
       console.log('Hola LeParc!')
 }
 
@@ -89,7 +133,10 @@ lp.miFuncion = function(){
 ~~~js
 
 lp.miFuncion() // salida -> Hola LeParc!
-console.log(lp.x) // salida -> code
+console.log(lp.x) // salida -> code!
+// o abreviada
+$miFuncion() // salida -> Hola LeParc!
+console.log($x) // salida -> code!
 
 ~~~
 
@@ -112,18 +159,123 @@ mouseMoved = function(){
 
 ### Funciones extendidas de p5j
 
-- `mirrorX()` Espejo - Refleja la imagen desde la mitad sobre el eje X
-- `mirrorY()` Espejo - Refleja la imagen desde la mitad sobre el eje Y
-- `imirrorX()` Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
-- `imirrorY()` Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
-- `kaleido()` Efecto caleidoscopio 4 caras (repite la cara superior derecha)
-- `zoom(escala)` Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`
-- `displace(velx,vely)` Desplaza la pantalla en la direccion `velx` y `vely` (+ o -)
-- `displace(x,y,w,h,velx,vely)` Recorta una porcion de la imagen y la desplaza
-- `beginRot(vel_in_radians[,scale])` y `endRot()` rota lo que está contenido entre esas dos funciones
-- `freq(mult)` Abreviación de la sentencia `frameCount * mult`
-- `osc([freq])` Abreviacion de `sin( frameCount * freq )`
-- `cosc([freq])` Abreviación de `{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}`
+<table>
+  <tr>
+    <th>method</th><th>Desc</th>
+  </tr>
+  <tr>
+    <td>
+    <code>mirrorX()</code>
+    </td>
+    <td>
+    Espejo - Refleja la imagen desde la mitad sobre el eje X
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>mirrorY()</code>
+    </td>
+    <td>
+    Espejo - Refleja la imagen desde la mitad sobre el eje Y
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>imirrorX()</code>
+    </td>
+    <td>
+    Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>imirrorY()</code>
+    </td>
+    <td>
+    Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>kaleido()</code>
+    </td>
+    <td>
+    Efecto caleidoscopio 4 caras (repite la cara superior derecha)
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>zoom(escala)</code>
+    </td>
+    <td>
+   Escala la imagen en cada loop sumando el valor del parámetro: <code>zoom(0.01)</code> o negativo <code>zoom(-0.01)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>displace(velx,vely)</code>
+    </td>
+    <td>
+   Desplaza la pantalla en la direccion <code>velx</code> y <code>vely</code> (+ o -)
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>displace(x,y,w,h,velx,vely)</code>
+    </td>
+    <td>
+   Recorta una porcion de la imagen y la desplaza
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>beginRot(vel_in_radians[,scale])</code> y <code>endRot()</code>
+    </td>
+    <td>
+   rota lo que está contenido entre esas dos funciones
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>freq(mult)</code>
+    </td>
+    <td>
+   Abreviación de la sentencia <code>frameCount * mult</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>osc([freq])</code>
+    </td>
+    <td>
+   Abreviacion de <code>sin( frameCount * freq )</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>cosc([freq])</code>
+    </td>
+    <td>
+   Abreviacion de <code>{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>pulse(n_fotogramas)</code>
+    </td>
+    <td>
+   Bandera (flag) emite verdadero cada n fotogramas <code>if(frameCount % n_fotogramas == 0 ) return true</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>gate(n_fotogramas, duracion)</code>
+    </td>
+    <td>
+   Bandera (flag) emite verdadero cada n fotogramas con una duracion x <code>if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true</code>
+    </td>
+  </tr>
+</table>
 
 #### Media
 

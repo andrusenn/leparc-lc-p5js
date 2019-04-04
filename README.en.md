@@ -38,22 +38,59 @@ This project uses [Electronjs](https://electronjs.org/)
 
 ### Comands
 
-- `Ctrl+Enter` Eval code block
-- `Alt+Enter` Eval code line (only on setup() and aux())
-- `Ctrl+H` Show/Hide code
-- Show/Hide panels `F1` (setup)`F2` (draw)`F3` (aux)
-- `F11` Fullscreen
-- `F10` Show/Hide dev tools (debug)
-- `F5` Reload window
-- `Ctrl+mousewheel` Zoom in/ zoom out code
-- `Alt+mousewheel` Change transparency of code background
-- `Ctrl+Alt+mousewheel` Change selected number value by 1 (-1/+1)
-- `Ctrl+Alt+Shift+mousewheel` Change selected number value by 0.1 (-0.1/+0.1)
-- `Ctrl+ArrowUP` Change cursor/focus to the next up pannel
-- `Ctrl+ArrowDOWN` Change cursor/focus to the next down pannel
-- `Ctrl+F` Beautify code block
-- `Ctrl+L` loop()/noLoop()
-- `Ctrl+Shift+C` Comment/Uncomment code
+<table>
+  <tr>
+    <th>Key Shortcut</th><th>Action</th>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Enter</code></td><td>Eval code block</td>
+  </tr>
+  <tr>
+    <td><code>Alt+Enter</code></td><td>Eval code line (only on setup() and aux())</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+H</code></td><td>Show/Hide code</td>
+  </tr>
+  <tr>
+    <td><code>F1 F2 F3</code></td><td>Show/Hide panels (setup) (draw) (aux)</td>
+  </tr>
+  <tr>
+    <td><code>F11</code></td><td>Fullscreen</td>
+  </tr>
+  <tr>
+    <td><code>F10</code></td><td>Show/Hide dev tools (debug)</td>
+  </tr>
+  <tr>
+    <td><code>F5</code></td><td>Reload window (must be evaluate again)</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+mousewheel</code></td><td>Zoom in / zoom out code</td>
+  </tr>
+  <tr>
+    <td><code>Alt+mousewheel</code></td><td>Change background transparency of code</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Alt+mousewheel</code></td><td>Change selected number value by 1 (-1/+1)</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Alt+Shift+mousewheel</code></td><td>Change selected number value by 0.1 (-0.1/+0.1)</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+ArrowUP</code></td><td>Change cursor/focus to the next up pannel</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+ArrowDOWN</code></td><td>Change cursor/focus to the next down pannel</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+F</code></td><td>Beautify code block</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+L</code></td><td>toggle loop()/noLoop()</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl+Shift+C</code></td><td>Comment/Uncomment code</td>
+  </tr>
+</table>
 
 ### Code blocks
 
@@ -69,16 +106,23 @@ Evaluating `setup` some objects and functions of p5 are reseted, while in `aux` 
 
 ### Global vars and functions
 
-For global acces from other blocks, you can declare vars without `var`,`let` o `const`. But this is risky, because you can re-declare a property of `window` global object.
-In order to avoid this, an object is provided: `lp`
+For global acces from other blocks, an object is provided: `lp`, or shorthand manner with `$` prefix.
 
 > En aux
 
 ~~~js
 
-lp.x = 'code'
+x = 1 // error -> is in strict mode
 
-lp.miFuncion = function(){
+lp.x = 'code!'
+// or
+$x = 'code!'
+
+lp.myFunction = function(){
+      console.log('Hola LeParc!')
+}
+// or
+$myFunction = function(){
       console.log('Hola LeParc!')
 }
 
@@ -88,8 +132,11 @@ lp.miFuncion = function(){
 
 ~~~js
 
-lp.miFuncion() // out -> Hola LeParc!
-console.log(lp.x) // out -> code
+lp.myFunction() // out -> Hola LeParc!
+console.log(lp.x) // out -> code!
+// or
+$myFunction() // out -> Hola LeParc!
+console.log($x) // out -> code!
 
 ~~~
 
@@ -112,18 +159,123 @@ mouseMoved = function(){
 
 ### Extended functions p5j
 
-- `mirrorX()` Mirror - Reflect image from X axis
-- `mirrorY()` Mirror - Reflect image from Y axis
-- `imirrorX()` Invert Mirror - Reflect image from X axis inverted
-- `imirrorY()` Invert Mirror - Reflect image from Y axis inverted
-- `kaleido()` kaleidoscope fx 4 faces (left up cut is repeated)
-- `zoom(scale)` Add zoom in or zoom out (scale each frame by..): `zoom(0.01)` or negative `zoom(-0.01)`
-- `displace(velx,vely)` Displace all screen to `velx` and `vely` (+ or -)
-- `displace(x,y,w,h,velx,vely)` Cut an image portion and displace it
-- `beginRot(vel_in_radians,[scale])` and `endRot()` Rotate all between functions
-- `freq(mult)` Shorthand of `frameCount * mult`
-- `osc([freq])` Shorthand of `sin( frameCount * freq )`
-- `cosc([freq])` Shorthand of `{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}`
+<table>
+  <tr>
+    <th>method</th><th>Desc</th>
+  </tr>
+  <tr>
+    <td>
+    <code>mirrorX()</code>
+    </td>
+    <td>
+    Mirror - Reflect image from X axis
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>mirrorY()</code>
+    </td>
+    <td>
+    Mirror - Reflect image from Y axis
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>imirrorX()</code>
+    </td>
+    <td>
+    Invert Mirror - Reflect image from X axis inverted
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>imirrorY()</code>
+    </td>
+    <td>
+    Invert Mirror - Reflect image from Y axis inverted
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>kaleido()</code>
+    </td>
+    <td>
+    kaleidoscope fx 4 faces (left up cut is repeated)
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>zoom(scale)</code>
+    </td>
+    <td>
+    Add zoom in or zoom out (scale each frame by..): <code>zoom(0.01)</code> or negative <code>zoom(-0.01)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>displace(velx,vely)</code>
+    </td>
+    <td>
+   Displace all screen to <code>velx</code> y <code>vely</code> (+ or -)
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>displace(x,y,w,h,velx,vely)</code>
+    </td>
+    <td>
+    Cut an image portion and displace it
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>beginRot(vel_in_radians[,scale])</code> and <code>endRot()</code>
+    </td>
+    <td>
+   Rotate all between functions
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>freq(mult)</code>
+    </td>
+    <td>
+  Shorthand of <code>frameCount * mult</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>osc([freq])</code>
+    </td>
+    <td>
+   Shorthand of <code>sin( frameCount * freq )</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>cosc([freq])</code>
+    </td>
+    <td>
+   Shorthand of <code>{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>pulse(n_frames)</code>
+    </td>
+    <td>
+   Flag - return true each n frames <code>if(frameCount % frames == 0 ) return true</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <code>gate(n_frames, duration)</code>
+    </td>
+    <td>
+   Flag - return true each n frames with duration x <code>if(frameCount % n_frames > n_frames - duration ) return true</code>
+    </td>
+  </tr>
+</table>
 
 #### Media
 
