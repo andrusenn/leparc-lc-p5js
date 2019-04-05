@@ -90,11 +90,16 @@ canvas {
   opacity: 1.0;
 }
 
-.pannel-title {
+#setup-title,
+#setup-title-end,
+#draw-title,
+#draw-title-end,
+#aux-title,
+#aux-title-end {
   display: inline-block;
-  line-height: 16px;
+  line-height: 1.2rem;
   padding: 4px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
   clear: both;
@@ -179,7 +184,8 @@ canvas {
   color: #fff;
 }
 
-.modal .modal-win input[type=text], .modal .modal-win select {
+.modal .modal-win input[type=text],
+.modal .modal-win select {
   width: 100%;
 }
 

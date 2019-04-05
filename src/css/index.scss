@@ -37,8 +37,8 @@ canvas {
       pointer-events: none;
       top: 50%;
       left: 50%;
-      width:100%;
-      height:100%;
+      width: 100%;
+      height: 100%;
       transform: translate(-50%, -50%);
       background: none;
 }
@@ -88,15 +88,23 @@ canvas {
       opacity: 1.0;
 }
 
-.pannel-title {
+#setup-title,
+#setup-title-end,
+#draw-title,
+#draw-title-end,
+#aux-title,
+#aux-title-end {
       display: inline-block;
-      line-height: 16px;
+      line-height: 1.2rem;
       padding: 4px;
-      font-size: 0.8rem;
+      font-size: 1rem;
       background-color: rgba(#000, 0.3);
       color: #fff;
       clear: both; //border-bottom: 1px solid rgba(#fff, 0.4);
+
 }
+
+// .pannel-title {}
 
 // .change {
 //       border-bottom: 2px solid #00f !important;
@@ -176,7 +184,8 @@ canvas {
                   color: #fff;
             }
 
-            input[type=text],select {
+            input[type=text],
+            select {
                   width: 100%;
             }
 
@@ -187,12 +196,14 @@ canvas {
                         td {
                               padding: 3px;
                         }
-                        .col1{
+
+                        .col1 {
                               text-align: right;
                               min-width: 150px;
 
                         }
-                        .col2{
+
+                        .col2 {
                               min-width: 150px;
 
                         }
@@ -225,9 +236,8 @@ canvas {
 }
 
 //     ----------------------
-.compile{
-      
-}
+.compile {}
+
 #win {
       user-select: none;
       position: fixed;
@@ -260,13 +270,15 @@ canvas {
             text-shadow: none;
             color: rgba(#fff, 0.6);
             bottom: 0;
-            #lp5-os-status{
-                  width:20;
-                  background:transparent;
-                  color:#000;
+
+            #lp5-os-status {
+                  width: 20;
+                  background: transparent;
+                  color: #000;
             }
-            .unsave{
-                  background:rgba(255, 255, 255, 0.6) !important;
+
+            .unsave {
+                  background: rgba(255, 255, 255, 0.6) !important;
             }
       }
 }
