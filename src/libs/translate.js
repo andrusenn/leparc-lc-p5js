@@ -15,7 +15,8 @@ Lp5locale.init({
                         "NAME (net)": "NOMBRE (net)",
                         "Saved!":"Guardado!",
                         "LANG":"IDIOMA",
-                        'can not be used':'no puede ser utilizada en este bloque'
+                        'can not be used':'no puede ser utilizada en este bloque',
+                        'No more fun?':'Se terminó la diversión?'
                   }
             }
       }
@@ -32,4 +33,5 @@ Lp5locale.init({
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
       lang_msg.priv_words = Lp5locale.t('can not be used')
+      lang_msg.exit_app = Lp5locale.t('No more fun?')
 });
