@@ -346,6 +346,20 @@ window.addEventListener('load', function () {
       if (localStorage.lang == 'en') {
             Lp5.el('cnf-lang').options[1].selected = true
       }
+      // Setup y Draw titulos
+      if (localStorage.block_titles == 1) {
+            Lp5.el('setup-title').innerHTML = 'setup:'
+            Lp5.el('setup-title-end').innerHTML = ''
+            Lp5.el('draw-title').innerHTML = 'loop:'
+            Lp5.el('draw-title-end').innerHTML = ''
+            Lp5.el('cnf-titles').checked = true
+      } else {
+            Lp5.el('setup-title').innerHTML = 'function setup(){'
+            Lp5.el('setup-title-end').innerHTML = '}'
+            Lp5.el('draw-title').innerHTML = 'function draw(){'
+            Lp5.el('draw-title-end').innerHTML = '}'
+            Lp5.el('cnf-titles').checked = false
+      }
 });
 
 // ********************************************************************
@@ -590,11 +604,9 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
 
       // Verifica si hubo cambios
       if (Lp5.validCodeAux != Lp5.cmAux.getValue()) {
-            //Lp5.el('aux-change').innerHTML = '*&nbsp;&nbsp;';
             Lp5.historyChangesAux = 1
             Lp5.el('lp5-aux').parentElement.classList.add('change');
       } else {
-            //Lp5.el('aux-change').innerHTML = '';
             Lp5.historyChangesAux = 0
             Lp5.el('lp5-aux').parentElement.classList.remove('change');
       }
@@ -656,6 +668,10 @@ Lp5.codeAux.addEventListener("mousewheel", (ev) => {
             if (Lp5.scale_ax > 0.05) {
                   Lp5.codeAux.style.fontSize = Lp5.scale_ax + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_ax * 1.4) + "rem";
+                  Lp5.el('aux-title').style.fontSize = Lp5.scale_ax + "rem";
+                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_ax * 1.5) + "rem";
+                  Lp5.el('aux-title-end').style.fontSize = Lp5.scale_ax + "rem";
+                  Lp5.el('aux-title-end').style.lineHeight = (Lp5.scale_ax * 1.5) + "rem";
                   Lp5.cmAux.refresh()
             } else {
                   Lp5.scale_ax = 0.05;
@@ -681,11 +697,9 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
 
       // Verifica si hubo cambios
       if (Lp5.validCodeSetup != Lp5.cmSetup.getValue()) {
-            //Lp5.el('setup-change').innerHTML = '*&nbsp;&nbsp;';
             Lp5.el('lp5-setup').parentElement.classList.add('change');
             Lp5.historyChangesSetup = 1
       } else {
-            //Lp5.el('setup-change').innerHTML = '';
             Lp5.el('lp5-setup').parentElement.classList.remove('change');
             Lp5.historyChangesSetup = 0
       }
@@ -749,6 +763,10 @@ Lp5.codeSetup.addEventListener("mousewheel", (ev) => {
             if (Lp5.scale_st > 0.05) {
                   Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
+                  Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
+                  Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
                   Lp5.cmSetup.refresh()
             } else {
                   Lp5.scale_st = 0.05;
@@ -811,6 +829,10 @@ Lp5.codeDraw.addEventListener("mousewheel", (ev) => {
             if (Lp5.scale_dr > 0.05) {
                   Lp5.codeDraw.style.fontSize = Lp5.scale_dr + "rem";
                   Lp5.codeDraw.style.lineHeight = (Lp5.scale_dr * 1.4) + "rem";
+                  Lp5.el('draw-title').style.fontSize = Lp5.scale_dr + "rem";
+                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_dr * 1.5) + "rem";
+                  Lp5.el('draw-title-end').style.fontSize = Lp5.scale_dr + "rem";
+                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_dr * 1.5) + "rem";
                   Lp5.cmDraw.refresh()
             } else {
                   Lp5.scale_dr = 0.05;
@@ -1150,8 +1172,23 @@ Lp5.el('cnf-sync').addEventListener('click', () => {
 
 Lp5.el('cnf-lang').addEventListener('change', () => {
       localStorage.lang = Lp5.el('cnf-lang').value
-      console.log(localStorage.lang)
       Lp5.main.reload()
+});
+
+Lp5.el('cnf-titles').addEventListener('click', () => {
+      if (Lp5.el('cnf-titles').checked) {
+            localStorage.block_titles = 1
+            Lp5.el('setup-title').innerHTML = 'setup:'
+            Lp5.el('setup-title-end').innerHTML = ''
+            Lp5.el('draw-title').innerHTML = 'loop:'
+            Lp5.el('draw-title-end').innerHTML = ''
+      } else {
+            localStorage.block_titles = 0
+            Lp5.el('setup-title').innerHTML = 'function setup(){'
+            Lp5.el('setup-title-end').innerHTML = '}'
+            Lp5.el('draw-title').innerHTML = 'function draw(){'
+            Lp5.el('draw-title-end').innerHTML = '}'
+      }
 });
 Lp5.el('cnf-server').addEventListener('change', (ev) => {
 
