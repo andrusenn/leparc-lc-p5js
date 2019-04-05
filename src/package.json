@@ -26,8 +26,12 @@
             "processing"
       ],
       "build": {
-            "appId": "com.andrusenn.leparc",
+            "appId": "andrusenn.leparc",
             "productName": "LeParc-LC",
+            "files": [
+                  "!**/leparc_resources/*",
+                  "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
+            ],
             "directories": {
                   "output": "../dist"
             },
