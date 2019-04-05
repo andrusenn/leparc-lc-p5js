@@ -94,11 +94,12 @@ This project use [Electronjs](https://electronjs.org/)
 
 ### Code blocks
 
+> `function setup(){}` and `function draw(){}` are just titles. You can not modify it. There are some tasks run underneath of each one. Check source code (lp5-renderer.js)
 > Each block are evaluated separately. There is an extra block `aux:` to run code outside from setup() and draw()
 > You can use functions/methods of p5js in any block
 
-- `setup:` -> `setup(){ // }`
-- `draw:` -> `draw(){ // }`
+- `setup:` -> `function setup(){ // }`
+- `loop:` -> `function draw(){ // }`
 
 #### setup(){} vs aux(){}
 
@@ -317,6 +318,7 @@ In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **p
     - CLIENT -> Client mode
   - **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
   - **NAME (net)** -> Client node name (Default: id socket)
+  - **BLOCK NAMES** -> Visual help (block names)
   
 ----
 

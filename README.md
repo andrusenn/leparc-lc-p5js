@@ -94,11 +94,12 @@ El proyecto está compilado [Electronjs](https://electronjs.org/)
 
 ### Bloques de código
 
+> `function setup(){}` y `function draw(){}` son solo ayudas visuales. No se pueden modificar. Hay tareas que se ejecutan en esos bloques. Ver código fuente (lp5-renderer.js)
 > Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
 > Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
 
-- `setup:` -> `setup(){ // }`
-- `draw:` -> `draw(){ // }`
+- `setup:` -> `function setup(){ // }`
+- `loop:` -> `function draw(){ // }`
   
 #### Diferencia entre setup(){} y aux(){}
 
@@ -317,6 +318,7 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
     - CLIENT -> Activa el modo cliente
   - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
   - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
+  - **BLOCK NAMES** -> Nombre de los bloques (ayuda visual)
 
 ----
 
