@@ -10,6 +10,7 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVIDOR",
                         "CLIENT": "CLIENTE",
+                        "BLOCK NAMES": "NOMBRE DE BLOQUES",
                         "MODE (net)": "MODO (net)",
                         "NAME (net)": "NOMBRE (net)",
                         "Saved!":"Guardado!",
@@ -27,6 +28,7 @@ Lp5locale.init({
       document.querySelector('.en-client').innerHTML = Lp5locale.t('CLIENT');
       document.querySelector('.en-name').innerHTML = Lp5locale.t('NAME (net)');
       document.querySelector('.en-lang').innerHTML = Lp5locale.t('LANG');
+      document.querySelector('.en-title').innerHTML = Lp5locale.t('BLOCK NAMES');
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
       lang_msg.priv_words = Lp5locale.t('can not be used')
