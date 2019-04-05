@@ -656,28 +656,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
             }
       }
 });
-Lp5.codeAux.addEventListener("mousewheel", (ev) => {
-      if (ev.ctrlKey && !ev.altKey) {
-            var dir = Math.sign(ev.deltaY);
-            if (dir == 1) {
-                  Lp5.scale_ax -= 0.1;
-            }
-            if (dir == -1) {
-                  Lp5.scale_ax += 0.1;
-            }
-            if (Lp5.scale_ax > 0.05) {
-                  Lp5.codeAux.style.fontSize = Lp5.scale_ax + "rem";
-                  Lp5.codeAux.style.lineHeight = (Lp5.scale_ax * 1.4) + "rem";
-                  Lp5.el('aux-title').style.fontSize = Lp5.scale_ax + "rem";
-                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_ax * 1.5) + "rem";
-                  Lp5.el('aux-title-end').style.fontSize = Lp5.scale_ax + "rem";
-                  Lp5.el('aux-title-end').style.lineHeight = (Lp5.scale_ax * 1.5) + "rem";
-                  Lp5.cmAux.refresh()
-            } else {
-                  Lp5.scale_ax = 0.05;
-            }
-      }
-});
+
 // -----------------------------------------------------
 // SETUP EVENTS ----------------------------------------
 Lp5.codeSetup.addEventListener('click', (ev) => {
@@ -751,28 +730,6 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
             }
       }
 });
-Lp5.codeSetup.addEventListener("mousewheel", (ev) => {
-      if (ev.ctrlKey && !ev.altKey) {
-            var dir = Math.sign(ev.deltaY);
-            if (dir == 1) {
-                  Lp5.scale_st -= 0.1;
-            }
-            if (dir == -1) {
-                  Lp5.scale_st += 0.1;
-            }
-            if (Lp5.scale_st > 0.05) {
-                  Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
-                  Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
-                  Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
-                  Lp5.cmSetup.refresh()
-            } else {
-                  Lp5.scale_st = 0.05;
-            }
-      }
-});
 
 // -----------------------------------------------------
 // DRAW EVENTS -----------------------------------------
@@ -817,28 +774,6 @@ Lp5.codeDraw.addEventListener('keydown', (ev) => {
       }
 });
 
-Lp5.codeDraw.addEventListener("mousewheel", (ev) => {
-      if (ev.ctrlKey && !ev.altKey) {
-            var dir = Math.sign(ev.deltaY);
-            if (dir == 1) {
-                  Lp5.scale_dr -= 0.1;
-            }
-            if (dir == -1) {
-                  Lp5.scale_dr += 0.1;
-            }
-            if (Lp5.scale_dr > 0.05) {
-                  Lp5.codeDraw.style.fontSize = Lp5.scale_dr + "rem";
-                  Lp5.codeDraw.style.lineHeight = (Lp5.scale_dr * 1.4) + "rem";
-                  Lp5.el('draw-title').style.fontSize = Lp5.scale_dr + "rem";
-                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_dr * 1.5) + "rem";
-                  Lp5.el('draw-title-end').style.fontSize = Lp5.scale_dr + "rem";
-                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_dr * 1.5) + "rem";
-                  Lp5.cmDraw.refresh()
-            } else {
-                  Lp5.scale_dr = 0.05;
-            }
-      }
-});
 // Paste ------------------------------------------
 Lp5.codeSetup.addEventListener("paste", (ev) => {
       //Lp5.cmSetup.setValue(ev.clipboardData.getData('text/plain'))
@@ -1065,19 +1000,19 @@ document.addEventListener('keydown', function (ev) {
             if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
             if (Lp5.panelIndex < 0) Lp5.panelIndex = 2;
             if (Lp5.panelIndex == 0) {
+                  Lp5.cmFocused = 'setup'
                   Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
                   Lp5.cmSetup.focus()
-                  Lp5.cmFocused = 'setup'
             }
             if (Lp5.panelIndex == 1) {
+                  Lp5.cmFocused = 'draw'
                   Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
                   Lp5.cmDraw.focus()
-                  Lp5.cmFocused = 'draw'
             }
             if (Lp5.panelIndex == 2) {
+                  Lp5.cmFocused = 'aux'
                   Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
                   Lp5.cmAux.focus()
-                  Lp5.cmFocused = 'aux'
             }
       }
       // Refrescar fondo lineas
@@ -1151,6 +1086,44 @@ document.addEventListener("mousewheel", (ev) => {
       if (Lp5.mode == 'CLIENT') {
             Lp5.client.sendServer()
             //Lp5.client.setBookmark()
+      }
+      // ---------------------------------------------
+      if (ev.ctrlKey && !ev.altKey && !ev.shiftKey) {
+            var dir = Math.sign(ev.deltaY);
+            if (dir == 1) {
+                  Lp5.scale_st -= 0.1;
+            }
+            if (dir == -1) {
+                  Lp5.scale_st += 0.1;
+            }
+            if (Lp5.scale_st > 0.05) {
+                  Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
+                  Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+
+                  Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('draw-title').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+
+                  Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('aux-title').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('aux-title-end').style.fontSize = Lp5.scale_st + "rem";
+                  Lp5.el('aux-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+
+                  Lp5.cmAux.refresh()
+                  Lp5.cmDraw.refresh()                  
+                  Lp5.cmSetup.refresh()
+            } else {
+                  Lp5.scale_st = 0.05;
+            }
       }
 });
 // -----------------------------------------------------
