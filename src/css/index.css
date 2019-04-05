@@ -225,6 +225,30 @@ canvas {
   width: 0px;
 }
 
+.compile {
+  background-color: rgba(255, 255, 255, 0);
+  -webkit-animation: comp 0.2s linear !important;
+          animation: comp 0.2s linear !important;
+}
+
+@-webkit-keyframes comp {
+  from {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  to {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes comp {
+  from {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  to {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
 #win {
   -webkit-user-select: none;
      -moz-user-select: none;

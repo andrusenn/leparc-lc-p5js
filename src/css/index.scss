@@ -236,7 +236,18 @@ canvas {
 }
 
 //     ----------------------
-.compile {}
+.compile {
+      background-color:rgba(255,255,255,0.0);
+      animation: comp 0.2s linear !important;
+}
+@keyframes comp{
+      from{
+            background-color:rgba(255,255,255,0.8);
+      }
+      to{
+            background-color:rgba(255,255,255,0.0);
+      }
+}
 
 #win {
       user-select: none;
