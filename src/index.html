@@ -15,29 +15,29 @@
 		<div id="win">
 			<!-- setup pannel ------------------------------------------->
 			<div id="lp5-setup-pannel">
-				<span class="pannel-title" id="setup-title"><span id="setup-change"></span>setup(){</span><br>
+				<span class="pannel-title" id="setup-title"></span><br>
 				<div class="lp5-code-parent">
 					<div id="lp5-setup"></div><br>
 				</div>
-				<span class="pannel-title">}</span><br>
+				<span class="pannel-title" id="setup-title-end"></span><br>
 			</div>
 
 			<!-- draw pannel --------------------------------------------->
 			<div id="lp5-draw-pannel">
-				<span class="pannel-title" id="draw-title"><span id="draw-change"></span>draw(){</span><br>
+				<span class="pannel-title" id="draw-title"></span><br>
 				<div class="lp5-code-parent">
 					<div id="lp5-draw"></div><br>
 				</div>
-				<span class="pannel-title">}</span><br>
+				<span class="pannel-title" id="draw-title-end"></span><br>
 			</div>
 
 			<!-- aux pannel ----------------------------------------------->
 			<div id="lp5-aux-pannel">
-				<span class="pannel-title" id="aux-title"><span id="aux-change"></span>aux(){</span><br>
+				<span class="pannel-title" id="aux-title">aux:</span><br>
 				<div class="lp5-code-parent">
 					<div id="lp5-aux"></div><br>
 				</div>
-				<span class="pannel-title">}</span><br>
+				<span class="pannel-title"></span><br>
 			</div>
 			<!-- console pannel -->
 			<span id="lp5-console" class="console-out">
@@ -57,7 +57,8 @@
 				<table>
 					<tr>
 						<td class="col1"><input id="cnf-renderonfly" type="checkbox" /></td>
-						<td class="col2"><label for="cnf-renderonfly" class="ne-auto-render">AUTO RENDER</label></td>
+						<td class="col2"><label for="cnf-renderonfly" class="en-autorender">AUTO
+								RENDER</label></td>
 					</tr>
 					<tr>
 						<td class="col1">
@@ -79,13 +80,19 @@
 						</td>
 						<td class="col2"><label for="cnf-server" class="en-name">NAME (net)</label></td>
 					</tr>
-					<td class="col1">
-						<select id="cnf-lang">
-							<option value="es">ES</option>
-							<option value="en">EN</option>
-						</select>
-					</td>
-					<td class="col2"><label for="cnf-server" class="en-lang">LANG</label></td>
+					<tr>
+						<td class="col1">
+							<select id="cnf-lang">
+								<option value="es">ES</option>
+								<option value="en">EN</option>
+							</select>
+						</td>
+						<td class="col2"><label for="cnf-server" class="en-lang">LANG</label></td>
+					</tr>
+					<tr>
+						<td class="col1"><input id="cnf-titles" value="1" type="checkbox" /></td>
+						<td class="col2"><label for="cnf-titles" class="en-title">BLOCK NAMES</label></td>
+					</tr>
 				</table>
 			</div>
 		</div>
