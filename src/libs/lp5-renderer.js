@@ -1103,6 +1103,7 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
                   Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
                   Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.cmSetup.refresh()
 
                   Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
@@ -1110,6 +1111,7 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
                   Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
                   Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.cmDraw.refresh()
 
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
@@ -1117,10 +1119,9 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.el('aux-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
                   Lp5.el('aux-title-end').style.fontSize = Lp5.scale_st + "rem";
                   Lp5.el('aux-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
-
                   Lp5.cmAux.refresh()
-                  Lp5.cmDraw.refresh()                  
-                  Lp5.cmSetup.refresh()
+
+
             } else {
                   Lp5.scale_st = 0.05;
             }
