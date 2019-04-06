@@ -7,10 +7,7 @@ This project use [Electronjs](https://electronjs.org/)
 
 This project was born as a tool for personal use, but it became a performative tool, and took some of the live coding philosophy.
 
-![Image](http://andressenn.com/leparc-lc/c1.jpg)
-![Image](http://andressenn.com/leparc-lc/c2.jpg)
-![Image](http://andressenn.com/leparc-lc/c3.jpg)
-![Image](http://andressenn.com/leparc-lc/c4.jpg)
+![Image](http://andressenn.com/leparc-lc/lp01.jpg)
 
 ----
 
