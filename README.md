@@ -19,7 +19,26 @@ Este proyecto nace como una herramienta de uso personal, y fue girando a una her
 
 [descarga](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
 
-- En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo
+- En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo:
+
+~~~
+
+|_leparc_resources/
+  |__config/
+    |__config.txt
+  |__extends/
+    |__lp-extends.js
+  |__media/
+  |__save/
+    |__auxcode.txt
+    |__draw.txt
+    |__setup.txt
+  |__snippets/
+    |__mi_snippet/
+      |__mi_snipet.js
+
+~~~
+
 - Usuarios linux: AppImage deberán seleccionar "ejecutar como programa"
 
 #### Bajar fuente

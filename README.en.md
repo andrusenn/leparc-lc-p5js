@@ -19,7 +19,26 @@ This project was born as a tool for personal use, but it became a performative t
 
 [download](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
 
-- On first run, a folder call "leparc_resources" will be created in "home" user account
+- On first run, a folder call "leparc_resources" will be created in "home" user account:
+
+~~~
+
+|_leparc_resources/
+  |__config/
+    |__config.txt
+  |__extends/
+    |__lp-extends.js
+  |__media/
+  |__save/
+    |__auxcode.txt
+    |__draw.txt
+    |__setup.txt
+  |__snippets/
+    |__mi_snippet/
+      |__mi_snipet.js
+
+~~~
+
 - linux users: AppImage > change permission to make it "executable"
 
 #### Download source
