@@ -2,5 +2,5 @@
 
 LeParc es una herramienta para codificar/programar en vivo.
 
-- Comandos
-- Funciones extendidas
+- [Comandos](https://andrusenn.github.io/leparc-lc-p5js/es/comandos.md)
+- [Funciones extendidas](https://andrusenn.github.io/leparc-lc-p5js/es/funciones-extendidas.md)
