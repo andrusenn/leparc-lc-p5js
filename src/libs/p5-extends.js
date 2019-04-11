@@ -5,10 +5,11 @@
 // --------------------------------------------------
 
 /**
- * Obtiene la ruta a leparc_resources/libs/
+ * Escrib mensaje en la barra inferior
  * 
- * @method libPath
- * @param {String} name      nombre de la libreria sin extension .js
+ * @method console_msg
+ * @param {String} msg      mensaje
+ * @param {String} type     tipo de mensaje (info, warning,error)
  */
 if (!p5.prototype.hasOwnProperty('console_msg')) {
       p5.prototype.console_msg = function (msj = '', type = null) {
@@ -74,8 +75,17 @@ if (!p5.prototype.hasOwnProperty('bg')) {
 
 /**
  * Fundido
+ * 
  * @method fade
+ * 1 param
+ * @param {Number} a          alfa
+ * 2 param
  * @param {Number} c          color
+ * @param {Number} a          alfa
+ * 4 param
+ * @param {Number} r          color
+ * @param {Number} g          color
+ * @param {Number} b          color
  * @param {Number} a          alfa
  */
 if (!p5.prototype.hasOwnProperty('fade')) {
@@ -97,8 +107,19 @@ if (!p5.prototype.hasOwnProperty('fade')) {
                   noStroke()
                   rectMode(CORNER)
                   strokeWeight(1)
-                  stroke(red(arg[0]), green(arg[0]), blue(arg[0]))
-                  fill(red(arg[0]), green(arg[0]), blue(arg[0]), arg[1])
+                  stroke(arg[0], arg[1])
+                  fill(arg[0], arg[1])
+                  rect(0, 0, width, height)
+                  pop()
+            }
+            if (arg.length == 4) {
+                  push()
+                  colorMode(RGB, 255, 255, 255)
+                  noStroke()
+                  rectMode(CORNER)
+                  strokeWeight(1)
+                  stroke(arg[0], arg[1], arg[2], arg[3])
+                  fill(arg[0], arg[1], arg[2], arg[3])
                   rect(0, 0, width, height)
                   pop()
             }
@@ -434,32 +455,40 @@ if (!p5.prototype.hasOwnProperty('freq')) {
 /**
  * Metodo carga un archivo js externo
  * el archivo debe se guardado dentro de un
- * directorio con el mismo nombre ej. leparc/leparc.js
+ * directorio con el mismo nombre ej. snippets/leparc/leparc.js
  * 
- * @method useLib
+ * @method snip
  * @param {String} name      nombre del archivo sin extension .js
  */
 if (!p5.prototype.hasOwnProperty('snip')) {
       p5.prototype.snip = function (name, fn = null) {
             let path = Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'snippets', name, name + '.js')
             try {
-                  loadStrings(path, (data) => {
-                        let code = '';
-                        console_msg('Cargado -> ' + name, 'info')
-                        for (let i = 0; i < data.length; i++) {
-                              code += data[i] + '\n';
-                        }
-                        try {
-                              new Function(Lp5.doGlobals("'use strict';" + code))();
-                              if (typeof fn == 'function') {
-                                    fn()
+                  // verifica si ya se cargo la libreria
+                  if (!lp.snippets.includes(name.trim())) {
+                        loadStrings(path, (data) => {
+                              let code = '';
+                              console_msg(lang_msg.snip + name, 'info')
+                              for (let i = 0; i < data.length; i++) {
+                                    code += data[i] + '\n';
                               }
-                        } catch (e) {
-                              console_msg('snip(name) -> problemas para cargar:' + name, 'error')
+                              try {
+                                    new Function(Lp5.doGlobals("'use strict';" + code))();
+                                    lp.snippets.push(name.trim())
+                                    if (typeof fn == 'function') {
+                                          fn()
+                                    }
+                              } catch (e) {
+                                    console_msg(lang_msg.snip_err + name, 'error')
+                              }
+                        })
+                  } else {
+                        if (typeof fn == 'function') {
+                              fn()
                         }
-                  })
+                  }
             } catch (e) {
-                  Lp5.el('lp5-console-out').innerHTML = 'snip(name): ' + e
+                  console_msg('snip(name): ' + e)
             }
       }
 }
@@ -497,36 +526,42 @@ if (!p5.prototype.hasOwnProperty('mediaPath')) {
             return null;
       }
 }
-// p5.prototype.img = function (i, fn) {
-//       loadImage(Lp5.main.resourcesPath() + '/leparc_resources/images/' + i, (__img) => {
-//             if (typeof fn == 'function') {
-//                   fn(__img)
-//             }
-//       })
-// }
 
 /**
- * // NO IMPLEMENTADO
- * Metodo carga banco de imagenes
+ * Obtiene la ruta a leparc_resources/libs/
  * 
+ * @method libsPath
+ * @param {String} name      nombre del directorio
  */
-// p5.prototype.___pics = [];
-// p5.prototype.pic = function () {
-//       let arg = arguments;
-//       if (arg.length == 3 && ___pics.length > 0) {
-//             image(___pics[arg[0]], arg[1] - ___pics[arg[0]].width / 2, arg[2] - ___pics[arg[0]].height / 2)
-//       } else {
-//             Lp5.el('lp5-console-out').innerHTML = 'Se requieren 3 argumentos -> pic(index,x,y)'
-//       }
-// }
-// p5.prototype.useIBank = function () {
-//       let arg = arguments
-//       if (arg.length == 1) {
-//             Lp5.imagesBankPath[arg[0]] = Lp5.main.resourcesPath() + '/leparc_resources/images/' + arg[0] + '/'
-//       }
-//       return null;
-// }
-// p5.prototype.img = new Array()
+if (!p5.prototype.hasOwnProperty('libsPath')) {
+      p5.prototype.libsPath = function () {
+            let arg = arguments
+
+            if (arg.length == 0) {
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs')
+            }
+            if (arg.length == 1) {
+                  return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'libs', arg[0])
+            }
+            return null;
+      }
+}
+
+/**
+ * Carga con require la ruta a leparc_resources/libs/
+ * 
+ * @method loadLib
+ * @param {String} name      nombre del directorio
+ */
+if (!p5.prototype.hasOwnProperty('loadLib')) {
+      p5.prototype.loadLib = function () {
+            let arg = arguments
+            if (arg.length == 1) {
+                  return require(libsPath(arg[0]))
+            }
+            return null;
+      }
+}
 
 // MEDIA ------------------------------------------
 
@@ -825,7 +860,7 @@ if (!p5.prototype.hasOwnProperty('pulse')) {
  */
 if (!p5.prototype.hasOwnProperty('gate')) {
       p5.prototype.gate = function (_cycle, _duration) {
-            if (frameCount % _cycle > _cycle -_duration ) {
+            if (frameCount % _cycle > _cycle - _duration) {
                   return true
             } else {
                   return false
