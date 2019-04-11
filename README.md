@@ -343,6 +343,6 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
 
 ----
 
-### Ejemplos
+### Ejemplos y usos
 
-> [Ejemplos](https://github.com/andrusenn/leparc-lc-p5js/wiki)
+> [Ejemplos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/)
