@@ -45,7 +45,9 @@ function createWindow() {
                   })
                   // Directorio -> leparc_resources/extends
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'extends'), () => {
-                        writef(path.join(resourcesPath, 'leparc_resources', 'extends', 'lp-extends.js'), "");
+                        fs.copy(path.join(appPath, 'leparc_resources', 'extends'), path.join(resourcesPath, 'leparc_resources', 'extends'), () => {
+                              chmodall(path.join(resourcesPath, 'leparc_resources', 'extends'))
+                        })
                   })
             })
       }
