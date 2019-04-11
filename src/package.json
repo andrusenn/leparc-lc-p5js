@@ -6,7 +6,7 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.0.5-a",
+      "version": "0.1.0",
       "description": "p5 livecoding",
       "repository": {
             "type": "git",
@@ -29,7 +29,7 @@
             "appId": "andrusenn.leparc",
             "productName": "LeParc-LC",
             "files": [
-                  "!**/leparc_resources/*",
+                  "!**/leparc_resources/{config,media,save}",
                   "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
             ],
             "directories": {
@@ -63,6 +63,7 @@
       },
       "dependencies": {
             "express": "^4.16.4",
+            "fs-extra": "^7.0.1",
             "i18next": "^15.0.8",
             "ip": "^1.1.5",
             "js-beautify": "^1.9.0",
