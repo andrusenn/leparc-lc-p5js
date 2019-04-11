@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu, dialog } = require('electron')
 const os = require("os")
 const ip = require("ip")
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
 
 // Paths
@@ -20,7 +20,6 @@ function createWindow() {
       mainWindow.center();
       //mainWindow.setAlwaysOnTop(true);
       mainWindow.setMenuBarVisibility(false);
-      // mainWindow.webContents.setFrameRate(300)
       if (app.isPackaged) {
             // Directorio leparc_resources
             mkdir(path.join(resourcesPath, 'leparc_resources'), () => {
@@ -31,7 +30,13 @@ function createWindow() {
                         writef(path.join(resourcesPath, 'leparc_resources', 'save', 'draw.txt'), '// ');
                   })
                   // Directorio -> leparc_resources/snippets
-                  mkdir(path.join(resourcesPath, 'leparc_resources', 'snippets'))
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'snippets'), () => {
+                        fs.copy(path.join(appPath, 'leparc_resources', 'snippets'), path.join(resourcesPath, 'leparc_resources', 'snippets'), () => {
+                              chmodall(path.join(resourcesPath, 'leparc_resources', 'snippets'))
+                        })
+                  })
+                  // Directorio -> leparc_resources/libs 
+                  mkdir(path.join(resourcesPath, 'leparc_resources', 'libs'))
                   // Directorio -> leparc_resources/media 
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'media'))
                   // Directorio -> leparc_resources/config
@@ -123,27 +128,6 @@ exports.reload = function () {
       }
       mainWindow.loadFile('index.html');
 }
-exports.loadImgsBank = function () {
-      let source = path.join(resourcesPath, 'leparc_resources', 'images')
-      const isDirectory = source => lstatSync(source).isDirectory()
-      const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory)
-      return getDirectories
-      // fs.readdir(appPath + '/leparc_resources/images/', (err, files) => {
-      //       if (!err) {
-      //             for (let i = 0; i < files.length; i++) {
-      //                   fs.readdir(appPath + '/leparc_resources/images/' + files[i], (err, files) => {
-      //                         if (!err) {
-      //                               if (typeof fn == 'function') {
-      //                                     fn(files)
-      //                               }
-      //                         }
-      //                         return false;
-      //                   });
-      //             }
-      //       }
-      //       return false;
-      // });
-}
 exports.resourcesPath = function () {
       return resourcesPath;
 }
@@ -161,6 +145,14 @@ function mkdir(path, fn) {
                   });
             }
       });
+}
+function chmodall(dir) {
+      let files = fs.readdirSync(dir);
+      files.forEach(function (file) {
+            if (fs.statSync(path.join(dir, file)).isDirectory()) {
+                  fs.chmod(path.join(dir, file), '0777');
+            }
+      })
 }
 function writef(path, content, fn) {
       fs.writeFile(path, content, function (err) {
