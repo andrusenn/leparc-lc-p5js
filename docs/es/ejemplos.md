@@ -3,6 +3,7 @@
 <a name="ejemplos"></a>
 - [Ejemplos](#ejemplos)
     - [Uso de bloques](#uso-de-bloques)
+    - [Ámbito de las variables](#%C3%A1mbito-de-las-variables)
     - [Audio](#audio)
     - [Webcam](#webcam)
     - [Snippets](#snippets)
@@ -42,6 +43,44 @@ aux:
       // Bloque auxiliar que difiere de setup porque no se
       // re-setean funciones y objetos
       // Podemos ocultarlo con F3
+
+~~~
+
+([indice](#ejemplos))
+
+<a name="ambito-variables"></a>
+
+---
+
+### Ámbito de las variables
+
+Para acceder a variables declaradas en otros bloques, se debe utilizar el prefijo `$`
+
+`setup:`
+
+~~~js
+      // Variables
+      let local = 'local
+      $global = 'global'
+
+      // Funciones
+      let mi_funcion_local = function(){
+            console.log('Solo se puede ejecutar en este bloque')
+      }
+
+      $mi_funcion_global = function(){
+            console.log('Se puede ejecutar en cualquier bloque')
+      }
+
+~~~
+
+`draw:`
+
+~~~js
+      console.log(local) // -> error
+      console.log($global) // -> global
+
+      $mi_funcion_global() // -> Se puede ejecutar en cualquier bloque
 
 ~~~
 
