@@ -19,23 +19,24 @@ This project was born as a tool for personal use, but it became a performative t
 
 [download](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
 
-- On first run, a folder call "leparc_resources" will be created in "home" user account:
+On first run, a folder call "leparc_resources" will be created in "home" user account:
 
 ~~~
 
-|_leparc_resources/
-  |__config/
-    |__config.txt
-  |__extends/
-    |__lp-extends.js
-  |__media/
-  |__save/
-    |__auxcode.txt
-    |__draw.txt
-    |__setup.txt
-  |__snippets/
-    |__mi_snippet/
-      |__mi_snipet.js
+leparc_resources/
+      ├── config/
+      │      └── config.txt
+      ├── extends/
+      │     └──lp-extends.js
+      ├── libs/
+      ├── media/
+      ├── save/
+      │      ├── auxcode.txt
+      │      ├── draw.txt
+      │      └── setup.txt
+      └── snippets/
+            └── espiro/
+                  └── espiro.js
 
 ~~~
 
@@ -330,13 +331,15 @@ In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **p
 
 - `Ctrl+TAB` open/close
   - **AUTO RENDER** -> Only in `draw(){}`
+  - **RENDER** -> 2D / 3D
+  - **BLOCK NAMES** -> Visual help (block names)
   - **MODE (net)**
     - LOCAL -> Default
     - SERVER -> Server mode
     - CLIENT -> Client mode
   - **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
   - **NAME (net)** -> Client node name (Default: id socket)
-  - **BLOCK NAMES** -> Visual help (block names)
+  - **LANG** -> ES/EN Language of interface
   
 ----
 

@@ -19,23 +19,24 @@ Este proyecto nace como una herramienta de uso personal, y fue girando a una her
 
 [descarga](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
 
-- En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo:
+En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo:
 
 ~~~
 
-|_leparc_resources/
-  |__config/
-    |__config.txt
-  |__extends/
-    |__lp-extends.js
-  |__media/
-  |__save/
-    |__auxcode.txt
-    |__draw.txt
-    |__setup.txt
-  |__snippets/
-    |__mi_snippet/
-      |__mi_snipet.js
+leparc_resources/
+      ├── config/
+      │      └── config.txt
+      ├── extends/
+      │     └──lp-extends.js
+      ├── libs/
+      ├── media/
+      ├── save/
+      │      ├── auxcode.txt
+      │      ├── draw.txt
+      │      └── setup.txt
+      └── snippets/
+            └── espiro/
+                  └── espiro.js
 
 ~~~
 
@@ -330,13 +331,15 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
 
 - `Ctrl+TAB` Abre popup de configuraciones
   - **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
+  - **RENDER** -> 2D o 3D
+  - **BLOCK NAMES** -> Nombre de los bloques (ayuda visual)
   - **MODE (net)**
     - LOCAL -> Por defecto
     - SERVER -> Activa el modo servidor
     - CLIENT -> Activa el modo cliente
   - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
   - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
-  - **BLOCK NAMES** -> Nombre de los bloques (ayuda visual)
+  - **LANG** -> EN/ES Idioma de la interfaz
 
 ----
 

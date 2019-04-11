@@ -1,5 +1,15 @@
 # REVISIONES / REVISIONS
 
+## Version 0.1.0
+
+> [es]
+
+- Carpetas públicas: media, libs, snippets
+  
+> [en]
+
+- Public folders: media, libs, snippets
+  
 ## Version 0.0.5-alpha (20190401)
 
 > [es]
