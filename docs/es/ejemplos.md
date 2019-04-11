@@ -60,7 +60,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ~~~js
       // Variables
-      let local = 'local
+      let local = 'local'
       $global = 'global'
 
       // Funciones
