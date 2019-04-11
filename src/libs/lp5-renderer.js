@@ -9,7 +9,7 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.0.5-a',
+      version: '0.1.0',
       // Canvas
       canvas: null,
       // mian.js
@@ -134,7 +134,11 @@ let Lp5 = {
                   'mousePressed',
                   'mouseReleased',
                   'doubleClicked',
-                  'mouseWheel'
+                  'mouseWheel',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             draw: [
                   'draw',
@@ -153,7 +157,11 @@ let Lp5 = {
                   'mousePressed',
                   'mouseReleased',
                   'doubleClicked',
-                  'mouseWheel'
+                  'mouseWheel',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             aux: [
                   'draw',
@@ -165,14 +173,22 @@ let Lp5 = {
                   'use3d',
                   'useCam',
                   'useAudio',
-                  'remove'
+                  'remove',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ]
       },
+      extendsFile: function (file) {
+            return this.main.path().join(this.main.resourcesPath(), 'leparc_resources', 'extends', file)
+      },
       checkProgWord: function (_word) {
-            return `(' {0,}|" {0,}|\.)${_word} {0,}('|"|)`
+            // verifica que no se redefinan variables o funciones de p5
+            return `((?<=['"][\s\n\t ]*)${_word}(?=[\s\n\t ]*['"]|)|[\.\$]${_word})`
       },
       doGlobals: function (_code) {
-            return _code.replace(/\$/g, 'lp.')
+            return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
       },
       evalFx(_el) {
             let els = this.el(_el).querySelectorAll('.CodeMirror-line>span')
@@ -216,11 +232,13 @@ let Lp5 = {
                   }
                   // Try eval
                   // Verificar que se ejecuta correctamente
+                  // Para no detener el loop
                   try {
                         new Function(this.renderCodeDraw)()
                   } catch (e) {
                         valid = false
                         this.el('lp5-console-out').innerHTML = 'draw: ' + e
+                        this.el('lp5-draw').parentElement.classList.remove('error');
                   }
                   if (valid) {
                         this.validCodeDraw = this.renderCodeDraw;
@@ -258,8 +276,8 @@ let Lp5 = {
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
                         this.el('lp5-console-out').innerHTML = ''
-
-                        //this.main.saveCode('auxcode', this.validCodeAux)
+                  } else {
+                        this.el('lp5-aux').parentElement.classList.add('error');
                   }
             } catch (e) {
                   console.trace('en aux: ' + e);
@@ -315,15 +333,12 @@ let Lp5 = {
 }
 
 // Global var scope --------------------------------------------
-if (!window.hasOwnProperty('lp')) {
-      global.lp = {}
+if (!global.hasOwnProperty('lp')) {
+      global.lp = {
+            snippets: []
+      }
 } else {
       console.trace('no se pudo crear el objeto global "lp"')
-}
-if (!global.hasOwnProperty('$')) {
-      global.$ = {}
-} else {
-      console.trace('no se pudo crear el objeto global "$"')
 }
 // Init
 window.addEventListener('load', function () {
@@ -364,18 +379,26 @@ window.addEventListener('load', function () {
       }
       // Setup y Draw titulos ------------------
       if (localStorage.block_titles == 1) {
-            Lp5.el('setup-title').innerHTML = 'setup:'
-            Lp5.el('setup-title-end').innerHTML = ''
-            Lp5.el('draw-title').innerHTML = 'loop:'
-            Lp5.el('draw-title-end').innerHTML = ''
-            Lp5.el('cnf-titles').checked = true
-      } else {
             Lp5.el('setup-title').innerHTML = 'function setup(){'
             Lp5.el('setup-title-end').innerHTML = '}'
             Lp5.el('draw-title').innerHTML = 'function draw(){'
             Lp5.el('draw-title-end').innerHTML = '}'
+            Lp5.el('cnf-titles').checked = true
+      } else {
+            Lp5.el('setup-title').innerHTML = 'setup:'
+            Lp5.el('setup-title-end').innerHTML = ''
+            Lp5.el('draw-title').innerHTML = 'loop:'
+            Lp5.el('draw-title-end').innerHTML = ''
             Lp5.el('cnf-titles').checked = false
       }
+      if (Lp5.main.globalSettings().renderer == 'webgl') {
+            Lp5.el('lp5-os-r').style.display = 'inline'
+            Lp5.el('cnf-render').options[1].selected = true
+      } else {
+            Lp5.el('lp5-os-r').style.display = 'none'
+            Lp5.el('cnf-render').options[0].selected = true
+      }
+
       // Console Dev clear
       //console.clear()
 });
@@ -509,6 +532,7 @@ function setup() {
       // Init setup --------------------------
       if (!Lp5.canvas) {
             Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
+
       }
       // Webcam/video capture
       ___webcam = null;
@@ -535,6 +559,7 @@ function setup() {
             new Function(Lp5.validCodeSetup)();
       } catch (e) {
             console_msg('setup: ' + e.stack)
+            Lp5.el('lp5-setup').parentElement.classList.add('error');
       }
 
 
@@ -551,6 +576,7 @@ function draw() {
       }
       // reset -------------------------------
       noTint()
+      strokeWeight(1)
       // funciones no soportadas en WEBGL ----
       try {
             if (!___webgl) {
@@ -586,7 +612,7 @@ function draw() {
                               let r = new RegExp(Lp5.checkProgWord(word))
                               if (!Lp5.renderCodeDraw.match(r)) {
                                     valid = false;
-                                    Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + lang_msg.priv_words
+                                    Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -615,6 +641,12 @@ function draw() {
 function windowResized() {
       try {
             resizeCanvas(windowWidth, windowHeight, true);
+            try {
+                  new Function(Lp5.validCodeSetup)();
+            } catch (e) {
+                  console_msg('setup: ' + e.stack)
+                  Lp5.el('lp5-setup').parentElement.classList.add('error');
+            }
       } catch (e) {
             console.trace('en resize ' + e);
       }
@@ -656,7 +688,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                               let r = new RegExp(Lp5.checkProgWord(Lp5.prog.aux[i]))
                               if (!Lp5.renderCodeAux.match(r)) {
                                     valid = false;
-                                    Lp5.el('lp5-console-out').innerHTML = '| aux: ' + word + lang_msg.priv_words
+                                    Lp5.el('lp5-console-out').innerHTML = '| aux: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -721,7 +753,7 @@ Lp5.codeSetup.addEventListener('keydown', (ev) => {
                               let r = new RegExp(Lp5.checkProgWord(Lp5.prog.setup[i]))
                               if (!Lp5.renderCodeSetup.match(r)) {
                                     valid = false;
-                                    Lp5.el('lp5-console-out').innerHTML = '| setup: ' + word + lang_msg.priv_words
+                                    Lp5.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words
                               }
                         }
                   }
@@ -1170,19 +1202,22 @@ Lp5.el('cnf-lang').addEventListener('change', () => {
       Lp5.main.reload()
 });
 
+Lp5.el('cnf-render').addEventListener('change', () => {
+      Lp5.main.reload(Lp5.el('cnf-render').value)
+});
 Lp5.el('cnf-titles').addEventListener('click', () => {
       if (Lp5.el('cnf-titles').checked) {
             localStorage.block_titles = 1
-            Lp5.el('setup-title').innerHTML = 'setup:'
-            Lp5.el('setup-title-end').innerHTML = ''
-            Lp5.el('draw-title').innerHTML = 'loop:'
-            Lp5.el('draw-title-end').innerHTML = ''
-      } else {
-            localStorage.block_titles = 0
             Lp5.el('setup-title').innerHTML = 'function setup(){'
             Lp5.el('setup-title-end').innerHTML = '}'
             Lp5.el('draw-title').innerHTML = 'function draw(){'
             Lp5.el('draw-title-end').innerHTML = '}'
+      } else {
+            localStorage.block_titles = 0
+            Lp5.el('setup-title').innerHTML = 'setup:'
+            Lp5.el('setup-title-end').innerHTML = ''
+            Lp5.el('draw-title').innerHTML = 'loop:'
+            Lp5.el('draw-title-end').innerHTML = ''
       }
 });
 Lp5.el('cnf-server').addEventListener('change', (ev) => {
