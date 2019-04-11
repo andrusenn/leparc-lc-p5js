@@ -163,7 +163,7 @@ canvas {
             background: #000;
             border: 1px solid #333;
             position: fixed;
-            top: 100%;
+            top: 95%;
             left: 50%;
             font-size: 0.8rem;
             color: #fff;
@@ -198,12 +198,13 @@ canvas {
                         }
 
                         .col1 {
-                              text-align: right;
+                              text-align: left;
                               min-width: 150px;
 
                         }
 
                         .col2 {
+                              text-align: right;
                               min-width: 150px;
 
                         }
@@ -283,9 +284,15 @@ canvas {
             bottom: 0;
 
             #lp5-os-status {
-                  width: 20;
+                  width: 40px;
                   background: transparent;
                   color: #000;
+            }
+            #lp5-os-r {
+                  width: 30px;
+                  text-align: center;
+                  background: rgba(255,255,255,0.4);
+                  color: #fff;
             }
 
             .unsave {
