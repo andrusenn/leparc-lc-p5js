@@ -345,4 +345,4 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
 
 ### Ejemplos y usos
 
-> [Ejemplos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
+> [ver docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)

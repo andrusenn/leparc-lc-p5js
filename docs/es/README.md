@@ -1,6 +1,7 @@
 # LeParc Livecoder
 
 LeParc es una herramienta para codificar/programar en vivo.
+Utiliza la librería [p5js](https://p5js.org/es/) como base.
 
 ### Estructura de carpetas
   
@@ -22,12 +23,12 @@ leparc_resources/
                   └── espiro.js
 ~~~
 
-**config**: configuraciones varias (server-ip,port,etc)
-**extends**: Este archivo se carga cuando se ejecuta el programa.
-**libs**: Carpeta destinada a cargar librerías .js externas.
-**media**: Archivos multimedia (audio,video, imagen)
-**save**: se guarda el código introducido en los bloques y se recupera cuando se ejecuta nuevamente. (`Ctrl+S`)
-**snippets**: Archivos que se cargan dinámicamente en bloque `aux:` con `snip('mi_snippet',[callback])`
+- **config**: configuraciones varias (server-ip,port,etc)
+- **extends**: Este archivo se carga cuando se ejecuta el programa.
+- **libs**: Carpeta destinada a cargar librerías .js externas.
+- **media**: Archivos multimedia (audio,video, imagen)
+- **save**: se guarda el código introducido en los bloques y se recupera cuando se ejecuta nuevamente. (`Ctrl+S`)
+- **snippets**: Archivos que se cargan dinámicamente en bloque `aux:` con `snip('mi_snippet',[callback])`
 
 - [Comandos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
 - [Funciones extendidas](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/funciones-extendidas.md)

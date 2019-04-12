@@ -345,4 +345,4 @@ In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **p
 
 ### Examples an howtos
 
-> [Examples](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/)
+> [View docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/)
