@@ -4,12 +4,12 @@
 
 - [Examples and uses](#ejemplos-y-usos)
     - [Use of blocks](#uso-de-bloques)
-    - [Ámbito de las variables](#%C3%A1mbito-de-las-variables)
+    - [Variables scope](#%C3%A1mbito-de-las-variables)
     - [Audio](#audio)
     - [Webcam](#webcam)
     - [Snippets](#snippets)
     - [My own snippet](#mi-propio-snippet)
-    - [Cargar archivos multimedia](#cargar-archivos-multimedia)
+    - [Load media files](#cargar-archivos-multimedia)
 
 <a name="uso-de-bloques"></a>
 
@@ -51,15 +51,15 @@ aux:
 - [see list of commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
 - [configure the interface and other actions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
 
-([indice](#ejemplos))
+([index](#ejemplos))
 
 <a name="ambito-variables"></a>
 
 ---
 
-### Ámbito de las variables
+### Variables scope
 
-Para acceder a variables declaradas en otros bloques, se debe utilizar el prefijo `$`
+To access the variables in a different block, use the prefix  `$`
 
 `setup:`
 
@@ -89,7 +89,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ```
 
-([indice](#ejemplos))
+([index](#ejemplos))
 
 ---
 
@@ -101,9 +101,9 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ```js
       useAudio(1)
-      // 0 por defecto, es el micrófono
-      // 1 es la entrada del mixer
-      // Ver configuración de hardware
+      // 0 default, mic
+      // 1 mixer
+      // See hardware specs
 ```
 
 `loop:`
@@ -111,9 +111,9 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 ```js
       background(0)
       let ae = audioEnergy(1000)
-      // audioEnergy(freq[,freq]) -> retorna 0-255 volume
-      // de la frecuencia o rango de frcuencias especificadas
-      // (ver p5js audio lib)
+      // audioEnergy(freq[,freq]) -> return 0-255 volume
+      // of frquency or frequency range
+      // (see p5js audio lib)
       // console.log(ae)
       noFill()
       stroke(255)
@@ -121,7 +121,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
       rect(width/2,height/2,ae,ae)
 ```
 
-([indice](#ejemplos))
+([index](#ejemplos))
 
 ---
 
@@ -133,7 +133,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ```js
       useCam()
-      // Por defecto 320x240
+      // By default is 320x240
       // useCam(640,480)
 ```
 
@@ -151,7 +151,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
       image(img,0,0)
 ```
 
-([indice](#ejemplos))
+([index](#ejemplos))
 
 ---
 
@@ -159,7 +159,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ### Snippets
 
-Los snippets son porciones de código reutilizables y se cargan dinámicamente con el método `snip('mi_snipet')`. Pueden contener funciones, clases, sentencias, etc...
+Snippets are reusable piece of code. You can load with `snip('mi_snipet')`. Can be functions, classes, etc...
 
 `setup:`
 
@@ -184,22 +184,22 @@ Los snippets son porciones de código reutilizables y se cargan dinámicamente c
 `aux:`
 
 ```js
-      // Carga desde snippets el archivo espiro/espiro.js
+      // Load snippets from espiro/espiro.js
       snip('espiro',()=>{
-            // Una vez cargada se puede instanciar
+            // Once loaded...
             $espiro = new EspiroNoise(width/2,height/2)
       })
 ```
 
-([indice](#ejemplos))
+([index](#ejemplos))
 
 ---
 
 <a name="snippets"></a>
 
-### Mi propio snippet
+### My own snippet
 
-Crear carpeta dentro de `leparc_resources/snippets` y el archivo .js con el mismo nombre
+Create a folder inside of `leparc_resources/snippets` and file .js with the same name
 
 ```
 leparc_resources/
@@ -208,7 +208,7 @@ leparc_resources/
                   └── mi_snippet.js
 ```
 
-En `mi_snippet.js`
+In `mi_snippet.js`
 
 ```js
 
@@ -237,26 +237,26 @@ if (!global.hasOwnProperty('mi_funcion')) {
 `loop:`
 
 ```js
-      // Ejecutamos la funcion
+      // Run
       mi_funcion()
 ```
 
 `aux:`
 
 ```js
-      // Carga desde snippets el archivo creado mi_snippet/mi_snippet.js
+      // Load snippet mi_snippet/mi_snippet.js
       snip('mi_snippet',()=>{
-            // Cuando se carga, hacemos alguna cosa
+            // On load do something
       })
 ```
 
-([indice](#ejemplos))
+([index](#ejemplos))
 
 <a name="cargar-archivos"></a>
 
 ---
 
-### Cargar archivos multimedia
+### Load media files
 
 `setup:`
 
@@ -278,15 +278,15 @@ if (!global.hasOwnProperty('mi_funcion')) {
 `aux:`
 
 ```js
-      // Carga desde media/ el archivo mi_video.mp4
+      // Load file mi_video.mp4 from media/ 
       createVideo(mediaPath('mi_video.mp4'),(v)=>{
             $video = v
             $video.play()
       })
-      // Carga desde media/ el archivo mi_video.mp4
+      // Load file mi_imagen.png from media/
       loadImage(mediaPath('mi_imagen.png'),(i)=>{
             $img = i
       })
 ```
 
-([indice](#ejemplos))
+([index](#ejemplos))
