@@ -5,7 +5,7 @@ Based on [p5js](https://p5js.org/es/) library.
 
 ### Directory structure
 
-Una vez instalado, se crean varias carpetas:
+Once installed, several folders are created:
 
 ```
 
@@ -34,7 +34,7 @@ leparc_resources/
 
 ---
 
-- [Comandos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
+- [Commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
 - [Funciones extendidas](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/funciones-extendidas.md)
-- [Interfaz](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
-- [Ejemplos y usos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
+- [Interface](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
+- [Examples and uses](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
