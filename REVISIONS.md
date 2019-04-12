@@ -5,10 +5,14 @@
 > [es]
 
 - Carpetas públicas: media, libs, snippets
+- Render 2d/3d opcional
+- Traducción de la interfaz
   
 > [en]
 
 - Public folders: media, libs, snippets
+- Render switch 2d/3d
+- Interface traslation
   
 ## Version 0.0.5-alpha (20190401)
 
