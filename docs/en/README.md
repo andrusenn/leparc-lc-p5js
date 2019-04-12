@@ -34,7 +34,7 @@ leparc_resources/
 
 ---
 
-- [Commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
-- [Extended functions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/funciones-extendidas.md)
-- [Interface](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
-- [Examples and uses](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
+- [Commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/comandos.md)
+- [Extended functions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/funciones-extendidas.md)
+- [Interface](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/interfaz.md)
+- [Examples and uses](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/ejemplos.md)
