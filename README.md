@@ -1,4 +1,4 @@
-# LeParc p5 livecoder
+# LeParc p5js livecoder
 
 > (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
 
