@@ -1,17 +1,17 @@
 # Examples and uses
 
-<a name="ejemplos"></a>
+<a name="examples-and-uses"></a>
 
-- [Examples and uses](#ejemplos-y-usos)
-    - [Use of blocks](#uso-de-bloques)
-    - [Variables scope](#%C3%A1mbito-de-las-variables)
+- [Examples and uses](#examples-and-uses)
+    - [Use of blocks](#use-of-blocks)
+    - [Variables scope](#variables-scope)
     - [Audio](#audio)
     - [Webcam](#webcam)
     - [Snippets](#snippets)
-    - [My own snippet](#mi-propio-snippet)
-    - [Load media files](#cargar-archivos-multimedia)
+    - [My own snippet](#my-own-snippet)
+    - [Load media files](#load-media-files)
 
-<a name="uso-de-bloques"></a>
+<a name="use-of-blocks"></a>
 
 ---
 
@@ -22,38 +22,38 @@ The system has three blocks available:
 ```
 
 setup:
-      // Homónimo de function setup(){}
-      // Por debajo, cuando se ejecuta este bloque, se
-      // definen y re-setean varias funciones y objetos
-      // como por ejemplo:
-      // - setFrameRate(60)
-      // - imageMode(CORNER)
-      // - rectMode(CORNER)
-      // - etc... (ver lp5-renderer.js)
-      // Se puede evaluar todo el bloque con Ctrl+ENTER o
-      // una sola línea con Alt+ENTER
-      // Podemos ocultarlo con F1
+      // Same as function setup () {}
+      // Underneath, when this block is executed, it
+      // define and re-set various functions and objects
+      // for example:
+      // - setFrameRate (60)
+      // - imageMode (CORNER)
+      // - rectMode (CORNER)
+      // - etc ... (see lp5-renderer.js)
+      // You can evaluate the whole block with Ctrl + ENTER or
+      // a single line with Alt + ENTER
+      // Can hide it with F1
 
 
 loop:
-      // Homónimo de function draw(){}
-      // Se ejecuta a una velocidad de 60 fps
-      // se puede configurar en setup con setFrameRate(n)
-      // Podemos ocultarlo con F2
+      // Same as function draw () {}
+      // It runs at a speed of 60 fps
+      // can be configured in setup with setFrameRate (n)
+      // Can hide it with F2
 
 aux:
-      // Bloque auxiliar que difiere de setup porque no se
-      // re-setean funciones y objetos
-      // Podemos ocultarlo con F3
+      // Auxiliary block that differs from setup because it does not
+      // re-set functions and objects
+      // Can hide it with F3
 
 ```
 
 - [see list of commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
 - [configure the interface and other actions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
 
-([index](#ejemplos))
+([index](#examples-and-uses))
 
-<a name="ambito-variables"></a>
+<a name="variables-scope"></a>
 
 ---
 
@@ -89,7 +89,7 @@ To access the variables in a different block, use the prefix  `$`
 
 ```
 
-([index](#ejemplos))
+([index](#examples-and-uses))
 
 ---
 
@@ -121,7 +121,7 @@ To access the variables in a different block, use the prefix  `$`
       rect(width/2,height/2,ae,ae)
 ```
 
-([index](#ejemplos))
+([index](#examples-and-uses))
 
 ---
 
@@ -151,7 +151,7 @@ To access the variables in a different block, use the prefix  `$`
       image(img,0,0)
 ```
 
-([index](#ejemplos))
+([index](#examples-and-uses))
 
 ---
 
@@ -191,11 +191,11 @@ Snippets are reusable piece of code. You can load with `snip('mi_snipet')`. Can 
       })
 ```
 
-([index](#ejemplos))
+([index](#examples-and-uses))
 
 ---
 
-<a name="snippets"></a>
+<a name="my-own-snippets"></a>
 
 ### My own snippet
 
@@ -250,9 +250,9 @@ if (!global.hasOwnProperty('mi_funcion')) {
       })
 ```
 
-([index](#ejemplos))
+([index](#examples-and-uses))
 
-<a name="cargar-archivos"></a>
+<a name="load-media-files"></a>
 
 ---
 
@@ -289,4 +289,4 @@ if (!global.hasOwnProperty('mi_funcion')) {
       })
 ```
 
-([index](#ejemplos))
+([index](#examples-and-uses))
