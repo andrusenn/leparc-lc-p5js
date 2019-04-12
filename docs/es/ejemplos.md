@@ -1,12 +1,13 @@
-# Ejemplos
+# Ejemplos y usos
 
 <a name="ejemplos"></a>
-- [Ejemplos](#ejemplos)
+- [Ejemplos y usos](#ejemplos-y-usos)
     - [Uso de bloques](#uso-de-bloques)
     - [Ámbito de las variables](#%C3%A1mbito-de-las-variables)
     - [Audio](#audio)
     - [Webcam](#webcam)
     - [Snippets](#snippets)
+    - [Mi propio snippet](#mi-propio-snippet)
     - [Cargar archivos multimedia](#cargar-archivos-multimedia)
 
 <a name="uso-de-bloques"></a>
@@ -45,6 +46,9 @@ aux:
       // Podemos ocultarlo con F3
 
 ~~~
+
+- [ver lista de comandos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
+- [configurar la interfaz y otras acciones](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
 
 ([indice](#ejemplos))
 
@@ -154,6 +158,8 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ### Snippets
 
+Los snippets son porciones de código reutilizables y se cargan dinámicamente con el método `snip('mi_snipet')`. Pueden contener funciones, clases, sentencias, etc...
+
 `setup:`
 
 ~~~js
@@ -181,6 +187,65 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
       snip('espiro',()=>{
             // Una vez cargada se puede instanciar
             $espiro = new EspiroNoise(width/2,height/2)
+      })
+~~~
+
+([indice](#ejemplos))
+
+---
+
+<a name="snippets"></a>
+
+### Mi propio snippet
+
+Crear carpeta dentro de `leparc_resources/snippets` y el archivo .js con el mismo nombre
+
+~~~
+leparc_resources/
+      └── snippets/
+            └── mi_snippet/
+                  └── mi_snippet.js
+~~~
+
+En `mi_snippet.js`
+
+~~~js
+
+let mi_funcion = function(){
+      console.log('mi primer snipet')
+}
+
+// hacer global
+if (!global.hasOwnProperty('mi_funcion')) {
+      global.mi_funcion = mi_funcion
+}
+// o también de esta forma hacer global
+// if (!lp.hasOwnProperty('espiro')) {
+//       lp.mi_funcion = mi_funcion // -> utilizamos $mi_funcion
+// }
+
+~~~
+
+`setup:`
+
+~~~js
+      //
+      background(0)
+~~~
+
+`loop:`
+
+~~~js
+      // Ejecutamos la funcion
+      mi_funcion()
+~~~
+
+`aux:`
+
+~~~js
+      // Carga desde snippets el archivo creado mi_snippet/mi_snippet.js
+      snip('mi_snippet',()=>{
+            // Cuando se carga, hacemos alguna cosa
       })
 ~~~
 

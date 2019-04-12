@@ -4,7 +4,9 @@ LeParc es una herramienta para codificar/programar en vivo.
 Utiliza la librería [p5js](https://p5js.org/es/) como base.
 
 ### Estructura de carpetas
-  
+
+Una vez instalado, se crean varias carpetas:
+
 ~~~
 
 leparc_resources/
@@ -30,7 +32,9 @@ leparc_resources/
 - **save**: se guarda el código introducido en los bloques y se recupera cuando se ejecuta nuevamente. (`Ctrl+S`)
 - **snippets**: Archivos que se cargan dinámicamente en bloque `aux:` con `snip('mi_snippet',[callback])`
 
+---
+
 - [Comandos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
 - [Funciones extendidas](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/funciones-extendidas.md)
 - [Interfaz](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
-- [Ejemplos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
+- [Ejemplos y usos](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
