@@ -4,7 +4,7 @@
 
 `Ctrl+TAB` Open / close config win
 
-<img src="http://andressenn.com/leparc-lc/interfaz/es/config-d.jpg" alt="config" width="400">
+<img src="http://andressenn.com/leparc-lc/interfaz/en/config-d.jpg" alt="config" width="400">
 
 - **AUTO RENDER**: Make loop block eval automatically
 - **RENDER**: Toggle 2D/3D
