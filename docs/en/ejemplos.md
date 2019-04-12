@@ -48,8 +48,8 @@ aux:
 
 ```
 
-- [see list of commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
-- [configure the interface and other actions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
+- [see list of commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/comandos.md)
+- [configure the interface and other actions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/interfaz.md)
 
 ([index](#examples-and-uses))
 
