@@ -343,6 +343,6 @@ In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **p
   
 ----
 
-### Examples an howtos
+### Examples and howtos
 
 > [View docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/ejemplos.md)
