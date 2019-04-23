@@ -7,6 +7,14 @@ This project use [Electronjs](https://electronjs.org/)
 
 This project was born as a tool for personal use, but it became a performative tool, and took some of the live coding philosophy.
 
+The objective is that it be an extensible environment (hackable) where resources or snippets can be programmed to use and share. Also, load the js libraries compatible with p5js.
+
+The core of * LeParc * is Javascript and libraries p5js, Codemirror (editor), jsbeautify (formatter). And with Electronjs (node.js, chromium, v8) to create native applications.
+
+You can report if you find an error or bug. I also encourage you to fork the project.
+
+> [Here you can find more help](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en)
+
 ![Image](http://andressenn.com/leparc-lc/lp01.jpg)
 
 ----
@@ -50,9 +58,6 @@ leparc_resources/
 
 #### Build
 
-1. clon repository
-2. `cd src` (root dir)
-3. `npm install`
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
 ### Comands
