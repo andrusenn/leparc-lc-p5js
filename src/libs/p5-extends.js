@@ -126,60 +126,6 @@ if (!p5.prototype.hasOwnProperty('fade')) {
       }
 }
 /**
- * Variacion de elleipse()
- * @method circle
- * @param {Number} x          posicion x
- * @param {Number} y          posicion y
- * @param {Number} d          diametro
- */
-if (!p5.prototype.hasOwnProperty('circle')) {
-      p5.prototype.circle = function () {
-            let arg = arguments;
-            if (arg.length == 3) {
-                  ellipse(arg[0], arg[1], arg[2], arg[2])
-            }
-      }
-}
-/**
- * Desplaza salida del canvas o un recorte
- * @method displace
- * 2 parametros
- * @param {Number} velx       velocidad de desplazo en x
- * @param {Number} vely       velocidad de desplazo en y
- * 
- * Recorte
- * 6 parametros
- * @param {Number} x          posicion x
- * @param {Number} y          posicion y
- * @param {Number} w          ancho del recorte
- * @param {Number} x          alto del recorte
- * @param {Number} velx       velocidad de desplazo en x
- * @param {Number} vely       velocidad de desplazo en y
- */
-
-if (!p5.prototype.hasOwnProperty('displace')) {
-      p5.prototype.displace = function () {
-            let arg = arguments;
-            if (arg.length == 6) {
-                  let i = get(arg[0], arg[1], arg[2], arg[3])
-                  push()
-                  imageMode(CORNER);
-                  image(i, arg[0] + arg[4], arg[1] + arg[5])
-                  pop()
-            } else
-                  if (arg.length == 2) {
-                        let i = get()
-                        push()
-                        imageMode(CORNER);
-                        image(i, arg[0], arg[1])
-                        pop()
-                  } else {
-                        console.log('no entra')
-                  }
-            return this;
-      }
-}
-/**
  * beginRot(vel) y endRot() se utilizan
  * juntas
  * 
@@ -602,7 +548,8 @@ if (!p5.prototype.hasOwnProperty('useCam')) {
                   }
                   if (arg.length == 2) {
                         ___webcam = createCapture(VIDEO);
-                        ___webcam.size(arg[0], arg[0]);
+                        ___webcam.size(arg[0], arg[1]);
+                        ___webcam.hide()
                   }
             } else {
                   console_msg('useCam() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
@@ -627,18 +574,23 @@ if (!p5.prototype.hasOwnProperty('getCam')) {
                   }
                   if (arg.length == 1 && ___webcam != null) {
                         arg[0].push()
+                        // https://github.com/processing/p5.js/issues/1087
+                        // tint // noTint issue -> loadPixels() fix it 
+                        ___webcam.loadPixels()
                         arg[0].image(___webcam, 0, 0)
                         arg[0].pop()
                   }
                   if (arg.length == 2 && ___webcam != null) {
                         push()
                         translate(arg[0], arg[1])
+                        ___webcam.loadPixels()
                         image(___webcam, 0, 0)
                         pop()
                   }
                   if (arg.length == 3 && ___webcam != null) {
                         arg[0].push()
                         arg[0].translate(arg[1], arg[2])
+                        ___webcam.loadPixels()
                         arg[0].image(___webcam, 0, 0)
                         arg[0].pop()
                   }
@@ -663,6 +615,9 @@ if (!p5.prototype.hasOwnProperty('imgCam')) {
                   if (___webcam == null) {
                         console_msg('useCam() no esta declarado')
                   }
+                  // https://github.com/processing/p5.js/issues/1087
+                  // tint // noTint issue -> loadPixels() fix it 
+                  ___webcam.loadPixels()
                   return ___webcam
             } else {
                   console_msg('useCam() - Solo puede conectarse en modo LOCAL o SERVER', 'warning');
@@ -852,7 +807,7 @@ if (!p5.prototype.hasOwnProperty('pulse')) {
 }
 
 /**
- * Emite un trigger -> true cada n fotogramas
+ * Emite un trigger -> true cada n fotogramas y duracion
  * 
  * @method gate
  * @param {Number} _cycle      numero en fotogramas
@@ -866,4 +821,93 @@ if (!p5.prototype.hasOwnProperty('gate')) {
                   return false
             }
       }
+}
+
+/**
+ * Setea pixel
+ * 
+ * @method setPixel
+ * 3 param
+ * @param {Number} x      posicion x
+ * @param {Number} y      posicion y
+ * @param {Number} c      color (BN)
+ * 4 param
+ * @param {Number} x      posicion x
+ * @param {Number} y      posicion y
+ * @param {Number} c      color (BN)
+ * @param {Number} a      alpha
+ * 5 param
+ * @param {Number} x      posicion x
+ * @param {Number} y      posicion y
+ * @param {Number} r      red/rojo
+ * @param {Number} g      green/verde
+ * @param {Number} b      blue/azul
+ * 6 param
+ * @param {Number} x      posicion x
+ * @param {Number} y      posicion y
+ * @param {Number} r      red/rojo
+ * @param {Number} g      green/verde
+ * @param {Number} b      blue/azul
+ * @param {Number} a      alpha
+ */
+if (!p5.prototype.hasOwnProperty('setPixel')) {
+      p5.prototype.setPixel = function () {
+            let arg = arguments
+            if (arg.length == 3) {
+                  let x = arg[0]
+                  let y = arg[1]
+                  let c = arg[2]
+                  let i = (int(x) + int(y) * width) * 4
+                  pixels[i] = c
+                  pixels[i + 1] = c
+                  pixels[i + 2] = c
+                  pixels[i + 3] = 255
+            }
+            if (arg.length == 4) {
+                  let x = arg[0]
+                  let y = arg[1]
+                  let c = arg[2]
+                  let a = arg[3]
+                  let i = (x + y * width) * 4
+                  pixels[i] = c
+                  pixels[i + 1] = c
+                  pixels[i + 2] = c
+                  pixels[i + 3] = a
+            }
+            if (arg.length == 5) {
+                  let x = arg[0]
+                  let y = arg[1]
+                  let r = arg[2]
+                  let g = arg[3]
+                  let b = arg[4]
+                  let i = (x + y * width) * 4
+                  pixels[i] = r
+                  pixels[i + 1] = g
+                  pixels[i + 2] = b
+                  pixels[i + 3] = 255
+            }
+            if (arg.length == 6) {
+                  let x = arg[0]
+                  let y = arg[1]
+                  let r = arg[2]
+                  let g = arg[3]
+                  let b = arg[4]
+                  let a = arg[5]
+                  let i = (x + y * width) * 4
+                  pixels[i] = r
+                  pixels[i + 1] = g
+                  pixels[i + 2] = b
+                  pixels[i + 3] = a
+            }
+      }
+}
+
+/**
+ * Eventos key
+ */
+if (!p5.prototype.hasOwnProperty('keyPressed')) {
+      p5.prototype.keyPressed = null
+}
+if (!p5.prototype.hasOwnProperty('keyReleased')) {
+      p5.prototype.keyReleased = null
 }
