@@ -1,7 +1,7 @@
-# LeParc Livecoder
+# LeParc p5js Livecoder
 
-LeParc es una herramienta para codificar/programar en vivo.
-Utiliza la librería [p5js](https://p5js.org/es/) como base.
+LeParc es una herramienta para codificar/programar en vivo con javascript.
+Utiliza la librería [p5js](https://p5js.org/es/) como base y Electronjs para correrlo nativamente en cualquier sistema operativo.
 
 ### Estructura de carpetas
 
