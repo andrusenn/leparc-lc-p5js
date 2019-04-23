@@ -6,7 +6,7 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "p5 livecoding",
       "repository": {
             "type": "git",
@@ -30,6 +30,7 @@
             "productName": "LeParc-LC",
             "files": [
                   "!**/leparc_resources/{config,media,save}",
+                  "!**/leparc_resources/snippets/{gpu,tnoise,toxi,loadvideos,noise}",
                   "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
             ],
             "directories": {
