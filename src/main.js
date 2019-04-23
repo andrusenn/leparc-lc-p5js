@@ -41,7 +41,7 @@ function createWindow() {
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'media'))
                   // Directorio -> leparc_resources/config
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'config'), () => {
-                        writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.txt'), "server-ip=127.0.0.1\nport=7777")
+                        writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.txt'), "server-ip=127.0.0.1\nport=7777\nmfr=0.001")
                   })
                   // Directorio -> leparc_resources/extends
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'extends'), () => {
