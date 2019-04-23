@@ -1,5 +1,23 @@
 # REVISIONES / REVISIONS
 
+## Version 0.1.1
+
+> [es]
+
+- eventos: keyPressed / keyReleased
+- looping seguro (configurable)
+- Traducción de la interfaz
+- Actualización de p5js a versión 0.8.0
+- Compilar (eval) selección (setup: y aux:)
+  
+> [en]
+
+- Public folders: media, libs, snippets
+- Render switch 2d/3d
+- Interface traslation
+- Upgrade p5js version 0.8.0
+- Eval selection (setup: y aux:)
+  
 ## Version 0.1.0
 
 > [es]
