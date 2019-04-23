@@ -9,7 +9,10 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.1.0',
+      version: '0.1.1',
+      p5: {
+            version: '0.8.0'
+      },
       // Canvas
       canvas: null,
       // mian.js
@@ -134,6 +137,8 @@ let Lp5 = {
                   'mousePressed',
                   'mouseReleased',
                   'doubleClicked',
+                  'keyReleased',
+                  'keyPressed',
                   'mouseWheel',
                   '___audio',
                   '___fft',
@@ -156,6 +161,8 @@ let Lp5 = {
                   'mouseDragged',
                   'mousePressed',
                   'mouseReleased',
+                  'keyReleased',
+                  'keyPressed',
                   'doubleClicked',
                   'mouseWheel',
                   '___audio',
@@ -185,7 +192,7 @@ let Lp5 = {
       },
       checkProgWord: function (_word) {
             // verifica que no se redefinan variables o funciones de p5
-            return `((?<=['"][\s\n\t ]*)${_word}(?=[\s\n\t ]*['"]|)|[\.\$]${_word})`
+            return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s ]*${_word})`
       },
       doGlobals: function (_code) {
             return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
@@ -204,6 +211,17 @@ let Lp5 = {
             void els[ln].offsetWidth
             els[ln].classList.add('compile');
       },
+      evalSelectFx(_el, lns) {
+            let els = this.el(_el).querySelectorAll('.CodeMirror-line>span')
+            for (let i = parseInt(lns.from); i <= parseInt(lns.to); i++) {
+                  els[i].classList.remove('compile');
+                  void els[i].offsetWidth
+                  els[i].classList.add('compile');
+            }
+      },
+      getLinesSelected(cm) {
+            return { from: cm.getCursor('from').line, to: cm.getCursor('to').line }
+      },
       clearEvts: function () {
             // p5js events prop
             mouseClicked = null
@@ -212,6 +230,8 @@ let Lp5 = {
             mousePressed = null
             mouseReleased = null
             doubleClicked = null
+            keyReleased = null
+            keyPressed = null
             mouseWheel = null
       },
       evalDraw: function () {
@@ -254,8 +274,13 @@ let Lp5 = {
             }
       },
       evalAux: function () {
-            this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
-            this.evalFx('lp5-aux')
+            if (this.cmAux.somethingSelected()) {
+                  this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getSelection());
+                  this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmAux))
+            } else {
+                  this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
+                  this.evalFx('lp5-aux')
+            }
             try {
                   let valid = true;
                   let word = '';
@@ -286,8 +311,13 @@ let Lp5 = {
             }
       },
       evalSetup: function () {
-            this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getValue());
-            this.evalFx('lp5-setup')
+            if (this.cmSetup.somethingSelected()) {
+                  this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getSelection());
+                  this.evalSelectFx('lp5-setup', this.getLinesSelected(this.cmSetup))
+            } else {
+                  this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getValue());
+                  this.evalFx('lp5-setup')
+            }
             try {
                   let valid = true;
                   let word = '';
@@ -402,7 +432,6 @@ window.addEventListener('load', function () {
       // Console Dev clear
       //console.clear()
 });
-
 // ********************************************************************
 // ********************************************************************
 // P5js ***************************************************************
@@ -511,42 +540,51 @@ function preload() {
                   console.trace(e)
             }
       })
+      // Cargar config / Load config
       loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'config', 'config.txt'), (file) => {
             Lp5.cnfTxt = file
             for (let i = 0; i < Lp5.cnfTxt.length; i++) {
                   let vars = Lp5.cnfTxt[i].split('=')
                   if (vars[0] && vars[1]) Lp5.configs[vars[0].trim()] = (vars[1].trim())
             }
+
+            // Checkea si toma muchos recursos y para el loop
+            // Check if takes too much resources and stop loop
+            let cfps = setInterval(function () {
+                  if (getFrameRate() < _targetFrameRate * parseFloat(Lp5.configs['mfr'])) {
+                        noLoop()
+                        Lp5.looping = false
+                  }
+            }, 2000)
       })
 }
 function setup() {
-      // Checkea si toma muchos recursos y para el loop
 
-      // let cfps = setInterval(function () {
-      //       if (getFrameRate() < _targetFrameRate * 0.1) {
-      //             noLoop()
-      //             Lp5.looping = false
-      //       }
-      // },2000)
+      // WebGl --------------------------------------------
+      // Fix default this.pointSize = 5 ?
+      p5.RendererGL.prototype.strokeWeight = function (w) {
+            if (this.curStrokeWeight !== 0.0001) {
+                  this.pointSize = w;
+                  this.curStrokeWeight = w;
+            }
+      };
 
       // Init setup --------------------------
       if (!Lp5.canvas) {
             Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
-
       }
       // Webcam/video capture
-      ___webcam = null;
+      if (___webcam) {
+            ___webcam.remove()
+      }
+      ___webcam = null
       // Audio
       if (___audio != null) {
             ___audio.disconnect()
             ___audio = null
             ___fft = null
       }
-      try {
-            if (!___webgl) blendMode(NORMAL)
-      } catch (e) {
-            //
-      }
+      blendMode(BLEND)
       setFrameRate(60)
       imageMode(CORNER)
       angleMode(RADIANS)
@@ -568,7 +606,7 @@ function setup() {
 function draw() {
       // FPS
       Lp5.fps = getFrameRate();
-      // Revisar
+      // // Revisar
       if ((Lp5.historyChangesSetup + Lp5.historyChangesDraw + Lp5.historyChangesAux) > 0) {
             Lp5.el('lp5-os-status').classList.add('unsave')
       } else {
@@ -577,11 +615,10 @@ function draw() {
       // reset -------------------------------
       noTint()
       strokeWeight(1)
-      // funciones no soportadas en WEBGL ----
+      blendMode(BLEND)
+      // funciones en WEBGL ----
       try {
-            if (!___webgl) {
-                  blendMode(NORMAL)
-            } else {
+            if (___webgl) {
                   // en use3d -> default
                   directionalLight(100, 100, 100, 1, 1, 0)
                   ambientLight(50)
