@@ -9,7 +9,7 @@ This project was born as a tool for personal use, but it became a performative t
 
 The objective is that it be an extensible environment (hackable) where resources or snippets can be programmed to use and share. Also, load the js libraries compatible with p5js.
 
-The core of * LeParc * is Javascript and libraries p5js, Codemirror (editor), jsbeautify (formatter). And with Electronjs (node.js, chromium, v8) to create native applications.
+The core of *LeParc* is Javascript and libraries p5js, Codemirror (editor), jsbeautify (formatter). And with Electronjs (node.js, chromium, v8) to create native applications.
 
 You can report if you find an error or bug. I also encourage you to fork the project.
 
