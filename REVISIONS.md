@@ -12,8 +12,8 @@
   
 > [en]
 
-- Public folders: media, libs, snippets
-- Render switch 2d/3d
+- events: keyPressed / keyReleased
+- safe looping (config)
 - Interface traslation
 - Upgrade p5js version 0.8.0
 - Eval selection (setup: y aux:)
