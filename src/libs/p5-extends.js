@@ -126,6 +126,45 @@ if (!p5.prototype.hasOwnProperty('fade')) {
       }
 }
 /**
+ * Desplaza salida del canvas o un recorte
+ * @method displace
+ * 2 parametros
+ * @param {Number} velx       velocidad de desplazo en x
+ * @param {Number} vely       velocidad de desplazo en y
+ * 
+ * Recorte
+ * 6 parametros
+ * @param {Number} x          posicion x
+ * @param {Number} y          posicion y
+ * @param {Number} w          ancho del recorte
+ * @param {Number} x          alto del recorte
+ * @param {Number} velx       velocidad de desplazo en x
+ * @param {Number} vely       velocidad de desplazo en y
+ */
+
+if (!p5.prototype.hasOwnProperty('displace')) {
+      p5.prototype.displace = function () {
+            let arg = arguments;
+            if (arg.length == 6) {
+                  let i = get(arg[0], arg[1], arg[2], arg[3])
+                  push()
+                  imageMode(CORNER);
+                  image(i, arg[0] + arg[4], arg[1] + arg[5])
+                  pop()
+            } else
+                  if (arg.length == 2) {
+                        let i = get()
+                        push()
+                        imageMode(CORNER);
+                        image(i, arg[0], arg[1])
+                        pop()
+                  } else {
+                        console.log('no entra')
+                  }
+            return this;
+      }
+}
+/**
  * beginRot(vel) y endRot() se utilizan
  * juntas
  * 
