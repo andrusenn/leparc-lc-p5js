@@ -40,6 +40,12 @@ let Lp5 = {
       historyChangesDraw: 0,
       historyChangesAux: 0,
       drawOnFly: false,
+      // Drag pannels
+      dragStart: 0,
+      dragEnd: 0,
+      mousePressed: false,
+      pannelDraggign: false,
+      pannelWidth: '50%',
       // Codemirror
       cmFocused: null,
       cmSetup: null,
@@ -406,6 +412,16 @@ window.addEventListener('load', function () {
       }
       if (localStorage.lang == 'en') {
             Lp5.el('cnf-lang').options[1].selected = true
+      }
+      // Pannels ----------------------------------
+      if (localStorage.pannels == 'vert') {
+            Lp5.el('cnf-pannels').options[0].selected = true
+            Lp5.el('win').style.display = 'block'
+      }
+      if (localStorage.pannels == 'horiz') {
+            Lp5.el('cnf-pannels').options[1].selected = true
+            Lp5.el('win').style.display = 'flex'
+            Lp5.el('codeblock-resizable').style.width = Lp5.pannelWidth
       }
       // Setup y Draw titulos ------------------
       if (localStorage.block_titles == 1) {
@@ -943,7 +959,13 @@ document.addEventListener('keyup', (ev) => {
                   Lp5.el('win').style.display = 'none';
                   Lp5.showWin = false;
             } else {
-                  Lp5.el('win').style.display = 'inline';
+                  if (localStorage.pannels == 'vert') {
+                        Lp5.el('win').style.display = 'block';
+                        Lp5.el('codeblock-resizable').style.width = '100%'
+                  } else {
+                        Lp5.el('win').style.display = 'flex';
+                        Lp5.el('codeblock-resizable').style.width = Lp5.pannelWidth
+                  }
                   Lp5.showWin = true;
 
                   // Vuelve a mostrar todos
@@ -1217,8 +1239,39 @@ document.addEventListener("mousewheel", (ev) => {
             }
       }
 });
+document.addEventListener('mousedown', (ev) => {
+
+      // Panel resize
+      Lp5.mousePressed = true
+})
+document.addEventListener('mouseup', (ev) => {
+
+      // Panel resize
+      Lp5.el('win').style.cursor = 'unset'
+      Lp5.mousePressed = false
+      Lp5.pannelDraggign = false
+})
+document.addEventListener('mousemove', (ev) => {
+
+      // Panel resize
+      if (Lp5.mousePressed && Lp5.pannelDraggign && localStorage.pannels == 'horiz') {
+            Lp5.el('win').style.cursor = 'ew-resize'
+            let dragDif = ev.pageX - Lp5.dragStart
+            let winw = window.innerWidth
+            let pwidth = (Lp5.dragStart + dragDif) / winw * 100
+            Lp5.pannelWidth = pwidth + '%'
+            Lp5.el('codeblock-resizable').style.width = pwidth + '%'
+      }
+})
+// Pannels Resize --------------------------------------
+Lp5.el('draw-title').addEventListener('mousedown', function pannelResize(ev) {
+      Lp5.el('draw-title').removeEventListener('click', pannelResize);
+      Lp5.dragStart = Lp5.el('codeblock-resizable').clientWidth
+      Lp5.pannelDraggign = true
+
+})
 // -----------------------------------------------------
-// CONFIG ----------------------------------------------
+// CONFIGS ----------------------------------------------
 Lp5.el('cnf-renderonfly').addEventListener('click', () => {
       if (Lp5.el('cnf-renderonfly').checked) {
             Lp5.drawOnFly = true
@@ -1238,7 +1291,17 @@ Lp5.el('cnf-lang').addEventListener('change', () => {
       localStorage.lang = Lp5.el('cnf-lang').value
       Lp5.main.reload()
 });
-
+Lp5.el('cnf-pannels').addEventListener('change', () => {
+      localStorage.pannels = Lp5.el('cnf-pannels').value
+      if (localStorage.pannels == 'vert') {
+            Lp5.el('win').style.display = 'block'
+            Lp5.el('codeblock-resizable').style.width = 'unset'
+      } else {
+            Lp5.el('win').style.display = 'flex'
+            Lp5.el('codeblock-resizable').style.width = Lp5.pannelWidth
+      }
+      // Lp5.main.reload()
+});
 Lp5.el('cnf-render').addEventListener('change', () => {
       Lp5.main.reload(Lp5.el('cnf-render').value)
 });
