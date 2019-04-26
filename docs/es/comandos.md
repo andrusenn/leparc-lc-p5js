@@ -5,7 +5,7 @@
 |`Ctrl+Enter`|Evaluar bloque de código|
 |`Alt+Enter`|Evaluar línea de código (solo en setup() y aux())|
 |`Ctrl+H`|Mostrar/ocultar código|
-|`F1 F2 F3`|Mostrar/ocultar paneles (setup) (draw) (aux)|
+|`F1 F2 F3`|Mostrar/ocultar paneles (aux) (setup) (draw) |
 |`F11`|Pantalla completa (fullscreen)|
 |`F10`|Muestra/oculta herramientas de desarrollo para debug (dev tools)|
 |`F5`|Recarga pantalla (se debe volver a evaluar)|

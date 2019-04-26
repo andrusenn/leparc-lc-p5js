@@ -76,7 +76,7 @@ leparc_resources/
     <td><code>Ctrl+H</code></td><td>Mostrar/ocultar código</td>
   </tr>
   <tr>
-    <td><code>F1 F2 F3</code></td><td>Mostrar/ocultar paneles (setup) (draw) (aux)</td>
+    <td><code>F1 F2 F3</code></td><td>Mostrar/ocultar paneles  (aux) (setup) (draw)</td>
   </tr>
   <tr>
     <td><code>F11</code></td><td>Pantalla completa (fullscreen)</td>

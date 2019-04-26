@@ -258,6 +258,20 @@ if (!global.hasOwnProperty('mi_funcion')) {
 
 ### Load media files
 
+`aux:`
+
+```js
+      // Load file mi_video.mp4 from media/ 
+      createVideo(mediaPath('mi_video.mp4'),(v)=>{
+            $video = v
+            $video.play()
+      })
+      // Load file mi_imagen.png from media/
+      loadImage(mediaPath('mi_imagen.png'),(i)=>{
+            $img = i
+      })
+```
+
 `setup:`
 
 ```js
@@ -273,20 +287,6 @@ if (!global.hasOwnProperty('mi_funcion')) {
       // Mostrar imagen
       image($img,0,0)
 
-```
-
-`aux:`
-
-```js
-      // Load file mi_video.mp4 from media/ 
-      createVideo(mediaPath('mi_video.mp4'),(v)=>{
-            $video = v
-            $video.play()
-      })
-      // Load file mi_imagen.png from media/
-      loadImage(mediaPath('mi_imagen.png'),(i)=>{
-            $img = i
-      })
 ```
 
 ([index](#examples-and-uses))

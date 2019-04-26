@@ -911,6 +911,15 @@ document.addEventListener('keyup', (ev) => {
       }
       // Mostrar/ocultar paneles
       if (ev.keyCode == 112) {
+            if (Lp5.showAuxWin) {
+                  Lp5.el('lp5-aux-pannel').style.display = 'none';
+                  Lp5.showAuxWin = false;
+            } else {
+                  Lp5.el('lp5-aux-pannel').style.display = 'inline';
+                  Lp5.showAuxWin = true;
+            }
+      }
+      if (ev.keyCode == 113) {
             if (Lp5.showSetupWin) {
                   Lp5.el('lp5-setup-pannel').style.display = 'none';
                   Lp5.showSetupWin = false;
@@ -919,22 +928,13 @@ document.addEventListener('keyup', (ev) => {
                   Lp5.showSetupWin = true;
             }
       }
-      if (ev.keyCode == 113) {
+      if (ev.keyCode == 114) {
             if (Lp5.showDrawWin) {
                   Lp5.el('lp5-draw-pannel').style.display = 'none';
                   Lp5.showDrawWin = false;
             } else {
                   Lp5.el('lp5-draw-pannel').style.display = 'inline';
                   Lp5.showDrawWin = true;
-            }
-      }
-      if (ev.keyCode == 114) {
-            if (Lp5.showAuxWin) {
-                  Lp5.el('lp5-aux-pannel').style.display = 'none';
-                  Lp5.showAuxWin = false;
-            } else {
-                  Lp5.el('lp5-aux-pannel').style.display = 'inline';
-                  Lp5.showAuxWin = true;
             }
       }
       // Mostrar/ocultar codigo

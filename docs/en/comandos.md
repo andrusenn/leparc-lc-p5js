@@ -5,7 +5,7 @@ Keyboard shortcut | Action
 `Ctrl+Enter` | Evaluate code block
 `Alt+Enter` | Evaluate line of code (only in setup () and aux ())
 `Ctrl+H` | Show / hide code
-`F1 F2 F3` | Show / hide panels (setup) (draw) (aux)
+`F1 F2 F3` | Show / hide panels (aux)(setup) (draw)
 `F11` | Fullscreen
 `F10` | Show / hide development tools for debug (dev tools)
 `F5` | Screen reload (must be re-evaluated)
