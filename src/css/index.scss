@@ -103,7 +103,9 @@ canvas {
       clear: both; //border-bottom: 1px solid rgba(#fff, 0.4);
 
 }
-
+#draw-title{
+      cursor:ew-resize;
+}
 // .pannel-title {}
 
 // .change {
@@ -254,6 +256,7 @@ canvas {
       user-select: none;
       position: fixed;
       display: block;
+      // flex-direction: row;
       height: 95%;
       width: 100%;
       top: 0;
@@ -297,6 +300,22 @@ canvas {
 
             .unsave {
                   background: rgba(255, 255, 255, 0.6) !important;
+            }
+      }
+      .codeblock-resizable{
+            // width:50%;
+            overflow:hidden;
+      }
+      .codeblock{
+            position:relative;
+            .drag-size{
+                  display:block;
+                  position:absolute;
+                  padding:4px;
+                  top:0;
+                  right:0;
+                  color:#333;
+                  background:#000;
             }
       }
 }

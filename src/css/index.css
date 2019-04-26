@@ -105,6 +105,10 @@ canvas {
   clear: both;
 }
 
+#draw-title {
+  cursor: ew-resize;
+}
+
 .error {
   border-left: 6px solid rgba(255, 0, 0, 0.5) !important;
 }
@@ -303,6 +307,24 @@ canvas {
 
 #win #lp5-console .unsave {
   background: rgba(255, 255, 255, 0.6) !important;
+}
+
+#win .codeblock-resizable {
+  overflow: hidden;
+}
+
+#win .codeblock {
+  position: relative;
+}
+
+#win .codeblock .drag-size {
+  display: block;
+  position: absolute;
+  padding: 4px;
+  top: 0;
+  right: 0;
+  color: #333;
+  background: #000;
 }
 
 .spectrum-bands {
