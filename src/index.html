@@ -13,31 +13,34 @@
 <body>
 	<main id="main">
 		<div id="win">
-
-			<!-- aux pannel ----------------------------------------------->
-			<div id="lp5-aux-pannel">
-				<span class="pannel-title" id="aux-title">aux:</span><br>
-				<div class="lp5-code-parent">
-					<div id="lp5-aux"></div><br>
+			<div id="codeblock-resizable" class="codeblock codeblock-resizable">
+				<!-- <span id="drag-size" class="drag-size"> &laquo; </span> -->
+				<!-- aux pannel ----------------------------------------------->
+				<div id="lp5-aux-pannel">
+					<span class="pannel-title" id="aux-title">aux:</span><br>
+					<div class="lp5-code-parent">
+						<div id="lp5-aux"></div><br>
+					</div>
+					<span class="pannel-title"></span><br>
 				</div>
-				<span class="pannel-title"></span><br>
+				<!-- setup pannel ------------------------------------------->
+				<div id="lp5-setup-pannel">
+					<span class="pannel-title" id="setup-title"></span><br>
+					<div class="lp5-code-parent">
+						<div id="lp5-setup"></div><br>
+					</div>
+					<span class="pannel-title" id="setup-title-end"></span><br>
+				</div>
 			</div>
-			<!-- setup pannel ------------------------------------------->
-			<div id="lp5-setup-pannel">
-				<span class="pannel-title" id="setup-title"></span><br>
-				<div class="lp5-code-parent">
-					<div id="lp5-setup"></div><br>
+			<div class="codeblock block-b">
+				<!-- draw pannel --------------------------------------------->
+				<div id="lp5-draw-pannel">
+					<span class="pannel-title" id="draw-title"></span><br>
+					<div class="lp5-code-parent">
+						<div id="lp5-draw"></div><br>
+					</div>
+					<span class="pannel-title" id="draw-title-end"></span><br>
 				</div>
-				<span class="pannel-title" id="setup-title-end"></span><br>
-			</div>
-
-			<!-- draw pannel --------------------------------------------->
-			<div id="lp5-draw-pannel">
-				<span class="pannel-title" id="draw-title"></span><br>
-				<div class="lp5-code-parent">
-					<div id="lp5-draw"></div><br>
-				</div>
-				<span class="pannel-title" id="draw-title-end"></span><br>
 			</div>
 			<!-- console pannel -->
 			<span id="lp5-console" class="console-out">
@@ -100,6 +103,15 @@
 							<select id="cnf-lang">
 								<option value="es">ES</option>
 								<option value="en">EN</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="col2"><label for="cnf-pannels" class="en-pannels">PANNELS</label></td>
+						<td class="col1">
+							<select id="cnf-pannels">
+								<option class="en-pannels-vert" value="vert">VERTICAL</option>
+								<option class="en-pannels-horiz" value="horiz">HORIZONTAL</option>
 							</select>
 						</td>
 					</tr>
