@@ -91,14 +91,23 @@ canvas {
 }
 
 #setup-title,
-#setup-title-end,
 #draw-title,
-#draw-title-end,
-#aux-title,
-#aux-title-end {
+#aux-title {
   display: inline-block;
   line-height: 1.4rem;
   padding: 4px;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  clear: both;
+}
+
+#setup-title-end,
+#draw-title-end,
+#aux-title-end {
+  display: inline-block;
+  line-height: 1.4rem;
+  padding: 0;
   font-size: 1rem;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
