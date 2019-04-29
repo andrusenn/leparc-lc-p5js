@@ -1,6 +1,6 @@
 # LeParc p5js livecoder
 
-> (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
+> (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.md)
 
 Entorno multiplataforma para ejecutar código [p5js](https://p5js.org/es/) en tiempo real.
 El proyecto está compilado [Electronjs](https://electronjs.org/)

@@ -1,6 +1,6 @@
 # LeParc p5js livecoder
 
-> (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
+> (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.es.md)
 
 Cross platform environment to run [p5js](http://p5js.org/) code in real time.
 This project use [Electronjs](https://electronjs.org/)
