@@ -17,8 +17,14 @@
 ### Uso de bloques
 
 El sistema tiene tres bloques disponibles:
+(la interfaz tiene 3 configuraciones disponibles)
 
 ~~~
+
+aux:
+      // Bloque auxiliar que difiere de setup porque no se
+      // re-setean funciones y objetos
+      // Podemos ocultarlo con F1
 
 setup:
       // Homónimo de function setup(){}
@@ -31,18 +37,13 @@ setup:
       // - etc... (ver lp5-renderer.js)
       // Se puede evaluar todo el bloque con Ctrl+ENTER o
       // una sola línea con Alt+ENTER
-      // Podemos ocultarlo con F1
+      // Podemos ocultarlo con F2
 
 
 loop:
       // Homónimo de function draw(){}
       // Se ejecuta a una velocidad de 60 fps
       // se puede configurar en setup con setFrameRate(n)
-      // Podemos ocultarlo con F2
-
-aux:
-      // Bloque auxiliar que difiere de setup porque no se
-      // re-setean funciones y objetos
       // Podemos ocultarlo con F3
 
 ~~~
@@ -78,7 +79,7 @@ Para acceder a variables declaradas en otros bloques, se debe utilizar el prefij
 
 ~~~
 
-`draw:`
+`loop:`
 
 ~~~js
       console.log(local) // -> error
@@ -226,6 +227,15 @@ if (!global.hasOwnProperty('mi_funcion')) {
 
 ~~~
 
+`aux:`
+
+~~~js
+      // Carga desde snippets el archivo creado mi_snippet/mi_snippet.js
+      snip('mi_snippet',()=>{
+            // Cuando se carga, hacemos alguna cosa
+      })
+~~~
+
 `setup:`
 
 ~~~js
@@ -238,15 +248,6 @@ if (!global.hasOwnProperty('mi_funcion')) {
 ~~~js
       // Ejecutamos la funcion
       mi_funcion()
-~~~
-
-`aux:`
-
-~~~js
-      // Carga desde snippets el archivo creado mi_snippet/mi_snippet.js
-      snip('mi_snippet',()=>{
-            // Cuando se carga, hacemos alguna cosa
-      })
 ~~~
 
 ([indice](#ejemplos))
