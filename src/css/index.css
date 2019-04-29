@@ -270,7 +270,7 @@ canvas {
           user-select: none;
   position: fixed;
   display: block;
-  height: 95%;
+  height: 92%;
   width: 100%;
   top: 0;
   left: 0;
@@ -285,6 +285,33 @@ canvas {
   padding: 10px;
   position: fixed;
   bottom: 80px;
+}
+
+#win #lp5-tabs {
+  overflow: hidden;
+  font-size: 0.8rem;
+  height: 30px;
+  display: none;
+  width: auto;
+  line-height: 30px;
+  position: fixed;
+  background: transparent;
+  top: 0;
+  right: 0;
+  z-index: 999;
+}
+
+#win #lp5-tabs .tab {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 6px;
+  padding: 2px 6px;
+  text-shadow: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+#win #lp5-tabs .tab-selected {
+  font-weight: bold;
 }
 
 #win #lp5-console {
@@ -334,11 +361,5 @@ canvas {
   right: 0;
   color: #333;
   background: #000;
-}
-
-.spectrum-bands {
-  display: inline-block;
-  width: 35px;
-  border-right: 1px solid #fff;
 }
 /*# sourceMappingURL=index.css.map */

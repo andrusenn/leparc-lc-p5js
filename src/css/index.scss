@@ -113,9 +113,11 @@ canvas {
       clear: both; //border-bottom: 1px solid rgba(#fff, 0.4);
 
 }
-#draw-title{
-      cursor:ew-resize;
+
+#draw-title {
+      cursor: ew-resize;
 }
+
 // .pannel-title {}
 
 // .change {
@@ -250,15 +252,17 @@ canvas {
 
 //     ----------------------
 .compile {
-      background-color:rgba(255,255,255,0.0);
+      background-color: rgba(255, 255, 255, 0.0);
       animation: comp 0.2s linear !important;
 }
-@keyframes comp{
-      from{
-            background-color:rgba(255,255,255,0.8);
+
+@keyframes comp {
+      from {
+            background-color: rgba(255, 255, 255, 0.8);
       }
-      to{
-            background-color:rgba(255,255,255,0.0);
+
+      to {
+            background-color: rgba(255, 255, 255, 0.0);
       }
 }
 
@@ -267,7 +271,7 @@ canvas {
       position: fixed;
       display: block;
       // flex-direction: row;
-      height: 95%;
+      height: 92%;
       width: 100%;
       top: 0;
       left: 0;
@@ -281,6 +285,33 @@ canvas {
             padding: 10px;
             position: fixed;
             bottom: 80px;
+      }
+
+      #lp5-tabs {
+            overflow: hidden;
+            font-size: 0.8rem;
+            height: 30px;
+            display: none;
+            width: auto;
+            line-height: 30px;
+            position: fixed;
+            background: transparent;
+            top: 0;
+            right:0;
+            z-index: 999;
+            .tab {
+                  background: rgba(#000, 0.9);
+                  border-radius: 6px;
+                  padding:2px 6px;
+                  text-shadow: none;
+                  color: rgba(#fff, 0.6);
+                  cursor:pointer;
+
+            }
+            .tab-selected{
+                  font-weight: bold;
+            }
+
       }
 
       #lp5-console {
@@ -301,10 +332,11 @@ canvas {
                   background: transparent;
                   color: #000;
             }
+
             #lp5-os-r {
                   width: 30px;
                   text-align: center;
-                  background: rgba(255,255,255,0.4);
+                  background: rgba(255, 255, 255, 0.4);
                   color: #fff;
             }
 
@@ -312,27 +344,22 @@ canvas {
                   background: rgba(255, 255, 255, 0.6) !important;
             }
       }
-      .codeblock-resizable{
-            // width:50%;
-            overflow:hidden;
+
+      .codeblock-resizable {
+            overflow: hidden;
       }
-      .codeblock{
-            position:relative;
-            .drag-size{
-                  display:block;
-                  position:absolute;
-                  padding:4px;
-                  top:0;
-                  right:0;
-                  color:#333;
-                  background:#000;
+
+      .codeblock {
+            position: relative;
+
+            .drag-size {
+                  display: block;
+                  position: absolute;
+                  padding: 4px;
+                  top: 0;
+                  right: 0;
+                  color: #333;
+                  background: #000;
             }
       }
-}
-
-// Audio
-.spectrum-bands {
-      display: inline-block;
-      width: 35px;
-      border-right: 1px solid #fff;
 }
