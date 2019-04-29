@@ -4,8 +4,6 @@
 
 `Ctrl+TAB` Open / close config win
 
-<img src="http://andressenn.com/leparc-lc/interfaz/en/config-d.jpg" alt="config" width="400">
-
 - **AUTO RENDER**: Make loop block eval automatically
 - **RENDER**: Toggle 2D/3D
 - **BLOCK NAMES**: Change labels `setup:` and `loop:` to `function setup(){}` y `function draw(){}`
@@ -16,3 +14,7 @@
 - **SYNC**: Sync nodes via `frameCount`
 - **NAME**: Is the name of *CLIENT* visible in server win.
 - **LANG**: Change language of interface.
+- **PANNELS**: There are three modes to show interface:
+    1. *VERTICAL*: Default. Shows the blocks one on top of the other.
+    2. *HORIZONTAL*: Split the screen into 2. Aux and Setup on left, right loop/draw.
+    3. *TABS*: Displays the tabs at the top right to select a specific block and hide the others.
