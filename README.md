@@ -1,33 +1,33 @@
 # LeParc p5js livecoder
 
-> (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
+> (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.en.md)
 
-Entorno multiplataforma para ejecutar código [p5js](https://p5js.org/es/) en tiempo real.
-El proyecto está compilado [Electronjs](https://electronjs.org/)
+Cross platform environment to run [p5js](http://p5js.org/) code in real time.
+This project use [Electronjs](https://electronjs.org/)
 
-Este proyecto nace como una herramienta de uso personal, y fue girando a una herramienta performática, incorporando la filosofía del livecoding.
+This project was born as a tool for personal use, but it became a performative tool, and took some of the live coding philosophy.
 
-El objetivo es que sea un entorno extensible (hackeable) en donde se puedan programar recursos o snippets para utilizar y compartir. Además, cargar las librerías js compatibles con p5js.
+The objective is that it be an extensible environment (hackable) where resources or snippets can be programmed to use and share. Also, load the js libraries compatible with p5js.
 
-El corazón de *LeParc* es Javascript y librerías p5js, Codemirror (editor), jsbeautify (formateador). Y con Electronjs (node.js, chromium, v8) para crear aplicaciones nativas.
+The core of *LeParc* is Javascript and libraries p5js, Codemirror (editor), jsbeautify (formatter). And with Electronjs (node.js, chromium, v8) to create native applications.
 
-Puedes reportar si encuentras algún error o bug. Te intivo también a forkear el proyecto.
+You can report if you find an error or bug. I also encourage you to fork the project.
 
-> [Aquí puedes encontrar más ayuda](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es)
+> [Here you can find more help](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en)
 
 ![Image](http://andressenn.com/leparc-lc/lp01.jpg)
 
 ----
 
-## Uso
+## Use
 
-### Instalación
+### Install
 
-#### Descarga compilado
+#### Releases
 
-[descarga](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
+[download](https://github.com/andrusenn/leparc-lc-p5js/releases) linux/win/mac
 
-En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo:
+On first run, a folder call "leparc_resources" will be created in "home" user account:
 
 ~~~
 
@@ -48,126 +48,126 @@ leparc_resources/
 
 ~~~
 
-- Usuarios linux: AppImage deberán seleccionar "ejecutar como programa"
+- linux users: AppImage > change permission to make it "executable"
 
-#### Bajar fuente
+#### Download source
 
-1. clonar repositorio
-2. `cd src` (directorio raiz)
+1. clon repository
+2. `cd src` (root dir)
 3. `npm install && npm start`
 
-#### Compilar
+#### Build
 
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
-### Comandos
+### Comands
 
 <table>
   <tr>
-    <th>Atajo de teclado</th><th>Acción</th>
+    <th>Key Shortcut</th><th>Action</th>
   </tr>
   <tr>
-    <td><code>Ctrl+Enter</code></td><td>Evaluar bloque de código</td>
+    <td><code>Ctrl+Enter</code></td><td>Eval code block</td>
   </tr>
   <tr>
-    <td><code>Alt+Enter</code></td><td>Evaluar línea de código (solo en setup() y aux())</td>
+    <td><code>Alt+Enter</code></td><td>Eval code line (only on setup() and aux())</td>
   </tr>
   <tr>
-    <td><code>Ctrl+H</code></td><td>Mostrar/ocultar código</td>
+    <td><code>Ctrl+H</code></td><td>Show/Hide code</td>
   </tr>
   <tr>
-    <td><code>F1 F2 F3</code></td><td>Mostrar/ocultar paneles  (aux) (setup) (draw)</td>
+    <td><code>F1 F2 F3</code></td><td>Show/Hide panels (aux) (setup) (draw) </td>
   </tr>
   <tr>
-    <td><code>F11</code></td><td>Pantalla completa (fullscreen)</td>
+    <td><code>F11</code></td><td>Fullscreen</td>
   </tr>
   <tr>
-    <td><code>F10</code></td><td>Muestra/oculta herramientas de desarrollo para debug (dev tools)</td>
+    <td><code>F10</code></td><td>Show/Hide dev tools (debug)</td>
   </tr>
   <tr>
-    <td><code>F5</code></td><td>Recarga pantalla (se debe volver a evaluar)</td>
+    <td><code>F5</code></td><td>Reload window (must be evaluate again)</td>
   </tr>
   <tr>
-    <td><code>Ctrl+mousewheel</code></td><td>Aumenta/disminuye tamaño del código</td>
+    <td><code>Ctrl+mousewheel</code></td><td>Zoom in / zoom out code</td>
   </tr>
   <tr>
-    <td><code>Alt+mousewheel</code></td><td>Modifica la transparencia del fondo del códivo</td>
+    <td><code>Alt+mousewheel</code></td><td>Change background transparency of code</td>
   </tr>
   <tr>
-    <td><code>Ctrl+Alt+mousewheel</code></td><td>Modifica valor seleccionado suma/resta 1</td>
+    <td><code>Ctrl+Alt+mousewheel</code></td><td>Change selected number value by 1 (-1/+1)</td>
   </tr>
   <tr>
-    <td><code>Ctrl+Alt+Shift+mousewheel</code></td><td>Modifica valor seleccionado suma/resta 0.1</td>
+    <td><code>Ctrl+Alt+Shift+mousewheel</code></td><td>Change selected number value by 0.1 (-0.1/+0.1)</td>
   </tr>
   <tr>
-    <td><code>Ctrl+ArrowUP</code></td><td>Cambia el cursor/foco de panel hacia arriba</td>
+    <td><code>Ctrl+ArrowUP</code></td><td>Change cursor/focus to the next up pannel</td>
   </tr>
   <tr>
-    <td><code>Ctrl+ArrowDOWN</code></td><td>Cambia el cursor/foco de panel hacia abajo</td>
+    <td><code>Ctrl+ArrowDOWN</code></td><td>Change cursor/focus to the next down pannel</td>
   </tr>
   <tr>
-    <td><code>Ctrl+F</code></td><td>Formatea el código bloque</td>
+    <td><code>Ctrl+F</code></td><td>Beautify code block</td>
   </tr>
   <tr>
-    <td><code>Ctrl+L</code></td><td>alterna loop()/noLoop()</td>
+    <td><code>Ctrl+L</code></td><td>toggle loop()/noLoop()</td>
   </tr>
   <tr>
-    <td><code>Ctrl+Shift+C</code></td><td>Comenta/Descomenta código</td>
+    <td><code>Ctrl+Shift+C</code></td><td>Comment/Uncomment code</td>
   </tr>
 </table>
 
-### Bloques de código
+### Code blocks
 
-> `function setup(){}` y `function draw(){}` son solo ayudas visuales. No se pueden modificar. Hay tareas que se ejecutan en esos bloques. Ver código fuente (lp5-renderer.js)
-> Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
-> Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
+> `function setup(){}` and `function draw(){}` are just titles. You can not modify it. There are some tasks run underneath of each one. Check source code (lp5-renderer.js)
+> Each block are evaluated separately. There is an extra block `aux:` to run code outside from setup() and draw()
+> You can use functions/methods of p5js in any block
 
 - `setup:` -> `function setup(){ // }`
 - `loop:` -> `function draw(){ // }`
-  
-#### Diferencia entre setup(){} y aux(){}
 
-El bloque `setup` reinicializa varios objetos y funciones de p5, mientras que `aux` no.
+#### setup(){} vs aux(){}
 
-### Variables y funciones globales
+Evaluating `setup` some objects and functions of p5 are reseted, while in `aux` not.
 
-Para acceder a variables desde otros bloques, se provee un objeto global para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
+### Global vars and functions
 
-> En aux
+For global acces from other blocks, an object is provided: `lp`, or shorthand manner with `$` prefix.
+
+> In aux
 
 ~~~js
 
-x = 1 // error -> se está utilizando strict mode
+x = 1 // error -> is in strict mode
 
 lp.x = 'code!'
-// o abreviada
+// or
 $x = 'code!'
 
-lp.miFuncion = function(){
+lp.myFunction = function(){
       console.log('Hola LeParc!')
 }
-// o abreviada
-$miFuncion = function(){
+// or
+$myFunction = function(){
       console.log('Hola LeParc!')
 }
 
 ~~~
 
-> En draw
+> In draw
 
 ~~~js
 
-lp.miFuncion() // salida -> Hola LeParc!
-console.log(lp.x) // salida -> code!
-// o abreviada
-$miFuncion() // salida -> Hola LeParc!
-console.log($x) // salida -> code!
+lp.myFunction() // out -> Hola LeParc!
+console.log(lp.x) // out -> code!
+// or
+$myFunction() // out -> Hola LeParc!
+console.log($x) // out -> code!
 
 ~~~
 
-### Eventos
+### Events
 
-Se pueden declarar los eventos en el bloque `aux`
+You can declare events in `aux` block
 
 ~~~js
 
@@ -182,7 +182,7 @@ mouseMoved = function(){
 // Etc
 ~~~
 
-### Funciones extendidas de p5j
+### Extended functions p5j
 
 <table>
   <tr>
@@ -193,7 +193,7 @@ mouseMoved = function(){
     <code>mirrorX()</code>
     </td>
     <td>
-    Espejo - Refleja la imagen desde la mitad sobre el eje X
+    Mirror - Reflect image from X axis
     </td>
   </tr>
   <tr>
@@ -201,7 +201,7 @@ mouseMoved = function(){
     <code>mirrorY()</code>
     </td>
     <td>
-    Espejo - Refleja la imagen desde la mitad sobre el eje Y
+    Mirror - Reflect image from Y axis
     </td>
   </tr>
   <tr>
@@ -209,7 +209,7 @@ mouseMoved = function(){
     <code>imirrorX()</code>
     </td>
     <td>
-    Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
+    Invert Mirror - Reflect image from X axis inverted
     </td>
   </tr>
   <tr>
@@ -217,7 +217,7 @@ mouseMoved = function(){
     <code>imirrorY()</code>
     </td>
     <td>
-    Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
+    Invert Mirror - Reflect image from Y axis inverted
     </td>
   </tr>
   <tr>
@@ -225,15 +225,15 @@ mouseMoved = function(){
     <code>kaleido()</code>
     </td>
     <td>
-    Efecto caleidoscopio 4 caras (repite la cara superior derecha)
+    kaleidoscope fx 4 faces (left up cut is repeated)
     </td>
   </tr>
   <tr>
     <td>
-    <code>zoom(escala)</code>
+    <code>zoom(scale)</code>
     </td>
     <td>
-   Escala la imagen en cada loop sumando el valor del parámetro: <code>zoom(0.01)</code> o negativo <code>zoom(-0.01)</code>
+    Add zoom in or zoom out (scale each frame by..): <code>zoom(0.01)</code> or negative <code>zoom(-0.01)</code>
     </td>
   </tr>
   <tr>
@@ -241,7 +241,7 @@ mouseMoved = function(){
     <code>displace(velx,vely)</code>
     </td>
     <td>
-   Desplaza la pantalla en la direccion <code>velx</code> y <code>vely</code> (+ o -)
+   Displace all screen to <code>velx</code> y <code>vely</code> (+ or -)
     </td>
   </tr>
   <tr>
@@ -249,15 +249,15 @@ mouseMoved = function(){
     <code>displace(x,y,w,h,velx,vely)</code>
     </td>
     <td>
-   Recorta una porcion de la imagen y la desplaza
+    Cut an image portion and displace it
     </td>
   </tr>
   <tr>
     <td>
-    <code>beginRot(vel_in_radians[,scale])</code> y <code>endRot()</code>
+    <code>beginRot(vel_in_radians[,scale])</code> and <code>endRot()</code>
     </td>
     <td>
-   rota lo que está contenido entre esas dos funciones
+   Rotate all between functions
     </td>
   </tr>
   <tr>
@@ -265,7 +265,7 @@ mouseMoved = function(){
     <code>freq(mult)</code>
     </td>
     <td>
-   Abreviación de la sentencia <code>frameCount * mult</code>
+  Shorthand of <code>frameCount * mult</code>
     </td>
   </tr>
   <tr>
@@ -273,7 +273,7 @@ mouseMoved = function(){
     <code>osc([freq])</code>
     </td>
     <td>
-   Abreviacion de <code>sin( frameCount * freq )</code>
+   Shorthand of <code>sin( frameCount * freq )</code>
     </td>
   </tr>
   <tr>
@@ -281,23 +281,23 @@ mouseMoved = function(){
     <code>cosc([freq])</code>
     </td>
     <td>
-   Abreviacion de <code>{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}</code>
+   Shorthand of <code>{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}</code>
     </td>
   </tr>
   <tr>
     <td>
-    <code>pulse(n_fotogramas)</code>
+    <code>pulse(n_frames)</code>
     </td>
     <td>
-   Bandera (flag) emite verdadero cada n fotogramas <code>if(frameCount % n_fotogramas == 0 ) return true</code>
+   Flag - return true each n frames <code>if(frameCount % frames == 0 ) return true</code>
     </td>
   </tr>
   <tr>
     <td>
-    <code>gate(n_fotogramas, duracion)</code>
+    <code>gate(n_frames, duration)</code>
     </td>
     <td>
-   Bandera (flag) emite verdadero cada n fotogramas con una duracion x <code>if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true</code>
+   Flag - return true each n frames with duration x <code>if(frameCount % n_frames > n_frames - duration ) return true</code>
     </td>
   </tr>
 </table>
@@ -306,48 +306,48 @@ mouseMoved = function(){
 
 ##### Webcam
 
-- En setup: `useCam([ancho,alto])`
-- En draw: `getCam(x,y)`
+- In setup: `useCam([width,height])`
+- In draw: `getCam(x,y)`
 
 ##### Audio
 
-- En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
-- En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias. Retorna de 0 a 255
+- In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
+- In draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies. Return 0 to 255.
 
-##### Carga archivos externos
+##### External media files
 
-Para la carga de archivos (imágenes, videos, sonidos), se utiliza el directorio *media*.
-El método `mediaPath()` devuelve la ruta absoluta a ese directorio.
+Assets must be placed in *media* dir.
+The method `mediaPath()` return absolute path to *media*.
 
 ~~~js
 
 // ~home/leparc_resources/media/
-loadImage( mediaPath() + '/miImagen.jpg',(i)=>{
+loadImage( mediaPath() + '/myImage.jpg',(i)=>{
   lp.im = i
 })
 
 ~~~
 
-### Modo cliente/servidor
+### Client/Server mode
 
-Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE, modificar la variable **server-ip** y **port** en *leparc_resources/config/config.txt*
+In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **port** in *leparc_resources/config/config.txt*
 
-### Ventana de configuraciones
+### Config window
 
-- `Ctrl+TAB` Abre popup de configuraciones
-  - **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
-  - **RENDER** -> 2D o 3D
-  - **BLOCK NAMES** -> Nombre de los bloques (ayuda visual)
+- `Ctrl+TAB` open/close
+  - **AUTO RENDER** -> Only in `draw(){}`
+  - **RENDER** -> 2D / 3D
+  - **BLOCK NAMES** -> Visual help (block names)
   - **MODE (net)**
-    - LOCAL -> Por defecto
-    - SERVER -> Activa el modo servidor
-    - CLIENT -> Activa el modo cliente
-  - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
-  - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
-  - **LANG** -> EN/ES Idioma de la interfaz
-
+    - LOCAL -> Default
+    - SERVER -> Server mode
+    - CLIENT -> Client mode
+  - **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
+  - **NAME (net)** -> Client node name (Default: id socket)
+  - **LANG** -> ES/EN Language of interface
+  
 ----
 
-### Ejemplos y usos
+### Examples and howtos
 
-> [ver docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
+> [View docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/ejemplos.md)
