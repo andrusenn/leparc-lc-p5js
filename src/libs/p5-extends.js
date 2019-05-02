@@ -42,6 +42,17 @@ if (!p5.prototype.hasOwnProperty('winSize')) {
             Lp5.main.resizeWin(w, h)
       }
 }
+/**
+ * Setea el ancho y alto de la ventana (electron)
+ * @method size
+ * @param {Number} w          ancho
+ * @param {Number} h          alto
+ */
+if (!p5.prototype.hasOwnProperty('size')) {
+      p5.prototype.size = function (w, h) {
+            Lp5.main.resizeWin(w, h)
+      }
+}
 
 /**
  * Abreviatura de background()
@@ -242,8 +253,10 @@ if (!p5.prototype.hasOwnProperty('endRot')) {
  * ZOOM es una variable global que almacena la referencia inicial
  */
 
-if (!p5.prototype.hasOwnProperty('zoom')) {
+if (!p5.prototype.hasOwnProperty('ZOOM_SCALE')) {
       p5.prototype.ZOOM_SCALE = 1;
+}
+if (!p5.prototype.hasOwnProperty('zoom')) {
       p5.prototype.zoom = function () {
             this.s = 1;
             this.c = null
@@ -272,6 +285,7 @@ if (!p5.prototype.hasOwnProperty('zoom')) {
             }
       }
 }
+
 /**
  * Efecto de espejo sobre eje de Y
  * 
@@ -805,29 +819,29 @@ if (!p5.prototype.hasOwnProperty('___webgl')) {
       }
 }
 
-/**
- * Crea un canvas con WEBGL
- * Recarga la pantalla
- * 
- * @method use3D
- */
-if (!p5.prototype.hasOwnProperty('use3d')) {
-      p5.prototype.use3d = function () {
-            if (Lp5.main.globalSettings().renderer == 'p2d') Lp5.main.reload('webgl')
-      }
-}
+// /**
+//  * Crea un canvas con WEBGL
+//  * Recarga la pantalla
+//  * 
+//  * @method use3D
+//  */
+// if (!p5.prototype.hasOwnProperty('use3d')) {
+//       p5.prototype.use3d = function () {
+//             if (Lp5.main.globalSettings().renderer == 'p2d') Lp5.main.reload('webgl')
+//       }
+// }
 
-/**
- * Crea un canvas con P2D
- * Recarga la pantalla
- * 
- * @method use2d
- */
-if (!p5.prototype.hasOwnProperty('use2d')) {
-      p5.prototype.use2d = function () {
-            if (Lp5.main.globalSettings().renderer == 'webgl') Lp5.main.reload('p2d')
-      }
-}
+// /**
+//  * Crea un canvas con P2D
+//  * Recarga la pantalla
+//  * 
+//  * @method use2d
+//  */
+// if (!p5.prototype.hasOwnProperty('use2d')) {
+//       p5.prototype.use2d = function () {
+//             if (Lp5.main.globalSettings().renderer == 'webgl') Lp5.main.reload('p2d')
+//       }
+// }
 
 /**
  * Emite un trigger -> true cada n fotogramas
@@ -941,6 +955,17 @@ if (!p5.prototype.hasOwnProperty('setPixel')) {
       }
 }
 
+/**
+ * Obtiene el codigo / Get text code
+ * 
+ * @method getCode
+ */
+if (!p5.prototype.hasOwnProperty('getCode')) {
+      p5.prototype.getCode = function () {
+            let code = Lp5.cmAux.getValue() + "\n" + Lp5.cmSetup.getValue() + "\n" + Lp5.cmDraw.getValue() 
+            return code
+      }
+}
 /**
  * Eventos key
  */
