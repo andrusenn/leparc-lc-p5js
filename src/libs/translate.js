@@ -15,6 +15,7 @@ Lp5locale.init({
                         "NAME (net)": "NAME (net)",
                         "Saved!": "Saved!",
                         "LANG": "LANG",
+                        'not supoerted in webgl render': 'not supoerted in webgl render',
                         'can not be defined in this block': 'can not be defined in this block',
                         'No more fun?': 'No more fun?',
                         'Snippet loaded -> ': 'Snippet loaded -> ',
@@ -35,6 +36,7 @@ Lp5locale.init({
                         "NAME (net)": "NOMBRE (net)",
                         "Saved!": "Guardado!",
                         "LANG": "IDIOMA",
+                        'not supoerted in webgl render': 'no soportado en webgl render',
                         'can not be defined in this block': 'no puede ser definida en este bloque',
                         'No more fun?': 'Se terminó la diversión?',
                         'Snippet loaded -> ': 'Snippet cargado -> ',
@@ -64,6 +66,7 @@ Lp5locale.init({
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
       lang_msg.priv_words = Lp5locale.t('can not be defined in this block')
+      lang_msg.priv_words_render = Lp5locale.t('not supoerted in webgl render')
       lang_msg.exit_app = Lp5locale.t('No more fun?')
       lang_msg.snip = Lp5locale.t('Snippet loaded -> ')
       lang_msg.snip_err = Lp5locale.t('Error on load -> ')
