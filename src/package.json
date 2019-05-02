@@ -31,7 +31,7 @@
             "files": [
                   "!**/libs/p5/{p5.js,p5.sound.js,p5.dom.js}",
                   "!**/leparc_resources/{config,media,save}",
-                  "!**/leparc_resources/snippets/{gpu,tnoise,toxi,loadvideos}",
+                  "!**/leparc_resources/snippets/{gpu,tnoise,toxi,loadvideos,varios}",
                   "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
             ],
             "directories": {
