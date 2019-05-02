@@ -1,7 +1,7 @@
-# LeParc Livecoder
+# LeParc p5js Livecoder
 
-LeParc is a tool for live code.
-Based on [p5js](https://p5js.org/es/) library.
+LeParc is a tool for livecoding with javascript.
+It uses the library [p5js](https://p5js.org/es/) as a base and Electronjs to run it natively in any operating system.
 
 ### Directory structure
 
@@ -34,7 +34,7 @@ leparc_resources/
 
 ---
 
-- [Commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/comandos.md)
-- [Extended functions](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/funciones-extendidas.md)
-- [Interface](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/interfaz.md)
-- [Examples and uses](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/ejemplos.md)
+- [Commands](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/comandos.md)
+- [Funciones extendidas](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/funciones-extendidas.md)
+- [Interface](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/interfaz.md)
+- [Examples and uses](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
