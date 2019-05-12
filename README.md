@@ -60,61 +60,26 @@ leparc_resources/
 
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
-### Comands
+### Commands
 
-<table>
-  <tr>
-    <th>Key Shortcut</th><th>Action</th>
-  </tr>
-  <tr>
-    <td><code>Ctrl+Enter</code></td><td>Eval code block</td>
-  </tr>
-  <tr>
-    <td><code>Alt+Enter</code></td><td>Eval code line (only on setup() and aux())</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+H</code></td><td>Show/Hide code</td>
-  </tr>
-  <tr>
-    <td><code>F1 F2 F3</code></td><td>Show/Hide panels (aux) (setup) (draw) </td>
-  </tr>
-  <tr>
-    <td><code>F11</code></td><td>Fullscreen</td>
-  </tr>
-  <tr>
-    <td><code>F10</code></td><td>Show/Hide dev tools (debug)</td>
-  </tr>
-  <tr>
-    <td><code>F5</code></td><td>Reload window (must be evaluate again)</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+mousewheel</code></td><td>Zoom in / zoom out code</td>
-  </tr>
-  <tr>
-    <td><code>Alt+mousewheel</code></td><td>Change background transparency of code</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+Alt+mousewheel</code></td><td>Change selected number value by 1 (-1/+1)</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+Alt+Shift+mousewheel</code></td><td>Change selected number value by 0.1 (-0.1/+0.1)</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+ArrowUP</code></td><td>Change cursor/focus to the next up pannel</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+ArrowDOWN</code></td><td>Change cursor/focus to the next down pannel</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+F</code></td><td>Beautify code block</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+L</code></td><td>toggle loop()/noLoop()</td>
-  </tr>
-  <tr>
-    <td><code>Ctrl+Shift+C</code></td><td>Comment/Uncomment code</td>
-  </tr>
-</table>
+Keyboard shortcut | Action
+--- | ---
+`Ctrl+Enter` | Evaluate code block
+`Alt+Enter` | Evaluate line of code (only in setup () and aux ())
+`Ctrl+H` | Show / hide code
+`F1 F2 F3` | Show/hide panels (aux) (setup) (draw/loop)
+`F11` | Fullscreen
+`F10` | Show / hide development tools for debug (dev tools)
+`F5` | Screen reload (must be re-evaluated)
+`Ctrl+mousewheel` | Increase / decrease code size
+`Alt+mousewheel` | Modify the transparency of the background of the code
+`Ctrl+Alt+mousewheel` | Modify selected value addition / subtraction by 1
+`Ctrl+Alt+Shift+mousewheel` | Modify value selected addition / subtraction by 0.1
+`Ctrl+ArrowUP` | Change the cursor / panel focus up
+`Ctrl+ArrowDOWN` | Change the cursor / panel focus down
+`Ctrl+F` | Format  (beautify) the block code
+`Ctrl+L` | Toggle `loop()`/`noLoop()`
+`Ctrl+Shift+C` | Comment / Uncomment code
 
 ### Code blocks
 
@@ -184,123 +149,24 @@ mouseMoved = function(){
 
 ### Extended functions p5j
 
-<table>
-  <tr>
-    <th>method</th><th>Desc</th>
-  </tr>
-  <tr>
-    <td>
-    <code>mirrorX()</code>
-    </td>
-    <td>
-    Mirror - Reflect image from X axis
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>mirrorY()</code>
-    </td>
-    <td>
-    Mirror - Reflect image from Y axis
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>imirrorX()</code>
-    </td>
-    <td>
-    Invert Mirror - Reflect image from X axis inverted
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>imirrorY()</code>
-    </td>
-    <td>
-    Invert Mirror - Reflect image from Y axis inverted
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>kaleido()</code>
-    </td>
-    <td>
-    kaleidoscope fx 4 faces (left up cut is repeated)
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>zoom(scale)</code>
-    </td>
-    <td>
-    Add zoom in or zoom out (scale each frame by..): <code>zoom(0.01)</code> or negative <code>zoom(-0.01)</code>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>displace(velx,vely)</code>
-    </td>
-    <td>
-   Displace all screen to <code>velx</code> y <code>vely</code> (+ or -)
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>displace(x,y,w,h,velx,vely)</code>
-    </td>
-    <td>
-    Cut an image portion and displace it
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>beginRot(vel_in_radians[,scale])</code> and <code>endRot()</code>
-    </td>
-    <td>
-   Rotate all between functions
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>freq(mult)</code>
-    </td>
-    <td>
-  Shorthand of <code>frameCount * mult</code>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>osc([freq])</code>
-    </td>
-    <td>
-   Shorthand of <code>sin( frameCount * freq )</code>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>cosc([freq])</code>
-    </td>
-    <td>
-   Shorthand of <code>{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}</code>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>pulse(n_frames)</code>
-    </td>
-    <td>
-   Flag - return true each n frames <code>if(frameCount % frames == 0 ) return true</code>
-    </td>
-  </tr>
-  <tr>
-    <td>
-    <code>gate(n_frames, duration)</code>
-    </td>
-    <td>
-   Flag - return true each n frames with duration x <code>if(frameCount % n_frames > n_frames - duration ) return true</code>
-    </td>
-  </tr>
-</table>
+| Method | Description |
+| --- | --- |
+| `mirrorX()` | Mirror - Reflects the image from the middle on the X axis |
+| `mirrorY()` | Mirror - Reflects the image from the middle on the Y axis |
+| `imirrorX()` | Inverted Mirror - Reflects the image from the middle on the inverted X axis |
+| `imirrorY()` | Inverted Mirror - Reflects the image from the middle on the inverted Y axis |
+| `kaleido()` | Kaleidoscope effect 4 faces (repeat the upper left face) |
+| `zoom(escala)` | Scales output image in each loop: `zoom(0.01)` or negative `zoom(-0.01)` |
+| `displace(velx,vely)` | Displace output image `velx`  y  `vely` (+ o -) |
+| `displace(x,y,w,h,velx,vely)` | Cut out a portion of the image and displace it |
+| `beginRot(vel_in_radians[,scale])` and `endRot()` | rotate what is contained between those two functions |
+| `freq(mult)` | Shorthand of sentence `frameCount * mult` |
+| `osc([freq])` | Shorthand of sentence  `sin( frameCount * freq )` |
+| `cosc([freq])` | Shorthand of sentence  `{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}` |
+| `pulse(n_frames)` | Flag (based on frameCount). Return true each n frame `if(frameCount % n_frames == 0 ) return true` |
+| `gate(n_frames, duration)` | Flag (based on frameCount). Return true each n_frames with an x duration `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true` |
+| `tpulse(millis [,millis_duration, millis_offset])` | Flag (based on millis). Return `true` each millis with a `millis_ duration` and offset by `millis_offset`  |
+| `trange(number [,millis_duration])` | Flag (based on millis). Return  `0` to `number` in a `millis_duration` |
 
 #### Media
 
