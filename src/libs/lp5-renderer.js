@@ -272,7 +272,6 @@ function draw() {
       } else {
             Lp5.el('lp5-os-status').classList.remove('unsave')
       }
-
       // Clear -------------------------------
       if (Lp5.cmDraw.getValue().trim() == '') clear()
 
@@ -505,14 +504,17 @@ Lp5.codeAux.addEventListener("paste", (ev) => {
 Lp5.el('lp5-tab-aux').addEventListener('click', function () {
       Lp5.showPannel('aux')
       Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
+      Lp5.panelIndex = 0
 })
 Lp5.el('lp5-tab-setup').addEventListener('click', function () {
       Lp5.showPannel('setup')
       Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
+      Lp5.panelIndex = 1
 })
 Lp5.el('lp5-tab-draw').addEventListener('click', function () {
       Lp5.showPannel('draw')
       Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
+      Lp5.panelIndex = 2
 })
 // -----------------------------------------------------
 // Global keyup event ----------------------------------
@@ -597,6 +599,7 @@ document.addEventListener('keyup', (ev) => {
                   if (localStorage.pannels == 'vert') {
                         Lp5.el('win').style.display = 'block';
                         Lp5.el('codeblock-resizable').style.width = '100%'
+                        Lp5.el('codeblock').style.width = '100%'
                         // Vuelve a mostrar todos
                         Lp5.showAllPannels()
                   }
@@ -610,6 +613,7 @@ document.addEventListener('keyup', (ev) => {
                   if (localStorage.pannels == 'tabs') {
                         Lp5.el('win').style.display = 'block';
                         Lp5.el('codeblock-resizable').style.width = '100%'
+                        Lp5.el('codeblock').style.width = '100%'
                   }
                   Lp5.showWin = true;
             }
@@ -850,28 +854,30 @@ document.addEventListener("mousewheel", (ev) => {
             }
             if (Lp5.scale_st > 0.05) {
                   Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.5) + "rem";
+                  Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmSetup.refresh()
 
                   Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.el('draw-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmDraw.refresh()
 
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.el('aux-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
-                  // Lp5.el('aux-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.el('aux-title-end').style.lineHeight = (Lp5.scale_st * 1.4) + "rem";
+                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmAux.refresh()
+
+                  Lp5.querySelAll('.lp5-code-parent', (el) => {
+                        el.style.paddingLeft = (Lp5.scale_st * 40) + 'px'
+                  })
 
 
             } else {
