@@ -39,6 +39,8 @@ if (!p5.prototype.hasOwnProperty('console_msg')) {
  */
 if (!p5.prototype.hasOwnProperty('winSize')) {
       p5.prototype.winSize = function (w, h) {
+            if (w < 150) w = 150
+            if (h < 150) h = 150
             Lp5.main.resizeWin(w, h)
       }
 }
@@ -50,6 +52,8 @@ if (!p5.prototype.hasOwnProperty('winSize')) {
  */
 if (!p5.prototype.hasOwnProperty('size')) {
       p5.prototype.size = function (w, h) {
+            if (w < 150) w = 150
+            if (h < 150) h = 150
             Lp5.main.resizeWin(w, h)
       }
 }
@@ -860,6 +864,57 @@ if (!p5.prototype.hasOwnProperty('pulse')) {
 }
 
 /**
+ * Emite un trigger -> true cada n millis
+ * 
+ * @method tpulse
+ * @param each {Number}
+ * @param gate {Number}
+ */
+if (!p5.prototype.hasOwnProperty('tpulse')) {
+      p5.prototype.tpulse = function (_t = 500, _g = 100, _of = 0) {
+            if (_t < 10) _t = 10
+            if (_g < 20) _g = 20
+            if (_of < 0) _of = 0
+            if (Math.floor((millis()+_of) / _t * 2 % _t) % 2 == 0 && Math.floor(millis()+_of) % _t < _g) {
+                  return true
+            } else {
+                  return false
+            }
+      }
+}
+/**
+ * Contador en n tiempo / n time counter
+ * 
+ * @method trange
+ * @param elements {Number}
+ * @param time {Number}
+ */
+if (!p5.prototype.hasOwnProperty('trange')) {
+      p5.prototype.trange = function (_n = 10, _t = 1000) {
+            if (_t < 10) _t = 10
+            if (_n < 1) _n = 1
+            return Math.floor(millis() / _t * _n % _t) % _n
+      }
+}
+/**
+ * Contador en n tiempo / n time counter
+ * 
+ * @method frange
+ * @param elements {Number}
+ * @param time {Number}
+ * @param fn {Function}
+ */
+if (!p5.prototype.hasOwnProperty('frange')) {
+      p5.prototype.frange = function (_n = 10, _t = 1000,fn=null) {
+            if (_t < 10) _t = 10
+            if (_n < 1) _n = 1
+            let i = Math.floor(millis() / _t * _n % _t) % _n
+            if(typeof fn == 'function'){
+                  fn(i)
+            }
+      }
+}
+/**
  * Emite un trigger -> true cada n fotogramas y duracion
  * 
  * @method gate
@@ -962,7 +1017,7 @@ if (!p5.prototype.hasOwnProperty('setPixel')) {
  */
 if (!p5.prototype.hasOwnProperty('getCode')) {
       p5.prototype.getCode = function () {
-            let code = Lp5.cmAux.getValue() + "\n" + Lp5.cmSetup.getValue() + "\n" + Lp5.cmDraw.getValue() 
+            let code = Lp5.cmAux.getValue() + "\n" + Lp5.cmSetup.getValue() + "\n" + Lp5.cmDraw.getValue()
             return code
       }
 }
