@@ -111,6 +111,17 @@ let Lp5 = {
       el: function (id) {
             return document.getElementById(id)
       },
+      querySel: function (qs) {
+            return document.querySelector(qs)
+      },
+      querySelAll: function (qs,fn=null) {
+            let all = document.querySelectorAll(qs)
+            if(typeof fn == 'function'){
+                  for(let i = 0; i < all.length;i++){
+                        fn(all[i])
+                  }
+            } 
+      },
       restoreCursor: function (cm, cmc) {
             //cm.focus()
             cm.setCursor({ line: cmc.line, ch: cmc.ch })
