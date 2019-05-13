@@ -11,8 +11,8 @@ body {
       font-family: monospace;
       padding: 0;
       margin: 0;
-      font-size: 22px;
-      line-height: 25px;
+      font-size: 20px;
+      line-height: 1.7rem;
       background: #000;
       color: #000;
       height: 100%;
@@ -47,7 +47,7 @@ canvas {
       position: relative;
       padding: 4px 40px;
       border-left: 0 solid rgba(0, 0, 0, 0.0) !important;
-      transition: all 0.3s ease-in-out;
+      transition: border 0.3s ease-in-out;
 }
 
 .lp5-code-parent::before {
