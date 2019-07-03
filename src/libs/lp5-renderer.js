@@ -49,7 +49,15 @@ window.addEventListener('load', function () {
       if (localStorage.lang == 'en') {
             Lp5.el('cnf-lang').options[1].selected = true
       }
-
+      // Num lineas-----------------------------
+      if (localStorage.linenumbers == null) {
+            localStorage.linenumbers = 1;
+      }
+      if (localStorage.linenumbers == 1) {
+            Lp5.el('cnf-linenumbers').checked = true
+      } else {
+            Lp5.el('cnf-linenumbers').checked = false
+      }
       // Setup y Draw titulos ------------------
       if (localStorage.block_titles == 1) {
             Lp5.el('setup-title').innerHTML = 'function setup(){'
@@ -75,7 +83,8 @@ window.addEventListener('load', function () {
       // Code mirror ------------------------------------------------------------------- 
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
-            matchBrackets: true
+            matchBrackets: true,
+            lineNumbers: (localStorage.linenumbers == 1) ? true : false
       });
       Lp5.cmAux.on('change', function (cm, ob) {
             if (Lp5.renderCodeAux != Lp5.doGlobals("'use strict';" + cm.getValue())) {
@@ -88,7 +97,8 @@ window.addEventListener('load', function () {
       //
       Lp5.cmSetup = CodeMirror(Lp5.codeSetup, {
             mode: "javascript",
-            matchBrackets: true
+            matchBrackets: true,
+            lineNumbers: (localStorage.linenumbers == 1) ? true : false
       });
       Lp5.cmSetup.on('change', function (cm, ob) {
             if (Lp5.renderCodeSetup != Lp5.doGlobals("'use strict';" + cm.getValue())) {
@@ -101,7 +111,8 @@ window.addEventListener('load', function () {
       //
       Lp5.cmDraw = CodeMirror(Lp5.codeDraw, {
             mode: "javascript",
-            matchBrackets: true
+            matchBrackets: true,
+            lineNumbers: (localStorage.linenumbers == 1) ? true : false
       });
       Lp5.cmDraw.on('change', function (cm, ob) {
             if (Lp5.renderCodeDraw != Lp5.doGlobals("'use strict';" + cm.getValue())) {
@@ -934,6 +945,19 @@ Lp5.el('cnf-sync').addEventListener('click', () => {
             Lp5.sync = true
       } else {
             Lp5.sync = false
+      }
+});
+Lp5.el('cnf-linenumbers').addEventListener('click', () => {
+      if (Lp5.el('cnf-linenumbers').checked) {
+            localStorage.linenumbers = 1
+            Lp5.cmAux.setOption('lineNumbers', true)
+            Lp5.cmSetup.setOption('lineNumbers', true)
+            Lp5.cmDraw.setOption('lineNumbers', true)
+      } else {
+            localStorage.linenumbers = 0
+            Lp5.cmAux.setOption('lineNumbers', false)
+            Lp5.cmSetup.setOption('lineNumbers', false)
+            Lp5.cmDraw.setOption('lineNumbers', false)
       }
 });
 

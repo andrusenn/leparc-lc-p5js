@@ -45,7 +45,7 @@ canvas {
 
 .lp5-code-parent {
       position: relative;
-      padding: 4px 40px;
+      padding: 4px 10px;
       border-left: 0 solid rgba(0, 0, 0, 0.0) !important;
       transition: border 0.3s ease-in-out;
 }
@@ -297,18 +297,20 @@ canvas {
             position: fixed;
             background: transparent;
             top: 0;
-            right:0;
+            right: 0;
             z-index: 999;
+
             .tab {
                   background: rgba(#000, 0.9);
                   border-radius: 6px;
-                  padding:2px 6px;
+                  padding: 2px 6px;
                   text-shadow: none;
                   color: rgba(#fff, 0.6);
-                  cursor:pointer;
+                  cursor: pointer;
 
             }
-            .tab-selected{
+
+            .tab-selected {
                   font-weight: bold;
             }
 

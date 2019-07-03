@@ -23,7 +23,8 @@ Lp5locale.init({
                         "PANNELS": "PANNELS",
                         "VERTICAL": "VERTICAL",
                         "HORIZONTAL": "HORIZONTAL",
-                        "TABS": "TABS"
+                        "TABS": "TABS",
+                        "LINE NUMBERS": "LINE NUMBERS"
                   }
             },
             es: {
@@ -44,7 +45,8 @@ Lp5locale.init({
                         "PANNELS": "PANELES",
                         "VERTICAL": "VERTICAL",
                         "HORIZONTAL": "HORIZONTAL",
-                        "TABS": "TABS"
+                        "TABS": "TABS",
+                        "LINE NUMBERS": "NUMEROS DE LINEA"
                   }
             }
       }
@@ -63,6 +65,7 @@ Lp5locale.init({
       document.querySelector('.en-pannels-vert').innerHTML = Lp5locale.t('VERTICAL');
       document.querySelector('.en-pannels-horiz').innerHTML = Lp5locale.t('HORIZONTAL');
       document.querySelector('.en-pannels-tabs').innerHTML = Lp5locale.t('TABS');
+      document.querySelector('.en-linenumbers').innerHTML = Lp5locale.t('LINE NUMBERS');
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
       lang_msg.priv_words = Lp5locale.t('can not be defined in this block')

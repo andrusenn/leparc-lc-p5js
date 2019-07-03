@@ -46,7 +46,7 @@ canvas {
 
 .lp5-code-parent {
   position: relative;
-  padding: 4px 40px;
+  padding: 4px 10px;
   border-left: 0 solid rgba(0, 0, 0, 0) !important;
   -webkit-transition: border 0.3s ease-in-out;
   transition: border 0.3s ease-in-out;

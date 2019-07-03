@@ -114,13 +114,13 @@ let Lp5 = {
       querySel: function (qs) {
             return document.querySelector(qs)
       },
-      querySelAll: function (qs,fn=null) {
+      querySelAll: function (qs, fn = null) {
             let all = document.querySelectorAll(qs)
-            if(typeof fn == 'function'){
-                  for(let i = 0; i < all.length;i++){
+            if (typeof fn == 'function') {
+                  for (let i = 0; i < all.length; i++) {
                         fn(all[i])
                   }
-            } 
+            }
       },
       restoreCursor: function (cm, cmc) {
             //cm.focus()
@@ -137,6 +137,10 @@ let Lp5 = {
             let els = document.querySelectorAll(".CodeMirror-line>span")
             for (let i = 0; i < els.length; i++) {
                   els[i].style.backgroundColor = "rgba(0,0,0," + this.bg_code_alpha + ")";
+            }
+            let elsln = document.querySelectorAll(".CodeMirror-gutters")
+            for (let i = 0; i < elsln.length; i++) {
+                  elsln[i].style.backgroundColor = "rgba(0,0,0," + this.bg_code_alpha + ")";
             }
       },
       // Palabras reservadas / reserved words
