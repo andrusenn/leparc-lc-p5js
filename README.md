@@ -52,6 +52,8 @@ leparc_resources/
 
 #### Download source
 
+> [Nodejs](https://nodejs.org/en/) and Npm must be installed on your system
+
 1. clon repository
 2. `cd src` (root dir)
 3. `npm install && npm start`
