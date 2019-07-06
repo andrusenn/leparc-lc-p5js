@@ -284,7 +284,7 @@ function draw() {
             Lp5.el('lp5-os-status').classList.remove('unsave')
       }
       // Clear -------------------------------
-      if (Lp5.cmDraw.getValue().trim() == '') clear()
+      //if (Lp5.cmDraw.getValue().trim() == '') clear()
 
       // reset -------------------------------
       noTint()
