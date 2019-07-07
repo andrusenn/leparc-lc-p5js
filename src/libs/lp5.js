@@ -312,9 +312,79 @@ let Lp5 = {
       getBlockRange: function (cm, cp) {
             let lfrom = cp.line
             let lto = cp.line
+            let code = ''
+            let out = ''
             while (lfrom >= 0 && cm.getLine(lfrom) != "") { lfrom-- }
             while (lto < cm.lineCount() && cm.getLine(lto) != "") { lto++ }
-            return { lf: lfrom, lt: lto, code: cm.getRange({ line: lfrom, ch: 0 }, { line: lto, ch: 0 }) }
+            code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto, ch: 0 })
+            out = { lf: lfrom, lt: lto, code: code }
+            return out
+      },
+      getFunctionRange: function (cm, cp) {
+            let lfrom = cp.line
+            let lto = cp.line
+            let opens = 0
+            let linepos = cp.line
+            let out = ''
+            let func = ''
+            let code = ''
+            // Encuentra la funcion setup o draw
+            while (lfrom >= 0) {
+                  // Setup
+                  if (cm.getLine(lfrom).match(/function[\t ]+_setup[\t ]*\([\t ]*\)/g)) {
+                        func = '_setup'
+                        break;
+                  }
+                  // Draw
+                  if (cm.getLine(lfrom).match(/function[\t ]+_draw[\t ]*\([\t ]*\)/g)) {
+                        func = '_draw'
+                        break;
+                  }
+                  // Funcion generica
+                  if (cm.getLine(lfrom).match(/function[\t ]+(.+)[\t ]*\([\t ]*\)/g)) {
+                        func = 'any'
+                        break;
+                  }
+                  lfrom--
+                  lto = lfrom
+            }
+            if (func == '_setup' || func == '_draw') {
+                  while (lto < cm.lineCount()) {
+                        if (cm.getLine(lto).match(/\{/g)) {
+                              opens++;
+                        }
+                        if (opens > 0 && cm.getLine(lto).match(/\}/g)) {
+                              opens--;
+                        }
+                        if (opens == 0) {
+                              break;
+                        }
+                        lto++
+                  }
+                  code = cm.getRange({ line: lfrom - 1, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+            }
+            if (func == 'any') {
+                  while (lto < cm.lineCount()) {
+                        if (cm.getLine(lto).match(/\{/g)) {
+                              opens++;
+                        }
+                        if (opens > 0 && cm.getLine(lto).match(/\}/g)) {
+                              opens--;
+                        }
+                        if (opens == 0) {
+                              break;
+                        }
+                        lto++
+                  }
+                  //Funcion completa
+                  code = cm.getRange({ line: lfrom - 1, ch: 0 }, { line: lto + 1, ch: 0 })
+            }
+            // Verifica que el cursor este entre llaves
+            if (linepos >= lfrom && linepos <= lto) {
+                  out = { lf: lfrom - 1, lt: lto + 1, code: code.trim() }
+                  console.log(code)
+            }
+            return out;
       },
       evalFx(_el) {
             let els = this.el(_el).querySelectorAll('.CodeMirror-line>span')
