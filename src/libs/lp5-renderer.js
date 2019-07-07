@@ -60,16 +60,16 @@ window.addEventListener('load', function () {
       }
       // Setup y Draw titulos ------------------
       if (localStorage.block_titles == 1) {
-            Lp5.el('setup-title').innerHTML = 'function setup(){'
-            Lp5.el('setup-title-end').innerHTML = '}'
-            Lp5.el('draw-title').innerHTML = 'function draw(){'
-            Lp5.el('draw-title-end').innerHTML = '}'
+            //Lp5.el('setup-title').innerHTML = 'function setup(){'
+            //Lp5.el('setup-title-end').innerHTML = '}'
+            //Lp5.el('draw-title').innerHTML = 'function draw(){'
+            //Lp5.el('draw-title-end').innerHTML = '}'
             Lp5.el('cnf-titles').checked = true
       } else {
-            Lp5.el('setup-title').innerHTML = 'setup:'
-            Lp5.el('setup-title-end').innerHTML = ''
-            Lp5.el('draw-title').innerHTML = 'loop:'
-            Lp5.el('draw-title-end').innerHTML = ''
+            //Lp5.el('setup-title').innerHTML = 'setup:'
+            //Lp5.el('setup-title-end').innerHTML = ''
+            //Lp5.el('draw-title').innerHTML = 'loop:'
+            //Lp5.el('draw-title-end').innerHTML = ''
             Lp5.el('cnf-titles').checked = false
       }
       if (Lp5.main.globalSettings().renderer == 'webgl') {
@@ -95,7 +95,7 @@ window.addEventListener('load', function () {
             }
       })
       //
-      Lp5.cmSetup = CodeMirror(Lp5.codeSetup, {
+      /*Lp5.cmSetup = CodeMirror(Lp5.codeSetup, {
             mode: "javascript",
             matchBrackets: true,
             lineNumbers: (localStorage.linenumbers == 1) ? true : false
@@ -121,15 +121,12 @@ window.addEventListener('load', function () {
             } else {
                   Lp5.el('lp5-draw').parentElement.classList.remove('change');
             }
-      })//
+      })//*/
       // Pannels ----------------------------------
-      Lp5.showAllPannels()
+      //Lp5.showAllPannels()
       if (localStorage.pannels == 'vert') {
             Lp5.el('cnf-pannels').options[0].selected = true
             Lp5.el('win').style.display = 'block'
-
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'none'
       }
       if (localStorage.pannels == 'horiz') {
             Lp5.el('cnf-pannels').options[1].selected = true
@@ -148,7 +145,7 @@ window.addEventListener('load', function () {
       }
       if (localStorage.pannels == 'tabs') Lp5.showPannel('draw')
       // Init cursor
-      Lp5.pannelFocus('draw')
+      Lp5.pannelFocus('aux')
 });
 // ********************************************************************
 // ********************************************************************
@@ -170,43 +167,6 @@ function preload() {
                         Lp5.pannelFocus('aux')
                   } else {
                         Lp5.cmAux.setValue('//');
-                  }
-            } catch (e) {
-                  console.trace(e)
-            }
-      })
-      loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'save', 'setup.txt'), (file) => {
-            Lp5.setupTxt = file
-            let stxt = '';
-            for (let i = 0; i < Lp5.setupTxt.length; i++) {
-                  stxt += Lp5.setupTxt[i] + '\n';
-            }
-            try {
-                  // Lp5.codeSetup.innerText = Lp5.beautify_js(txt.trim())
-                  if (stxt != '') {
-                        Lp5.cmSetup.setValue(Lp5.beautify_js(stxt.trim()));
-                        Lp5.pannelFocus('setup')
-                  } else {
-                        Lp5.cmSetup.setValue('//');
-                  }
-            } catch (e) {
-                  console.trace(e)
-            }
-
-      })
-      loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'save', 'draw.txt'), (file) => {
-            Lp5.drawTxt = file
-            let dtxt = '';
-            for (let i = 0; i < Lp5.drawTxt.length; i++) {
-                  dtxt += Lp5.drawTxt[i] + '\n';
-            }
-            try {
-                  // Lp5.codeDraw.innerHTML = Lp5.beautify_js(txt.trim())
-                  if (dtxt != '') {
-                        Lp5.cmDraw.setValue(Lp5.beautify_js(dtxt.trim()));
-                        Lp5.pannelFocus('draw')
-                  } else {
-                        Lp5.cmDraw.setValue('//');
                   }
             } catch (e) {
                   console.trace(e)
@@ -268,7 +228,7 @@ function setup() {
             new Function(Lp5.validCodeSetup)();
       } catch (e) {
             console_msg('setup: ' + e.stack)
-            Lp5.el('lp5-setup').parentElement.classList.add('error');
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
 
 
@@ -369,7 +329,7 @@ function windowResized() {
                   new Function(Lp5.validCodeSetup)();
             } catch (e) {
                   console_msg('setup: ' + e.stack)
-                  Lp5.el('lp5-setup').parentElement.classList.add('error');
+                  //Lp5.el('lp5-setup').parentElement.classList.add('error');
             }
       } catch (e) {
             console.trace('en resize ' + e);
@@ -389,27 +349,46 @@ Lp5.codeAux.addEventListener('click', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
-      Lp5.panelIndex = 0
+      //Lp5.panelIndex = 0
       Lp5.cmFocused = 'aux';
       Lp5.cmAux.focus()
+      // Obtiene los datos del bloque
+      Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
 })
 Lp5.codeAux.addEventListener('keyup', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
+      // Obtiene los datos del bloque
+      Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
 })
 Lp5.codeAux.addEventListener('keydown', (ev) => {
       // Evalua linea ---------------------------------------------------
-      if (ev.altKey && ev.keyCode == 13) {
-            let code = Lp5.getBlockRange(Lp5.cmAux, Lp5.cmAuxCp)
-            Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + code.code)
-            Lp5.evalLineFx('lp5-aux', code.lf, code.lt)
-            Lp5.tryEvalAux()
-      }
+      // if (ev.altKey && ev.keyCode == 13) {
+
+      // }
       // Evalua bloque ---------------------------------------------------
       if (ev.ctrlKey && ev.keyCode == 13) {
-            Lp5.evalAux()
-            Lp5.evalConn('aux')
+            //Lp5.evalConn('aux')
+            if (Lp5.blockData.isFunc) {
+                  if (Lp5.blockData.func == 'setup') {
+                        Lp5.renderCodeSetup = Lp5.blockData.code
+                        Lp5.evalSetup()
+                  }
+                  if (Lp5.blockData.func == 'draw') {
+                        Lp5.renderCodeDraw = Lp5.blockData.code
+                        Lp5.evalDraw()
+
+                  }
+                  if (Lp5.blockData.func == 'any') {
+                        Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                        Lp5.evalAux()
+                  }
+            } else {
+                  Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                  Lp5.evalAux()
+            }
+            Lp5.evalLineFx('lp5-aux', Lp5.blockData.lf, Lp5.blockData.lt)
       }
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
@@ -422,111 +401,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
             }
       }
 });
-
 // -----------------------------------------------------
-// SETUP EVENTS ----------------------------------------
-Lp5.codeSetup.addEventListener('click', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmSetupCp.line = Lp5.cmSetup.getCursor().line;
-      Lp5.cmSetupCp.ch = Lp5.cmSetup.getCursor().ch;
-      Lp5.panelIndex = 1
-      Lp5.cmFocused = 'setup';
-      Lp5.cmSetup.focus()
-})
-Lp5.codeSetup.addEventListener('keyup', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmSetupCp.line = Lp5.cmSetup.getCursor().line;
-      Lp5.cmSetupCp.ch = Lp5.cmSetup.getCursor().ch;
-})
-Lp5.codeSetup.addEventListener('keydown', (ev) => {
-      // Evalua linea/s ---------------------------------------------------
-      if (ev.altKey && ev.keyCode == 13) {
-            let code = Lp5.getBlockRange(Lp5.cmSetup, Lp5.cmSetupCp)
-            Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + code.code)
-            Lp5.evalLineFx('lp5-setup', code.lf, code.lt)
-            Lp5.tryEvalSetup()
-      }
-      // Evalua bloque ----------------------------------------------------------
-      if (ev.ctrlKey && ev.keyCode == 13) {
-            Lp5.evalSetup()
-            Lp5.evalConn('setup')
-      }
-      if (ev.ctrlKey && ev.keyCode == 70) {
-            ev.preventDefault();
-            // Si hay cambios -> formatea
-            try {
-                  Lp5.cmSetup.setValue(Lp5.beautify_js(Lp5.cmSetup.getValue()))
-                  Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: 0 })
-            } catch (e) {
-                  console.trace(e)
-            }
-      }
-});
-
-// -----------------------------------------------------
-// DRAW EVENTS -----------------------------------------
-Lp5.codeDraw.addEventListener('click', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmDrawCp.line = Lp5.cmDraw.getCursor().line;
-      Lp5.cmDrawCp.ch = Lp5.cmDraw.getCursor().ch;
-      Lp5.panelIndex = 2
-      Lp5.cmFocused = 'draw';
-      Lp5.cmDraw.focus()
-});
-Lp5.codeDraw.addEventListener('keyup', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmDrawCp.line = Lp5.cmDraw.getCursor().line;
-      Lp5.cmDrawCp.ch = Lp5.cmDraw.getCursor().ch;
-})
-Lp5.codeDraw.addEventListener('keydown', (ev) => {
-
-      if (ev.ctrlKey && ev.keyCode == 13) {
-            Lp5.evalDraw()
-            // Redraw si no esta loopeando
-            if (!Lp5.looping) redraw()
-            Lp5.evalConn('draw')
-      }
-      if (ev.ctrlKey && ev.keyCode == 70) {
-            ev.preventDefault();
-            // Si hay cambios -> formatea
-            try {
-                  Lp5.cmDraw.setValue(Lp5.beautify_js(Lp5.cmDraw.getValue()))
-                  Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: 0 })
-            } catch (e) {
-                  console.trace(e)
-            }
-      }
-});
-
-// Paste ------------------------------------------
-Lp5.codeSetup.addEventListener("paste", (ev) => {
-      //Lp5.cmSetup.setValue(ev.clipboardData.getData('text/plain'))
-});
-
-Lp5.codeDraw.addEventListener("paste", (ev) => {
-      //Lp5.cmDraw.setValue(ev.clipboardData.getData('text/plain'))
-});
-
-Lp5.codeAux.addEventListener("paste", (ev) => {
-      //Lp5.cmAux.setValue(ev.clipboardData.getData('text/plain'))
-});
-// -----------------------------------------------------
-// -----------------------------------------------------
-Lp5.el('lp5-tab-aux').addEventListener('click', function () {
-      Lp5.showPannel('aux')
-      Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-      Lp5.panelIndex = 0
-})
-Lp5.el('lp5-tab-setup').addEventListener('click', function () {
-      Lp5.showPannel('setup')
-      Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-      Lp5.panelIndex = 1
-})
-Lp5.el('lp5-tab-draw').addEventListener('click', function () {
-      Lp5.showPannel('draw')
-      Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-      Lp5.panelIndex = 2
-})
 // -----------------------------------------------------
 // Global keyup event ----------------------------------
 document.addEventListener('keyup', (ev) => {
@@ -559,73 +434,73 @@ document.addEventListener('keyup', (ev) => {
             Lp5.main.reload();
       }
       // Mostrar/ocultar paneles
-      if (ev.keyCode == 112) {
-            if (localStorage.pannels == 'tabs') {
-                  Lp5.showPannel('aux')
-                  Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-            } else {
-                  if (Lp5.showAuxWin) {
-                        Lp5.el('lp5-aux-pannel').style.display = 'none';
-                        Lp5.showAuxWin = false;
-                  } else {
-                        Lp5.el('lp5-aux-pannel').style.display = 'inline';
-                        Lp5.showAuxWin = true;
-                  }
-            }
-      }
-      if (ev.keyCode == 113) {
-            if (localStorage.pannels == 'tabs') {
-                  Lp5.showPannel('setup')
-                  Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-            } else {
-                  if (Lp5.showSetupWin) {
-                        Lp5.el('lp5-setup-pannel').style.display = 'none';
-                        Lp5.showSetupWin = false;
-                  } else {
-                        Lp5.el('lp5-setup-pannel').style.display = 'inline';
-                        Lp5.showSetupWin = true;
-                  }
-            }
-      }
-      if (ev.keyCode == 114) {
-            if (localStorage.pannels == 'tabs') {
-                  Lp5.showPannel('draw')
-                  Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-            } else {
-                  if (Lp5.showDrawWin) {
-                        Lp5.el('lp5-draw-pannel').style.display = 'none';
-                        Lp5.showDrawWin = false;
-                  } else {
-                        Lp5.el('lp5-draw-pannel').style.display = 'inline';
-                        Lp5.showDrawWin = true;
-                  }
-            }
-      }
+      // if (ev.keyCode == 112) {
+      //       if (localStorage.pannels == 'tabs') {
+      //             Lp5.showPannel('aux')
+      //             Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
+      //       } else {
+      //             if (Lp5.showAuxWin) {
+      //                   Lp5.el('lp5-aux-pannel').style.display = 'none';
+      //                   Lp5.showAuxWin = false;
+      //             } else {
+      //                   Lp5.el('lp5-aux-pannel').style.display = 'inline';
+      //                   Lp5.showAuxWin = true;
+      //             }
+      //       }
+      // }
+      // if (ev.keyCode == 113) {
+      //       if (localStorage.pannels == 'tabs') {
+      //             Lp5.showPannel('setup')
+      //             Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
+      //       } else {
+      //             if (Lp5.showSetupWin) {
+      //                   Lp5.el('lp5-setup-pannel').style.display = 'none';
+      //                   Lp5.showSetupWin = false;
+      //             } else {
+      //                   Lp5.el('lp5-setup-pannel').style.display = 'inline';
+      //                   Lp5.showSetupWin = true;
+      //             }
+      //       }
+      // }
+      // if (ev.keyCode == 114) {
+      //       if (localStorage.pannels == 'tabs') {
+      //             Lp5.showPannel('draw')
+      //             Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
+      //       } else {
+      //             if (Lp5.showDrawWin) {
+      //                   Lp5.el('lp5-draw-pannel').style.display = 'none';
+      //                   Lp5.showDrawWin = false;
+      //             } else {
+      //                   Lp5.el('lp5-draw-pannel').style.display = 'inline';
+      //                   Lp5.showDrawWin = true;
+      //             }
+      //       }
+      // }
       // Mostrar/ocultar codigo
       if (ev.ctrlKey && ev.keyCode == 72) {
             if (Lp5.showWin) {
                   Lp5.el('win').style.display = 'none';
                   Lp5.showWin = false;
             } else {
-                  if (localStorage.pannels == 'vert') {
-                        Lp5.el('win').style.display = 'block';
-                        Lp5.el('codeblock-resizable').style.width = '100%'
-                        Lp5.el('codeblock').style.width = '100%'
-                        // Vuelve a mostrar todos
-                        Lp5.showAllPannels()
-                  }
-                  if (localStorage.pannels == 'horiz') {
-                        Lp5.el('win').style.display = 'flex';
-                        Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-                        Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-                        // Vuelve a mostrar todos
-                        Lp5.showAllPannels()
-                  }
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.el('win').style.display = 'block';
-                        Lp5.el('codeblock-resizable').style.width = '100%'
-                        Lp5.el('codeblock').style.width = '100%'
-                  }
+                  //if (localStorage.pannels == 'vert') {
+                  Lp5.el('win').style.display = 'block';
+                  Lp5.el('codeblock-resizable').style.width = '100%'
+                  Lp5.el('codeblock').style.width = '100%'
+                  // Vuelve a mostrar todos
+                  //Lp5.showAllPannels()
+                  //}
+                  // if (localStorage.pannels == 'horiz') {
+                  //       Lp5.el('win').style.display = 'flex';
+                  //       Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
+                  //       Lp5.el('codeblock').style.width = Lp5.pannelRWidth
+                  //       // Vuelve a mostrar todos
+                  //       Lp5.showAllPannels()
+                  // }
+                  // if (localStorage.pannels == 'tabs') {
+                  //       Lp5.el('win').style.display = 'block';
+                  //       Lp5.el('codeblock-resizable').style.width = '100%'
+                  //       Lp5.el('codeblock').style.width = '100%'
+                  // }
                   Lp5.showWin = true;
             }
       }
@@ -633,31 +508,6 @@ document.addEventListener('keyup', (ev) => {
       if (ev.keyCode == 27) {
             if (confirm(lang_msg.exit_app)) {
                   Lp5.main.exit();
-            }
-
-      }
-      // Focus panels ---------------------------------------------------------------------
-      if (ev.ctrlKey && (ev.keyCode == 32)) {
-            Lp5.panelIndex++
-            ev.preventDefault();
-            if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
-            if (Lp5.panelIndex == 0) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('aux')
-                  }
-                  Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-            }
-            if (Lp5.panelIndex == 1) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('setup')
-                  }
-                  Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-            }
-            if (Lp5.panelIndex == 2) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('draw')
-                  }
-                  Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
             }
       }
       Lp5.changeBgLineAlpha()
@@ -699,21 +549,8 @@ document.addEventListener('keydown', function (ev) {
             ev.preventDefault();
             // Si hay cambios -> formatea
             try {
-                  // Aux
-                  if (Lp5.cmFocused == 'aux') {
-                        Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
-                        Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
-                  }
-                  // Setup
-                  if (Lp5.cmFocused == 'setup') {
-                        Lp5.cmSetup.setValue(Lp5.beautify_js(Lp5.cmSetup.getValue()))
-                        Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: 0 })
-                  }
-                  // Draw 
-                  if (Lp5.cmFocused == 'draw') {
-                        Lp5.cmDraw.setValue(Lp5.beautify_js(Lp5.cmDraw.getValue()))
-                        Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: 0 })
-                  }
+                  Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
+                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
             } catch (e) {
                   console.trace(e)
             }
@@ -736,59 +573,21 @@ document.addEventListener('keydown', function (ev) {
       }
       // Salvar codigo --------------------
       if (ev.ctrlKey && ev.keyCode == 83) {
-            // if (Lp5.validCodeSetup != '') 
-            Lp5.main.saveCode('setup', Lp5.cmSetup.getValue())
-            // if (Lp5.validCodeDraw != '') 
-            Lp5.main.saveCode('draw', Lp5.cmDraw.getValue())
-            // if (Lp5.validCodeAux != '') 
             Lp5.main.saveCode('auxcode', Lp5.cmAux.getValue())
-
             Lp5.historyChangesAux = 0
-            Lp5.historyChangesDraw = 0
-            Lp5.historyChangesSetup = 0
-
             console_msg(lang_msg.saved)
       }
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
             return false
       }
-      // Focus panels & show / hide
-      if (ev.ctrlKey && (ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40)) {
-            ev.preventDefault()
-            if (ev.keyCode == 40 || ev.keyCode == 39) {
-                  Lp5.panelIndex++
-            } else if (ev.keyCode == 37 || ev.keyCode == 38) {
-                  Lp5.panelIndex--
-            }
-            if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
-            if (Lp5.panelIndex < 0) Lp5.panelIndex = 2;
-            if (Lp5.panelIndex == 0) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('aux')
-                  }
-                  Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-            }
-            if (Lp5.panelIndex == 1) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('setup')
-                  }
-                  Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-            }
-            if (Lp5.panelIndex == 2) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('draw')
-                  }
-                  Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-            }
-      }
       // Refrescar fondo lineas
       Lp5.changeBgLineAlpha()
 })
 // Global select event -----------------------------------
 document.addEventListener("select", (ev) => {
-      if (Lp5.cmDraw.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmDraw.getSelection())
-      if (Lp5.cmSetup.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmSetup.getSelection())
+      //if (Lp5.cmDraw.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmDraw.getSelection())
+      //if (Lp5.cmSetup.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmSetup.getSelection())
       if (Lp5.cmAux.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmAux.getSelection())
 })
 // Global mousewheel event -----------------------------------
@@ -864,21 +663,21 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.scale_st += 0.1;
             }
             if (Lp5.scale_st > 0.05) {
-                  Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.cmSetup.refresh()
+                  // Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.cmSetup.refresh()
 
-                  Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('draw-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.cmDraw.refresh()
+                  // Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.el('draw-title').style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.cmDraw.refresh()
 
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
@@ -911,26 +710,26 @@ document.addEventListener('mouseup', (ev) => {
 document.addEventListener('mousemove', (ev) => {
 
       // Panel resize
-      if (Lp5.mousePressed && Lp5.pannelDraggign && localStorage.pannels == 'horiz') {
-            Lp5.el('win').style.cursor = 'ew-resize'
-            let dragDif = ev.pageX - Lp5.dragStart
-            let winw = window.innerWidth
-            let pannelLeft = (Lp5.dragStart + dragDif) / winw * 100
-            Lp5.el('codeblock-resizable').style.width = pannelLeft + '%'
-            let pannelRight = 100 - pannelLeft
-            if (pannelRight < 2) pannelRight = 2
-            Lp5.el('codeblock').style.width = pannelRight + '%'
-            Lp5.pannelLWidth = pannelLeft + '%'
-            Lp5.pannelRWidth = pannelRight + '%'
-      }
+      // if (Lp5.mousePressed && Lp5.pannelDraggign && localStorage.pannels == 'horiz') {
+      //       Lp5.el('win').style.cursor = 'ew-resize'
+      //       let dragDif = ev.pageX - Lp5.dragStart
+      //       let winw = window.innerWidth
+      //       let pannelLeft = (Lp5.dragStart + dragDif) / winw * 100
+      //       Lp5.el('codeblock-resizable').style.width = pannelLeft + '%'
+      //       let pannelRight = 100 - pannelLeft
+      //       if (pannelRight < 2) pannelRight = 2
+      //       Lp5.el('codeblock').style.width = pannelRight + '%'
+      //       Lp5.pannelLWidth = pannelLeft + '%'
+      //       Lp5.pannelRWidth = pannelRight + '%'
+      // }
 })
 // Pannels Resize --------------------------------------
-Lp5.el('draw-title').addEventListener('mousedown', function pannelResize(ev) {
-      Lp5.el('draw-title').removeEventListener('click', pannelResize);
-      Lp5.dragStart = Lp5.el('codeblock-resizable').clientWidth
-      Lp5.pannelDraggign = true
+// Lp5.el('draw-title').addEventListener('mousedown', function pannelResize(ev) {
+//       Lp5.el('draw-title').removeEventListener('click', pannelResize);
+//       Lp5.dragStart = Lp5.el('codeblock-resizable').clientWidth
+//       Lp5.pannelDraggign = true
 
-})
+// })
 // -----------------------------------------------------
 // CONFIGS ----------------------------------------------
 Lp5.el('cnf-renderonfly').addEventListener('click', () => {
@@ -966,32 +765,9 @@ Lp5.el('cnf-lang').addEventListener('change', () => {
       Lp5.main.reload()
 });
 Lp5.el('cnf-pannels').addEventListener('change', () => {
-      localStorage.pannels = Lp5.el('cnf-pannels').value
-      if (localStorage.pannels == 'vert') {
-            Lp5.el('win').style.display = 'block'
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'none'
-            // mostrar todos
-            Lp5.showAllPannels()
-      }
-      if (localStorage.pannels == 'horiz') {
-            Lp5.el('win').style.display = 'flex'
-            Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-            Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-            Lp5.el('lp5-tabs').style.display = 'none'
-            // mostrar todos
-            Lp5.showAllPannels()
-      }
-      if (localStorage.pannels == 'tabs') {
-            Lp5.el('win').style.display = 'block'
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'inline'
-
-            // muestra solo el loop
-            Lp5.showPannel('draw')
-            // Init cursor
-            Lp5.pannelFocus('draw')
-      }
+      Lp5.el('win').style.display = 'block'
+      Lp5.el('codeblock-resizable').style.width = '100%'
+      Lp5.el('lp5-tabs').style.display = 'none'
 });
 Lp5.el('cnf-render').addEventListener('change', () => {
       Lp5.main.reload(Lp5.el('cnf-render').value)

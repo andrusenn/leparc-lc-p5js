@@ -49,27 +49,27 @@ let Lp5 = {
       pannelLRight: '50%',
       // Codemirror
       cmFocused: null,
-      cmSetup: null,
-      cmDraw: null,
+      //cmSetup: null,
+      //cmDraw: null,
+      blockData: '',
       cmAux: null,
       // cmClient:         null,
-      cmSetupCp: {
-            line: 0,
-            ch: 0
-      },
-      cmDrawCp: {
-            line: 0,
-            ch: 0
-      },
+      // cmSetupCp: {
+      //       line: 0,
+      //       ch: 0
+      // },
+      // cmDrawCp: {
+      //       line: 0,
+      //       ch: 0
+      // },
       cmAuxCp: {
             line: 0,
             ch: 0
       },
-      panelIndex: 2,
       cmSelect: '',
       // DOM en index.html
-      codeSetup: document.getElementById('lp5-setup'),
-      codeDraw: document.getElementById('lp5-draw'),
+      //codeSetup: document.getElementById('lp5-setup'),
+      //codeDraw: document.getElementById('lp5-draw'),
       codeAux: document.getElementById('lp5-aux'),
       consoleView: document.getElementById('lp5-console'),
       // Almacena los codigos a evaluar
@@ -82,8 +82,9 @@ let Lp5 = {
       renderCodeSetup: '',
       validCodeAux: '',
       renderCodeAux: '',
-      setupTxt: '',
-      drawTxt: '',
+      isFunction: false,
+      //setupTxt: '',
+      //drawTxt: '',
       auxTxt: '',
       // Escala de los campos a
       scale_st: 1,
@@ -94,9 +95,9 @@ let Lp5 = {
       // p5 externas
       setup: null,
       // Mostrar ventanas
-      showSetupWin: true,
-      showDrawWin: true,
-      showAuxWin: true,
+      //showSetupWin: true,
+      //showDrawWin: true,
+      //showAuxWin: true,
       showWin: true,
       // Imagenes
       // imagesBank: new Array(),
@@ -146,116 +147,116 @@ let Lp5 = {
       // Palabras reservadas / reserved words
       prog: {
             setup: [
-                  'draw',
-                  'setup',
-                  'preload',
-                  'canvas',
-                  'createCanvas',
-                  'remove',
-                  'mouseClicked',
-                  'mouseMoved',
-                  'mouseDragged',
-                  'mousePressed',
-                  'mouseReleased',
-                  'doubleClicked',
-                  'keyReleased',
-                  'keyPressed',
-                  'mouseWheel',
-                  '___audio',
-                  '___fft',
-                  '___webcam',
-                  'ZOOM_SCALE'
+                  // 'draw',
+                  // 'setup',
+                  // 'preload',
+                  // 'canvas',
+                  // 'createCanvas',
+                  // 'remove',
+                  // 'mouseClicked',
+                  // 'mouseMoved',
+                  // 'mouseDragged',
+                  // 'mousePressed',
+                  // 'mouseReleased',
+                  // 'doubleClicked',
+                  // 'keyReleased',
+                  // 'keyPressed',
+                  // 'mouseWheel',
+                  // '___audio',
+                  // '___fft',
+                  // '___webcam',
+                  // 'ZOOM_SCALE'
             ],
             setup3d: [
-                  'draw',
-                  'setup',
-                  'preload',
-                  'canvas',
-                  'createCanvas',
-                  'remove',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
-                  'mouseClicked',
-                  'mouseMoved',
-                  'mouseDragged',
-                  'mousePressed',
-                  'mouseReleased',
-                  'doubleClicked',
-                  'keyReleased',
-                  'keyPressed',
-                  'mouseWheel',
-                  '___audio',
-                  '___fft',
-                  '___webcam',
-                  'ZOOM_SCALE'
+                  // 'draw',
+                  // 'setup',
+                  // 'preload',
+                  // 'canvas',
+                  // 'createCanvas',
+                  // 'remove',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
+                  // 'mouseClicked',
+                  // 'mouseMoved',
+                  // 'mouseDragged',
+                  // 'mousePressed',
+                  // 'mouseReleased',
+                  // 'doubleClicked',
+                  // 'keyReleased',
+                  // 'keyPressed',
+                  // 'mouseWheel',
+                  // '___audio',
+                  // '___fft',
+                  // '___webcam',
+                  // 'ZOOM_SCALE'
             ],
             draw: [
-                  'draw',
-                  'size',
-                  'setup',
-                  'preload',
-                  'canvas',
-                  'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'useCam',
-                  'useAudio',
-                  'remove',
-                  'mouseClicked',
-                  'mouseMoved',
-                  'mouseDragged',
-                  'mousePressed',
-                  'mouseReleased',
-                  'keyReleased',
-                  'keyPressed',
-                  'doubleClicked',
-                  'mouseWheel',
-                  '___audio',
-                  '___fft',
-                  '___webcam',
-                  'ZOOM_SCALE'
+                  // 'draw',
+                  // 'size',
+                  // 'setup',
+                  // 'preload',
+                  // 'canvas',
+                  // 'createCanvas',
+                  // 'use2d',
+                  // 'use3d',
+                  // 'useCam',
+                  // 'useAudio',
+                  // 'remove',
+                  // 'mouseClicked',
+                  // 'mouseMoved',
+                  // 'mouseDragged',
+                  // 'mousePressed',
+                  // 'mouseReleased',
+                  // 'keyReleased',
+                  // 'keyPressed',
+                  // 'doubleClicked',
+                  // 'mouseWheel',
+                  // '___audio',
+                  // '___fft',
+                  // '___webcam',
+                  // 'ZOOM_SCALE'
             ],
             draw3d: [
-                  'draw',
-                  'size',
-                  'setup',
-                  'preload',
-                  'canvas',
-                  'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
-                  'useCam',
-                  'useAudio',
-                  'remove',
-                  'mouseClicked',
-                  'mouseMoved',
-                  'mouseDragged',
-                  'mousePressed',
-                  'mouseReleased',
-                  'keyReleased',
-                  'keyPressed',
-                  'doubleClicked',
-                  'mouseWheel',
-                  '___audio',
-                  '___fft',
-                  '___webcam',
-                  'ZOOM_SCALE'
+                  // 'draw',
+                  // 'size',
+                  // 'setup',
+                  // 'preload',
+                  // 'canvas',
+                  // 'createCanvas',
+                  // 'use2d',
+                  // 'use3d',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
+                  // 'useCam',
+                  // 'useAudio',
+                  // 'remove',
+                  // 'mouseClicked',
+                  // 'mouseMoved',
+                  // 'mouseDragged',
+                  // 'mousePressed',
+                  // 'mouseReleased',
+                  // 'keyReleased',
+                  // 'keyPressed',
+                  // 'doubleClicked',
+                  // 'mouseWheel',
+                  // '___audio',
+                  // '___fft',
+                  // '___webcam',
+                  // 'ZOOM_SCALE'
             ],
             aux: [
                   // 'draw',
@@ -274,29 +275,29 @@ let Lp5 = {
                   // 'ZOOM_SCALE'
             ],
             aux3d: [
-                  'draw',
-                  'setup',
-                  'preload',
-                  'canvas',
-                  'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
-                  'useCam',
-                  'useAudio',
-                  'remove',
-                  '___audio',
-                  '___fft',
-                  '___webcam',
-                  'ZOOM_SCALE'
+                  // 'draw',
+                  // 'setup',
+                  // 'preload',
+                  // 'canvas',
+                  // 'createCanvas',
+                  // 'use2d',
+                  // 'use3d',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
+                  // 'useCam',
+                  // 'useAudio',
+                  // 'remove',
+                  // '___audio',
+                  // '___fft',
+                  // '___webcam',
+                  // 'ZOOM_SCALE'
             ]
       },
       extendsFile: function (file) {
@@ -307,22 +308,14 @@ let Lp5 = {
             return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s ]*${_word})`
       },
       doGlobals: function (_code) {
-            return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
+            // Cambia a globales las variables fuera de las funciones
+            return _code.replace(/\$[\t ]+(?!\{)(?! )/g, 'lp.')
       },
-      getBlockRange: function (cm, cp) {
+      getCodeBlock: function (cm, cp) {
             let lfrom = cp.line
             let lto = cp.line
-            let code = ''
-            let out = ''
-            while (lfrom >= 0 && cm.getLine(lfrom) != "") { lfrom-- }
-            while (lto < cm.lineCount() && cm.getLine(lto) != "") { lto++ }
-            code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto, ch: 0 })
-            out = { lf: lfrom, lt: lto, code: code }
-            return out
-      },
-      getFunctionRange: function (cm, cp) {
-            let lfrom = cp.line
-            let lto = cp.line
+            let lfromc = cp.line
+            let ltoc = cp.line
             let opens = 0
             let linepos = cp.line
             let out = ''
@@ -331,13 +324,13 @@ let Lp5 = {
             // Encuentra la funcion setup o draw
             while (lfrom >= 0) {
                   // Setup
-                  if (cm.getLine(lfrom).match(/function[\t ]+_setup[\t ]*\([\t ]*\)/g)) {
-                        func = '_setup'
+                  if (cm.getLine(lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                        func = 'setup'
                         break;
                   }
                   // Draw
-                  if (cm.getLine(lfrom).match(/function[\t ]+_draw[\t ]*\([\t ]*\)/g)) {
-                        func = '_draw'
+                  if (cm.getLine(lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                        func = 'draw'
                         break;
                   }
                   // Funcion generica
@@ -348,7 +341,7 @@ let Lp5 = {
                   lfrom--
                   lto = lfrom
             }
-            if (func == '_setup' || func == '_draw') {
+            if (func == 'setup' || func == 'draw') {
                   while (lto < cm.lineCount()) {
                         if (cm.getLine(lto).match(/\{/g)) {
                               opens++;
@@ -381,9 +374,14 @@ let Lp5 = {
             }
             // Verifica que el cursor este entre llaves
             if (linepos >= lfrom && linepos <= lto) {
-                  out = { lf: lfrom - 1, lt: lto + 1, code: code.trim() }
-                  console.log(code)
+                  out = { lf: lfrom - 1, lt: lto + 1, code: code.trim(), func: func, isFunc: true }
+            } else {
+                  while (lfromc >= 0 && cm.getLine(lfromc) != "") { lfromc-- }
+                  while (ltoc < cm.lineCount() && cm.getLine(ltoc) != "") { ltoc++ }
+                  code = cm.getRange({ line: lfromc, ch: 0 }, { line: ltoc, ch: 0 })
+                  out = { lf: lfromc, lt: ltoc, code: code.trim(), func: '', isFunc: false }
             }
+            console.log(code)
             return out;
       },
       evalFx(_el) {
@@ -427,9 +425,8 @@ let Lp5 = {
             keyPressed = null
             mouseWheel = null
       },
-      evalDraw: function () {
-            this.renderCodeDraw = this.doGlobals("'use strict';" + this.cmDraw.getValue());
-            this.evalFx('lp5-draw')
+      evalDraw: function (_block, _code) {
+            //this.evalFx('lp5-draw')
             try {
                   let valid = true;
                   let word = '';
@@ -456,19 +453,19 @@ let Lp5 = {
                         new Function(this.renderCodeDraw)()
                   } catch (e) {
                         valid = false
-                        this.el('lp5-console-out').innerHTML = 'draw: ' + e
-                        this.el('lp5-draw').parentElement.classList.remove('error');
+                        this.el('lp5-console-out').innerHTML = _block + ': ' + e
+                        this.el('lp5-aux').parentElement.classList.remove('error');
                   }
                   if (valid) {
                         this.validCodeDraw = this.renderCodeDraw;
-                        this.el('lp5-draw').parentElement.classList.remove('error');
-                        this.el('lp5-draw').parentElement.classList.remove('change');
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
                         //this.main.saveCode('draw', this.validCodeDraw)
                   } else {
-                        this.el('lp5-draw').parentElement.classList.add('error');
+                        this.el('lp5-aux').parentElement.classList.add('error');
                   }
             } catch (e) {
-                  this.el('lp5-draw').parentElement.classList.add('error');
+                  this.el('lp5-aux').parentElement.classList.add('error');
                   this.el('lp5-console-out').innerHTML = '| draw: ' + e
             }
       },
@@ -494,8 +491,8 @@ let Lp5 = {
                   }
                   if (valid) {
                         this.clearEvts()
-                        this.validCodeAux = this.doGlobals("'use strict';" + this.renderCodeAux);
-                        new Function(this.validCodeAux)();
+                        this.validCodeAux = "" + this.renderCodeAux;
+                        new Function(this.validCodeAux)(global);
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
                         this.el('lp5-console-out').innerHTML = ''
@@ -509,13 +506,13 @@ let Lp5 = {
             }
       },
       evalAux: function () {
-            if (this.cmAux.somethingSelected()) {
-                  this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getSelection());
-                  this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmAux))
-            } else {
-                  this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
-                  this.evalFx('lp5-aux')
-            }
+            // if (this.cmAux.somethingSelected()) {
+            //       this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getSelection());
+            //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmAux))
+            // } else {
+            //this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
+            //this.evalFx('lp5-aux')
+            // }
             this.tryEvalAux()
       },
       tryEvalSetup: function () {
@@ -540,27 +537,27 @@ let Lp5 = {
                   }
                   if (valid) {
                         this.validCodeSetup = this.renderCodeSetup;
-                        this.el('lp5-setup').parentElement.classList.remove('error');
-                        this.el('lp5-setup').parentElement.classList.remove('change');
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
                         this.el('lp5-console-out').innerHTML = ''
                         //this.main.saveCode('setup', this.validCodeSetup)
                         setup();
                   } else {
-                        this.el('lp5-setup').parentElement.classList.add('error');
+                        this.el('lp5-aux').parentElement.classList.add('error');
                   }
             } catch (e) {
                   this.el('lp5-console-out').innerHTML = 'setup: ' + e
-                  this.el('lp5-setup').parentElement.classList.add('error');
+                  this.el('lp5-aux').parentElement.classList.add('error');
             }
       },
       evalSetup: function () {
-            if (this.cmSetup.somethingSelected()) {
-                  this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getSelection());
-                  this.evalSelectFx('lp5-setup', this.getLinesSelected(this.cmSetup))
-            } else {
-                  this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getValue());
-                  this.evalFx('lp5-setup')
-            }
+            // if (this.cmAux.somethingSelected()) {
+            //       this.renderCodeSetup = "'use strict';" + this.cmAux.getSelection();
+            //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmSetup))
+            // } else {
+            //this.renderCodeSetup = "'use strict';" + this.cmAux.getValue();
+            //this.evalFx('lp5-aux')
+            //}
             this.tryEvalSetup()
       },
       // Config
