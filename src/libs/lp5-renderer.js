@@ -377,15 +377,16 @@ Lp5.codeAux.addEventListener('keyup', (ev) => {
 Lp5.codeAux.addEventListener('keydown', (ev) => {
       // Evalua bloque ---------------------------------------------------
       if (ev.ctrlKey && ev.keyCode == 13) {
-            //Lp5.evalConn('aux')
             if (Lp5.blockData.isFunc) {
                   if (Lp5.blockData.func == 'setup') {
                         Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalSetup()
+                        Lp5.evalConn('setup')
                   }
                   if (Lp5.blockData.func == 'draw') {
                         Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalDraw()
+                        Lp5.evalConn('draw')
 
                   }
                   for (var key in Lp5.renderCodeEvent) {
@@ -393,6 +394,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                               //Lp5.clearEvts()
                               Lp5.renderCodeEvent[key] = Lp5.doGlobals(Lp5.blockData.code)
                               Lp5.evalEvent(key)
+                              Lp5.evalConn('event')
                               break;
 
                         }
@@ -400,10 +402,12 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   if (Lp5.blockData.func == 'any') {
                         Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalAux()
+                        Lp5.evalConn('any')
                   }
             } else {
                   Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                   Lp5.evalAux()
+                  Lp5.evalConn('line')
             }
             Lp5.evalLineFx('lp5-aux', Lp5.blockData.lf, Lp5.blockData.lt)
       }
