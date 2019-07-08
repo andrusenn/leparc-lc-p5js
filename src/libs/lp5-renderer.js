@@ -184,7 +184,6 @@ function draw() {
       //if (Lp5.cmDraw.getValue().trim() == '') clear()
 
       // reset -------------------------------
-      noTint()
       strokeWeight(1)
       blendMode(BLEND)
 
@@ -197,11 +196,13 @@ function draw() {
                   colorMode(RGB, 255, 255, 255)
                   ambientMaterial(color(167, 167, 167))
             } else {
-                  textLeading(15)
-                  textSize(15)
-                  textAlign(LEFT, TOP)
-                  textStyle(NORMAL)
+                  noTint()
+
             }
+            textLeading(15)
+            textSize(15)
+            textAlign(LEFT, TOP)
+            textStyle(NORMAL)
       } catch (e) {
             //
       }
@@ -381,12 +382,10 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   if (Lp5.blockData.func == 'setup') {
                         Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalSetup()
-                        Lp5.evalConn('setup')
                   }
                   if (Lp5.blockData.func == 'draw') {
                         Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalDraw()
-                        Lp5.evalConn('draw')
 
                   }
                   for (var key in Lp5.renderCodeEvent) {
@@ -394,7 +393,6 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                               //Lp5.clearEvts()
                               Lp5.renderCodeEvent[key] = Lp5.doGlobals(Lp5.blockData.code)
                               Lp5.evalEvent(key)
-                              Lp5.evalConn('event')
                               break;
 
                         }
@@ -402,14 +400,14 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   if (Lp5.blockData.func == 'any') {
                         Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalAux()
-                        Lp5.evalConn('any')
                   }
             } else {
                   Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                   Lp5.evalAux()
-                  Lp5.evalConn('line')
             }
             Lp5.evalLineFx('lp5-aux', Lp5.blockData.lf, Lp5.blockData.lt)
+            // 
+            Lp5.evalConn(Lp5.blockData)
       }
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
@@ -460,10 +458,7 @@ document.addEventListener('keyup', (ev) => {
                   Lp5.el('win').style.display = 'none';
                   Lp5.showWin = false;
             } else {
-                  //if (localStorage.pannels == 'vert') {
                   Lp5.el('win').style.display = 'block';
-                  //Lp5.el('codeblock-resizable').style.width = '100%'
-                  //Lp5.el('codeblock').style.width = '100%'
                   Lp5.showWin = true;
             }
       }
@@ -611,12 +606,6 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmAux.refresh()
-
-                  Lp5.querySelAll('.lp5-code-parent', (el) => {
-                        el.style.paddingLeft = (Lp5.scale_st * 40) + 'px'
-                  })
-
-
             } else {
                   Lp5.scale_st = 0.05;
             }

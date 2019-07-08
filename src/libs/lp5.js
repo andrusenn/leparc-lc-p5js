@@ -9,9 +9,9 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.1.2',
+      version: '0.2.0',
       p5: {
-            version: '0.8.0'
+            version: '0.9.0'
       },
       // Canvas
       canvas: null,
@@ -43,14 +43,6 @@ let Lp5 = {
       blockData: '',
       cmAux: null,
       // cmClient:         null,
-      // cmSetupCp: {
-      //       line: 0,
-      //       ch: 0
-      // },
-      // cmDrawCp: {
-      //       line: 0,
-      //       ch: 0
-      // },
       cmAuxCp: {
             line: 0,
             ch: 0
@@ -95,9 +87,6 @@ let Lp5 = {
             keyReleased: '',
             keyTyped: ''
       },
-      isFunction: false,
-      //setupTxt: '',
-      //drawTxt: '',
       auxTxt: '',
       // Escala de los campos a
       scale_st: 1,
@@ -184,15 +173,15 @@ let Lp5 = {
                   'canvas',
                   'createCanvas',
                   'remove',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
                   'mouseClicked',
                   'mouseMoved',
                   'mouseDragged',
@@ -242,15 +231,15 @@ let Lp5 = {
                   'createCanvas',
                   'use2d',
                   'use3d',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
+                  //'text',
+                  //'textAlign',
+                  //'textLeading',
+                  //'textSize',
+                  //'textStyle',
+                  //'textWidth',
+                  //'textAscent',
+                  //'textDescent',
+                  //'textFont',
                   'useCam',
                   'useAudio',
                   'remove',
@@ -292,15 +281,15 @@ let Lp5 = {
                   'createCanvas',
                   'use2d',
                   'use3d',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
                   'useCam',
                   'useAudio',
                   'remove',
@@ -473,8 +462,7 @@ let Lp5 = {
             keyPressed = null
             mouseWheel = null
       },
-      evalDraw: function (_block, _code) {
-            //this.evalFx('lp5-draw')
+      evalDraw: function () {
             try {
                   let valid = true;
                   let word = '';
@@ -501,7 +489,7 @@ let Lp5 = {
                         new Function(this.renderCodeDraw)()
                   } catch (e) {
                         valid = false
-                        this.el('lp5-console-out').innerHTML = _block + ': ' + e
+                        this.el('lp5-console-out').innerHTML = 'draw: ' + e
                         this.el('lp5-aux').parentElement.classList.remove('error');
                   }
                   if (valid) {
@@ -667,9 +655,9 @@ let Lp5 = {
             }
       },
       // Modo: CLIENTE-SERVIDOR
-      evalConn: function (block) {
-            if (this.mode == 'CLIENT') this.client.eval(block)
-            if (this.mode == 'SERVER') this.server.eval(block)
+      evalConn: function (obj) {
+            if (this.mode == 'CLIENT') this.client.eval(obj)
+            if (this.mode == 'SERVER') this.server.eval(obj)
       }
 
 }
