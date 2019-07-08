@@ -67,9 +67,9 @@ leparc_resources/
 Atajo de teclado | Acción
 --- | ---
 `Ctrl+Enter` | Evaluar bloque de código
-`Alt+Enter` | Evaluar línea de código (solo en setup() y aux())
+~~`Alt+Enter`~~ | ~~Evaluar línea de código (solo en setup() y aux())~~
 `Ctrl+H` | Mostrar/ocultar código
-`F1 F2 F3` | Mostrar/ocultar paneles  (aux) (setup) (draw)
+~~`F1 F2 F3`~~ | ~~Mostrar/ocultar paneles  (aux) (setup) (draw)~~
 `F11` | Pantalla completa (fullscreen)
 `F10` | Muestra/oculta herramientas de desarrollo para debug (dev tools)
 `F5` | Recarga pantalla (se debe volver a evaluar)
@@ -77,30 +77,28 @@ Atajo de teclado | Acción
 `Alt+mousewheel` | Modifica la transparencia del fondo del códivo
 `Ctrl+Alt+mousewheel` | Modifica valor seleccionado suma/resta 1
 `Ctrl+Alt+Shift+mousewheel` | Modifica valor seleccionado suma/resta 0.1
-`Ctrl+ArrowUP` | Cambia el cursor/foco de panel hacia arriba
-`Ctrl+ArrowDOWN` | Cambia el cursor/foco de panel hacia abajo
+~~`Ctrl+ArrowUP`~~ | ~~Cambia el cursor/foco de panel hacia arriba~~
+~~`Ctrl+ArrowDOWN`~~ | ~~Cambia el cursor/foco de panel hacia abajo~~
 `Ctrl+F` | Formatea el código bloque
 `Ctrl+L` | alterna loop()/noLoop()
 `Ctrl+Shift+C` | Comenta/Descomenta código
 
 ### Bloques de código
 
-> `function setup(){}` y `function draw(){}` son solo ayudas visuales. No se pueden modificar. Hay tareas que se ejecutan en esos bloques. Ver código fuente (lp5-renderer.js)
-> Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
-> Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
+> ~~`function setup(){}` y `function draw(){}` son solo ayudas visuales. No se pueden modificar.~~ ~~Hay tareas que se ejecutan en esos bloques. Ver código fuente (lp5-renderer.js)~~ Ahora se utiliza unb solo bloque y se evalúa el código selectivamente.
+> ~~Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.~~
+> Se pueden utilizar las funciones/metodos de p5js ~~en cualquier bloque~~
 
-- `setup:` -> `function setup(){ // }`
-- `loop:` -> `function draw(){ // }`
+- ~~`setup:` -> `function setup(){ // }`~~
+- ~~`loop:` -> `function draw(){ // }`~~
   
 #### Diferencia entre setup(){} y aux(){}
 
-El bloque `setup` reinicializa varios objetos y funciones de p5, mientras que `aux` no.
+El bloque `setup` reinicializa varios objetos y funciones de p5, ~~mientras que `aux` no.~~
 
 ### Variables y funciones globales
 
-Para acceder a variables desde otros bloques, se provee un objeto global para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
-
-> En aux
+Para acceder a variables globales ~~desde otros bloques,~~ se provee un objeto para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
 
 ~~~js
 
@@ -118,12 +116,6 @@ $miFuncion = function(){
       console.log('Hola LeParc!')
 }
 
-~~~
-
-> En draw
-
-~~~js
-
 lp.miFuncion() // salida -> Hola LeParc!
 console.log(lp.x) // salida -> code!
 // o abreviada
@@ -134,16 +126,10 @@ console.log($x) // salida -> code!
 
 ### Eventos
 
-Se pueden declarar los eventos en el bloque `aux`
-
 ~~~js
 
-mouseClicked = function(){
+function mouseClicked(){
   console.log('evt click')
-}
-
-mouseMoved = function(){
-  console.log('evt mousemove')
 }
 
 // Etc

@@ -66,10 +66,10 @@ leparc_resources/
 
 Keyboard shortcut | Action
 --- | ---
-`Ctrl+Enter` | Evaluate code block
-`Alt+Enter` | Evaluate line of code (only in setup () and aux ())
+`Ctrl+Enter` | Evaluate code block (setup/draw/events/lines)
+~~`Alt+Enter`~~ | ~~Evaluate line of code (only in setup () and aux ())~~
 `Ctrl+H` | Show / hide code
-`F1 F2 F3` | Show/hide panels (aux) (setup) (draw/loop)
+~~`F1 F2 F3`~~ | ~~Show/hide panels (aux) (setup) (draw/loop)~~
 `F11` | Fullscreen
 `F10` | Show / hide development tools for debug (dev tools)
 `F5` | Screen reload (must be re-evaluated)
@@ -77,30 +77,28 @@ Keyboard shortcut | Action
 `Alt+mousewheel` | Modify the transparency of the background of the code
 `Ctrl+Alt+mousewheel` | Modify selected value addition / subtraction by 1
 `Ctrl+Alt+Shift+mousewheel` | Modify value selected addition / subtraction by 0.1
-`Ctrl+ArrowUP` | Change the cursor / panel focus up
-`Ctrl+ArrowDOWN` | Change the cursor / panel focus down
+~~`Ctrl+ArrowUP`~~ | ~~Change the cursor / panel focus up~~
+~~`Ctrl+ArrowDOWN`~~ | ~~Change the cursor / panel focus down~~
 `Ctrl+F` | Format  (beautify) the block code
 `Ctrl+L` | Toggle `loop()`/`noLoop()`
 `Ctrl+Shift+C` | Comment / Uncomment code
 
 ### Code blocks
 
-> `function setup(){}` and `function draw(){}` are just titles. You can not modify it. There are some tasks run underneath of each one. Check source code (lp5-renderer.js)
-> Each block are evaluated separately. There is an extra block `aux:` to run code outside from setup() and draw()
-> You can use functions/methods of p5js in any block
+> ~~`function setup(){}` and `function draw(){}` are just titles. You can not modify it. There are some tasks run underneath of each one. Check source code (lp5-renderer.js)~~ Now, you can write in one block all code. There is a selective evaluation.
+> ~~Each block are evaluated separately. There is an extra block `aux:` to run code outside from setup() and draw()~~
+> You can use functions/methods of p5js ~~in any block~~
 
-- `setup:` -> `function setup(){ // }`
-- `loop:` -> `function draw(){ // }`
+- ~~`setup:` -> `function setup(){ // }`~~
+- ~~`loop:` -> `function draw(){ // }`~~
 
 #### setup(){} vs aux(){}
 
-Evaluating `setup` some objects and functions of p5 are reseted, while in `aux` not.
+Evaluating `setup` some objects and functions of p5 are reseted ~~, while in `aux` not.~~
 
 ### Global vars and functions
 
-For global acces from other blocks, an object is provided: `lp`, or shorthand manner with `$` prefix.
-
-> In aux
+For global acces ~~from other blocks~~, an object is provided: `lp`, or shorthand manner with `$` prefix.
 
 ~~~js
 
@@ -118,12 +116,6 @@ $myFunction = function(){
       console.log('Hola LeParc!')
 }
 
-~~~
-
-> In draw
-
-~~~js
-
 lp.myFunction() // out -> Hola LeParc!
 console.log(lp.x) // out -> code!
 // or
@@ -134,16 +126,10 @@ console.log($x) // out -> code!
 
 ### Events
 
-You can declare events in `aux` block
-
 ~~~js
 
-mouseClicked = function(){
+function mouseClicked(){
   console.log('evt click')
-}
-
-mouseMoved = function(){
-  console.log('evt mousemove')
 }
 
 // Etc
