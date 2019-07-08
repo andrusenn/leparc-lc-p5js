@@ -58,20 +58,6 @@ window.addEventListener('load', function () {
       } else {
             Lp5.el('cnf-linenumbers').checked = false
       }
-      // Setup y Draw titulos ------------------
-      if (localStorage.block_titles == 1) {
-            //Lp5.el('setup-title').innerHTML = 'function setup(){'
-            //Lp5.el('setup-title-end').innerHTML = '}'
-            //Lp5.el('draw-title').innerHTML = 'function draw(){'
-            //Lp5.el('draw-title-end').innerHTML = '}'
-            Lp5.el('cnf-titles').checked = true
-      } else {
-            //Lp5.el('setup-title').innerHTML = 'setup:'
-            //Lp5.el('setup-title-end').innerHTML = ''
-            //Lp5.el('draw-title').innerHTML = 'loop:'
-            //Lp5.el('draw-title-end').innerHTML = ''
-            Lp5.el('cnf-titles').checked = false
-      }
       if (Lp5.main.globalSettings().renderer == 'webgl') {
             Lp5.el('lp5-os-r').style.display = 'inline'
             Lp5.el('cnf-render').options[1].selected = true
@@ -94,56 +80,7 @@ window.addEventListener('load', function () {
                   Lp5.el('lp5-aux').parentElement.classList.remove('change');
             }
       })
-      //
-      /*Lp5.cmSetup = CodeMirror(Lp5.codeSetup, {
-            mode: "javascript",
-            matchBrackets: true,
-            lineNumbers: (localStorage.linenumbers == 1) ? true : false
-      });
-      Lp5.cmSetup.on('change', function (cm, ob) {
-            if (Lp5.renderCodeSetup != Lp5.doGlobals("'use strict';" + cm.getValue())) {
-                  Lp5.historyChangesSetup = 1
-                  Lp5.el('lp5-setup').parentElement.classList.add('change');
-            } else {
-                  Lp5.el('lp5-setup').parentElement.classList.remove('change');
-            }
-      })
-      //
-      Lp5.cmDraw = CodeMirror(Lp5.codeDraw, {
-            mode: "javascript",
-            matchBrackets: true,
-            lineNumbers: (localStorage.linenumbers == 1) ? true : false
-      });
-      Lp5.cmDraw.on('change', function (cm, ob) {
-            if (Lp5.renderCodeDraw != Lp5.doGlobals("'use strict';" + cm.getValue())) {
-                  Lp5.historyChangesDraw = 1
-                  Lp5.el('lp5-draw').parentElement.classList.add('change');
-            } else {
-                  Lp5.el('lp5-draw').parentElement.classList.remove('change');
-            }
-      })//*/
-      // Pannels ----------------------------------
-      //Lp5.showAllPannels()
-      if (localStorage.pannels == 'vert') {
-            Lp5.el('cnf-pannels').options[0].selected = true
-            Lp5.el('win').style.display = 'block'
-      }
-      if (localStorage.pannels == 'horiz') {
-            Lp5.el('cnf-pannels').options[1].selected = true
-            Lp5.el('win').style.display = 'flex'
 
-            Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-            Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-            Lp5.el('lp5-tabs').style.display = 'none'
-      }
-      if (localStorage.pannels == 'tabs') {
-            Lp5.el('cnf-pannels').options[2].selected = true
-            Lp5.el('win').style.display = 'block'
-
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'inline'
-      }
-      if (localStorage.pannels == 'tabs') Lp5.showPannel('draw')
       // Init cursor
       Lp5.pannelFocus('aux')
 });
@@ -279,7 +216,9 @@ function draw() {
             /**************
              * DRAW ON FLY
              **************/
-            Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.cmDraw.getValue());
+            if (Lp5.blockData.func == 'draw') {
+                  Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
+            }
             try {
                   let valid = true;
                   let word = '';
@@ -310,16 +249,79 @@ function draw() {
                   }
                   if (valid) {
                         Lp5.validCodeDraw = Lp5.renderCodeDraw;
-                        Lp5.el('lp5-draw').parentElement.classList.remove('error');
-                        Lp5.el('lp5-draw').parentElement.classList.remove('change');
+                        Lp5.el('lp5-aux').parentElement.classList.remove('error');
+                        Lp5.el('lp5-aux').parentElement.classList.remove('change');
                   } else {
-                        Lp5.el('lp5-draw').parentElement.classList.add('error');
+                        Lp5.el('lp5-aux').parentElement.classList.add('error');
                   }
             } catch (e) {
-                  Lp5.el('lp5-draw').parentElement.classList.add('error');
+                  Lp5.el('lp5-aux').parentElement.classList.add('error');
                   Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
                   new Function(Lp5.validCodeDraw)()
             }
+      }
+}
+function mouseMoved() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.mouseMoved)();
+      } catch (e) {
+            console_msg('mouseMoved: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mousePressed() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.mousePressed)();
+      } catch (e) {
+            console_msg('mousePressed: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseReleased() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.mouseReleased)();
+      } catch (e) {
+            console_msg('mouseReleased: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseClicked() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.mouseClicked)();
+      } catch (e) {
+            console_msg('mouseClicked: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function doubleClicked() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.doubleClicked)();
+      } catch (e) {
+            console_msg('doubleClicked: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseDragged() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.mouseDragged)();
+      } catch (e) {
+            console_msg('mouseDragged: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseWheel() {
+      // Live --------------------------------
+      try {
+            new Function(Lp5.validCodeEvent.mouseWheel)(global);
+      } catch (e) {
+            console_msg('mouseWheel: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
 }
 function windowResized() {
@@ -345,7 +347,17 @@ function windowResized() {
 // -----------------------------------------------------
 // AUXILIAR EVENTS -------------------------------------
 
-Lp5.codeAux.addEventListener('click', (ev) => {
+// Lp5.codeAux.addEventListener('click', (ev) => {
+//       // Obtiene la ultima posicion del cursor
+//       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
+//       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
+//       //Lp5.panelIndex = 0
+//       Lp5.cmFocused = 'aux';
+//       Lp5.cmAux.focus()
+//       // Obtiene los datos del bloque
+//       Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
+// })
+Lp5.codeAux.addEventListener('mousedown', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
@@ -363,22 +375,27 @@ Lp5.codeAux.addEventListener('keyup', (ev) => {
       Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
 })
 Lp5.codeAux.addEventListener('keydown', (ev) => {
-      // Evalua linea ---------------------------------------------------
-      // if (ev.altKey && ev.keyCode == 13) {
-
-      // }
       // Evalua bloque ---------------------------------------------------
       if (ev.ctrlKey && ev.keyCode == 13) {
             //Lp5.evalConn('aux')
             if (Lp5.blockData.isFunc) {
                   if (Lp5.blockData.func == 'setup') {
-                        Lp5.renderCodeSetup = Lp5.blockData.code
+                        Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalSetup()
                   }
                   if (Lp5.blockData.func == 'draw') {
-                        Lp5.renderCodeDraw = Lp5.blockData.code
+                        Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                         Lp5.evalDraw()
 
+                  }
+                  for (var key in Lp5.renderCodeEvent) {
+                        if (Lp5.blockData.func == key) {
+                              //Lp5.clearEvts()
+                              Lp5.renderCodeEvent[key] = Lp5.doGlobals(Lp5.blockData.code)
+                              Lp5.evalEvent(key)
+                              break;
+
+                        }
                   }
                   if (Lp5.blockData.func == 'any') {
                         Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
@@ -433,49 +450,6 @@ document.addEventListener('keyup', (ev) => {
       if (ev.keyCode == 116) {
             Lp5.main.reload();
       }
-      // Mostrar/ocultar paneles
-      // if (ev.keyCode == 112) {
-      //       if (localStorage.pannels == 'tabs') {
-      //             Lp5.showPannel('aux')
-      //             Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-      //       } else {
-      //             if (Lp5.showAuxWin) {
-      //                   Lp5.el('lp5-aux-pannel').style.display = 'none';
-      //                   Lp5.showAuxWin = false;
-      //             } else {
-      //                   Lp5.el('lp5-aux-pannel').style.display = 'inline';
-      //                   Lp5.showAuxWin = true;
-      //             }
-      //       }
-      // }
-      // if (ev.keyCode == 113) {
-      //       if (localStorage.pannels == 'tabs') {
-      //             Lp5.showPannel('setup')
-      //             Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-      //       } else {
-      //             if (Lp5.showSetupWin) {
-      //                   Lp5.el('lp5-setup-pannel').style.display = 'none';
-      //                   Lp5.showSetupWin = false;
-      //             } else {
-      //                   Lp5.el('lp5-setup-pannel').style.display = 'inline';
-      //                   Lp5.showSetupWin = true;
-      //             }
-      //       }
-      // }
-      // if (ev.keyCode == 114) {
-      //       if (localStorage.pannels == 'tabs') {
-      //             Lp5.showPannel('draw')
-      //             Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-      //       } else {
-      //             if (Lp5.showDrawWin) {
-      //                   Lp5.el('lp5-draw-pannel').style.display = 'none';
-      //                   Lp5.showDrawWin = false;
-      //             } else {
-      //                   Lp5.el('lp5-draw-pannel').style.display = 'inline';
-      //                   Lp5.showDrawWin = true;
-      //             }
-      //       }
-      // }
       // Mostrar/ocultar codigo
       if (ev.ctrlKey && ev.keyCode == 72) {
             if (Lp5.showWin) {
@@ -484,23 +458,8 @@ document.addEventListener('keyup', (ev) => {
             } else {
                   //if (localStorage.pannels == 'vert') {
                   Lp5.el('win').style.display = 'block';
-                  Lp5.el('codeblock-resizable').style.width = '100%'
-                  Lp5.el('codeblock').style.width = '100%'
-                  // Vuelve a mostrar todos
-                  //Lp5.showAllPannels()
-                  //}
-                  // if (localStorage.pannels == 'horiz') {
-                  //       Lp5.el('win').style.display = 'flex';
-                  //       Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-                  //       Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-                  //       // Vuelve a mostrar todos
-                  //       Lp5.showAllPannels()
-                  // }
-                  // if (localStorage.pannels == 'tabs') {
-                  //       Lp5.el('win').style.display = 'block';
-                  //       Lp5.el('codeblock-resizable').style.width = '100%'
-                  //       Lp5.el('codeblock').style.width = '100%'
-                  // }
+                  //Lp5.el('codeblock-resizable').style.width = '100%'
+                  //Lp5.el('codeblock').style.width = '100%'
                   Lp5.showWin = true;
             }
       }
@@ -528,21 +487,9 @@ document.addEventListener('keydown', function (ev) {
       // Comment ----------------------
       if (ev.shiftKey && !ev.altKey && ev.ctrlKey && ev.keyCode == 67) {
             ev.preventDefault();
-            if (Lp5.cmFocused == 'aux') {
-                  Lp5.cmAux.toggleComment({
-                        lineComment: '//'
-                  })
-            }
-            if (Lp5.cmFocused == 'setup') {
-                  Lp5.cmSetup.toggleComment({
-                        lineComment: '//'
-                  })
-            }
-            if (Lp5.cmFocused == 'draw') {
-                  Lp5.cmDraw.toggleComment({
-                        lineComment: '//'
-                  })
-            }
+            Lp5.cmAux.toggleComment({
+                  lineComment: '//'
+            })
       }
       // Format code ----------------------
       if (ev.ctrlKey && ev.keyCode == 70) {
@@ -586,18 +533,13 @@ document.addEventListener('keydown', function (ev) {
 })
 // Global select event -----------------------------------
 document.addEventListener("select", (ev) => {
-      //if (Lp5.cmDraw.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmDraw.getSelection())
-      //if (Lp5.cmSetup.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmSetup.getSelection())
       if (Lp5.cmAux.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmAux.getSelection())
 })
 // Global mousewheel event -----------------------------------
 document.addEventListener("mousewheel", (ev) => {
+      Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
       if (ev.altKey && ev.ctrlKey) {
-            if (
-                  Lp5.cmSetup.somethingSelected() ||
-                  Lp5.cmDraw.somethingSelected() ||
-                  Lp5.cmAux.somethingSelected()
-            ) {
+            if (Lp5.cmAux.somethingSelected()) {
                   ev.preventDefault()
                   var dir = Math.sign(ev.deltaY);
                   if (!isNaN(Lp5.cmSelect)) {
@@ -617,13 +559,12 @@ document.addEventListener("mousewheel", (ev) => {
                                     Lp5.cmSelect++
                               }
                         }
-                        if (Lp5.cmDraw.hasFocus()) Lp5.cmDraw.replaceSelection(Lp5.cmSelect.toString(), "around")
-                        if (Lp5.cmSetup.hasFocus()) Lp5.cmSetup.replaceSelection(Lp5.cmSelect.toString(), "around")
                         if (Lp5.cmAux.hasFocus()) Lp5.cmAux.replaceSelection(Lp5.cmSelect.toString(), "around")
                         // Refresca el fondo ya que el el replace se elimina el atributo
                         Lp5.changeBgLineAlpha()
-
-
+                  }
+                  if (Lp5.blockData.func == 'draw') {
+                        Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
                   }
             }
       }
@@ -663,26 +604,8 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.scale_st += 0.1;
             }
             if (Lp5.scale_st > 0.05) {
-                  // Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  // Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  // Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  // Lp5.cmSetup.refresh()
-
-                  // Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  // Lp5.el('draw-title').style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  // Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  // Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  // Lp5.cmDraw.refresh()
-
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('aux-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmAux.refresh()
 
                   Lp5.querySelAll('.lp5-code-parent', (el) => {
@@ -700,36 +623,6 @@ document.addEventListener('mousedown', (ev) => {
       // Panel resize
       Lp5.mousePressed = true
 })
-document.addEventListener('mouseup', (ev) => {
-
-      // Panel resize
-      Lp5.el('win').style.cursor = 'unset'
-      Lp5.mousePressed = false
-      Lp5.pannelDraggign = false
-})
-document.addEventListener('mousemove', (ev) => {
-
-      // Panel resize
-      // if (Lp5.mousePressed && Lp5.pannelDraggign && localStorage.pannels == 'horiz') {
-      //       Lp5.el('win').style.cursor = 'ew-resize'
-      //       let dragDif = ev.pageX - Lp5.dragStart
-      //       let winw = window.innerWidth
-      //       let pannelLeft = (Lp5.dragStart + dragDif) / winw * 100
-      //       Lp5.el('codeblock-resizable').style.width = pannelLeft + '%'
-      //       let pannelRight = 100 - pannelLeft
-      //       if (pannelRight < 2) pannelRight = 2
-      //       Lp5.el('codeblock').style.width = pannelRight + '%'
-      //       Lp5.pannelLWidth = pannelLeft + '%'
-      //       Lp5.pannelRWidth = pannelRight + '%'
-      // }
-})
-// Pannels Resize --------------------------------------
-// Lp5.el('draw-title').addEventListener('mousedown', function pannelResize(ev) {
-//       Lp5.el('draw-title').removeEventListener('click', pannelResize);
-//       Lp5.dragStart = Lp5.el('codeblock-resizable').clientWidth
-//       Lp5.pannelDraggign = true
-
-// })
 // -----------------------------------------------------
 // CONFIGS ----------------------------------------------
 Lp5.el('cnf-renderonfly').addEventListener('click', () => {
@@ -764,28 +657,8 @@ Lp5.el('cnf-lang').addEventListener('change', () => {
       localStorage.lang = Lp5.el('cnf-lang').value
       Lp5.main.reload()
 });
-Lp5.el('cnf-pannels').addEventListener('change', () => {
-      Lp5.el('win').style.display = 'block'
-      Lp5.el('codeblock-resizable').style.width = '100%'
-      Lp5.el('lp5-tabs').style.display = 'none'
-});
 Lp5.el('cnf-render').addEventListener('change', () => {
       Lp5.main.reload(Lp5.el('cnf-render').value)
-});
-Lp5.el('cnf-titles').addEventListener('click', () => {
-      if (Lp5.el('cnf-titles').checked) {
-            localStorage.block_titles = 1
-            Lp5.el('setup-title').innerHTML = 'function setup(){'
-            Lp5.el('setup-title-end').innerHTML = '}'
-            Lp5.el('draw-title').innerHTML = 'function draw(){'
-            Lp5.el('draw-title-end').innerHTML = '}'
-      } else {
-            localStorage.block_titles = 0
-            Lp5.el('setup-title').innerHTML = 'setup:'
-            Lp5.el('setup-title-end').innerHTML = ''
-            Lp5.el('draw-title').innerHTML = 'loop:'
-            Lp5.el('draw-title-end').innerHTML = ''
-      }
 });
 Lp5.el('cnf-server').addEventListener('change', (ev) => {
 

@@ -435,7 +435,7 @@ if (!p5.prototype.hasOwnProperty('cosc')) {
             if (arg.length == 1) {
                   freq = frameCount * 0.001 * arg[0]
             }
-            return { sin: sin(freq), cos: cos(freq) };
+            return { sin: Math.sin(freq), cos: Math.cos(freq) };
       }
 }
 /**

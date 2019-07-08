@@ -40,17 +40,6 @@ let Lp5 = {
       historyChangesDraw: 0,
       historyChangesAux: 0,
       drawOnFly: false,
-      // Drag pannels
-      dragStart: 0,
-      dragEnd: 0,
-      mousePressed: false,
-      pannelDraggign: false,
-      pannelLWidth: '50%',
-      pannelLRight: '50%',
-      // Codemirror
-      cmFocused: null,
-      //cmSetup: null,
-      //cmDraw: null,
       blockData: '',
       cmAux: null,
       // cmClient:         null,
@@ -68,8 +57,6 @@ let Lp5 = {
       },
       cmSelect: '',
       // DOM en index.html
-      //codeSetup: document.getElementById('lp5-setup'),
-      //codeDraw: document.getElementById('lp5-draw'),
       codeAux: document.getElementById('lp5-aux'),
       consoleView: document.getElementById('lp5-console'),
       // Almacena los codigos a evaluar
@@ -82,6 +69,32 @@ let Lp5 = {
       renderCodeSetup: '',
       validCodeAux: '',
       renderCodeAux: '',
+      renderCodeEvent: {
+            mouseMoved: '',
+            mouseReleased: '',
+            mousePressed: '',
+            mouseClicked: '',
+            doubleClicked: '',
+            mouseDragged: '',
+            mouseWheel: '',
+            keyPressed: '',
+            keyReleased: '',
+            keyReleased: '',
+            keyTyped: ''
+      },
+      validCodeEvent: {
+            mouseMoved: '',
+            mouseReleased: '',
+            mousePressed: '',
+            mouseClicked: '',
+            doubleClicked: '',
+            mouseDragged: '',
+            mouseWheel: '',
+            keyPressed: '',
+            keyReleased: '',
+            keyReleased: '',
+            keyTyped: ''
+      },
       isFunction: false,
       //setupTxt: '',
       //drawTxt: '',
@@ -95,9 +108,6 @@ let Lp5 = {
       // p5 externas
       setup: null,
       // Mostrar ventanas
-      //showSetupWin: true,
-      //showDrawWin: true,
-      //showAuxWin: true,
       showWin: true,
       // Imagenes
       // imagesBank: new Array(),
@@ -147,157 +157,157 @@ let Lp5 = {
       // Palabras reservadas / reserved words
       prog: {
             setup: [
-                  // 'draw',
-                  // 'setup',
-                  // 'preload',
-                  // 'canvas',
-                  // 'createCanvas',
-                  // 'remove',
-                  // 'mouseClicked',
-                  // 'mouseMoved',
-                  // 'mouseDragged',
-                  // 'mousePressed',
-                  // 'mouseReleased',
-                  // 'doubleClicked',
-                  // 'keyReleased',
-                  // 'keyPressed',
-                  // 'mouseWheel',
-                  // '___audio',
-                  // '___fft',
-                  // '___webcam',
-                  // 'ZOOM_SCALE'
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'remove',
+                  'mouseClicked',
+                  'mouseMoved',
+                  'mouseDragged',
+                  'mousePressed',
+                  'mouseReleased',
+                  'doubleClicked',
+                  'keyReleased',
+                  'keyPressed',
+                  'mouseWheel',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             setup3d: [
-                  // 'draw',
-                  // 'setup',
-                  // 'preload',
-                  // 'canvas',
-                  // 'createCanvas',
-                  // 'remove',
-                  // 'text',
-                  // 'textAlign',
-                  // 'textLeading',
-                  // 'textSize',
-                  // 'textStyle',
-                  // 'textWidth',
-                  // 'textAscent',
-                  // 'textDescent',
-                  // 'textFont',
-                  // 'mouseClicked',
-                  // 'mouseMoved',
-                  // 'mouseDragged',
-                  // 'mousePressed',
-                  // 'mouseReleased',
-                  // 'doubleClicked',
-                  // 'keyReleased',
-                  // 'keyPressed',
-                  // 'mouseWheel',
-                  // '___audio',
-                  // '___fft',
-                  // '___webcam',
-                  // 'ZOOM_SCALE'
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'remove',
+                  'text',
+                  'textAlign',
+                  'textLeading',
+                  'textSize',
+                  'textStyle',
+                  'textWidth',
+                  'textAscent',
+                  'textDescent',
+                  'textFont',
+                  'mouseClicked',
+                  'mouseMoved',
+                  'mouseDragged',
+                  'mousePressed',
+                  'mouseReleased',
+                  'doubleClicked',
+                  'keyReleased',
+                  'keyPressed',
+                  'mouseWheel',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             draw: [
-                  // 'draw',
-                  // 'size',
-                  // 'setup',
-                  // 'preload',
-                  // 'canvas',
-                  // 'createCanvas',
-                  // 'use2d',
-                  // 'use3d',
-                  // 'useCam',
-                  // 'useAudio',
-                  // 'remove',
-                  // 'mouseClicked',
-                  // 'mouseMoved',
-                  // 'mouseDragged',
-                  // 'mousePressed',
-                  // 'mouseReleased',
-                  // 'keyReleased',
-                  // 'keyPressed',
-                  // 'doubleClicked',
-                  // 'mouseWheel',
-                  // '___audio',
-                  // '___fft',
-                  // '___webcam',
-                  // 'ZOOM_SCALE'
+                  'draw',
+                  'size',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'use2d',
+                  'use3d',
+                  'useCam',
+                  'useAudio',
+                  'remove',
+                  'mouseClicked',
+                  'mouseMoved',
+                  'mouseDragged',
+                  'mousePressed',
+                  'mouseReleased',
+                  'keyReleased',
+                  'keyPressed',
+                  'doubleClicked',
+                  'mouseWheel',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             draw3d: [
-                  // 'draw',
-                  // 'size',
-                  // 'setup',
-                  // 'preload',
-                  // 'canvas',
-                  // 'createCanvas',
-                  // 'use2d',
-                  // 'use3d',
-                  // 'text',
-                  // 'textAlign',
-                  // 'textLeading',
-                  // 'textSize',
-                  // 'textStyle',
-                  // 'textWidth',
-                  // 'textAscent',
-                  // 'textDescent',
-                  // 'textFont',
-                  // 'useCam',
-                  // 'useAudio',
-                  // 'remove',
-                  // 'mouseClicked',
-                  // 'mouseMoved',
-                  // 'mouseDragged',
-                  // 'mousePressed',
-                  // 'mouseReleased',
-                  // 'keyReleased',
-                  // 'keyPressed',
-                  // 'doubleClicked',
-                  // 'mouseWheel',
-                  // '___audio',
-                  // '___fft',
-                  // '___webcam',
-                  // 'ZOOM_SCALE'
+                  'draw',
+                  'size',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'use2d',
+                  'use3d',
+                  'text',
+                  'textAlign',
+                  'textLeading',
+                  'textSize',
+                  'textStyle',
+                  'textWidth',
+                  'textAscent',
+                  'textDescent',
+                  'textFont',
+                  'useCam',
+                  'useAudio',
+                  'remove',
+                  'mouseClicked',
+                  'mouseMoved',
+                  'mouseDragged',
+                  'mousePressed',
+                  'mouseReleased',
+                  'keyReleased',
+                  'keyPressed',
+                  'doubleClicked',
+                  'mouseWheel',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             aux: [
-                  // 'draw',
-                  // 'setup',
-                  // 'preload',
-                  // 'canvas',
-                  // 'createCanvas',
-                  // 'use2d',
-                  // 'use3d',
-                  // 'useCam',
-                  // 'useAudio',
-                  // 'remove',
-                  // '___audio',
-                  // '___fft',
-                  // '___webcam',
-                  // 'ZOOM_SCALE'
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'use2d',
+                  'use3d',
+                  'useCam',
+                  'useAudio',
+                  'remove',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ],
             aux3d: [
-                  // 'draw',
-                  // 'setup',
-                  // 'preload',
-                  // 'canvas',
-                  // 'createCanvas',
-                  // 'use2d',
-                  // 'use3d',
-                  // 'text',
-                  // 'textAlign',
-                  // 'textLeading',
-                  // 'textSize',
-                  // 'textStyle',
-                  // 'textWidth',
-                  // 'textAscent',
-                  // 'textDescent',
-                  // 'textFont',
-                  // 'useCam',
-                  // 'useAudio',
-                  // 'remove',
-                  // '___audio',
-                  // '___fft',
-                  // '___webcam',
-                  // 'ZOOM_SCALE'
+                  'draw',
+                  'setup',
+                  'preload',
+                  'canvas',
+                  'createCanvas',
+                  'use2d',
+                  'use3d',
+                  'text',
+                  'textAlign',
+                  'textLeading',
+                  'textSize',
+                  'textStyle',
+                  'textWidth',
+                  'textAscent',
+                  'textDescent',
+                  'textFont',
+                  'useCam',
+                  'useAudio',
+                  'remove',
+                  '___audio',
+                  '___fft',
+                  '___webcam',
+                  'ZOOM_SCALE'
             ]
       },
       extendsFile: function (file) {
@@ -309,7 +319,7 @@ let Lp5 = {
       },
       doGlobals: function (_code) {
             // Cambia a globales las variables fuera de las funciones
-            return _code.replace(/\$[\t ]+(?!\{)(?! )/g, 'lp.')
+            return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
       },
       getCodeBlock: function (cm, cp) {
             let lfrom = cp.line
@@ -321,9 +331,12 @@ let Lp5 = {
             let out = ''
             let func = ''
             let code = ''
+            let brackets = false
             // Encuentra la funcion setup o draw
+            evtsln:
             while (lfrom >= 0) {
                   // Setup
+                  lto = lfrom
                   if (cm.getLine(lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
                         func = 'setup'
                         break;
@@ -333,55 +346,90 @@ let Lp5 = {
                         func = 'draw'
                         break;
                   }
+                  // Funcion evento
+                  for (var key in this.renderCodeEvent) {
+                        let reg = new RegExp("function[\\t ]+" + key + "[\\t ]*\\([\\t ]*\\)", "g")
+                        if (cm.getLine(lfrom).match(reg)) {
+                              func = key
+                              break evtsln;
+                        }
+                  }
                   // Funcion generica
-                  if (cm.getLine(lfrom).match(/function[\t ]+(.+)[\t ]*\([\t ]*\)/g)) {
+                  if (cm.getLine(lfrom).match(/\$[a-zA-Z]+[0-9_]*[\t ]+\=[\t ]*function[\t ]*\([\t ]*\)/g)) {
                         func = 'any'
                         break;
                   }
                   lfrom--
-                  lto = lfrom
             }
             if (func == 'setup' || func == 'draw') {
                   while (lto < cm.lineCount()) {
                         if (cm.getLine(lto).match(/\{/g)) {
+                              brackets = true
                               opens++;
                         }
-                        if (opens > 0 && cm.getLine(lto).match(/\}/g)) {
+                        if (cm.getLine(lto).match(/\}/g) && opens > 0) {
                               opens--;
                         }
-                        if (opens == 0) {
+                        if (brackets && opens == 0) {
                               break;
                         }
                         lto++
                   }
-                  code = cm.getRange({ line: lfrom - 1, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                  code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
             }
             if (func == 'any') {
+                  console.log(lfrom,lto)
                   while (lto < cm.lineCount()) {
                         if (cm.getLine(lto).match(/\{/g)) {
+                              brackets = true
                               opens++;
                         }
                         if (opens > 0 && cm.getLine(lto).match(/\}/g)) {
                               opens--;
                         }
-                        if (opens == 0) {
+                        if (brackets && opens == 0) {
                               break;
                         }
                         lto++
                   }
                   //Funcion completa
-                  code = cm.getRange({ line: lfrom - 1, ch: 0 }, { line: lto + 1, ch: 0 })
+                  code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+            }
+            for (var key in this.renderCodeEvent) {
+                  if (func == key) {
+                        while (lto < cm.lineCount()) {
+                              if (cm.getLine(lto).match(/\{/g)) {
+                                    brackets = true
+                                    opens++;
+                              }
+                              if (cm.getLine(lto).match(/\}/g) && opens > 0) {
+                                    opens--;
+                              }
+                              if (brackets && opens == 0) {
+                                    break;
+                              }
+                              lto++
+                        }
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                        console.log(code)
+                        break;
+                  }
             }
             // Verifica que el cursor este entre llaves
-            if (linepos >= lfrom && linepos <= lto) {
+            if (func != '' && linepos >= lfrom && linepos <= lto) {
                   out = { lf: lfrom - 1, lt: lto + 1, code: code.trim(), func: func, isFunc: true }
             } else {
-                  while (lfromc >= 0 && cm.getLine(lfromc) != "") { lfromc-- }
-                  while (ltoc < cm.lineCount() && cm.getLine(ltoc) != "") { ltoc++ }
-                  code = cm.getRange({ line: lfromc, ch: 0 }, { line: ltoc, ch: 0 })
+                  while (lfromc >= 0 && cm.getLine(lfromc) != "") {
+                        if (cm.getLine(lfromc).match(/\}/g)) break;
+                        lfromc--
+                  }
+                  while (ltoc < cm.lineCount() && cm.getLine(ltoc) != "") {
+                        if (cm.getLine(ltoc).match(/function/g)) break;
+                        ltoc++
+                  }
+                  code = cm.getRange({ line: lfromc+1, ch: 0 }, { line: ltoc, ch: 0 })
                   out = { lf: lfromc, lt: ltoc, code: code.trim(), func: '', isFunc: false }
             }
-            console.log(code)
             return out;
       },
       evalFx(_el) {
@@ -560,6 +608,50 @@ let Lp5 = {
             //}
             this.tryEvalSetup()
       },
+
+      tryEvalEvent: function (_evt) {
+            try {
+                  let valid = true;
+                  let word = '';
+                  let render = this.main.globalSettings().renderer
+                  let wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
+                  for (let i = 0; i < wordList.length; i++) {
+                        word = wordList[i];
+                        if (_code.includes(word)) {
+                              let r = new RegExp(this.checkProgWord(word))
+                              if (!this._code.match(r)) {
+                                    valid = false;
+                                    if (render == 'webgl') {
+                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words_render
+                                    } else {
+                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words
+                                    }
+                              }
+                        }
+                  }
+                  if (valid) {
+                        this.validCodeEvent[_evt] = this.renderCodeEvent[_evt];
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
+                        this.el('lp5-console-out').innerHTML = ''
+                  } else {
+                        this.el('lp5-aux').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  this.el('lp5-console-out').innerHTML = 'setup: ' + e
+                  this.el('lp5-aux').parentElement.classList.add('error');
+            }
+      },
+      evalEvent: function (_evt) {
+            // if (this.cmAux.somethingSelected()) {
+            //       this.renderCodeSetup = "'use strict';" + this.cmAux.getSelection();
+            //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmSetup))
+            // } else {
+            //this.renderCodeSetup = "'use strict';" + this.cmAux.getValue();
+            //this.evalFx('lp5-aux')
+            //}
+            this.tryEvalEvent(_evt)
+      },
       // Config
       toggleModal: function (el) {
             if (this.el(el).style.display == 'none') {
@@ -567,69 +659,11 @@ let Lp5 = {
             } else {
                   this.el(el).style.display = 'none'
             }
-      },
-      // Panels
-      showAllPannels: function () {
-            this.el('lp5-aux-pannel').style.display = 'inline';
-            this.showAuxWin = true;
-            this.cmAux.refresh()
-            this.el('lp5-setup-pannel').style.display = 'inline';
-            this.showSetupWin = true;
-            this.cmSetup.refresh()
-            this.el('lp5-draw-pannel').style.display = 'inline';
-            this.showDrawWin = true;
-            this.cmDraw.refresh()
-      },
-      hideAllPannels: function () {
-            this.el('lp5-aux-pannel').style.display = 'none';
-            this.showAuxWin = false;
-            this.el('lp5-setup-pannel').style.display = 'none';
-            this.showSetupWin = false;
-            this.el('lp5-draw-pannel').style.display = 'none';
-            this.showDrawWin = false;
-      },
-      showPannel: function (tab) {
-            let els = document.querySelectorAll(".tabs>span")
-            for (let i = 0; i < els.length; i++) {
-                  els[i].classList.remove('tab-selected')
-            }
-            if (tab == 'aux') {
-                  this.hideAllPannels()
-                  this.el('lp5-aux-pannel').style.display = 'inline';
-                  this.el('lp5-tab-aux').classList.add('tab-selected')
-                  this.showAuxWin = true;
-                  this.cmAux.refresh()
-            }
-            if (tab == 'setup') {
-                  this.hideAllPannels()
-                  this.el('lp5-setup-pannel').style.display = 'inline';
-                  this.el('lp5-tab-setup').classList.add('tab-selected')
-                  this.showSetupWin = true;
-                  this.cmSetup.refresh()
-            }
-            if (tab == 'draw') {
-                  this.hideAllPannels()
-                  this.el('lp5-draw-pannel').style.display = 'inline';
-                  this.el('lp5-tab-draw').classList.add('tab-selected')
-                  this.showDrawWin = true;
-                  this.cmDraw.refresh()
-            }
-      },
+      },      
       pannelFocus: function (pannel, cur = { line: 0, ch: 0 }) {
             if (pannel == 'aux' && this.cmAux) {
                   this.cmAux.focus()
-                  this.cmFocused = 'aux'
                   this.cmAux.setCursor(cur)
-            }
-            if (pannel == 'setup' && this.cmSetup) {
-                  this.cmSetup.focus()
-                  this.cmFocused = 'setup'
-                  this.cmSetup.setCursor(cur)
-            }
-            if (pannel == 'draw' && this.cmDraw) {
-                  this.cmDraw.focus()
-                  this.cmFocused = 'draw'
-                  this.cmDraw.setCursor(cur)
             }
       },
       // Modo: CLIENTE-SERVIDOR

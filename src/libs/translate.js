@@ -10,7 +10,6 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVER",
                         "CLIENT": "CLIENT",
-                        "BLOCK NAMES": "BLOCK NAMES",
                         "MODE (net)": "MODE (net)",
                         "NAME (net)": "NAME (net)",
                         "Saved!": "Saved!",
@@ -20,10 +19,6 @@ Lp5locale.init({
                         'No more fun?': 'No more fun?',
                         'Snippet loaded -> ': 'Snippet loaded -> ',
                         'Error on load -> ': 'Error on load -> ',
-                        "PANNELS": "PANNELS",
-                        "VERTICAL": "VERTICAL",
-                        "HORIZONTAL": "HORIZONTAL",
-                        "TABS": "TABS",
                         "LINE NUMBERS": "LINE NUMBERS"
                   }
             },
@@ -32,7 +27,6 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVIDOR",
                         "CLIENT": "CLIENTE",
-                        "BLOCK NAMES": "NOMBRE DE BLOQUES",
                         "MODE (net)": "MODO (net)",
                         "NAME (net)": "NOMBRE (net)",
                         "Saved!": "Guardado!",
@@ -42,10 +36,6 @@ Lp5locale.init({
                         'No more fun?': 'Se terminó la diversión?',
                         'Snippet loaded -> ': 'Snippet cargado -> ',
                         'Error on load -> ': 'Error al cargar -> ',
-                        "PANNELS": "PANELES",
-                        "VERTICAL": "VERTICAL",
-                        "HORIZONTAL": "HORIZONTAL",
-                        "TABS": "TABS",
                         "LINE NUMBERS": "NUMEROS DE LINEA"
                   }
             }
@@ -60,11 +50,6 @@ Lp5locale.init({
       document.querySelector('.en-client').innerHTML = Lp5locale.t('CLIENT');
       document.querySelector('.en-name').innerHTML = Lp5locale.t('NAME (net)');
       document.querySelector('.en-lang').innerHTML = Lp5locale.t('LANG');
-      document.querySelector('.en-title').innerHTML = Lp5locale.t('BLOCK NAMES');
-      document.querySelector('.en-pannels').innerHTML = Lp5locale.t('PANNELS');
-      document.querySelector('.en-pannels-vert').innerHTML = Lp5locale.t('VERTICAL');
-      document.querySelector('.en-pannels-horiz').innerHTML = Lp5locale.t('HORIZONTAL');
-      document.querySelector('.en-pannels-tabs').innerHTML = Lp5locale.t('TABS');
       document.querySelector('.en-linenumbers').innerHTML = Lp5locale.t('LINE NUMBERS');
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
