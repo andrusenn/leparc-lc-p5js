@@ -55,7 +55,7 @@ function createWindow() {
       global.settings = {
             renderer: 'p2d'
       }
-      //mainWindow.webContents.openDevTools()
+      // mainWindow.webContents.openDevTools()
       // mainWindow.webContents.openDevTools({ mode: 'detach' })
 
       mainWindow.on('closed', function () {
