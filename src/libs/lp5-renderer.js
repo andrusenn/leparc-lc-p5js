@@ -70,6 +70,7 @@ window.addEventListener('load', function () {
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
             matchBrackets: true,
+            autoCloseBrackets: true,
             lineNumbers: (localStorage.linenumbers == 1) ? true : false
       });
       Lp5.cmAux.on('change', function (cm, ob) {
@@ -206,7 +207,6 @@ function draw() {
       } catch (e) {
             //
       }
-      // Live --------------------------------
       if (!Lp5.drawOnFly) {
             try {
                   new Function(Lp5.validCodeDraw)()
@@ -221,120 +221,87 @@ function draw() {
                   Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
             }
             Lp5.evalDraw(true)
-            // try {
-            //       let valid = true;
-            //       let word = '';
-            //       let render = Lp5.main.globalSettings().renderer
-            //       let wordList = (render == 'webgl') ? Lp5.prog.draw3d : Lp5.prog.draw
-            //       for (let i = 0; i < wordList.length; i++) {
-            //             word = wordList[i]
-            //             if (Lp5.renderCodeDraw.includes(word)) {
-            //                   let r = new RegExp(Lp5.checkProgWord(word))
-            //                   if (!Lp5.renderCodeDraw.match(r)) {
-            //                         valid = false;
-            //                         if (render == 'webgl') {
-            //                               Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + ' ' + lang_msg.priv_words_render
-            //                         } else {
-            //                               Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + ' ' + lang_msg.priv_words
-            //                         }
-            //                   }
-            //             }
-            //       }
-            //       // Try eval
-            //       // Verificar que se ejecuta correctamente
-            //       try {
-            //             new Function(Lp5.renderCodeDraw)()
-            //       } catch (e) {
-            //             new Function(Lp5.validCodeDraw)()
-            //             valid = false
-            //             Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
-            //       }
-            //       if (valid) {
-            //             Lp5.validCodeDraw = Lp5.renderCodeDraw;
-            //             Lp5.el('lp5-aux').parentElement.classList.remove('error');
-            //             Lp5.el('lp5-aux').parentElement.classList.remove('change');
-            //       } else {
-            //             Lp5.el('lp5-aux').parentElement.classList.add('error');
-            //       }
-            // } catch (e) {
-            //       Lp5.el('lp5-aux').parentElement.classList.add('error');
-            //       Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
-            //       new Function(Lp5.validCodeDraw)()
-            // }
       }
 }
-
-Lp5.el('main').addEventListener('mousemove',function(){
-      // Live --------------------------------
+function mouseMoved() {
       try {
             new Function(Lp5.validCodeEvent.mouseMoved)();
       } catch (e) {
             console_msg('mouseMoved: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-})
-Lp5.el('main').addEventListener('mousedown',function(){
-      // Live --------------------------------
+}
+function mousePressed() {
       try {
             new Function(Lp5.validCodeEvent.mousePressed)();
       } catch (e) {
             console_msg('mousePressed: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-})
-Lp5.el('main').addEventListener('mouseup',function(){
-      // Live --------------------------------
+}
+function mouseReleased() {
       try {
             new Function(Lp5.validCodeEvent.mouseReleased)();
       } catch (e) {
             console_msg('mouseReleased: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-})
-Lp5.el('main').addEventListener('click',function(){
-      // Live --------------------------------
+}
+function mouseClicked() {
       try {
             new Function(Lp5.validCodeEvent.mouseClicked)();
       } catch (e) {
             console_msg('mouseClicked: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-})
-Lp5.el('main').addEventListener('dblclick',function(){
-      // Live --------------------------------
+}
+function doubleClicked() {
       try {
             new Function(Lp5.validCodeEvent.doubleClicked)();
       } catch (e) {
             console_msg('doubleClicked: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-})
-Lp5.el('main').addEventListener('wheel',function(){
-      // Live --------------------------------
+}
+function mouseWheel() {
       try {
             new Function(Lp5.validCodeEvent.mouseWheel)();
       } catch (e) {
             console_msg('mouseWheel: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-})
-
-Lp5.el('main').addEventListener('keydown',function(){
-      // Live --------------------------------
+}
+function keyTyped() {
+      try {
+            new Function(Lp5.validCodeEvent.keyTyped)();
+      } catch (e) {
+            console_msg('keyTyped: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+// key pressed and key released don work!?
+// Change with eventListener
+Lp5.el('main').addEventListener('keydown', function () {
+// function keyPressed() {
       try {
             new Function(Lp5.validCodeEvent.keyPressed)();
       } catch (e) {
-            console_msg('keyReleased: ' + e.stack)
+            console_msg('keyPressed: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
+      return false
+// }
 })
-Lp5.el('main').addEventListener('keyup',function(){
+Lp5.el('main').addEventListener('keyup', function () {
+      //function keyReleased() {
       try {
             new Function(Lp5.validCodeEvent.keyReleased)();
       } catch (e) {
             console_msg('keyReleased: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
+      return false
+      //}
 })
 function windowResized() {
       try {
