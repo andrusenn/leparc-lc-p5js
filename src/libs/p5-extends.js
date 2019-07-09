@@ -236,6 +236,72 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
             }
       }
 }
+
+/**
+ * beginRot3(vel) y endRot() se utilizan
+ * juntas
+ * 
+ * @method beginRot3
+ * 1 parametro
+ * @param {Number} velr       velocidad rotacion en x,y,z
+ * 3 parametros
+ * @param {Number} velx       velocidad rotacion
+ * @param {Number} vely       velocidad rotacion
+ * @param {Number} velz       velocidad rotacion
+ * 4 parametros
+ * @param {Number} velr       velocidad rotacion en x,y,z
+ * @param {Number} centrox    punto ancla de referencia x
+ * @param {Number} centroy    punto ancla de referencia y
+ * @param {Number} centroz    punto ancla de referencia z
+ * 6 parametros
+ * @param {Number} velx       velocidad rotacion
+ * @param {Number} vely       velocidad rotacion
+ * @param {Number} velz       velocidad rotacion
+ * @param {Number} centrox    punto ancla de referencia x
+ * @param {Number} centroy    punto ancla de referencia y
+ * @param {Number} centroz    punto ancla de referencia z
+ */
+if (!p5.prototype.hasOwnProperty('beginRot3')) {
+      p5.prototype.beginRot3 = function () {
+            let arg = arguments;
+            if (arg.length == 0) {
+                  push();
+                  //translate(width / 2, height / 2);
+                  rotateX(freq(0.01))
+                  rotateY(freq(0.01))
+                  rotateZ(freq(0.01))
+                  //translate(-width / 2, -height / 2);
+            }
+            if (arg.length == 1) {
+                  push();
+                  rotateX(freq(arg[0]))
+                  rotateY(freq(arg[0]))
+                  rotateZ(freq(arg[0]))
+            }
+            if (arg.length == 3) {
+                  push();
+                  rotateX(freq(arg[0]))
+                  rotateY(freq(arg[1]))
+                  rotateZ(freq(arg[2]))
+            }
+            if (arg.length == 4) {
+                  push();
+                  translate(arg[1], arg[2], arg[3]);
+                  rotateX(freq(arg[0]))
+                  rotateY(freq(arg[0]))
+                  rotateZ(freq(arg[0]))
+                  translate(-arg[1], -arg[2], -arg[3]);
+            }
+            if (arg.length == 6) {
+                  push();
+                  translate(arg[3], arg[4], arg[5]);
+                  rotateX(freq(arg[0]))
+                  rotateY(freq(arg[1]))
+                  rotateZ(freq(arg[2]))
+                  translate(-arg[3], -arg[4], -arg[5]);
+            }
+      }
+}
 /**
  * beginRot(vel) y endRot() se utilizan
  * juntas
