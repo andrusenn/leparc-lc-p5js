@@ -1,5 +1,29 @@
 # REVISIONES / REVISIONS
 
+## Version 0.2.0
+
+> [es]
+
+Cambio en el manejo de los bloques. Todos los bloque están ahora en un solo editor. La evaluación es selectiva dependiendo del contexto.
+  
+> [en]
+
+Change in the handling of the blocks. All the blocks are now in a single editor. The evaluation is selective depending on the context.
+
+## Version 0.1.2
+
+> [es]
+
+- metodo: size(width,height)
+- metodos: metodos basados en tiempo tpulse() y trange()
+- opcion interfaz de pestañas (tabs)
+  
+> [en]
+
+- method: size(width,height)
+- methods: time based methods tpulse() and trange
+- Tab interface option
+  
 ## Version 0.1.1
 
 > [es]
