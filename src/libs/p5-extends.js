@@ -211,27 +211,27 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
             if (arg.length == 1) {
                   push();
                   translate(width / 2, height / 2);
-                  rotate(arg[0])
+                  rotate(freq(arg[0]))
                   translate(-width / 2, -height / 2);
             }
             if (arg.length == 2) {
                   push();
                   translate(width / 2, height / 2);
                   scale(arg[1])
-                  rotate(arg[0])
+                  rotate(freq(arg[0]))
                   translate(-width / 2, -height / 2);
             }
             if (arg.length == 3) {
                   push();
                   translate(arg[1], arg[2]);
-                  rotate(arg[0])
+                  rotate(freq(arg[0]))
                   translate(-arg[1], -arg[2]);
             }
             if (arg.length == 4) {
                   push();
                   translate(arg[1], arg[2]);
                   scale(arg[3])
-                  rotate(arg[0])
+                  rotate(freq(arg[0]))
                   translate(-arg[1], -arg[2]);
             }
       }
