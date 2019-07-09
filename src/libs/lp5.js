@@ -71,7 +71,6 @@ let Lp5 = {
             mouseWheel: '',
             keyPressed: '',
             keyReleased: '',
-            keyReleased: '',
             keyTyped: ''
       },
       validCodeEvent: {
@@ -83,7 +82,6 @@ let Lp5 = {
             mouseDragged: '',
             mouseWheel: '',
             keyPressed: '',
-            keyReleased: '',
             keyReleased: '',
             keyTyped: ''
       },
@@ -367,7 +365,6 @@ let Lp5 = {
                   code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
             }
             if (func == 'any') {
-                  console.log(lfrom,lto)
                   while (lto < cm.lineCount()) {
                         if (cm.getLine(lto).match(/\{/g)) {
                               brackets = true
@@ -400,7 +397,6 @@ let Lp5 = {
                               lto++
                         }
                         code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
-                        console.log(code)
                         break;
                   }
             }
@@ -416,7 +412,7 @@ let Lp5 = {
                         if (cm.getLine(ltoc).match(/function/g)) break;
                         ltoc++
                   }
-                  code = cm.getRange({ line: lfromc+1, ch: 0 }, { line: ltoc, ch: 0 })
+                  code = cm.getRange({ line: lfromc + 1, ch: 0 }, { line: ltoc, ch: 0 })
                   out = { lf: lfromc, lt: ltoc, code: code.trim(), func: '', isFunc: false }
             }
             return out;
@@ -462,7 +458,7 @@ let Lp5 = {
             keyPressed = null
             mouseWheel = null
       },
-      evalDraw: function () {
+      evalDraw: function (onfly = false) {
             try {
                   let valid = true;
                   let word = '';
@@ -488,21 +484,24 @@ let Lp5 = {
                   try {
                         new Function(this.renderCodeDraw)()
                   } catch (e) {
+                        if (onfly) new Function(Lp5.validCodeDraw)()
                         valid = false
                         this.el('lp5-console-out').innerHTML = 'draw: ' + e
                         this.el('lp5-aux').parentElement.classList.remove('error');
                   }
                   if (valid) {
                         this.validCodeDraw = this.renderCodeDraw;
+                        if (onfly) new Function(Lp5.validCodeDraw)()
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
-                        //this.main.saveCode('draw', this.validCodeDraw)
                   } else {
                         this.el('lp5-aux').parentElement.classList.add('error');
+                        if (onfly) new Function(Lp5.validCodeDraw)()
                   }
             } catch (e) {
                   this.el('lp5-aux').parentElement.classList.add('error');
                   this.el('lp5-console-out').innerHTML = '| draw: ' + e
+                  if (onfly) new Function(Lp5.validCodeDraw)()
             }
       },
       tryEvalAux: function () {
@@ -526,7 +525,6 @@ let Lp5 = {
                         }
                   }
                   if (valid) {
-                        this.clearEvts()
                         this.validCodeAux = "" + this.renderCodeAux;
                         new Function(this.validCodeAux)(global);
                         this.el('lp5-aux').parentElement.classList.remove('error');
@@ -605,14 +603,14 @@ let Lp5 = {
                   let wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
                   for (let i = 0; i < wordList.length; i++) {
                         word = wordList[i];
-                        if (_code.includes(word)) {
+                        if (this.renderCodeEvent[_evt].includes(word)) {
                               let r = new RegExp(this.checkProgWord(word))
-                              if (!this._code.match(r)) {
+                              if (!this.renderCodeEvent[_evt].match(r)) {
                                     valid = false;
                                     if (render == 'webgl') {
-                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words_render
+                                          this.el('lp5-console-out').innerHTML = '| ' + _evt + ': ' + word + ' ' + lang_msg.priv_words_render
                                     } else {
-                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words
+                                          this.el('lp5-console-out').innerHTML = '| ' + _evt + ': ' + word + ' ' + lang_msg.priv_words
                                     }
                               }
                         }
@@ -647,7 +645,7 @@ let Lp5 = {
             } else {
                   this.el(el).style.display = 'none'
             }
-      },      
+      },
       pannelFocus: function (pannel, cur = { line: 0, ch: 0 }) {
             if (pannel == 'aux' && this.cmAux) {
                   this.cmAux.focus()
