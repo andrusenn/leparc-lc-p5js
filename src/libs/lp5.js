@@ -448,15 +448,15 @@ let Lp5 = {
       },
       clearEvts: function () {
             // p5js events prop
-            mouseClicked = null
-            mouseMoved = null
-            mouseDragged = null
-            mousePressed = null
-            mouseReleased = null
-            doubleClicked = null
-            keyReleased = null
-            keyPressed = null
-            mouseWheel = null
+            // mouseClicked = null
+            // mouseMoved = null
+            // mouseDragged = null
+            // mousePressed = null
+            // mouseReleased = null
+            // doubleClicked = null
+            // keyReleased = null
+            // keyPressed = null
+            // mouseWheel = null
       },
       evalDraw: function (onfly = false) {
             try {
@@ -600,7 +600,7 @@ let Lp5 = {
                   let valid = true;
                   let word = '';
                   let render = this.main.globalSettings().renderer
-                  let wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
+                  let wordList = (render == 'webgl') ? this.prog.aux3d : this.prog.aux
                   for (let i = 0; i < wordList.length; i++) {
                         word = wordList[i];
                         if (this.renderCodeEvent[_evt].includes(word)) {
