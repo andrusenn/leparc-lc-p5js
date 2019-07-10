@@ -621,6 +621,10 @@ if (!p5.prototype.hasOwnProperty('libsPath')) {
  * 
  * @method loadLib
  * @param {String} name      nombre del directorio
+ * 
+ * example:
+ * 
+ * $milib = loadLib("milib.js")
  */
 if (!p5.prototype.hasOwnProperty('loadLib')) {
       p5.prototype.loadLib = function () {
@@ -941,7 +945,7 @@ if (!p5.prototype.hasOwnProperty('tpulse')) {
             if (_t < 10) _t = 10
             if (_g < 20) _g = 20
             if (_of < 0) _of = 0
-            if (Math.floor((millis()+_of) / _t * 2 % _t) % 2 == 0 && Math.floor(millis()+_of) % _t < _g) {
+            if (Math.floor((millis() + _of) / _t * 2 % _t) % 2 == 0 && Math.floor(millis() + _of) % _t < _g) {
                   return true
             } else {
                   return false
@@ -971,11 +975,11 @@ if (!p5.prototype.hasOwnProperty('trange')) {
  * @param fn {Function}
  */
 if (!p5.prototype.hasOwnProperty('frange')) {
-      p5.prototype.frange = function (_n = 10, _t = 1000,fn=null) {
+      p5.prototype.frange = function (_n = 10, _t = 1000, fn = null) {
             if (_t < 10) _t = 10
             if (_n < 1) _n = 1
             let i = Math.floor(millis() / _t * _n % _t) % _n
-            if(typeof fn == 'function'){
+            if (typeof fn == 'function') {
                   fn(i)
             }
       }
@@ -1083,16 +1087,16 @@ if (!p5.prototype.hasOwnProperty('setPixel')) {
  */
 if (!p5.prototype.hasOwnProperty('getCode')) {
       p5.prototype.getCode = function () {
-            let code = Lp5.cmAux.getValue() + "\n" + Lp5.cmSetup.getValue() + "\n" + Lp5.cmDraw.getValue()
+            let code = Lp5.cmAux.getValue()
             return code
       }
 }
 /**
  * Eventos key
  */
-if (!p5.prototype.hasOwnProperty('keyPressed')) {
+/*if (!p5.prototype.hasOwnProperty('keyPressed')) {
       p5.prototype.keyPressed = null
 }
 if (!p5.prototype.hasOwnProperty('keyReleased')) {
       p5.prototype.keyReleased = null
-}
+}*/
