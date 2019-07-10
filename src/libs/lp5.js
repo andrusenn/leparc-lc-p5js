@@ -85,6 +85,10 @@ let Lp5 = {
             keyReleased: '',
             keyTyped: ''
       },
+      renderExtends: [
+            'snip',
+            'loadLib'
+      ],
       auxTxt: '',
       // Escala de los campos a
       scale_st: 1,
@@ -342,9 +346,18 @@ let Lp5 = {
                         }
                   }
                   // Funcion generica
-                  if (cm.getLine(lfrom).match(/\$[a-zA-Z]+[0-9_]*[\t ]+\=[\t ]*function[\t ]*\([\t ]*\)/g)) {
+                  if (cm.getLine(lfrom).match(/\$[a-zA-Z]+[0-9_]*[\t ]*\=[\t ]*(function[\t ]*\([\t ]*[a-zA-Z]+[0-9_]*[\t ]*\)|\([\t ]*[a-zA-Z]+[0-9_]*[\t ]*\)[\t ]*\=\>[\t ]*)/g)) {
                         func = 'any'
                         break;
+                  }
+                  // Funcion load code
+                  for (let i = 0; i < this.renderExtends.length; i++) {
+                        let fname = this.renderExtends[i]
+                        let reg = new RegExp(fname, "g")
+                        if (cm.getLine(lfrom).match(reg)) {
+                              func = fname
+                              break evtsln;
+                        }
                   }
                   lfrom--
             }
@@ -397,6 +410,39 @@ let Lp5 = {
                               lto++
                         }
                         code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                        break;
+                  }
+            }
+            // load code
+            for (let i = 0; i < this.renderExtends.length; i++) {
+                  let fname = this.renderExtends[i]
+                  if (func == fname) {
+                        while (lto < cm.lineCount()) {
+                              if (cm.getLine(lto).match(/\(/g)) {
+                                    brackets = true
+                                    let matchlen = cm.getLine(lto).match(/\(/g).length
+                                    if (matchlen > 1) {
+                                          // mas de una en la misma linea / more than one in the same line
+                                          opens += matchlen
+                                    } else {
+                                          opens++
+                                    }
+                              }
+                              if (cm.getLine(lto).match(/\)/g) && opens > 0) {
+                                    let matchlen = cm.getLine(lto).match(/\)/g).length
+                                    if (matchlen > 1) {
+                                          opens -= matchlen
+                                    } else {
+                                          opens--
+                                    }
+                              }
+                              if (brackets && opens == 0) {
+                                    break;
+                              }
+
+                              lto++
+                        }
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
                         break;
                   }
             }
