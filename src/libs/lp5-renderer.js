@@ -39,7 +39,6 @@ window.addEventListener('load', function () {
       Lp5.clientRq = require('./libs/client.js')
       // IP ------------------------------------
       Lp5.IP = Lp5.main.getIP()
-      Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
       // Tit -----------------------------------
       document.title = 'LeParc - livecoder - P5js - v' + Lp5.version
       // Lang ----------------------------------
@@ -279,30 +278,22 @@ function keyTyped() {
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
 }
-// key pressed and key released don work!?
-// Change with eventListener
-Lp5.el('main').addEventListener('keydown', function () {
-// function keyPressed() {
+function keyPressed() {
       try {
             new Function(Lp5.validCodeEvent.keyPressed)();
       } catch (e) {
             console_msg('keyPressed: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-      return false
-// }
-})
-Lp5.el('main').addEventListener('keyup', function () {
-      //function keyReleased() {
+}
+function keyReleased() {
       try {
             new Function(Lp5.validCodeEvent.keyReleased)();
       } catch (e) {
             console_msg('keyReleased: ' + e.stack)
             Lp5.el('lp5-aux').parentElement.classList.add('error');
       }
-      return false
-      //}
-})
+}
 function windowResized() {
       try {
             resizeCanvas(windowWidth, windowHeight, true);
@@ -323,24 +314,10 @@ function windowResized() {
 // -----------------------------------------------------
 // EVENTS ----------------------------------------------
 
-// -----------------------------------------------------
-// AUXILIAR EVENTS -------------------------------------
-
-// Lp5.codeAux.addEventListener('click', (ev) => {
-//       // Obtiene la ultima posicion del cursor
-//       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
-//       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
-//       //Lp5.panelIndex = 0
-//       Lp5.cmFocused = 'aux';
-//       Lp5.cmAux.focus()
-//       // Obtiene los datos del bloque
-//       Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
-// })
 Lp5.codeAux.addEventListener('mousedown', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
-      //Lp5.panelIndex = 0
       Lp5.cmFocused = 'aux';
       Lp5.cmAux.focus()
       // Obtiene los datos del bloque
@@ -373,6 +350,14 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                               Lp5.evalEvent(key)
                               break;
 
+                        }
+                  }
+                  for (let i = 0; i < Lp5.renderExtends.length; i++) {
+                        let fname = Lp5.renderExtends[i]
+                        if (Lp5.blockData.func == fname) {
+                              Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.evalAux()
+                              break;
                         }
                   }
                   if (Lp5.blockData.func == 'any') {
@@ -649,6 +634,7 @@ Lp5.el('cnf-server').addEventListener('change', (ev) => {
                         })
                         Lp5.client = null
                   }
+                  Lp5.el('lp5-os-ip').innerText = '';
 
                   break;
 
@@ -662,6 +648,7 @@ Lp5.el('cnf-server').addEventListener('change', (ev) => {
                   }
                   Lp5.server = Lp5.serverRq
                   Lp5.server.initServer(Lp5)
+                  Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
 
                   break;
 
@@ -676,6 +663,7 @@ Lp5.el('cnf-server').addEventListener('change', (ev) => {
 
                   Lp5.client = Lp5.clientRq
                   Lp5.client.connect(Lp5)
+                  Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
                   break;
 
       }
