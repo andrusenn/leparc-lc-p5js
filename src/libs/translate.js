@@ -10,6 +10,7 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVER",
                         "CLIENT": "CLIENT",
+                        "PLAY MODE": "PLAY MODE",
                         "MODE (net)": "MODE (net)",
                         "NAME (net)": "NAME (net)",
                         "Saved!": "Saved!",
@@ -27,6 +28,7 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVIDOR",
                         "CLIENT": "CLIENTE",
+                        "PLAY MODE": "PLAY MODE",
                         "MODE (net)": "MODO (net)",
                         "NAME (net)": "NOMBRE (net)",
                         "Saved!": "Guardado!",
@@ -41,10 +43,10 @@ Lp5locale.init({
             }
       }
 }, function (err, t) {
-      if (err) console.log(err)
-      // initialized and ready to go!      
+      if (err) console.log(err)   
       Lp5locale.changeLanguage(localStorage.lang)
       document.querySelector('.en-local').innerHTML = Lp5locale.t('LOCAL');
+      document.querySelector('.en-playmode').innerHTML = Lp5locale.t('PLAY MODE');
       document.querySelector('.en-mode').innerHTML = Lp5locale.t('MODE (net)');
       document.querySelector('.en-server').innerHTML = Lp5locale.t('SERVER');
       document.querySelector('.en-client').innerHTML = Lp5locale.t('CLIENT');
