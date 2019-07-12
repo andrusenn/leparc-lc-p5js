@@ -95,12 +95,12 @@ function initServer(_lp5) {
                         }
                         if (eval.func == 'any') {
                               lp5.renderCodeAux = lp5.doGlobals("'use strict';" + eval.code)
-                              lp5.evalAux()
+                              lp5.tryEval('aux')
                               lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
                         }
                   } else {
                         lp5.renderCodeAux = lp5.doGlobals("'use strict';" + eval.code)
-                        lp5.evalAux()
+                        lp5.tryEval('aux')
                         lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
                   }
                   // Reenvia la actualizacion a clientes
