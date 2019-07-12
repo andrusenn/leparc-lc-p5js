@@ -32,6 +32,7 @@ let Lp5 = {
       client: null,
       clients: 0,
       // Env
+      playmode: 'static',
       fullscreen: false,
       devtools: false,
       fps: 0,
@@ -87,7 +88,18 @@ let Lp5 = {
       },
       renderExtends: [
             'snip',
-            'loadLib'
+            'loadLib',
+            'loadImage',
+            'loadModel',
+            'loadStrings',
+            'loadShader',
+            'loadJSON',
+            'loadStrings',
+            'loadTable',
+            'loadXML',
+            'loadFont',
+            'loadBytes'
+
       ],
       auxTxt: '',
       // Escala de los campos a
@@ -145,6 +157,22 @@ let Lp5 = {
                   elsln[i].style.backgroundColor = "rgba(0,0,0," + this.bg_code_alpha + ")";
             }
       },
+      p5Words: [
+            'mouseClicked',
+            'mouseMoved',
+            'mouseDragged',
+            'mousePressed',
+            'mouseReleased',
+            'keyReleased',
+            'keyPressed',
+            'doubleClicked',
+            'mouseWheel',
+            'windowResized',
+            'setup',
+            'draw',
+            'preload'
+
+      ],
       // Palabras reservadas / reserved words
       prog: {
             setup: [
@@ -152,7 +180,7 @@ let Lp5 = {
                   'setup',
                   'preload',
                   'canvas',
-                  'createCanvas',
+                  // 'createCanvas',
                   'remove',
                   'mouseClicked',
                   'mouseMoved',
@@ -173,7 +201,7 @@ let Lp5 = {
                   'setup',
                   'preload',
                   'canvas',
-                  'createCanvas',
+                  // 'createCanvas',
                   'remove',
                   // 'text',
                   // 'textAlign',
@@ -306,7 +334,7 @@ let Lp5 = {
       },
       checkProgWord: function (_word) {
             // verifica que no se redefinan variables o funciones de p5
-            return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s ]*${_word})`
+            return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
       },
       doGlobals: function (_code) {
             // Cambia a globales las variables fuera de las funciones
@@ -317,12 +345,10 @@ let Lp5 = {
             let lto = cp.line
             let lfromc = cp.line
             let ltoc = cp.line
-            let opens = 0
             let linepos = cp.line
             let out = ''
             let func = ''
             let code = ''
-            let brackets = false
             // Encuentra la funcion setup o draw
             evtsln:
             while (lfrom >= 0) {
@@ -350,11 +376,51 @@ let Lp5 = {
                         func = 'any'
                         break;
                   }
-                  // Funcion load code
+                  // Funcion load
                   for (let i = 0; i < this.renderExtends.length; i++) {
                         let fname = this.renderExtends[i]
                         let reg = new RegExp(fname, "g")
                         if (cm.getLine(lfrom).match(reg)) {
+                              let tmp_lfrom = lfrom
+                              //linepos = lfrom
+                              let opens = 0
+                              let brackets = false
+                              // check if inside other function
+                              while (tmp_lfrom >= 0) {
+                                    if (brackets && opens < 0) {
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                                                func = 'setup'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                                                func = 'draw'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                                          brackets = true
+                                          let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                                          if (len > 1) {
+                                                opens += len;
+                                          } else {
+                                                opens++;
+                                          }
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                                          brackets = true
+                                          let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                                          if (len > 1) {
+                                                opens -= len;
+                                          } else {
+                                                opens--;
+                                          }
+                                    }
+                                    tmp_lfrom--
+                              }
                               func = fname
                               break evtsln;
                         }
@@ -362,6 +428,8 @@ let Lp5 = {
                   lfrom--
             }
             if (func == 'setup' || func == 'draw') {
+                  let opens = 0
+                  let brackets = false
                   while (lto < cm.lineCount()) {
                         if (cm.getLine(lto).match(/\{/g)) {
                               brackets = true
@@ -378,6 +446,8 @@ let Lp5 = {
                   code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
             }
             if (func == 'any') {
+                  let opens = 0
+                  let brackets = false
                   while (lto < cm.lineCount()) {
                         if (cm.getLine(lto).match(/\{/g)) {
                               brackets = true
@@ -396,6 +466,8 @@ let Lp5 = {
             }
             for (var key in this.renderCodeEvent) {
                   if (func == key) {
+                        let opens = 0
+                        let brackets = false
                         while (lto < cm.lineCount()) {
                               if (cm.getLine(lto).match(/\{/g)) {
                                     brackets = true
@@ -417,21 +489,23 @@ let Lp5 = {
             for (let i = 0; i < this.renderExtends.length; i++) {
                   let fname = this.renderExtends[i]
                   if (func == fname) {
+                        let brackets = false
+                        let opens = 0
                         while (lto < cm.lineCount()) {
                               if (cm.getLine(lto).match(/\(/g)) {
                                     brackets = true
-                                    let matchlen = cm.getLine(lto).match(/\(/g).length
-                                    if (matchlen > 1) {
+                                    let len = cm.getLine(lto).match(/\(/g).length
+                                    if (len > 1) {
                                           // mas de una en la misma linea / more than one in the same line
-                                          opens += matchlen
+                                          opens += len
                                     } else {
                                           opens++
                                     }
                               }
                               if (cm.getLine(lto).match(/\)/g) && opens > 0) {
-                                    let matchlen = cm.getLine(lto).match(/\)/g).length
-                                    if (matchlen > 1) {
-                                          opens -= matchlen
+                                    let len = cm.getLine(lto).match(/\)/g).length
+                                    if (len > 1) {
+                                          opens -= len
                                     } else {
                                           opens--
                                     }
@@ -494,15 +568,55 @@ let Lp5 = {
       },
       clearEvts: function () {
             // p5js events prop
-            // mouseClicked = null
-            // mouseMoved = null
-            // mouseDragged = null
-            // mousePressed = null
-            // mouseReleased = null
-            // doubleClicked = null
-            // keyReleased = null
-            // keyPressed = null
-            // mouseWheel = null
+            mouseClicked = null
+            windowResized = null
+            mouseMoved = null
+            mouseDragged = null
+            mousePressed = null
+            mouseReleased = null
+            doubleClicked = null
+            keyReleased = null
+            keyPressed = null
+            mouseWheel = null
+            draw = null
+            setup = null
+            preload = null
+      },
+      startDraw: function () {
+            // FPS
+            this.fps = getFrameRate();
+            // // Revisar
+            if ((this.historyChangesSetup + this.historyChangesDraw + this.historyChangesAux) > 0) {
+                  this.el('lp5-os-status').classList.add('unsave')
+            } else {
+                  this.el('lp5-os-status').classList.remove('unsave')
+            }
+            // Clear -------------------------------
+            //if (Lp5.cmDraw.getValue().trim() == '') clear()
+
+            // reset -------------------------------
+            strokeWeight(1)
+            blendMode(BLEND)
+
+            // funciones en WEBGL ----
+            try {
+                  if (___webgl) {
+                        // en use3d -> default
+                        directionalLight(100, 100, 100, 1, 1, 0)
+                        ambientLight(50)
+                        colorMode(RGB, 255, 255, 255)
+                        ambientMaterial(color(167, 167, 167))
+                  } else {
+                        noTint()
+
+                  }
+                  textLeading(15)
+                  textSize(15)
+                  textAlign(LEFT, TOP)
+                  textStyle(NORMAL)
+            } catch (e) {
+                  //
+            }
       },
       evalDraw: function (onfly = false) {
             try {
@@ -550,97 +664,67 @@ let Lp5 = {
                   if (onfly) new Function(Lp5.validCodeDraw)()
             }
       },
-      tryEvalAux: function () {
+      evalAll: function () {
+            try {
+                  new Function(this.renderCodeAux)()
+                  this.el('lp5-aux').parentElement.classList.remove('error');
+                  this.el('lp5-aux').parentElement.classList.remove('change');
+
+            } catch (e) {
+                  //new Function(this.renderCodeAux)()
+                  this.el('lp5-aux').parentElement.classList.add('error');
+                  this.el('lp5-console-out').innerHTML = e
+                  console.log(e)
+            }
+      },
+      tryEval: function (_block) {
             try {
                   let valid = true;
                   let word = '';
                   let render = this.main.globalSettings().renderer
-                  let wordList = (render == 'webgl') ? this.prog.aux3d : this.prog.aux
+                  let wordList, renderCode
+                  if (_block == 'aux') {
+                        renderCode = this.renderCodeAux
+                        wordList = (render == 'webgl') ? this.prog.aux3d : this.prog.aux
+                  } else {
+                        renderCode = this.renderCodeSetup
+                        wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
+                  }
+
                   for (let i = 0; i < wordList.length; i++) {
                         word = wordList[i]
-                        if (this.renderCodeAux.includes(word)) {
+                        if (renderCode.includes(word)) {
                               let r = new RegExp(this.checkProgWord(word))
-                              if (!this.renderCodeAux.match(r)) {
+                              if (!renderCode.match(r)) {
                                     valid = false;
                                     if (render == 'webgl') {
-                                          this.el('lp5-console-out').innerHTML = '| aux: ' + word + ' ' + lang_msg.priv_words_render
+                                          this.el('lp5-console-out').innerHTML = '| ' + _block + ': ' + word + ' ' + lang_msg.priv_words_render
                                     } else {
-                                          this.el('lp5-console-out').innerHTML = '| aux: ' + word + ' ' + lang_msg.priv_words
+                                          this.el('lp5-console-out').innerHTML = '| ' + _block + ': ' + word + ' ' + lang_msg.priv_words
                                     }
                               }
                         }
                   }
                   if (valid) {
-                        this.validCodeAux = "" + this.renderCodeAux;
-                        new Function(this.validCodeAux)(global);
-                        this.el('lp5-aux').parentElement.classList.remove('error');
-                        this.el('lp5-aux').parentElement.classList.remove('change');
-                        this.el('lp5-console-out').innerHTML = ''
-                  } else {
-                        this.el('lp5-aux').parentElement.classList.add('error');
-                  }
-            } catch (e) {
-                  console.trace('en aux: ' + e);
-                  this.el('lp5-console-out').innerHTML = '| aux: ' + e
-                  this.el('lp5-aux').parentElement.classList.add('error');
-            }
-      },
-      evalAux: function () {
-            // if (this.cmAux.somethingSelected()) {
-            //       this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getSelection());
-            //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmAux))
-            // } else {
-            //this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
-            //this.evalFx('lp5-aux')
-            // }
-            this.tryEvalAux()
-      },
-      tryEvalSetup: function () {
-            try {
-                  let valid = true;
-                  let word = '';
-                  let render = this.main.globalSettings().renderer
-                  let wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
-                  for (let i = 0; i < wordList.length; i++) {
-                        word = wordList[i];
-                        if (this.renderCodeSetup.includes(word)) {
-                              let r = new RegExp(this.checkProgWord(word))
-                              if (!this.renderCodeSetup.match(r)) {
-                                    valid = false;
-                                    if (render == 'webgl') {
-                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words_render
-                                    } else {
-                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words
-                                    }
-                              }
+                        if (_block == 'aux') {
+                              this.validCodeAux = renderCode;
+                              new Function(this.validCodeAux)(global);
                         }
-                  }
-                  if (valid) {
-                        this.validCodeSetup = this.renderCodeSetup;
-                        this.el('lp5-aux').parentElement.classList.remove('error');
-                        this.el('lp5-aux').parentElement.classList.remove('change');
-                        this.el('lp5-console-out').innerHTML = ''
-                        //this.main.saveCode('setup', this.validCodeSetup)
-                        setup();
-                  } else {
-                        this.el('lp5-aux').parentElement.classList.add('error');
-                  }
-            } catch (e) {
-                  this.el('lp5-console-out').innerHTML = 'setup: ' + e
-                  this.el('lp5-aux').parentElement.classList.add('error');
-            }
-      },
-      evalSetup: function () {
-            // if (this.cmAux.somethingSelected()) {
-            //       this.renderCodeSetup = "'use strict';" + this.cmAux.getSelection();
-            //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmSetup))
-            // } else {
-            //this.renderCodeSetup = "'use strict';" + this.cmAux.getValue();
-            //this.evalFx('lp5-aux')
-            //}
-            this.tryEvalSetup()
-      },
+                        if (_block == 'setup') this.validCodeSetup = renderCode;
 
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
+                        this.el('lp5-console-out').innerHTML = ''
+                        if (_block == 'setup') setup();
+                  } else {
+                        this.el('lp5-aux').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  console.trace('en ' + _block + ': ' + e);
+                  this.el('lp5-console-out').innerHTML = '| ' + _block + ': ' + e
+                  this.el('lp5-aux').parentElement.classList.add('error');
+            }
+      },
       tryEvalEvent: function (_evt) {
             try {
                   let valid = true;

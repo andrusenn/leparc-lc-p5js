@@ -14,6 +14,7 @@ if (!global.hasOwnProperty('lp')) {
 }
 // Init
 window.addEventListener('load', function () {
+
       // Extends --------------------------------------------
       try {
             require(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'extends', 'lp-extends.js'))
@@ -27,9 +28,22 @@ window.addEventListener('load', function () {
       }, 2000)
       setInterval(() => {
             // FPS
+            let noloop = '<span class="info">NO LOOP</span>'
             let osfps = Math.round(Lp5.fps);
-            if (!Lp5.looping) osfps = '<span class="info">NO LOOP</span>'
-            Lp5.el('lp5-os-fps').innerHTML = '| fps:' + osfps;
+            //
+            if (Lp5.playmode == 'livecoding') {
+                  if (!Lp5.looping) {
+                        Lp5.el('lp5-os-fps').innerHTML = noloop;
+                  } else {
+                        Lp5.el('lp5-os-fps').innerHTML = '| fps:' + osfps;
+                  }
+            } else {
+                  if (!Lp5.looping) {
+                        Lp5.el('lp5-os-fps').innerHTML = noloop;
+                  } else {
+                        Lp5.el('lp5-os-fps').innerHTML = '';
+                  }
+            }
       }, 500)
       Lp5.toggleModal('cnf')
 
@@ -39,8 +53,24 @@ window.addEventListener('load', function () {
       Lp5.clientRq = require('./libs/client.js')
       // IP ------------------------------------
       Lp5.IP = Lp5.main.getIP()
-      // Tit -----------------------------------
-      document.title = 'LeParc - livecoder - P5js - v' + Lp5.version
+      // Play mode -----------------------------
+      if (!localStorage.playmode) {
+            localStorage.playmode = 'livecoding'
+            Lp5.el('cnf-playmode').options[0].selected = true
+      }
+      if (localStorage.playmode == 'livecoding') {
+            Lp5.el('cnf-playmode').options[0].selected = true
+      }
+      if (localStorage.playmode == 'static') {
+            Lp5.el('cnf-playmode').options[1].selected = true
+            Lp5.el('option-renderonfly').style.display = 'none'
+            Lp5.el('option-server-mode').style.display = 'none'
+            Lp5.el('option-server-sync').style.display = 'none'
+            Lp5.el('option-server-name').style.display = 'none'
+            Lp5.el('option-render').style.display = 'none'
+
+      }
+      Lp5.playmode = localStorage.playmode
       // Lang ----------------------------------
       if (localStorage.lang == 'es') {
             Lp5.el('cnf-lang').options[0].selected = true
@@ -49,7 +79,7 @@ window.addEventListener('load', function () {
             Lp5.el('cnf-lang').options[1].selected = true
       }
       // Num lineas-----------------------------
-      if (localStorage.linenumbers == null) {
+      if (!localStorage.linenumbers) {
             localStorage.linenumbers = 1;
       }
       if (localStorage.linenumbers == 1) {
@@ -80,9 +110,18 @@ window.addEventListener('load', function () {
                   Lp5.el('lp5-aux').parentElement.classList.remove('change');
             }
       })
+      // Tit -----------------------------------
+      let playmode = (Lp5.playmode == 'static') ? ' | STATIC' : ''
+      document.title = 'LeParc - livecoder - P5js - v' + Lp5.version + playmode
 
       // Init cursor
       Lp5.pannelFocus('aux')
+
+      if (Lp5.playmode == 'static') {
+            //Lp5.clearEvts()
+      }
+      // Console clear
+      console.clear()
 });
 // ********************************************************************
 // ********************************************************************
@@ -98,7 +137,6 @@ function preload() {
                   atxt += Lp5.auxTxt[i] + '\n';
             }
             try {
-                  // Lp5.codeAux.innerHTML = Lp5.beautify_js(txt.trim())
                   if (atxt != '') {
                         Lp5.cmAux.setValue(Lp5.beautify_js(atxt.trim()));
                         Lp5.pannelFocus('aux')
@@ -119,107 +157,80 @@ function preload() {
 
             // Checkea si toma muchos recursos y para el loop
             // Check if takes too much resources and stop loop
-            let cfps = setInterval(function () {
-                  if (getFrameRate() < _targetFrameRate * parseFloat(Lp5.configs['mfr'])) {
-                        noLoop()
-                        Lp5.looping = false
-                  }
-            }, 2000)
+            if (Lp5.playmode == 'livecoding') {
+                  let cfps = setInterval(function () {
+                        if (getFrameRate() < _targetFrameRate * parseFloat(Lp5.configs['mfr'])) {
+                              noLoop()
+                              Lp5.looping = false
+                        }
+                  }, 2000)
+            }
       })
 }
+// ********************************************************************
+// LIVECODING *********************************************************
+// ********************************************************************
 function setup() {
-      // WebGl --------------------------------------------
-      // Fix default this.pointSize = 5 ?
-      p5.RendererGL.prototype.strokeWeight = function (w) {
-            if (this.curStrokeWeight !== 0.0001) {
-                  this.pointSize = w;
-                  this.curStrokeWeight = w;
+      if (Lp5.playmode == 'livecoding') {
+            // WebGl --------------------------------------------
+            // Fix default this.pointSize = 5 ?
+            // p5.RendererGL.prototype.strokeWeight = function (w) {
+            //       if (this.curStrokeWeight !== 0.0001) {
+            //             this.pointSize = w;
+            //             this.curStrokeWeight = w;
+            //       }
+            // };
+
+            // Init setup --------------------------
+            if (!Lp5.canvas) {
+                  Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
             }
-      };
-
-      // Init setup --------------------------
-      if (!Lp5.canvas) {
-            Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
+            // Webcam/video capture
+            if (___webcam) {
+                  ___webcam.remove()
+            }
+            ___webcam = null
+            // Audio
+            if (___audio != null) {
+                  ___audio.disconnect()
+                  ___audio = null
+                  ___fft = null
+            }
+            blendMode(BLEND)
+            setFrameRate(60)
+            imageMode(CORNER)
+            angleMode(RADIANS)
+            rectMode(CORNER)
+            ellipseMode(CENTER)
+            colorMode(RGB, 255, 255, 255)
+            background(0);
+            // Eval -----------------------------------------------------
+            try {
+                  new Function(Lp5.validCodeSetup)();
+            } catch (e) {
+                  console_msg('setup: ' + e.stack)
+                  Lp5.el('lp5-aux').parentElement.classList.add('error');
+            }
       }
-      // Webcam/video capture
-      if (___webcam) {
-            ___webcam.remove()
-      }
-      ___webcam = null
-      // Audio
-      if (___audio != null) {
-            ___audio.disconnect()
-            ___audio = null
-            ___fft = null
-      }
-      blendMode(BLEND)
-      setFrameRate(60)
-      imageMode(CORNER)
-      angleMode(RADIANS)
-      rectMode(CORNER)
-      ellipseMode(CENTER)
-      colorMode(RGB, 255, 255, 255)
-      background(0);
-      // Live --------------------------------
-      try {
-            new Function(Lp5.validCodeSetup)();
-      } catch (e) {
-            console_msg('setup: ' + e.stack)
-            Lp5.el('lp5-aux').parentElement.classList.add('error');
-      }
-
-
-
 }
 function draw() {
-      // FPS
-      Lp5.fps = getFrameRate();
-      // // Revisar
-      if ((Lp5.historyChangesSetup + Lp5.historyChangesDraw + Lp5.historyChangesAux) > 0) {
-            Lp5.el('lp5-os-status').classList.add('unsave')
-      } else {
-            Lp5.el('lp5-os-status').classList.remove('unsave')
-      }
-      // Clear -------------------------------
-      //if (Lp5.cmDraw.getValue().trim() == '') clear()
-
-      // reset -------------------------------
-      strokeWeight(1)
-      blendMode(BLEND)
-
-      // funciones en WEBGL ----
-      try {
-            if (___webgl) {
-                  // en use3d -> default
-                  directionalLight(100, 100, 100, 1, 1, 0)
-                  ambientLight(50)
-                  colorMode(RGB, 255, 255, 255)
-                  ambientMaterial(color(167, 167, 167))
+      if (Lp5.playmode == 'livecoding') {
+            Lp5.startDraw();
+            if (!Lp5.drawOnFly) {
+                  try {
+                        new Function(Lp5.validCodeDraw)()
+                  } catch (e) {
+                        Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
+                  }
             } else {
-                  noTint()
-
+                  /**************
+                   * DRAW ON FLY
+                   **************/
+                  if (Lp5.blockData.func == 'draw') {
+                        Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
+                  }
+                  Lp5.evalDraw(true)
             }
-            textLeading(15)
-            textSize(15)
-            textAlign(LEFT, TOP)
-            textStyle(NORMAL)
-      } catch (e) {
-            //
-      }
-      if (!Lp5.drawOnFly) {
-            try {
-                  new Function(Lp5.validCodeDraw)()
-            } catch (e) {
-                  Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
-            }
-      } else {
-            /**************
-             * DRAW ON FLY
-             **************/
-            if (Lp5.blockData.func == 'draw') {
-                  Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
-            }
-            Lp5.evalDraw(true)
       }
 }
 function mouseMoved() {
@@ -295,16 +306,18 @@ function keyReleased() {
       }
 }
 function windowResized() {
-      try {
-            resizeCanvas(windowWidth, windowHeight, true);
+      if (Lp5.playmode == 'livecoding') {
             try {
-                  new Function(Lp5.validCodeSetup)();
+                  resizeCanvas(windowWidth, windowHeight, true);
+                  try {
+                        new Function(Lp5.validCodeSetup)();
+                  } catch (e) {
+                        console_msg('setup: ' + e.stack)
+                        //Lp5.el('lp5-setup').parentElement.classList.add('error');
+                  }
             } catch (e) {
-                  console_msg('setup: ' + e.stack)
-                  //Lp5.el('lp5-setup').parentElement.classList.add('error');
+                  console.trace('en resize ' + e);
             }
-      } catch (e) {
-            console.trace('en resize ' + e);
       }
 }
 // ********************************************************************
@@ -333,44 +346,96 @@ Lp5.codeAux.addEventListener('keyup', (ev) => {
 Lp5.codeAux.addEventListener('keydown', (ev) => {
       // Evalua bloque ---------------------------------------------------
       if (ev.ctrlKey && ev.keyCode == 13) {
-            if (Lp5.blockData.isFunc) {
-                  if (Lp5.blockData.func == 'setup') {
-                        Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
-                        Lp5.evalSetup()
+            if (Lp5.playmode == 'static') {
+                  Lp5.clearEvts()
+                  let code = Lp5.cmAux.getValue()
+                  let lfrom = 0
+                  let lto = 0
+                  let opens = 0
+                  let brackets = false
+                  // If -> Fatal error en draw function ----------------------------------------
+                  while (!Lp5.cmAux.getLine(lfrom).match(/function[\t\s\ ]+draw/g)) {
+                        lfrom++
+                        lto = lfrom
                   }
-                  if (Lp5.blockData.func == 'draw') {
-                        Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
-                        Lp5.evalDraw()
-
-                  }
-                  for (var key in Lp5.renderCodeEvent) {
-                        if (Lp5.blockData.func == key) {
-                              //Lp5.clearEvts()
-                              Lp5.renderCodeEvent[key] = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
-                              Lp5.evalEvent(key)
-                              break;
-
+                  while (lto < Lp5.cmAux.lineCount()) {
+                        if (Lp5.cmAux.getLine(lto).match(/\{/g)) {
+                              brackets = true
+                              opens++;
                         }
-                  }
-                  for (let i = 0; i < Lp5.renderExtends.length; i++) {
-                        let fname = Lp5.renderExtends[i]
-                        if (Lp5.blockData.func == fname) {
-                              Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
-                              Lp5.evalAux()
+                        if (Lp5.cmAux.getLine(lto).match(/\}/g) && opens > 0) {
+                              opens--;
+                        }
+                        if (brackets && opens == 0) {
                               break;
                         }
+                        lto++
                   }
-                  if (Lp5.blockData.func == 'any') {
-                        Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
-                        Lp5.evalAux()
+                  let drawCode = Lp5.cmAux.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+                        .trim()
+                        .replace(new RegExp('^function[\\t ]+draw[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '\ndraw = function(){try{')
+                        .replace(new RegExp('\\}$', 'g'), '}catch(e){noLoop();console.log(e);Lp5.el(\'lp5-console-out\').innerHTML = e;Lp5.el(\'lp5-aux\').parentElement.classList.add(\'error\');}}')
+
+                  // -----------------------------------------------------------------
+                  // For [function name()] -> [name = function()]
+                  for (let i = 0; i < Lp5.p5Words.length; i++) {
+                        let word = Lp5.p5Words[i]
+                        let exp = new RegExp("function[\\t\\s ]+" + word, "g")
+                        // draw -> will replaced / se reemplaza -> [_________draw function()]
+                        if (word == 'draw') word = 'let _________draw'
+                        code = code.replace(exp, word + " = function")
                   }
-            } else {
-                  Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
-                  Lp5.evalAux()
+                  // new draw function()
+                  code = code + drawCode
+                  // 
+                  if (code.match(/preload/g)) code = code + ";preload()"
+                  if (code.match(/setup/g)) code = code + ";setup()"
+                  if (code.match(/draw/g)) code = code + ";draw()"
+                  //
+                  Lp5.renderCodeAux = "'use strict';" + code
+                  Lp5.evalAll()
+                  Lp5.evalFx('lp5-aux')
+                  if (Lp5.looping) loop();
             }
-            Lp5.evalLineFx('lp5-aux', Lp5.blockData.lf, Lp5.blockData.lt)
-            // 
-            Lp5.evalConn(Lp5.blockData)
+            if (Lp5.playmode == 'livecoding') {
+                  if (Lp5.blockData.isFunc) {
+                        if (Lp5.blockData.func == 'setup') {
+                              Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.tryEval('setup')
+                        }
+                        if (Lp5.blockData.func == 'draw') {
+                              Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.evalDraw()
+
+                        }
+                        for (var key in Lp5.renderCodeEvent) {
+                              if (Lp5.blockData.func == key) {
+                                    Lp5.renderCodeEvent[key] = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                                    Lp5.evalEvent(key)
+                                    break;
+
+                              }
+                        }
+                        for (let i = 0; i < Lp5.renderExtends.length; i++) {
+                              let fname = Lp5.renderExtends[i]
+                              if (Lp5.blockData.func == fname) {
+                                    Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                                    Lp5.tryEval('aux')
+                                    break;
+                              }
+                        }
+                        if (Lp5.blockData.func == 'any') {
+                              Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.tryEval('aux')
+                        }
+                  } else {
+                        Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                        Lp5.tryEval('aux')
+                  }
+                  Lp5.evalLineFx('lp5-aux', Lp5.blockData.lf, Lp5.blockData.lt)
+                  // 
+                  Lp5.evalConn(Lp5.blockData)
+            }
       }
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
@@ -406,6 +471,7 @@ document.addEventListener('keyup', (ev) => {
             if (!Lp5.devtools) {
                   Lp5.main.devTools(true);
                   Lp5.devtools = true;
+                  console.clear()
             } else {
                   Lp5.main.devTools(false);
                   Lp5.devtools = false;
@@ -581,6 +647,10 @@ document.addEventListener('mousedown', (ev) => {
 })
 // -----------------------------------------------------
 // CONFIGS ----------------------------------------------
+Lp5.el('cnf-playmode').addEventListener('change', () => {
+      localStorage.playmode = Lp5.el('cnf-playmode').value
+      Lp5.main.reload()
+});
 Lp5.el('cnf-renderonfly').addEventListener('click', () => {
       if (Lp5.el('cnf-renderonfly').checked) {
             Lp5.drawOnFly = true
