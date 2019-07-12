@@ -205,33 +205,33 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
             if (arg.length == 0) {
                   push();
                   translate(width / 2, height / 2);
-                  rotate(freq(0.01))
+                  rotate(counter(1))
                   translate(-width / 2, -height / 2);
             }
             if (arg.length == 1) {
                   push();
                   translate(width / 2, height / 2);
-                  rotate(freq(arg[0]))
+                  rotate(arg[0])
                   translate(-width / 2, -height / 2);
             }
             if (arg.length == 2) {
                   push();
                   translate(width / 2, height / 2);
                   scale(arg[1])
-                  rotate(freq(arg[0]))
+                  rotate(arg[0])
                   translate(-width / 2, -height / 2);
             }
             if (arg.length == 3) {
                   push();
                   translate(arg[1], arg[2]);
-                  rotate(freq(arg[0]))
+                  rotate(arg[0])
                   translate(-arg[1], -arg[2]);
             }
             if (arg.length == 4) {
                   push();
                   translate(arg[1], arg[2]);
                   scale(arg[3])
-                  rotate(freq(arg[0]))
+                  rotate(arg[0])
                   translate(-arg[1], -arg[2]);
             }
       }
@@ -267,37 +267,37 @@ if (!p5.prototype.hasOwnProperty('beginRot3')) {
             if (arg.length == 0) {
                   push();
                   //translate(width / 2, height / 2);
-                  rotateX(freq(0.01))
-                  rotateY(freq(0.01))
-                  rotateZ(freq(0.01))
+                  rotateX(counter())
+                  rotateY(counter())
+                  rotateZ(counter())
                   //translate(-width / 2, -height / 2);
             }
             if (arg.length == 1) {
                   push();
-                  rotateX(freq(arg[0]))
-                  rotateY(freq(arg[0]))
-                  rotateZ(freq(arg[0]))
+                  rotateX(arg[0])
+                  rotateY(arg[0])
+                  rotateZ(arg[0])
             }
             if (arg.length == 3) {
                   push();
-                  rotateX(freq(arg[0]))
-                  rotateY(freq(arg[1]))
-                  rotateZ(freq(arg[2]))
+                  rotateX(arg[0])
+                  rotateY(arg[1])
+                  rotateZ(arg[2])
             }
             if (arg.length == 4) {
                   push();
                   translate(arg[1], arg[2], arg[3]);
-                  rotateX(freq(arg[0]))
-                  rotateY(freq(arg[0]))
-                  rotateZ(freq(arg[0]))
+                  rotateX(arg[0])
+                  rotateY(arg[0])
+                  rotateZ(arg[0])
                   translate(-arg[1], -arg[2], -arg[3]);
             }
             if (arg.length == 6) {
                   push();
                   translate(arg[3], arg[4], arg[5]);
-                  rotateX(freq(arg[0]))
-                  rotateY(freq(arg[1]))
-                  rotateZ(freq(arg[2]))
+                  rotateX(arg[0])
+                  rotateY(arg[1])
+                  rotateZ(arg[2])
                   translate(-arg[3], -arg[4], -arg[5]);
             }
       }
@@ -366,6 +366,7 @@ if (!p5.prototype.hasOwnProperty('mirrorY')) {
       p5.prototype.mirrorY = function () {
             let i = get(0, 0, width / 2, height);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(width, 0)
             scale(-1, 1)
@@ -383,6 +384,7 @@ if (!p5.prototype.hasOwnProperty('imirrorY')) {
       p5.prototype.imirrorY = function () {
             let i = get(0, 0, width / 2, height);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(width, height)
             scale(-1, -1)
@@ -399,6 +401,7 @@ if (!p5.prototype.hasOwnProperty('mirrorX')) {
       p5.prototype.mirrorX = function () {
             let i = get(0, 0, width, height / 2);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(0, height)
             scale(1, -1)
@@ -416,6 +419,7 @@ if (!p5.prototype.hasOwnProperty('imirrorX')) {
       p5.prototype.imirrorX = function () {
             let i = get(0, 0, width, height / 2);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(width, height)
             scale(-1, -1)
@@ -434,6 +438,7 @@ if (!p5.prototype.hasOwnProperty('kaleido')) {
       p5.prototype.kaleido = function () {
             let i = get(0, 0, width / 2, height / 2);
             imageMode(CORNER)
+            blendMode(BLEND)
             push()
             translate(0, 0)
             translate(- 1, 0)
@@ -465,60 +470,53 @@ if (!p5.prototype.hasOwnProperty('kaleido')) {
       }
 }
 /**
- * Metodo abreviado de la sentencia -> sin(frameCount)
+ * Metodo abreviado de la sentencia -> sin((millis()/1000) * TWO_PI [* arg])
  * 
- * @method osc
+ * @method sinOsc
  * @param {Number}  n          multiplicador frecuencia
  * @return {Number}
  */
-if (!p5.prototype.hasOwnProperty('osc')) {
-      p5.prototype.osc = function () {
+if (!p5.prototype.hasOwnProperty('sinOsc')) {
+      p5.prototype.sinOsc = function () {
             let arg = arguments
-            let freq = 1
-            if (arg.length == 0) {
-                  freq = frameCount * 0.001 * 10
-            }
+            let freq = (millis() / 1000) * TWO_PI
             if (arg.length == 1) {
-                  freq = frameCount * 0.001 * arg[0]
+                  freq = (millis() / 1000) * arg[0] * TWO_PI
             }
-            return sin(freq);
+            return Math.sin(freq);
       }
 }
 /**
- * Metodo abreviado de la sentencia -> {sin: sin(frameCount * n), cos: cos(frameCount * n)}
+ * Metodo abreviado de la sentencia -> cos((millis()/1000) * TWO_PI [* arg])
  * 
- * @method cosc
+ * @method cosOsc
  * @param {Number}  n          multiplicador frecuencia
- * @return {Object} 
+ * @return {Number}
  */
-if (!p5.prototype.hasOwnProperty('cosc')) {
-      p5.prototype.cosc = function () {
+if (!p5.prototype.hasOwnProperty('cosOsc')) {
+      p5.prototype.cosOsc = function () {
             let arg = arguments
-            let freq = 1
-            if (arg.length == 0) {
-                  freq = frameCount * 0.001 * 10
-            }
+            let freq = (millis() / 1000) * TWO_PI
             if (arg.length == 1) {
-                  freq = frameCount * 0.001 * arg[0]
+                  freq = (millis() / 1000) * arg[0] * TWO_PI
             }
-            return { sin: Math.sin(freq), cos: Math.cos(freq) };
+            return Math.cos(freq);
       }
 }
 /**
- * Metodo abreviado de la sentencia -> frameCount * n
+ * Metodo abreviado de la sentencia -> millis()/1000 [* arg]
  * 
- * @method freq
- * @param {Number} m      multiplicador para reducir frameCount
+ * @method counter
+ * @param {Number} m      multiplicador
  */
-if (!p5.prototype.hasOwnProperty('freq')) {
-      p5.prototype.freq = function () {
+if (!p5.prototype.hasOwnProperty('counter')) {
+      p5.prototype.counter = function () {
             let arg = arguments
-            let freq
+            let count = millis() / 10000
             if (arg.length == 1) {
-                  freq = arg[0]
-                  return frameCount * arg[0]
+                  count = millis() / 1000 * arg[0]
             }
-            return 1;
+            return count;
       }
 }
 /**
