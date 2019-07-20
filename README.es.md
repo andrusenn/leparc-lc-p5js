@@ -1,10 +1,6 @@
 # LeParc p5js livecoder
 
-<<<<<<< HEAD
-> ATENCIÓN -> Se está trabajando en una rama que cambia los tres bloques de código que están separados por un solo. La evaluación de cada bloque (setup,draw) será dependiendo del contexto [ver rama](https://github.com/andrusenn/leparc-lc-p5js/tree/bloque1)
-=======
 Esta referencia es para versiones 0.2 o mayores.
->>>>>>> bloque1
 
 > (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.md)
 
