@@ -28,25 +28,22 @@ function connect(_lp5) {
 
             if (eval.isFunc) {
                   if (eval.func == 'setup') {
-                        lp5.renderCodeDraw = lp5.doGlobals("'use strict';" + eval.code)
-                        lp5.evalDraw()
-                        lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
+                        lp5.renderCodeSetup = lp5.doGlobals("'use strict';" + eval.code)
+                        lp5.tryEval('setup')
                   }
                   if (eval.func == 'draw') {
                         lp5.renderCodeDraw = lp5.doGlobals("'use strict';" + eval.code)
                         lp5.evalDraw()
-                        lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
                   }
                   if (eval.func == 'any') {
                         lp5.renderCodeAux = lp5.doGlobals("'use strict';" + eval.code)
                         lp5.tryEval('aux')
-                        lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
                   }
             } else {
                   lp5.renderCodeAux = lp5.doGlobals("'use strict';" + eval.code)
                   lp5.tryEval('aux')
-                  lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
             }
+            lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
       })
       // Sincroniza frameCount con servidor
       socket.on('sync', fc => {
@@ -62,18 +59,33 @@ exports.close = function () {
 exports.eval = function (_b) {
       socket.emit('eval', _b)
 }
-exports.sendServer = function () {
+exports.sendServer = function (ev) {
       // cursores 
       let cAux = lp5.cmAux.getCursor()
+      // let cAuxTo = lp5.cmAux.getCursor('to')
+      // let code = ''
+      // if (lp5.cmAux.somethingSelected()) {
+      //       cAux = lp5.cmAux.getCursor('from')
+      //       code = lp5.cmAux.getSelection()
+      // } else {
+      //       if (!ev.ctrlKey && !ev.altKey && ev.keyCode == 13) {
+      //             code = "\n"
+      //       } else {
+      //             code = lp5.cmAux.getLine(cAux.line)
+      //       }
+      // }
+
+      code = lp5.cmAux.getValue()
 
       let o = {
             // ID
             id: socket.id,
             cmContext: 'aux',
             // bloques
-            codeAux: lp5.cmAux.getValue(),
+            codeAux: code,
             // cursores
             cAux: cAux,
+            //cAuxTo: cAuxTo,
             nodeName: Lp5.nodeName
       }
       // if (socket) {
