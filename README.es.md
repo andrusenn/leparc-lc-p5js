@@ -17,7 +17,7 @@ Puedes reportar si encuentras algún error o bug. Te intivo también a forkear e
 
 > [Aquí puedes encontrar más ayuda](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es)
 
-![Image](http://andressenn.com/leparc-lc/lp01.jpg)
+![Image](http://andressenn.com/leparc-lc/lp02.jpg)
 
 ----
 

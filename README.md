@@ -17,7 +17,7 @@ You can report if you find an error or bug. I also encourage you to fork the pro
 
 > [Here you can find more help](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en)
 
-![Image](http://andressenn.com/leparc-lc/lp01.jpg)
+![Image](http://andressenn.com/leparc-lc/lp02.jpg)
 
 ----
 
