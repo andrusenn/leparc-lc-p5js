@@ -17,6 +17,8 @@ Puedes reportar si encuentras algún error o bug. Te intivo también a forkear e
 
 ![Image](http://andressenn.com/leparc-lc/lp02.jpg)
 
+[Ver código de la imagen (gist)](https://gist.github.com/andrusenn/c5557160e3b0bb6c0d3f87024e66b5f2)
+
 ----
 
 ## Uso

@@ -17,6 +17,8 @@ You can report if you find an error or bug. I also encourage you to fork the pro
 
 ![Image](http://andressenn.com/leparc-lc/lp02.jpg)
 
+[Get image code (gist)](https://gist.github.com/andrusenn/c5557160e3b0bb6c0d3f87024e66b5f2)
+
 ----
 
 ## Use
