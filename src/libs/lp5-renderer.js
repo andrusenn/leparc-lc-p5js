@@ -4,7 +4,7 @@
  */
 
 
-// Global var scope --------------------------------------------
+// Global var scope -----------------------------------------
 if (!global.hasOwnProperty('lp')) {
       global.lp = {
             snippets: []
@@ -12,7 +12,7 @@ if (!global.hasOwnProperty('lp')) {
 } else {
       console.trace('no se pudo crear el objeto global "lp"')
 }
-// Init
+// Init -----------------------------------------------------
 window.addEventListener('load', function () {
 
       // Extends --------------------------------------------
@@ -21,11 +21,12 @@ window.addEventListener('load', function () {
       } catch (e) {
             console.trace('No se pudo cargar lp-extends.js')
       }
-      // ----------------------------------------------------
+      // Get Sys RAM ----------------------------------------
       setInterval(() => {
             // Memoria
             Lp5.el('lp5-os-ram').innerText = '| free ram:' + Lp5.main.getMemory() + "%";
       }, 2000)
+      // Get loop framerate ---------------------------------
       setInterval(() => {
             // FPS
             let noloop = '<span class="info">NO LOOP</span>'
@@ -46,39 +47,41 @@ window.addEventListener('load', function () {
             }
       }, 500)
       Lp5.toggleModal('cnf')
-
-      // // Servidor ---------------------------
-      Lp5.serverRq = require('./libs/server.js')
-      // // Cliente ----------------------------
-      Lp5.clientRq = require('./libs/client.js')
-      // IP ------------------------------------
-      Lp5.IP = Lp5.main.getIP()
-      // Play mode -----------------------------
+      // Play mode ------------------------------------------
       if (!localStorage.playmode) {
             localStorage.playmode = 'livecoding'
             Lp5.el('cnf-playmode').options[0].selected = true
       }
       if (localStorage.playmode == 'livecoding') {
             Lp5.el('cnf-playmode').options[0].selected = true
+
+            // // Servidor ----------------------------------
+            Lp5.serverRq = require('./libs/server.js')
+            // // Cliente -----------------------------------
+            Lp5.clientRq = require('./libs/client.js')
       }
       if (localStorage.playmode == 'static') {
             Lp5.el('cnf-playmode').options[1].selected = true
             Lp5.el('option-renderonfly').style.display = 'none'
             Lp5.el('option-server-mode').style.display = 'none'
+            Lp5.el('option-server-hidecanvas').style.display = 'none'
             Lp5.el('option-server-sync').style.display = 'none'
             Lp5.el('option-server-name').style.display = 'none'
             Lp5.el('option-render').style.display = 'none'
 
       }
       Lp5.playmode = localStorage.playmode
-      // Lang ----------------------------------
+
+      // IP -------------------------------------------------
+      Lp5.IP = Lp5.main.getIP()
+      // Lang -----------------------------------------------
       if (localStorage.lang == 'es') {
             Lp5.el('cnf-lang').options[0].selected = true
       }
       if (localStorage.lang == 'en') {
             Lp5.el('cnf-lang').options[1].selected = true
       }
-      // Num lineas-----------------------------
+      // Num lineas------------------------------------------
       if (!localStorage.linenumbers) {
             localStorage.linenumbers = 1;
       }
@@ -94,8 +97,8 @@ window.addEventListener('load', function () {
             Lp5.el('lp5-os-r').style.display = 'none'
             Lp5.el('cnf-render').options[0].selected = true
       }
-      // -------------------------------------------------------------------------------
-      // Code mirror ------------------------------------------------------------------- 
+      // ----------------------------------------------------
+      // Code mirror ----------------------------------------
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
             matchBrackets: true,
@@ -110,17 +113,44 @@ window.addEventListener('load', function () {
                   Lp5.el('lp5-aux').parentElement.classList.remove('change');
             }
       })
-      // Tit -----------------------------------
+      // Fragment Shader -------------------------------------
+      // Lp5.cmFrag = CodeMirror(Lp5.codeFrag, {
+      //       mode: "javascript",
+      //       matchBrackets: true,
+      //       autoCloseBrackets: true,
+      //       lineNumbers: (localStorage.linenumbers == 1) ? true : false
+      // });
+      // Lp5.cmFrag.on('change', function (cm, ob) {
+      //       if (Lp5.renderCodeFrag != cm.getValue()) {
+      //             Lp5.historyChangesFrag = 1
+      //             Lp5.el('lp5-frag').parentElement.classList.add('change');
+      //       } else {
+      //             Lp5.el('lp5-frag').parentElement.classList.remove('change');
+      //       }
+      // })
+      // // Vertex Shader -------------------------------------
+      // Lp5.cmVert = CodeMirror(Lp5.codeVert, {
+      //       mode: "javascript",
+      //       matchBrackets: true,
+      //       autoCloseBrackets: true,
+      //       lineNumbers: (localStorage.linenumbers == 1) ? true : false
+      // });
+      // Lp5.cmVert.on('change', function (cm, ob) {
+      //       if (Lp5.renderCodeVert != cm.getValue()) {
+      //             Lp5.historyChangesAux = 1
+      //             Lp5.el('lp5-vert').parentElement.classList.add('change');
+      //       } else {
+      //             Lp5.el('lp5-vert').parentElement.classList.remove('change');
+      //       }
+      // })
+      // Win Title ------------------------------------------
       let playmode = (Lp5.playmode == 'static') ? ' | STATIC' : ''
       document.title = 'LeParc - livecoder - P5js - v' + Lp5.version + playmode
 
-      // Init cursor
+      // Init cursor ----------------------------------------
       Lp5.pannelFocus('aux')
 
-      if (Lp5.playmode == 'static') {
-            //Lp5.clearEvts()
-      }
-      // Console clear
+      // Console clear --------------------------------------
       console.clear()
 });
 // ********************************************************************
@@ -196,6 +226,7 @@ function setup() {
                   ___audio = null
                   ___fft = null
             }
+            resizeCanvas(windowWidth, windowHeight)
             blendMode(BLEND)
             setFrameRate(60)
             imageMode(CORNER)
@@ -331,7 +362,6 @@ Lp5.codeAux.addEventListener('mousedown', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
-      Lp5.cmFocused = 'aux';
       Lp5.cmAux.focus()
       // Obtiene los datos del bloque
       Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
@@ -353,8 +383,11 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   let lto = 0
                   let opens = 0
                   let brackets = false
-                  // If -> Fatal error en draw function ----------------------------------------
-                  while (!Lp5.cmAux.getLine(lfrom).match(/function[\t\s\ ]+draw/g)) {
+                  // Get content of draw function -----------------------
+                  while (lfrom < Lp5.cmAux.lineCount()) {
+                        if (Lp5.cmAux.getLine(lfrom) != "" && Lp5.cmAux.getLine(lfrom).match(/function[\t\s\ ]+draw/g)) {
+                              break;
+                        }
                         lfrom++
                         lto = lfrom
                   }
@@ -373,8 +406,8 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   }
                   let drawCode = Lp5.cmAux.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
                         .trim()
-                        .replace(new RegExp('^function[\\t ]+draw[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '\ndraw = function(){try{')
-                        .replace(new RegExp('\\}$', 'g'), '}catch(e){noLoop();console.log(e);Lp5.el(\'lp5-console-out\').innerHTML = e;Lp5.el(\'lp5-aux\').parentElement.classList.add(\'error\');}}')
+                        .replace(new RegExp('^function[\\t\\s ]+draw[\\t\\s ]*\\([\\t\\s ]*\\)[\\t\\n\\s ]*\\{', 'g'), "\ndraw = function(){\ntry{\n")
+                        .replace(new RegExp('\\}$', 'g'), "\n}catch(e){\nnoLoop();\nconsole.log(e);\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}}")
 
                   // -----------------------------------------------------------------
                   // For [function name()] -> [name = function()]
@@ -385,16 +418,18 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                         if (word == 'draw') word = 'let _________draw'
                         code = code.replace(exp, word + " = function")
                   }
-                  // new draw function()
+                  // se crea draw function() / create draw function()
                   code = code + drawCode
-                  // 
+                  // si están declaradas / if are declared
                   if (code.match(/preload/g)) code = code + ";preload()"
                   if (code.match(/setup/g)) code = code + ";setup()"
                   if (code.match(/draw/g)) code = code + ";draw()"
-                  //
+                  // Eval
                   Lp5.renderCodeAux = "'use strict';" + code
                   Lp5.evalAll()
                   Lp5.evalFx('lp5-aux')
+                  // Si se detiene el loop principal y estaba loopeando
+                  // if main loop stopped on error and was looping
                   if (Lp5.looping) loop();
             }
             if (Lp5.playmode == 'livecoding') {
@@ -448,9 +483,48 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
             }
       }
 });
+// SHADERS ---------------------------------------------
+// Lp5.codeFrag.addEventListener('keydown', (ev) => {
+//       // Evalua bloque ---------------------------------------------------
+//       if (ev.ctrlKey && ev.keyCode == 13) {
+//             Lp5.renderCodeFrag = Lp5.cmFrag.getValue()
+//             Lp5.evalFx('lp5-frag')
+
+//             try {
+//                   ___createShader()
+//                   shader(___shader)
+//             } catch (e) {
+//                   Lp5.el('lp5-console-out').innerHTML = 'frag: ' + e
+//                   Lp5.el('lp5-frag').parentElement.classList.remove('error');
+//             }
+//       }
+// })
+// Lp5.codeVert.addEventListener('keydown', (ev) => {
+//       // Evalua bloque ---------------------------------------------------
+//       if (ev.ctrlKey && ev.keyCode == 13) {
+//             Lp5.renderCodeVert = Lp5.cmVert.getValue()
+//             Lp5.evalFx('lp5-vert')
+//             try {
+//                   ___createShader()
+//                   shader(___shader)
+//             } catch (e) {
+//                   Lp5.el('lp5-console-out').innerHTML = 'vert: ' + e
+//                   Lp5.el('lp5-vert').parentElement.classList.remove('error');
+//             }
+//       }
+// })
 // -----------------------------------------------------
 // -----------------------------------------------------
 // Global keyup event ----------------------------------
+
+// document.addEventListener('click', (ev) => {
+//       if (Lp5.cmAux.hasFocus()) Lp5.cmFocused = 'aux'
+//       if (Lp5.cmVert.hasFocus()) Lp5.cmFocused = 'vert'
+//       if (Lp5.cmFrag.hasFocus()) Lp5.cmFocused = 'frag'
+//       //
+//       console.log(Lp5.cmFocused)
+// })
+
 document.addEventListener('keyup', (ev) => {
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
@@ -477,11 +551,12 @@ document.addEventListener('keyup', (ev) => {
                   Lp5.devtools = false;
             }
       }
-      // Recargar
+      // Recargar / Reload
       if (ev.keyCode == 116) {
             Lp5.main.reload();
       }
-      // Mostrar/ocultar codigo
+      // Mostrar / ocultar codigo
+      // Show / hide editor
       if (ev.ctrlKey && ev.keyCode == 72) {
             if (Lp5.showWin) {
                   Lp5.el('win').style.display = 'none';
@@ -500,14 +575,17 @@ document.addEventListener('keyup', (ev) => {
       Lp5.changeBgLineAlpha()
 
       // Sockets -------------------------------------
-      if (Lp5.mode == 'SERVER') {
-            Lp5.server.sendClient(frameCount)
+      if (Lp5.playmode == 'livecoding' /*&& ev.keyCode != 8 && !ev.shiftKey*/) {
+            if (Lp5.mode == 'SERVER') {
+                  Lp5.server.sendClient(frameCount)
+            }
+            if (Lp5.mode == 'CLIENT') {
+                  Lp5.client.sendServer(ev)
+            }
+            // Node name
+            Lp5.nodeName = Lp5.el('cnf-name').value
       }
-      if (Lp5.mode == 'CLIENT') {
-            Lp5.client.sendServer()
-      }
-      // Node name
-      Lp5.nodeName = Lp5.el('cnf-name').value
+
 
 });
 // Global keydown event -----------------------------------
@@ -537,6 +615,7 @@ document.addEventListener('keydown', function (ev) {
             Lp5.toggleModal('cnf')
       }
       // Panic Loop --------------------
+      // Ctrl+L
       if (ev.ctrlKey && ev.keyCode == 76) {
             if (Lp5.looping) {
                   noLoop()
@@ -547,6 +626,7 @@ document.addEventListener('keydown', function (ev) {
             }
       }
       // Salvar codigo --------------------
+      // Save code
       if (ev.ctrlKey && ev.keyCode == 83) {
             Lp5.main.saveCode('auxcode', Lp5.cmAux.getValue())
             Lp5.historyChangesAux = 0
@@ -558,6 +638,18 @@ document.addEventListener('keydown', function (ev) {
       }
       // Refrescar fondo lineas
       Lp5.changeBgLineAlpha()
+
+      // Sockets -------------------------------------
+      // if (Lp5.playmode == 'livecoding' /*&& ev.keyCode == 8 && !ev.shiftKey*/) {
+      //       if (Lp5.mode == 'SERVER') {
+      //             Lp5.server.sendClient(frameCount)
+      //       }
+      //       if (Lp5.mode == 'CLIENT') {
+      //             Lp5.client.sendServer(ev)
+      //       }
+      //       // Node name
+      //       Lp5.nodeName = Lp5.el('cnf-name').value
+      // }
 })
 // Global select event -----------------------------------
 document.addEventListener("select", (ev) => {
@@ -614,13 +706,16 @@ document.addEventListener("mousewheel", (ev) => {
             Lp5.changeBgLineAlpha()
       }
       // Sockets -------------------------------------
-      if (Lp5.mode == 'SERVER') {
-            Lp5.server.sendClient(frameCount)
-            //Lp5.server.setBookmark()
-      }
-      if (Lp5.mode == 'CLIENT') {
-            Lp5.client.sendServer()
-            //Lp5.client.setBookmark()
+
+      if (Lp5.playmode == 'livecoding') {
+            if (Lp5.mode == 'SERVER') {
+                  Lp5.server.sendClient(frameCount)
+                  //Lp5.server.setBookmark()
+            }
+            if (Lp5.mode == 'CLIENT') {
+                  Lp5.client.sendServer()
+                  //Lp5.client.setBookmark()
+            }
       }
       // ---------------------------------------------
       if (ev.ctrlKey && !ev.altKey && !ev.shiftKey) {
@@ -635,18 +730,21 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmAux.refresh()
+
+                  // Lp5.codeFrag.style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.codeFrag.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.cmFrag.refresh()
+
+                  // Lp5.codeVert.style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.codeVert.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.cmVert.refresh()
             } else {
                   Lp5.scale_st = 0.05;
             }
       }
 });
-document.addEventListener('mousedown', (ev) => {
-
-      // Panel resize
-      Lp5.mousePressed = true
-})
 // -----------------------------------------------------
-// CONFIGS ----------------------------------------------
+// CONFIGS EVTS ----------------------------------------
 Lp5.el('cnf-playmode').addEventListener('change', () => {
       localStorage.playmode = Lp5.el('cnf-playmode').value
       Lp5.main.reload()
@@ -676,6 +774,13 @@ Lp5.el('cnf-linenumbers').addEventListener('click', () => {
             Lp5.cmAux.setOption('lineNumbers', false)
             Lp5.cmSetup.setOption('lineNumbers', false)
             Lp5.cmDraw.setOption('lineNumbers', false)
+      }
+});
+Lp5.el('cnf-hidecanvas').addEventListener('click', () => {
+      if (Lp5.el('cnf-hidecanvas').checked) {
+            Lp5.el('defaultCanvas0').style.display = 'none'
+      } else {
+            Lp5.el('defaultCanvas0').style.display = 'block'
       }
 });
 

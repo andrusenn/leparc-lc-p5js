@@ -43,25 +43,39 @@ let Lp5 = {
       drawOnFly: false,
       blockData: '',
       cmAux: null,
+      //cmFrag: null,
+      //cmVert: null,
       // cmClient:         null,
       cmAuxCp: {
             line: 0,
             ch: 0
       },
+      // cmFragCp: {
+      //       line: 0,
+      //       ch: 0
+      // },
+      // cmVertCp: {
+      //       line: 0,
+      //       ch: 0
+      // },
       cmSelect: '',
+      cmFocused: null,
       // DOM en index.html
       codeAux: document.getElementById('lp5-aux'),
+      //codeFrag: document.getElementById('lp5-frag'),
+      //codeVert: document.getElementById('lp5-vert'),
       consoleView: document.getElementById('lp5-console'),
       // Almacena los codigos a evaluar
-      isValidCodeAux: true,
-      isValidCodeSetup: true,
-      isValidCodeDraw: true,
       validCodeDraw: '',
       renderCodeDraw: '',
       validCodeSetup: '',
       renderCodeSetup: '',
       validCodeAux: '',
       renderCodeAux: '',
+      // Shader
+      //renderCodeFrag: '',
+      //renderCodeVert: '',
+      //
       renderCodeEvent: {
             mouseMoved: '',
             mouseReleased: '',
@@ -104,16 +118,10 @@ let Lp5 = {
       auxTxt: '',
       // Escala de los campos a
       scale_st: 1,
-      scale_dr: 1,
-      scale_ax: 1,
       // bg alfa
       bg_code_alpha: 0.4,
-      // p5 externas
-      setup: null,
       // Mostrar ventanas
       showWin: true,
-      // Imagenes
-      // imagesBank: new Array(),
       // Funciones
       beautify_js: function (data) {
             let ob = {
@@ -122,12 +130,15 @@ let Lp5 = {
             }
             return js_beautify(data, ob);
       },
+      // Get DOM element by ID
       el: function (id) {
             return document.getElementById(id)
       },
+      // Get DOM element by query
       querySel: function (qs) {
             return document.querySelector(qs)
       },
+      // Get DOM elements by query
       querySelAll: function (qs, fn = null) {
             let all = document.querySelectorAll(qs)
             if (typeof fn == 'function') {
@@ -144,6 +155,7 @@ let Lp5 = {
             let len = el.getValue().length;
             el.setCursor(len)
       },
+      // Add reserved words
       addSysName: function (name) {
             this.prog.push(name)
       },
@@ -157,6 +169,7 @@ let Lp5 = {
                   elsln[i].style.backgroundColor = "rgba(0,0,0," + this.bg_code_alpha + ")";
             }
       },
+      // p5 functions
       p5Words: [
             'mouseClicked',
             'mouseMoved',
@@ -173,14 +186,14 @@ let Lp5 = {
             'preload'
 
       ],
-      // Palabras reservadas / reserved words
+      // Reserved words
       prog: {
             setup: [
                   'draw',
                   'setup',
                   'preload',
                   'canvas',
-                  // 'createCanvas',
+                  'createCanvas',
                   'remove',
                   'mouseClicked',
                   'mouseMoved',
@@ -201,7 +214,7 @@ let Lp5 = {
                   'setup',
                   'preload',
                   'canvas',
-                  // 'createCanvas',
+                  'createCanvas',
                   'remove',
                   // 'text',
                   // 'textAlign',
@@ -230,11 +243,10 @@ let Lp5 = {
                   'draw',
                   'size',
                   'setup',
+                  'clearDraw',
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
                   'useCam',
                   'useAudio',
                   'remove',
@@ -259,8 +271,7 @@ let Lp5 = {
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
+                  'clearDraw',
                   //'text',
                   //'textAlign',
                   //'textLeading',
@@ -293,10 +304,6 @@ let Lp5 = {
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'useCam',
-                  'useAudio',
                   'remove',
                   '___audio',
                   '___fft',
@@ -309,8 +316,6 @@ let Lp5 = {
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
                   // 'text',
                   // 'textAlign',
                   // 'textLeading',
@@ -320,8 +325,6 @@ let Lp5 = {
                   // 'textAscent',
                   // 'textDescent',
                   // 'textFont',
-                  'useCam',
-                  'useAudio',
                   'remove',
                   '___audio',
                   '___fft',
@@ -329,6 +332,7 @@ let Lp5 = {
                   'ZOOM_SCALE'
             ]
       },
+      // Load files from extends folder
       extendsFile: function (file) {
             return this.main.path().join(this.main.resourcesPath(), 'leparc_resources', 'extends', file)
       },
@@ -340,6 +344,7 @@ let Lp5 = {
             // Cambia a globales las variables fuera de las funciones
             return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
       },
+      // Get functions or lines from editor by context
       getCodeBlock: function (cm, cp) {
             let lfrom = cp.line
             let lto = cp.line
@@ -349,7 +354,7 @@ let Lp5 = {
             let out = ''
             let func = ''
             let code = ''
-            // Encuentra la funcion setup o draw
+            // Encuentra la funcion setup o draw / Find draw or setup
             evtsln:
             while (lfrom >= 0) {
                   // Setup
@@ -372,14 +377,15 @@ let Lp5 = {
                         }
                   }
                   // Funcion generica
-                  if (cm.getLine(lfrom).match(/\$[a-zA-Z]+[0-9_]*[\t ]*\=[\t ]*(function[\t ]*\([\t ]*[a-zA-Z]+[0-9_]*[\t ]*\)|\([\t ]*[a-zA-Z]+[0-9_]*[\t ]*\)[\t ]*\=\>[\t ]*)/g)) {
+                  if (cm.getLine(lfrom).match(/\$[a-zA-Z_0-9]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[a-zA-Z0-9_]*[\t\s ]*\)|\([\t\s ]*[a-zA-Z0-9_]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
                         func = 'any'
                         break;
                   }
-                  // Funcion load
+                  // Funcion load -> /sinp/loadStrings/etc...
+                  // Declaradas en "renderExtends"
                   for (let i = 0; i < this.renderExtends.length; i++) {
                         let fname = this.renderExtends[i]
-                        let reg = new RegExp(fname, "g")
+                        let reg = new RegExp("[\\t\\s ]*(?<=\$)[\\t\\s ]*" + fname, "g")
                         if (cm.getLine(lfrom).match(reg)) {
                               let tmp_lfrom = lfrom
                               //linepos = lfrom
@@ -521,6 +527,7 @@ let Lp5 = {
                   }
             }
             // Verifica que el cursor este entre llaves
+            // Check if cursor/caret is between brackets
             if (func != '' && linepos >= lfrom && linepos <= lto) {
                   out = { lf: lfrom - 1, lt: lto + 1, code: code.trim(), func: func, isFunc: true }
             } else {
@@ -566,6 +573,8 @@ let Lp5 = {
       getLinesSelected(cm) {
             return { from: cm.getCursor('from').line, to: cm.getCursor('to').line }
       },
+      // En modo STATIC, las funciones se resetean en cada evaluacion
+      // Using STATIC mode set null every evaluation
       clearEvts: function () {
             // p5js events prop
             mouseClicked = null
@@ -597,6 +606,7 @@ let Lp5 = {
             // reset -------------------------------
             strokeWeight(1)
             blendMode(BLEND)
+            stroke(0)
 
             // funciones en WEBGL ----
             try {
@@ -784,8 +794,10 @@ let Lp5 = {
       },
       // Modo: CLIENTE-SERVIDOR
       evalConn: function (obj) {
-            if (this.mode == 'CLIENT') this.client.eval(obj)
-            if (this.mode == 'SERVER') this.server.eval(obj)
+            if (Lp5.playmode == 'livecoding') {
+                  if (this.mode == 'CLIENT') this.client.eval(obj)
+                  if (this.mode == 'SERVER') this.server.eval(obj)
+            }
       }
 
 }
