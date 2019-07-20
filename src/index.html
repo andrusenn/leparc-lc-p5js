@@ -19,6 +19,19 @@
 					<div id="lp5-aux"></div><br>
 				</div>
 			</div>
+
+			<!-- <div id="lp5-frag-pannel">
+				<div class="lp5-code-parent">
+					<span>Fragment Shader</span>
+					<div id="lp5-frag"></div><br>
+				</div>
+			</div>
+			<div id="lp5-vert-pannel">
+				<div class="lp5-code-parent">
+					<span>Vertex Shader</span>
+					<div id="lp5-vert"></div><br>
+				</div>
+			</div> -->
 			<!-- console pannel -->
 			<span id="lp5-console" class="console-out">
 				<span id="lp5-os-status" class="_"> &laquo;</span>
@@ -37,11 +50,21 @@
 			<div class="modal-win">
 				<table>
 					<tr>
+						<td class="col2"><label for="cnf-playmode" class="en-playmode">PLAY MODE</label>
+						</td>
+						<td class="col1">
+							<select id="cnf-playmode">
+								<option value="livecoding">LIVECODING</option>
+								<option value="static">STATIC</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="option-renderonfly">
 						<td class="col2"><label for="cnf-renderonfly" class="en-autorender">AUTO
 								RENDER</label></td>
 						<td class="col1"><input id="cnf-renderonfly" type="checkbox" /></td>
 					</tr>
-					<tr>
+					<tr id="option-render">
 						<td class="col2"><label for="cnf-render" class="en-render">RENDER</label></td>
 						<td class="col1">
 							<select id="cnf-render">
@@ -56,7 +79,7 @@
 						<td class="col1"><input id="cnf-linenumbers" value="1" type="checkbox" checked />
 						</td>
 					</tr>
-					<tr>
+					<tr id="option-server-mode">
 						<td class="col2"><label for="cnf-server" class="en-mode">MODE (net)</label></td>
 						<td class="col1">
 							<select id="cnf-server">
@@ -66,11 +89,17 @@
 							</select>
 						</td>
 					</tr>
-					<tr>
+					<tr id="option-server-hidecanvas">
+						<td class="col2"><label for="cnf-hidecanvas" class="en-hidecanvas">HIDE
+								CANVAS</label></td>
+						<td class="col1"><input id="cnf-hidecanvas" value="1" type="checkbox" />
+						</td>
+					</tr>
+					<tr id="option-server-sync">
 						<td class="col2"><label for="cnf-sync">SYNC (net)</label></td>
 						<td class="col1"><input id="cnf-sync" type="checkbox" /></td>
 					</tr>
-					<tr>
+					<tr id="option-server-name">
 						<td class="col2"><label for="cnf-server" class="en-name">NAME (net)</label></td>
 						<td class="col1">
 							<input type="text" id="cnf-name" />
