@@ -15,8 +15,6 @@ The core of *LeParc* is Javascript and libraries p5js, Codemirror (editor), jsbe
 
 You can report if you find an error or bug. I also encourage you to fork the project.
 
-> [Here you can find more help](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en)
-
 ![Image](http://andressenn.com/leparc-lc/lp02.jpg)
 
 ----

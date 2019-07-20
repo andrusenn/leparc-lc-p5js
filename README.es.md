@@ -15,8 +15,6 @@ El corazón de *LeParc* es Javascript y librerías p5js, Codemirror (editor), js
 
 Puedes reportar si encuentras algún error o bug. Te intivo también a forkear el proyecto.
 
-> [Aquí puedes encontrar más ayuda](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es)
-
 ![Image](http://andressenn.com/leparc-lc/lp02.jpg)
 
 ----
@@ -195,9 +193,3 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
   - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
   - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
   - **LANG** -> EN/ES Idioma de la interfaz
-
-----
-
-### Ejemplos y usos
-
-> [ver docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/es/ejemplos.md)
