@@ -4,7 +4,7 @@
  */
 
 
-// Global var scope --------------------------------------------
+// Global var scope -----------------------------------------
 if (!global.hasOwnProperty('lp')) {
       global.lp = {
             snippets: []
@@ -12,65 +12,83 @@ if (!global.hasOwnProperty('lp')) {
 } else {
       console.trace('no se pudo crear el objeto global "lp"')
 }
-// Init
+// Init -----------------------------------------------------
 window.addEventListener('load', function () {
+
       // Extends --------------------------------------------
       try {
             require(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'extends', 'lp-extends.js'))
       } catch (e) {
             console.trace('No se pudo cargar lp-extends.js')
       }
-      // ----------------------------------------------------
+      // Get Sys RAM ----------------------------------------
       setInterval(() => {
             // Memoria
             Lp5.el('lp5-os-ram').innerText = '| free ram:' + Lp5.main.getMemory() + "%";
       }, 2000)
+      // Get loop framerate ---------------------------------
       setInterval(() => {
             // FPS
+            let noloop = '<span class="info">NO LOOP</span>'
             let osfps = Math.round(Lp5.fps);
-            if (!Lp5.looping) osfps = '<span class="info">NO LOOP</span>'
-            Lp5.el('lp5-os-fps').innerHTML = '| fps:' + osfps;
+            //
+            if (Lp5.playmode == 'livecoding') {
+                  if (!Lp5.looping) {
+                        Lp5.el('lp5-os-fps').innerHTML = noloop;
+                  } else {
+                        Lp5.el('lp5-os-fps').innerHTML = '| fps:' + osfps;
+                  }
+            } else {
+                  if (!Lp5.looping) {
+                        Lp5.el('lp5-os-fps').innerHTML = noloop;
+                  } else {
+                        Lp5.el('lp5-os-fps').innerHTML = '';
+                  }
+            }
       }, 500)
       Lp5.toggleModal('cnf')
+      // Play mode ------------------------------------------
+      if (!localStorage.playmode) {
+            localStorage.playmode = 'livecoding'
+            Lp5.el('cnf-playmode').options[0].selected = true
+      }
+      if (localStorage.playmode == 'livecoding') {
+            Lp5.el('cnf-playmode').options[0].selected = true
 
-      // // Servidor ---------------------------
-      Lp5.serverRq = require('./libs/server.js')
-      // // Cliente ----------------------------
-      Lp5.clientRq = require('./libs/client.js')
-      // IP ------------------------------------
+            // // Servidor ----------------------------------
+            Lp5.serverRq = require('./libs/server.js')
+            // // Cliente -----------------------------------
+            Lp5.clientRq = require('./libs/client.js')
+      }
+      if (localStorage.playmode == 'static') {
+            Lp5.el('cnf-playmode').options[1].selected = true
+            Lp5.el('option-renderonfly').style.display = 'none'
+            Lp5.el('option-server-mode').style.display = 'none'
+            Lp5.el('option-server-hidecanvas').style.display = 'none'
+            Lp5.el('option-server-sync').style.display = 'none'
+            Lp5.el('option-server-name').style.display = 'none'
+            Lp5.el('option-render').style.display = 'none'
+
+      }
+      Lp5.playmode = localStorage.playmode
+
+      // IP -------------------------------------------------
       Lp5.IP = Lp5.main.getIP()
-      Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
-      // Tit -----------------------------------
-      document.title = 'LeParc - livecoder - P5js - v' + Lp5.version
-      // Lang ----------------------------------
+      // Lang -----------------------------------------------
       if (localStorage.lang == 'es') {
             Lp5.el('cnf-lang').options[0].selected = true
       }
       if (localStorage.lang == 'en') {
             Lp5.el('cnf-lang').options[1].selected = true
       }
-      // Num lineas-----------------------------
-      if (localStorage.linenumbers == null) {
+      // Num lineas------------------------------------------
+      if (!localStorage.linenumbers) {
             localStorage.linenumbers = 1;
       }
       if (localStorage.linenumbers == 1) {
             Lp5.el('cnf-linenumbers').checked = true
       } else {
             Lp5.el('cnf-linenumbers').checked = false
-      }
-      // Setup y Draw titulos ------------------
-      if (localStorage.block_titles == 1) {
-            Lp5.el('setup-title').innerHTML = 'function setup(){'
-            Lp5.el('setup-title-end').innerHTML = '}'
-            Lp5.el('draw-title').innerHTML = 'function draw(){'
-            Lp5.el('draw-title-end').innerHTML = '}'
-            Lp5.el('cnf-titles').checked = true
-      } else {
-            Lp5.el('setup-title').innerHTML = 'setup:'
-            Lp5.el('setup-title-end').innerHTML = ''
-            Lp5.el('draw-title').innerHTML = 'loop:'
-            Lp5.el('draw-title-end').innerHTML = ''
-            Lp5.el('cnf-titles').checked = false
       }
       if (Lp5.main.globalSettings().renderer == 'webgl') {
             Lp5.el('lp5-os-r').style.display = 'inline'
@@ -79,11 +97,12 @@ window.addEventListener('load', function () {
             Lp5.el('lp5-os-r').style.display = 'none'
             Lp5.el('cnf-render').options[0].selected = true
       }
-      // -------------------------------------------------------------------------------
-      // Code mirror ------------------------------------------------------------------- 
+      // ----------------------------------------------------
+      // Code mirror ----------------------------------------
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
             matchBrackets: true,
+            autoCloseBrackets: true,
             lineNumbers: (localStorage.linenumbers == 1) ? true : false
       });
       Lp5.cmAux.on('change', function (cm, ob) {
@@ -94,61 +113,45 @@ window.addEventListener('load', function () {
                   Lp5.el('lp5-aux').parentElement.classList.remove('change');
             }
       })
-      //
-      Lp5.cmSetup = CodeMirror(Lp5.codeSetup, {
-            mode: "javascript",
-            matchBrackets: true,
-            lineNumbers: (localStorage.linenumbers == 1) ? true : false
-      });
-      Lp5.cmSetup.on('change', function (cm, ob) {
-            if (Lp5.renderCodeSetup != Lp5.doGlobals("'use strict';" + cm.getValue())) {
-                  Lp5.historyChangesSetup = 1
-                  Lp5.el('lp5-setup').parentElement.classList.add('change');
-            } else {
-                  Lp5.el('lp5-setup').parentElement.classList.remove('change');
-            }
-      })
-      //
-      Lp5.cmDraw = CodeMirror(Lp5.codeDraw, {
-            mode: "javascript",
-            matchBrackets: true,
-            lineNumbers: (localStorage.linenumbers == 1) ? true : false
-      });
-      Lp5.cmDraw.on('change', function (cm, ob) {
-            if (Lp5.renderCodeDraw != Lp5.doGlobals("'use strict';" + cm.getValue())) {
-                  Lp5.historyChangesDraw = 1
-                  Lp5.el('lp5-draw').parentElement.classList.add('change');
-            } else {
-                  Lp5.el('lp5-draw').parentElement.classList.remove('change');
-            }
-      })//
-      // Pannels ----------------------------------
-      Lp5.showAllPannels()
-      if (localStorage.pannels == 'vert') {
-            Lp5.el('cnf-pannels').options[0].selected = true
-            Lp5.el('win').style.display = 'block'
+      // Fragment Shader -------------------------------------
+      // Lp5.cmFrag = CodeMirror(Lp5.codeFrag, {
+      //       mode: "javascript",
+      //       matchBrackets: true,
+      //       autoCloseBrackets: true,
+      //       lineNumbers: (localStorage.linenumbers == 1) ? true : false
+      // });
+      // Lp5.cmFrag.on('change', function (cm, ob) {
+      //       if (Lp5.renderCodeFrag != cm.getValue()) {
+      //             Lp5.historyChangesFrag = 1
+      //             Lp5.el('lp5-frag').parentElement.classList.add('change');
+      //       } else {
+      //             Lp5.el('lp5-frag').parentElement.classList.remove('change');
+      //       }
+      // })
+      // // Vertex Shader -------------------------------------
+      // Lp5.cmVert = CodeMirror(Lp5.codeVert, {
+      //       mode: "javascript",
+      //       matchBrackets: true,
+      //       autoCloseBrackets: true,
+      //       lineNumbers: (localStorage.linenumbers == 1) ? true : false
+      // });
+      // Lp5.cmVert.on('change', function (cm, ob) {
+      //       if (Lp5.renderCodeVert != cm.getValue()) {
+      //             Lp5.historyChangesAux = 1
+      //             Lp5.el('lp5-vert').parentElement.classList.add('change');
+      //       } else {
+      //             Lp5.el('lp5-vert').parentElement.classList.remove('change');
+      //       }
+      // })
+      // Win Title ------------------------------------------
+      let playmode = (Lp5.playmode == 'static') ? ' | STATIC' : ''
+      document.title = 'LeParc - livecoder - P5js - v' + Lp5.version + playmode
 
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'none'
-      }
-      if (localStorage.pannels == 'horiz') {
-            Lp5.el('cnf-pannels').options[1].selected = true
-            Lp5.el('win').style.display = 'flex'
+      // Init cursor ----------------------------------------
+      Lp5.pannelFocus('aux')
 
-            Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-            Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-            Lp5.el('lp5-tabs').style.display = 'none'
-      }
-      if (localStorage.pannels == 'tabs') {
-            Lp5.el('cnf-pannels').options[2].selected = true
-            Lp5.el('win').style.display = 'block'
-
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'inline'
-      }
-      if (localStorage.pannels == 'tabs') Lp5.showPannel('draw')
-      // Init cursor
-      Lp5.pannelFocus('draw')
+      // Console clear --------------------------------------
+      console.clear()
 });
 // ********************************************************************
 // ********************************************************************
@@ -164,49 +167,11 @@ function preload() {
                   atxt += Lp5.auxTxt[i] + '\n';
             }
             try {
-                  // Lp5.codeAux.innerHTML = Lp5.beautify_js(txt.trim())
                   if (atxt != '') {
                         Lp5.cmAux.setValue(Lp5.beautify_js(atxt.trim()));
                         Lp5.pannelFocus('aux')
                   } else {
                         Lp5.cmAux.setValue('//');
-                  }
-            } catch (e) {
-                  console.trace(e)
-            }
-      })
-      loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'save', 'setup.txt'), (file) => {
-            Lp5.setupTxt = file
-            let stxt = '';
-            for (let i = 0; i < Lp5.setupTxt.length; i++) {
-                  stxt += Lp5.setupTxt[i] + '\n';
-            }
-            try {
-                  // Lp5.codeSetup.innerText = Lp5.beautify_js(txt.trim())
-                  if (stxt != '') {
-                        Lp5.cmSetup.setValue(Lp5.beautify_js(stxt.trim()));
-                        Lp5.pannelFocus('setup')
-                  } else {
-                        Lp5.cmSetup.setValue('//');
-                  }
-            } catch (e) {
-                  console.trace(e)
-            }
-
-      })
-      loadStrings(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'save', 'draw.txt'), (file) => {
-            Lp5.drawTxt = file
-            let dtxt = '';
-            for (let i = 0; i < Lp5.drawTxt.length; i++) {
-                  dtxt += Lp5.drawTxt[i] + '\n';
-            }
-            try {
-                  // Lp5.codeDraw.innerHTML = Lp5.beautify_js(txt.trim())
-                  if (dtxt != '') {
-                        Lp5.cmDraw.setValue(Lp5.beautify_js(dtxt.trim()));
-                        Lp5.pannelFocus('draw')
-                  } else {
-                        Lp5.cmDraw.setValue('//');
                   }
             } catch (e) {
                   console.trace(e)
@@ -222,157 +187,168 @@ function preload() {
 
             // Checkea si toma muchos recursos y para el loop
             // Check if takes too much resources and stop loop
-            let cfps = setInterval(function () {
-                  if (getFrameRate() < _targetFrameRate * parseFloat(Lp5.configs['mfr'])) {
-                        noLoop()
-                        Lp5.looping = false
-                  }
-            }, 2000)
+            if (Lp5.playmode == 'livecoding') {
+                  let cfps = setInterval(function () {
+                        if (getFrameRate() < _targetFrameRate * parseFloat(Lp5.configs['mfr'])) {
+                              noLoop()
+                              Lp5.looping = false
+                        }
+                  }, 2000)
+            }
       })
 }
+// ********************************************************************
+// LIVECODING *********************************************************
+// ********************************************************************
 function setup() {
-      // WebGl --------------------------------------------
-      // Fix default this.pointSize = 5 ?
-      p5.RendererGL.prototype.strokeWeight = function (w) {
-            if (this.curStrokeWeight !== 0.0001) {
-                  this.pointSize = w;
-                  this.curStrokeWeight = w;
+      if (Lp5.playmode == 'livecoding') {
+            // WebGl --------------------------------------------
+            // Fix default this.pointSize = 5 ?
+            // p5.RendererGL.prototype.strokeWeight = function (w) {
+            //       if (this.curStrokeWeight !== 0.0001) {
+            //             this.pointSize = w;
+            //             this.curStrokeWeight = w;
+            //       }
+            // };
+
+            // Init setup --------------------------
+            if (!Lp5.canvas) {
+                  Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
             }
-      };
-
-      // Init setup --------------------------
-      if (!Lp5.canvas) {
-            Lp5.canvas = createCanvas(windowWidth, windowHeight, Lp5.main.globalSettings().renderer);
-      }
-      // Webcam/video capture
-      if (___webcam) {
-            ___webcam.remove()
-      }
-      ___webcam = null
-      // Audio
-      if (___audio != null) {
-            ___audio.disconnect()
-            ___audio = null
-            ___fft = null
-      }
-      blendMode(BLEND)
-      setFrameRate(60)
-      imageMode(CORNER)
-      angleMode(RADIANS)
-      rectMode(CORNER)
-      ellipseMode(CENTER)
-      colorMode(RGB, 255, 255, 255)
-      background(0);
-      // Live --------------------------------
-      try {
-            new Function(Lp5.validCodeSetup)();
-      } catch (e) {
-            console_msg('setup: ' + e.stack)
-            Lp5.el('lp5-setup').parentElement.classList.add('error');
-      }
-
-
-
-}
-function draw() {
-      // FPS
-      Lp5.fps = getFrameRate();
-      // // Revisar
-      if ((Lp5.historyChangesSetup + Lp5.historyChangesDraw + Lp5.historyChangesAux) > 0) {
-            Lp5.el('lp5-os-status').classList.add('unsave')
-      } else {
-            Lp5.el('lp5-os-status').classList.remove('unsave')
-      }
-      // Clear -------------------------------
-      //if (Lp5.cmDraw.getValue().trim() == '') clear()
-
-      // reset -------------------------------
-      noTint()
-      strokeWeight(1)
-      blendMode(BLEND)
-
-      // funciones en WEBGL ----
-      try {
-            if (___webgl) {
-                  // en use3d -> default
-                  directionalLight(100, 100, 100, 1, 1, 0)
-                  ambientLight(50)
-                  colorMode(RGB, 255, 255, 255)
-                  ambientMaterial(color(167, 167, 167))
-            } else {
-                  textLeading(15)
-                  textSize(15)
-                  textAlign(LEFT, TOP)
-                  textStyle(NORMAL)
+            // Webcam/video capture
+            if (___webcam) {
+                  ___webcam.remove()
             }
-      } catch (e) {
-            //
-      }
-      // Live --------------------------------
-      if (!Lp5.drawOnFly) {
-            try {
-                  new Function(Lp5.validCodeDraw)()
-            } catch (e) {
-                  Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
+            ___webcam = null
+            // Audio
+            if (___audio != null) {
+                  ___audio.disconnect()
+                  ___audio = null
+                  ___fft = null
             }
-      } else {
-            /**************
-             * DRAW ON FLY
-             **************/
-            Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.cmDraw.getValue());
-            try {
-                  let valid = true;
-                  let word = '';
-                  let render = Lp5.main.globalSettings().renderer
-                  let wordList = (render == 'webgl') ? Lp5.prog.draw3d : Lp5.prog.draw
-                  for (let i = 0; i < wordList.length; i++) {
-                        word = wordList[i]
-                        if (Lp5.renderCodeDraw.includes(word)) {
-                              let r = new RegExp(Lp5.checkProgWord(word))
-                              if (!Lp5.renderCodeDraw.match(r)) {
-                                    valid = false;
-                                    if (render == 'webgl') {
-                                          Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + ' ' + lang_msg.priv_words_render
-                                    } else {
-                                          Lp5.el('lp5-console-out').innerHTML = '| draw: ' + word + ' ' + lang_msg.priv_words
-                                    }
-                              }
-                        }
-                  }
-                  // Try eval
-                  // Verificar que se ejecuta correctamente
-                  try {
-                        new Function(Lp5.renderCodeDraw)()
-                  } catch (e) {
-                        new Function(Lp5.validCodeDraw)()
-                        valid = false
-                        Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
-                  }
-                  if (valid) {
-                        Lp5.validCodeDraw = Lp5.renderCodeDraw;
-                        Lp5.el('lp5-draw').parentElement.classList.remove('error');
-                        Lp5.el('lp5-draw').parentElement.classList.remove('change');
-                  } else {
-                        Lp5.el('lp5-draw').parentElement.classList.add('error');
-                  }
-            } catch (e) {
-                  Lp5.el('lp5-draw').parentElement.classList.add('error');
-                  Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
-                  new Function(Lp5.validCodeDraw)()
-            }
-      }
-}
-function windowResized() {
-      try {
-            resizeCanvas(windowWidth, windowHeight, true);
+            resizeCanvas(windowWidth, windowHeight)
+            blendMode(BLEND)
+            setFrameRate(60)
+            imageMode(CORNER)
+            angleMode(RADIANS)
+            rectMode(CORNER)
+            ellipseMode(CENTER)
+            colorMode(RGB, 255, 255, 255)
+            background(0);
+            // Eval -----------------------------------------------------
             try {
                   new Function(Lp5.validCodeSetup)();
             } catch (e) {
                   console_msg('setup: ' + e.stack)
-                  Lp5.el('lp5-setup').parentElement.classList.add('error');
+                  Lp5.el('lp5-aux').parentElement.classList.add('error');
             }
+      }
+}
+function draw() {
+      if (Lp5.playmode == 'livecoding') {
+            Lp5.startDraw();
+            if (!Lp5.drawOnFly) {
+                  try {
+                        new Function(Lp5.validCodeDraw)()
+                  } catch (e) {
+                        Lp5.el('lp5-console-out').innerHTML = 'draw: ' + e
+                  }
+            } else {
+                  /**************
+                   * DRAW ON FLY
+                   **************/
+                  if (Lp5.blockData.func == 'draw') {
+                        Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
+                  }
+                  Lp5.evalDraw(true)
+            }
+      }
+}
+function mouseMoved() {
+      try {
+            new Function(Lp5.validCodeEvent.mouseMoved)();
       } catch (e) {
-            console.trace('en resize ' + e);
+            console_msg('mouseMoved: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mousePressed() {
+      try {
+            new Function(Lp5.validCodeEvent.mousePressed)();
+      } catch (e) {
+            console_msg('mousePressed: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseReleased() {
+      try {
+            new Function(Lp5.validCodeEvent.mouseReleased)();
+      } catch (e) {
+            console_msg('mouseReleased: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseClicked() {
+      try {
+            new Function(Lp5.validCodeEvent.mouseClicked)();
+      } catch (e) {
+            console_msg('mouseClicked: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function doubleClicked() {
+      try {
+            new Function(Lp5.validCodeEvent.doubleClicked)();
+      } catch (e) {
+            console_msg('doubleClicked: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function mouseWheel() {
+      try {
+            new Function(Lp5.validCodeEvent.mouseWheel)();
+      } catch (e) {
+            console_msg('mouseWheel: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function keyTyped() {
+      try {
+            new Function(Lp5.validCodeEvent.keyTyped)();
+      } catch (e) {
+            console_msg('keyTyped: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function keyPressed() {
+      try {
+            new Function(Lp5.validCodeEvent.keyPressed)();
+      } catch (e) {
+            console_msg('keyPressed: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function keyReleased() {
+      try {
+            new Function(Lp5.validCodeEvent.keyReleased)();
+      } catch (e) {
+            console_msg('keyReleased: ' + e.stack)
+            Lp5.el('lp5-aux').parentElement.classList.add('error');
+      }
+}
+function windowResized() {
+      if (Lp5.playmode == 'livecoding') {
+            try {
+                  resizeCanvas(windowWidth, windowHeight, true);
+                  try {
+                        new Function(Lp5.validCodeSetup)();
+                  } catch (e) {
+                        console_msg('setup: ' + e.stack)
+                        //Lp5.el('lp5-setup').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  console.trace('en resize ' + e);
+            }
       }
 }
 // ********************************************************************
@@ -382,34 +358,119 @@ function windowResized() {
 // -----------------------------------------------------
 // EVENTS ----------------------------------------------
 
-// -----------------------------------------------------
-// AUXILIAR EVENTS -------------------------------------
-
-Lp5.codeAux.addEventListener('click', (ev) => {
+Lp5.codeAux.addEventListener('mousedown', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
-      Lp5.panelIndex = 0
-      Lp5.cmFocused = 'aux';
       Lp5.cmAux.focus()
+      // Obtiene los datos del bloque
+      Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
 })
 Lp5.codeAux.addEventListener('keyup', (ev) => {
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
+      // Obtiene los datos del bloque
+      Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
 })
 Lp5.codeAux.addEventListener('keydown', (ev) => {
-      // Evalua linea ---------------------------------------------------
-      if (ev.altKey && ev.keyCode == 13) {
-            let code = Lp5.getBlockRange(Lp5.cmAux, Lp5.cmAuxCp)
-            Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + code.code)
-            Lp5.evalLineFx('lp5-aux', code.lf, code.lt)
-            Lp5.tryEvalAux()
-      }
       // Evalua bloque ---------------------------------------------------
       if (ev.ctrlKey && ev.keyCode == 13) {
-            Lp5.evalAux()
-            Lp5.evalConn('aux')
+            if (Lp5.playmode == 'static') {
+                  Lp5.clearEvts()
+                  let code = Lp5.cmAux.getValue()
+                  let lfrom = 0
+                  let lto = 0
+                  let opens = 0
+                  let brackets = false
+                  // Get content of draw function -----------------------
+                  while (lfrom < Lp5.cmAux.lineCount()) {
+                        if (Lp5.cmAux.getLine(lfrom) != "" && Lp5.cmAux.getLine(lfrom).match(/function[\t\s\ ]+draw/g)) {
+                              break;
+                        }
+                        lfrom++
+                        lto = lfrom
+                  }
+                  while (lto < Lp5.cmAux.lineCount()) {
+                        if (Lp5.cmAux.getLine(lto).match(/\{/g)) {
+                              brackets = true
+                              opens++;
+                        }
+                        if (Lp5.cmAux.getLine(lto).match(/\}/g) && opens > 0) {
+                              opens--;
+                        }
+                        if (brackets && opens == 0) {
+                              break;
+                        }
+                        lto++
+                  }
+                  let drawCode = Lp5.cmAux.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+                        .trim()
+                        .replace(new RegExp('^function[\\t\\s ]+draw[\\t\\s ]*\\([\\t\\s ]*\\)[\\t\\n\\s ]*\\{', 'g'), "\ndraw = function(){\ntry{\n")
+                        .replace(new RegExp('\\}$', 'g'), "\n}catch(e){\nnoLoop();\nconsole.log(e);\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}}")
+
+                  // -----------------------------------------------------------------
+                  // For [function name()] -> [name = function()]
+                  for (let i = 0; i < Lp5.p5Words.length; i++) {
+                        let word = Lp5.p5Words[i]
+                        let exp = new RegExp("function[\\t\\s ]+" + word, "g")
+                        // draw -> will replaced / se reemplaza -> [_________draw function()]
+                        if (word == 'draw') word = 'let _________draw'
+                        code = code.replace(exp, word + " = function")
+                  }
+                  // se crea draw function() / create draw function()
+                  code = code + drawCode
+                  // si están declaradas / if are declared
+                  if (code.match(/preload/g)) code = code + ";preload()"
+                  if (code.match(/setup/g)) code = code + ";setup()"
+                  if (code.match(/draw/g)) code = code + ";draw()"
+                  // Eval
+                  Lp5.renderCodeAux = "'use strict';" + code
+                  Lp5.evalAll()
+                  Lp5.evalFx('lp5-aux')
+                  // Si se detiene el loop principal y estaba loopeando
+                  // if main loop stopped on error and was looping
+                  if (Lp5.looping) loop();
+            }
+            if (Lp5.playmode == 'livecoding') {
+                  if (Lp5.blockData.isFunc) {
+                        if (Lp5.blockData.func == 'setup') {
+                              Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.tryEval('setup')
+                        }
+                        if (Lp5.blockData.func == 'draw') {
+                              Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.evalDraw()
+
+                        }
+                        for (var key in Lp5.renderCodeEvent) {
+                              if (Lp5.blockData.func == key) {
+                                    Lp5.renderCodeEvent[key] = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                                    Lp5.evalEvent(key)
+                                    break;
+
+                              }
+                        }
+                        for (let i = 0; i < Lp5.renderExtends.length; i++) {
+                              let fname = Lp5.renderExtends[i]
+                              if (Lp5.blockData.func == fname) {
+                                    Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                                    Lp5.tryEval('aux')
+                                    break;
+                              }
+                        }
+                        if (Lp5.blockData.func == 'any') {
+                              Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                              Lp5.tryEval('aux')
+                        }
+                  } else {
+                        Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
+                        Lp5.tryEval('aux')
+                  }
+                  Lp5.evalLineFx('lp5-aux', Lp5.blockData.lf, Lp5.blockData.lt)
+                  // 
+                  Lp5.evalConn(Lp5.blockData)
+            }
       }
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
@@ -422,113 +483,48 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
             }
       }
 });
+// SHADERS ---------------------------------------------
+// Lp5.codeFrag.addEventListener('keydown', (ev) => {
+//       // Evalua bloque ---------------------------------------------------
+//       if (ev.ctrlKey && ev.keyCode == 13) {
+//             Lp5.renderCodeFrag = Lp5.cmFrag.getValue()
+//             Lp5.evalFx('lp5-frag')
 
+//             try {
+//                   ___createShader()
+//                   shader(___shader)
+//             } catch (e) {
+//                   Lp5.el('lp5-console-out').innerHTML = 'frag: ' + e
+//                   Lp5.el('lp5-frag').parentElement.classList.remove('error');
+//             }
+//       }
+// })
+// Lp5.codeVert.addEventListener('keydown', (ev) => {
+//       // Evalua bloque ---------------------------------------------------
+//       if (ev.ctrlKey && ev.keyCode == 13) {
+//             Lp5.renderCodeVert = Lp5.cmVert.getValue()
+//             Lp5.evalFx('lp5-vert')
+//             try {
+//                   ___createShader()
+//                   shader(___shader)
+//             } catch (e) {
+//                   Lp5.el('lp5-console-out').innerHTML = 'vert: ' + e
+//                   Lp5.el('lp5-vert').parentElement.classList.remove('error');
+//             }
+//       }
+// })
 // -----------------------------------------------------
-// SETUP EVENTS ----------------------------------------
-Lp5.codeSetup.addEventListener('click', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmSetupCp.line = Lp5.cmSetup.getCursor().line;
-      Lp5.cmSetupCp.ch = Lp5.cmSetup.getCursor().ch;
-      Lp5.panelIndex = 1
-      Lp5.cmFocused = 'setup';
-      Lp5.cmSetup.focus()
-})
-Lp5.codeSetup.addEventListener('keyup', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmSetupCp.line = Lp5.cmSetup.getCursor().line;
-      Lp5.cmSetupCp.ch = Lp5.cmSetup.getCursor().ch;
-})
-Lp5.codeSetup.addEventListener('keydown', (ev) => {
-      // Evalua linea/s ---------------------------------------------------
-      if (ev.altKey && ev.keyCode == 13) {
-            let code = Lp5.getBlockRange(Lp5.cmSetup, Lp5.cmSetupCp)
-            Lp5.renderCodeSetup = Lp5.doGlobals("'use strict';" + code.code)
-            Lp5.evalLineFx('lp5-setup', code.lf, code.lt)
-            Lp5.tryEvalSetup()
-      }
-      // Evalua bloque ----------------------------------------------------------
-      if (ev.ctrlKey && ev.keyCode == 13) {
-            Lp5.evalSetup()
-            Lp5.evalConn('setup')
-      }
-      if (ev.ctrlKey && ev.keyCode == 70) {
-            ev.preventDefault();
-            // Si hay cambios -> formatea
-            try {
-                  Lp5.cmSetup.setValue(Lp5.beautify_js(Lp5.cmSetup.getValue()))
-                  Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: 0 })
-            } catch (e) {
-                  console.trace(e)
-            }
-      }
-});
-
-// -----------------------------------------------------
-// DRAW EVENTS -----------------------------------------
-Lp5.codeDraw.addEventListener('click', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmDrawCp.line = Lp5.cmDraw.getCursor().line;
-      Lp5.cmDrawCp.ch = Lp5.cmDraw.getCursor().ch;
-      Lp5.panelIndex = 2
-      Lp5.cmFocused = 'draw';
-      Lp5.cmDraw.focus()
-});
-Lp5.codeDraw.addEventListener('keyup', (ev) => {
-      // Obtiene la ultima posicion del cursor
-      Lp5.cmDrawCp.line = Lp5.cmDraw.getCursor().line;
-      Lp5.cmDrawCp.ch = Lp5.cmDraw.getCursor().ch;
-})
-Lp5.codeDraw.addEventListener('keydown', (ev) => {
-
-      if (ev.ctrlKey && ev.keyCode == 13) {
-            Lp5.evalDraw()
-            // Redraw si no esta loopeando
-            if (!Lp5.looping) redraw()
-            Lp5.evalConn('draw')
-      }
-      if (ev.ctrlKey && ev.keyCode == 70) {
-            ev.preventDefault();
-            // Si hay cambios -> formatea
-            try {
-                  Lp5.cmDraw.setValue(Lp5.beautify_js(Lp5.cmDraw.getValue()))
-                  Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: 0 })
-            } catch (e) {
-                  console.trace(e)
-            }
-      }
-});
-
-// Paste ------------------------------------------
-Lp5.codeSetup.addEventListener("paste", (ev) => {
-      //Lp5.cmSetup.setValue(ev.clipboardData.getData('text/plain'))
-});
-
-Lp5.codeDraw.addEventListener("paste", (ev) => {
-      //Lp5.cmDraw.setValue(ev.clipboardData.getData('text/plain'))
-});
-
-Lp5.codeAux.addEventListener("paste", (ev) => {
-      //Lp5.cmAux.setValue(ev.clipboardData.getData('text/plain'))
-});
-// -----------------------------------------------------
-// -----------------------------------------------------
-Lp5.el('lp5-tab-aux').addEventListener('click', function () {
-      Lp5.showPannel('aux')
-      Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-      Lp5.panelIndex = 0
-})
-Lp5.el('lp5-tab-setup').addEventListener('click', function () {
-      Lp5.showPannel('setup')
-      Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-      Lp5.panelIndex = 1
-})
-Lp5.el('lp5-tab-draw').addEventListener('click', function () {
-      Lp5.showPannel('draw')
-      Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-      Lp5.panelIndex = 2
-})
 // -----------------------------------------------------
 // Global keyup event ----------------------------------
+
+// document.addEventListener('click', (ev) => {
+//       if (Lp5.cmAux.hasFocus()) Lp5.cmFocused = 'aux'
+//       if (Lp5.cmVert.hasFocus()) Lp5.cmFocused = 'vert'
+//       if (Lp5.cmFrag.hasFocus()) Lp5.cmFocused = 'frag'
+//       //
+//       console.log(Lp5.cmFocused)
+// })
+
 document.addEventListener('keyup', (ev) => {
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
@@ -549,83 +545,24 @@ document.addEventListener('keyup', (ev) => {
             if (!Lp5.devtools) {
                   Lp5.main.devTools(true);
                   Lp5.devtools = true;
+                  console.clear()
             } else {
                   Lp5.main.devTools(false);
                   Lp5.devtools = false;
             }
       }
-      // Recargar
+      // Recargar / Reload
       if (ev.keyCode == 116) {
             Lp5.main.reload();
       }
-      // Mostrar/ocultar paneles
-      if (ev.keyCode == 112) {
-            if (localStorage.pannels == 'tabs') {
-                  Lp5.showPannel('aux')
-                  Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-            } else {
-                  if (Lp5.showAuxWin) {
-                        Lp5.el('lp5-aux-pannel').style.display = 'none';
-                        Lp5.showAuxWin = false;
-                  } else {
-                        Lp5.el('lp5-aux-pannel').style.display = 'inline';
-                        Lp5.showAuxWin = true;
-                  }
-            }
-      }
-      if (ev.keyCode == 113) {
-            if (localStorage.pannels == 'tabs') {
-                  Lp5.showPannel('setup')
-                  Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-            } else {
-                  if (Lp5.showSetupWin) {
-                        Lp5.el('lp5-setup-pannel').style.display = 'none';
-                        Lp5.showSetupWin = false;
-                  } else {
-                        Lp5.el('lp5-setup-pannel').style.display = 'inline';
-                        Lp5.showSetupWin = true;
-                  }
-            }
-      }
-      if (ev.keyCode == 114) {
-            if (localStorage.pannels == 'tabs') {
-                  Lp5.showPannel('draw')
-                  Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-            } else {
-                  if (Lp5.showDrawWin) {
-                        Lp5.el('lp5-draw-pannel').style.display = 'none';
-                        Lp5.showDrawWin = false;
-                  } else {
-                        Lp5.el('lp5-draw-pannel').style.display = 'inline';
-                        Lp5.showDrawWin = true;
-                  }
-            }
-      }
-      // Mostrar/ocultar codigo
+      // Mostrar / ocultar codigo
+      // Show / hide editor
       if (ev.ctrlKey && ev.keyCode == 72) {
             if (Lp5.showWin) {
                   Lp5.el('win').style.display = 'none';
                   Lp5.showWin = false;
             } else {
-                  if (localStorage.pannels == 'vert') {
-                        Lp5.el('win').style.display = 'block';
-                        Lp5.el('codeblock-resizable').style.width = '100%'
-                        Lp5.el('codeblock').style.width = '100%'
-                        // Vuelve a mostrar todos
-                        Lp5.showAllPannels()
-                  }
-                  if (localStorage.pannels == 'horiz') {
-                        Lp5.el('win').style.display = 'flex';
-                        Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-                        Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-                        // Vuelve a mostrar todos
-                        Lp5.showAllPannels()
-                  }
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.el('win').style.display = 'block';
-                        Lp5.el('codeblock-resizable').style.width = '100%'
-                        Lp5.el('codeblock').style.width = '100%'
-                  }
+                  Lp5.el('win').style.display = 'block';
                   Lp5.showWin = true;
             }
       }
@@ -634,43 +571,21 @@ document.addEventListener('keyup', (ev) => {
             if (confirm(lang_msg.exit_app)) {
                   Lp5.main.exit();
             }
-
-      }
-      // Focus panels ---------------------------------------------------------------------
-      if (ev.ctrlKey && (ev.keyCode == 32)) {
-            Lp5.panelIndex++
-            ev.preventDefault();
-            if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
-            if (Lp5.panelIndex == 0) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('aux')
-                  }
-                  Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-            }
-            if (Lp5.panelIndex == 1) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('setup')
-                  }
-                  Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-            }
-            if (Lp5.panelIndex == 2) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('draw')
-                  }
-                  Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-            }
       }
       Lp5.changeBgLineAlpha()
 
       // Sockets -------------------------------------
-      if (Lp5.mode == 'SERVER') {
-            Lp5.server.sendClient(frameCount)
+      if (Lp5.playmode == 'livecoding' /*&& ev.keyCode != 8 && !ev.shiftKey*/) {
+            if (Lp5.mode == 'SERVER') {
+                  Lp5.server.sendClient(frameCount)
+            }
+            if (Lp5.mode == 'CLIENT') {
+                  Lp5.client.sendServer(ev)
+            }
+            // Node name
+            Lp5.nodeName = Lp5.el('cnf-name').value
       }
-      if (Lp5.mode == 'CLIENT') {
-            Lp5.client.sendServer()
-      }
-      // Node name
-      Lp5.nodeName = Lp5.el('cnf-name').value
+
 
 });
 // Global keydown event -----------------------------------
@@ -678,42 +593,17 @@ document.addEventListener('keydown', function (ev) {
       // Comment ----------------------
       if (ev.shiftKey && !ev.altKey && ev.ctrlKey && ev.keyCode == 67) {
             ev.preventDefault();
-            if (Lp5.cmFocused == 'aux') {
-                  Lp5.cmAux.toggleComment({
-                        lineComment: '//'
-                  })
-            }
-            if (Lp5.cmFocused == 'setup') {
-                  Lp5.cmSetup.toggleComment({
-                        lineComment: '//'
-                  })
-            }
-            if (Lp5.cmFocused == 'draw') {
-                  Lp5.cmDraw.toggleComment({
-                        lineComment: '//'
-                  })
-            }
+            Lp5.cmAux.toggleComment({
+                  lineComment: '//'
+            })
       }
       // Format code ----------------------
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
             // Si hay cambios -> formatea
             try {
-                  // Aux
-                  if (Lp5.cmFocused == 'aux') {
-                        Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
-                        Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
-                  }
-                  // Setup
-                  if (Lp5.cmFocused == 'setup') {
-                        Lp5.cmSetup.setValue(Lp5.beautify_js(Lp5.cmSetup.getValue()))
-                        Lp5.cmSetup.setCursor({ line: Lp5.cmSetupCp.line, ch: 0 })
-                  }
-                  // Draw 
-                  if (Lp5.cmFocused == 'draw') {
-                        Lp5.cmDraw.setValue(Lp5.beautify_js(Lp5.cmDraw.getValue()))
-                        Lp5.cmDraw.setCursor({ line: Lp5.cmDrawCp.line, ch: 0 })
-                  }
+                  Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
+                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
             } catch (e) {
                   console.trace(e)
             }
@@ -725,6 +615,7 @@ document.addEventListener('keydown', function (ev) {
             Lp5.toggleModal('cnf')
       }
       // Panic Loop --------------------
+      // Ctrl+L
       if (ev.ctrlKey && ev.keyCode == 76) {
             if (Lp5.looping) {
                   noLoop()
@@ -735,70 +626,40 @@ document.addEventListener('keydown', function (ev) {
             }
       }
       // Salvar codigo --------------------
+      // Save code
       if (ev.ctrlKey && ev.keyCode == 83) {
-            // if (Lp5.validCodeSetup != '') 
-            Lp5.main.saveCode('setup', Lp5.cmSetup.getValue())
-            // if (Lp5.validCodeDraw != '') 
-            Lp5.main.saveCode('draw', Lp5.cmDraw.getValue())
-            // if (Lp5.validCodeAux != '') 
             Lp5.main.saveCode('auxcode', Lp5.cmAux.getValue())
-
             Lp5.historyChangesAux = 0
-            Lp5.historyChangesDraw = 0
-            Lp5.historyChangesSetup = 0
-
             console_msg(lang_msg.saved)
       }
       if (ev.ctrlKey && ev.keyCode == 90) {
             ev.preventDefault();
             return false
       }
-      // Focus panels & show / hide
-      if (ev.ctrlKey && (ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40)) {
-            ev.preventDefault()
-            if (ev.keyCode == 40 || ev.keyCode == 39) {
-                  Lp5.panelIndex++
-            } else if (ev.keyCode == 37 || ev.keyCode == 38) {
-                  Lp5.panelIndex--
-            }
-            if (Lp5.panelIndex > 2) Lp5.panelIndex = 0;
-            if (Lp5.panelIndex < 0) Lp5.panelIndex = 2;
-            if (Lp5.panelIndex == 0) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('aux')
-                  }
-                  Lp5.pannelFocus('aux', { line: Lp5.cmAuxCp.line, ch: Lp5.cmAuxCp.ch })
-            }
-            if (Lp5.panelIndex == 1) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('setup')
-                  }
-                  Lp5.pannelFocus('setup', { line: Lp5.cmSetupCp.line, ch: Lp5.cmSetupCp.ch })
-            }
-            if (Lp5.panelIndex == 2) {
-                  if (localStorage.pannels == 'tabs') {
-                        Lp5.showPannel('draw')
-                  }
-                  Lp5.pannelFocus('draw', { line: Lp5.cmDrawCp.line, ch: Lp5.cmDrawCp.ch })
-            }
-      }
       // Refrescar fondo lineas
       Lp5.changeBgLineAlpha()
+
+      // Sockets -------------------------------------
+      // if (Lp5.playmode == 'livecoding' /*&& ev.keyCode == 8 && !ev.shiftKey*/) {
+      //       if (Lp5.mode == 'SERVER') {
+      //             Lp5.server.sendClient(frameCount)
+      //       }
+      //       if (Lp5.mode == 'CLIENT') {
+      //             Lp5.client.sendServer(ev)
+      //       }
+      //       // Node name
+      //       Lp5.nodeName = Lp5.el('cnf-name').value
+      // }
 })
 // Global select event -----------------------------------
 document.addEventListener("select", (ev) => {
-      if (Lp5.cmDraw.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmDraw.getSelection())
-      if (Lp5.cmSetup.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmSetup.getSelection())
       if (Lp5.cmAux.hasFocus()) Lp5.cmSelect = new Number(Lp5.cmAux.getSelection())
 })
 // Global mousewheel event -----------------------------------
 document.addEventListener("mousewheel", (ev) => {
+      Lp5.blockData = Lp5.getCodeBlock(Lp5.cmAux, Lp5.cmAuxCp)
       if (ev.altKey && ev.ctrlKey) {
-            if (
-                  Lp5.cmSetup.somethingSelected() ||
-                  Lp5.cmDraw.somethingSelected() ||
-                  Lp5.cmAux.somethingSelected()
-            ) {
+            if (Lp5.cmAux.somethingSelected()) {
                   ev.preventDefault()
                   var dir = Math.sign(ev.deltaY);
                   if (!isNaN(Lp5.cmSelect)) {
@@ -818,13 +679,12 @@ document.addEventListener("mousewheel", (ev) => {
                                     Lp5.cmSelect++
                               }
                         }
-                        if (Lp5.cmDraw.hasFocus()) Lp5.cmDraw.replaceSelection(Lp5.cmSelect.toString(), "around")
-                        if (Lp5.cmSetup.hasFocus()) Lp5.cmSetup.replaceSelection(Lp5.cmSelect.toString(), "around")
                         if (Lp5.cmAux.hasFocus()) Lp5.cmAux.replaceSelection(Lp5.cmSelect.toString(), "around")
                         // Refresca el fondo ya que el el replace se elimina el atributo
                         Lp5.changeBgLineAlpha()
-
-
+                  }
+                  if (Lp5.blockData.func == 'draw') {
+                        Lp5.renderCodeDraw = Lp5.doGlobals("'use strict';" + Lp5.blockData.code);
                   }
             }
       }
@@ -846,13 +706,16 @@ document.addEventListener("mousewheel", (ev) => {
             Lp5.changeBgLineAlpha()
       }
       // Sockets -------------------------------------
-      if (Lp5.mode == 'SERVER') {
-            Lp5.server.sendClient(frameCount)
-            //Lp5.server.setBookmark()
-      }
-      if (Lp5.mode == 'CLIENT') {
-            Lp5.client.sendServer()
-            //Lp5.client.setBookmark()
+
+      if (Lp5.playmode == 'livecoding') {
+            if (Lp5.mode == 'SERVER') {
+                  Lp5.server.sendClient(frameCount)
+                  //Lp5.server.setBookmark()
+            }
+            if (Lp5.mode == 'CLIENT') {
+                  Lp5.client.sendServer()
+                  //Lp5.client.setBookmark()
+            }
       }
       // ---------------------------------------------
       if (ev.ctrlKey && !ev.altKey && !ev.shiftKey) {
@@ -864,75 +727,28 @@ document.addEventListener("mousewheel", (ev) => {
                   Lp5.scale_st += 0.1;
             }
             if (Lp5.scale_st > 0.05) {
-                  Lp5.codeSetup.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeSetup.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('setup-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('setup-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('setup-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.cmSetup.refresh()
-
-                  Lp5.codeDraw.style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.codeDraw.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('draw-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('draw-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('draw-title-end').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('draw-title-end').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.cmDraw.refresh()
-
                   Lp5.codeAux.style.fontSize = Lp5.scale_st + "rem";
                   Lp5.codeAux.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
-                  Lp5.el('aux-title').style.fontSize = Lp5.scale_st + "rem";
-                  Lp5.el('aux-title').style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
                   Lp5.cmAux.refresh()
 
-                  Lp5.querySelAll('.lp5-code-parent', (el) => {
-                        el.style.paddingLeft = (Lp5.scale_st * 40) + 'px'
-                  })
+                  // Lp5.codeFrag.style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.codeFrag.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.cmFrag.refresh()
 
-
+                  // Lp5.codeVert.style.fontSize = Lp5.scale_st + "rem";
+                  // Lp5.codeVert.style.lineHeight = (Lp5.scale_st * 1.7) + "rem";
+                  // Lp5.cmVert.refresh()
             } else {
                   Lp5.scale_st = 0.05;
             }
       }
 });
-document.addEventListener('mousedown', (ev) => {
-
-      // Panel resize
-      Lp5.mousePressed = true
-})
-document.addEventListener('mouseup', (ev) => {
-
-      // Panel resize
-      Lp5.el('win').style.cursor = 'unset'
-      Lp5.mousePressed = false
-      Lp5.pannelDraggign = false
-})
-document.addEventListener('mousemove', (ev) => {
-
-      // Panel resize
-      if (Lp5.mousePressed && Lp5.pannelDraggign && localStorage.pannels == 'horiz') {
-            Lp5.el('win').style.cursor = 'ew-resize'
-            let dragDif = ev.pageX - Lp5.dragStart
-            let winw = window.innerWidth
-            let pannelLeft = (Lp5.dragStart + dragDif) / winw * 100
-            Lp5.el('codeblock-resizable').style.width = pannelLeft + '%'
-            let pannelRight = 100 - pannelLeft
-            if (pannelRight < 2) pannelRight = 2
-            Lp5.el('codeblock').style.width = pannelRight + '%'
-            Lp5.pannelLWidth = pannelLeft + '%'
-            Lp5.pannelRWidth = pannelRight + '%'
-      }
-})
-// Pannels Resize --------------------------------------
-Lp5.el('draw-title').addEventListener('mousedown', function pannelResize(ev) {
-      Lp5.el('draw-title').removeEventListener('click', pannelResize);
-      Lp5.dragStart = Lp5.el('codeblock-resizable').clientWidth
-      Lp5.pannelDraggign = true
-
-})
 // -----------------------------------------------------
-// CONFIGS ----------------------------------------------
+// CONFIGS EVTS ----------------------------------------
+Lp5.el('cnf-playmode').addEventListener('change', () => {
+      localStorage.playmode = Lp5.el('cnf-playmode').value
+      Lp5.main.reload()
+});
 Lp5.el('cnf-renderonfly').addEventListener('click', () => {
       if (Lp5.el('cnf-renderonfly').checked) {
             Lp5.drawOnFly = true
@@ -960,56 +776,20 @@ Lp5.el('cnf-linenumbers').addEventListener('click', () => {
             Lp5.cmDraw.setOption('lineNumbers', false)
       }
 });
+Lp5.el('cnf-hidecanvas').addEventListener('click', () => {
+      if (Lp5.el('cnf-hidecanvas').checked) {
+            Lp5.el('defaultCanvas0').style.display = 'none'
+      } else {
+            Lp5.el('defaultCanvas0').style.display = 'block'
+      }
+});
 
 Lp5.el('cnf-lang').addEventListener('change', () => {
       localStorage.lang = Lp5.el('cnf-lang').value
       Lp5.main.reload()
 });
-Lp5.el('cnf-pannels').addEventListener('change', () => {
-      localStorage.pannels = Lp5.el('cnf-pannels').value
-      if (localStorage.pannels == 'vert') {
-            Lp5.el('win').style.display = 'block'
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'none'
-            // mostrar todos
-            Lp5.showAllPannels()
-      }
-      if (localStorage.pannels == 'horiz') {
-            Lp5.el('win').style.display = 'flex'
-            Lp5.el('codeblock-resizable').style.width = Lp5.pannelLWidth
-            Lp5.el('codeblock').style.width = Lp5.pannelRWidth
-            Lp5.el('lp5-tabs').style.display = 'none'
-            // mostrar todos
-            Lp5.showAllPannels()
-      }
-      if (localStorage.pannels == 'tabs') {
-            Lp5.el('win').style.display = 'block'
-            Lp5.el('codeblock-resizable').style.width = '100%'
-            Lp5.el('lp5-tabs').style.display = 'inline'
-
-            // muestra solo el loop
-            Lp5.showPannel('draw')
-            // Init cursor
-            Lp5.pannelFocus('draw')
-      }
-});
 Lp5.el('cnf-render').addEventListener('change', () => {
       Lp5.main.reload(Lp5.el('cnf-render').value)
-});
-Lp5.el('cnf-titles').addEventListener('click', () => {
-      if (Lp5.el('cnf-titles').checked) {
-            localStorage.block_titles = 1
-            Lp5.el('setup-title').innerHTML = 'function setup(){'
-            Lp5.el('setup-title-end').innerHTML = '}'
-            Lp5.el('draw-title').innerHTML = 'function draw(){'
-            Lp5.el('draw-title-end').innerHTML = '}'
-      } else {
-            localStorage.block_titles = 0
-            Lp5.el('setup-title').innerHTML = 'setup:'
-            Lp5.el('setup-title-end').innerHTML = ''
-            Lp5.el('draw-title').innerHTML = 'loop:'
-            Lp5.el('draw-title-end').innerHTML = ''
-      }
 });
 Lp5.el('cnf-server').addEventListener('change', (ev) => {
 
@@ -1029,6 +809,7 @@ Lp5.el('cnf-server').addEventListener('change', (ev) => {
                         })
                         Lp5.client = null
                   }
+                  Lp5.el('lp5-os-ip').innerText = '';
 
                   break;
 
@@ -1042,6 +823,7 @@ Lp5.el('cnf-server').addEventListener('change', (ev) => {
                   }
                   Lp5.server = Lp5.serverRq
                   Lp5.server.initServer(Lp5)
+                  Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
 
                   break;
 
@@ -1056,6 +838,7 @@ Lp5.el('cnf-server').addEventListener('change', (ev) => {
 
                   Lp5.client = Lp5.clientRq
                   Lp5.client.connect(Lp5)
+                  Lp5.el('lp5-os-ip').innerText = '| ip:' + Lp5.IP;
                   break;
 
       }

@@ -1,4 +1,4 @@
-/*! p5.dom.js v0.4.0 August 9, 2018 */
+/*! p5.js v0.9.0 July 01, 2019 */
 /**
  * <p>The web is much more than just canvas and p5.dom makes it easy to interact
  * with other HTML5 objects, including text, hyperlink, image, input, video,
@@ -1350,9 +1350,6 @@
           } catch (err) {
             elt.src = stream;
           }
-          if (cb) {
-            cb(stream);
-          }
         },
         function(e) {
           console.log(e);
@@ -1374,6 +1371,9 @@
         c.height = c.elt.height = elt.videoHeight;
       }
       c.loadedmetadata = true;
+      if (cb) {
+        cb(elt.srcObject);
+      }
     });
     return c;
   };
@@ -2889,12 +2889,10 @@
   };
   p5.MediaElement.prototype.pixels = [];
   p5.MediaElement.prototype._ensureCanvas = function() {
-    if (!this.canvas) this.loadPixels();
-  };
-  p5.MediaElement.prototype.loadPixels = function() {
     if (!this.canvas) {
       this.canvas = document.createElement('canvas');
       this.drawingContext = this.canvas.getContext('2d');
+      this.setModified(true);
     }
     if (this.loadedmetadata) {
       // wait for metadata for w/h
@@ -2920,11 +2918,13 @@
           this.canvas.width,
           this.canvas.height
         );
-        p5.Renderer2D.prototype.loadPixels.call(this);
+        this.setModified(true);
       }
     }
-    this.setModified(true);
-    return this;
+  };
+  p5.MediaElement.prototype.loadPixels = function() {
+    this._ensureCanvas();
+    return p5.Renderer2D.prototype.loadPixels.apply(this, arguments);
   };
   p5.MediaElement.prototype.updatePixels = function(x, y, w, h) {
     if (this.loadedmetadata) {
@@ -2940,15 +2940,7 @@
     return p5.Renderer2D.prototype.get.apply(this, arguments);
   };
   p5.MediaElement.prototype._getPixel = function() {
-    if (this.loadedmetadata) {
-      // wait for metadata
-      var currentTime = this.elt.currentTime;
-      if (this._pixelsTime !== currentTime) {
-        this.loadPixels();
-      } else {
-        this._ensureCanvas();
-      }
-    }
+    this.loadPixels();
     return p5.Renderer2D.prototype._getPixel.apply(this, arguments);
   };
 

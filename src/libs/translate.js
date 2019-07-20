@@ -10,8 +10,9 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVER",
                         "CLIENT": "CLIENT",
-                        "BLOCK NAMES": "BLOCK NAMES",
+                        "PLAY MODE": "PLAY MODE",
                         "MODE (net)": "MODE (net)",
+                        "HIDE CANVAS": "HIDE CANVAS",
                         "NAME (net)": "NAME (net)",
                         "Saved!": "Saved!",
                         "LANG": "LANG",
@@ -20,11 +21,11 @@ Lp5locale.init({
                         'No more fun?': 'No more fun?',
                         'Snippet loaded -> ': 'Snippet loaded -> ',
                         'Error on load -> ': 'Error on load -> ',
-                        "PANNELS": "PANNELS",
-                        "VERTICAL": "VERTICAL",
-                        "HORIZONTAL": "HORIZONTAL",
-                        "TABS": "TABS",
-                        "LINE NUMBERS": "LINE NUMBERS"
+                        "LINE NUMBERS": "LINE NUMBERS",
+                        "Initializing camera": "Initializing camera",
+                        "Camera ready": "Camera ready",
+                        "can be used on LOCAL or SERVER mode only":"can be used on LOCAL or SERVER mode only",
+                        "not declared":"not declared"
                   }
             },
             es: {
@@ -32,8 +33,9 @@ Lp5locale.init({
                         "LOCAL": "LOCAL",
                         "SERVER": "SERVIDOR",
                         "CLIENT": "CLIENTE",
-                        "BLOCK NAMES": "NOMBRE DE BLOQUES",
+                        "PLAY MODE": "PLAY MODE",
                         "MODE (net)": "MODO (net)",
+                        "HIDE CANVAS": "OCULTAR CANVAS",
                         "NAME (net)": "NOMBRE (net)",
                         "Saved!": "Guardado!",
                         "LANG": "IDIOMA",
@@ -42,29 +44,25 @@ Lp5locale.init({
                         'No more fun?': 'Se terminó la diversión?',
                         'Snippet loaded -> ': 'Snippet cargado -> ',
                         'Error on load -> ': 'Error al cargar -> ',
-                        "PANNELS": "PANELES",
-                        "VERTICAL": "VERTICAL",
-                        "HORIZONTAL": "HORIZONTAL",
-                        "TABS": "TABS",
-                        "LINE NUMBERS": "NUMEROS DE LINEA"
+                        "LINE NUMBERS": "NUMEROS DE LINEA",
+                        "Initializing camera": "Inicializando cámara",
+                        "Camera ready": "Cámara lista",
+                        "can be used on LOCAL or SERVER mode only":"Solo puede conectarse en modo LOCAL o SERVER",
+                        "not declared":"no declarado"
                   }
             }
       }
 }, function (err, t) {
       if (err) console.log(err)
-      // initialized and ready to go!      
       Lp5locale.changeLanguage(localStorage.lang)
       document.querySelector('.en-local').innerHTML = Lp5locale.t('LOCAL');
+      document.querySelector('.en-playmode').innerHTML = Lp5locale.t('PLAY MODE');
       document.querySelector('.en-mode').innerHTML = Lp5locale.t('MODE (net)');
+      document.querySelector('.en-hidecanvas').innerHTML = Lp5locale.t('HIDE CANVAS');
       document.querySelector('.en-server').innerHTML = Lp5locale.t('SERVER');
       document.querySelector('.en-client').innerHTML = Lp5locale.t('CLIENT');
       document.querySelector('.en-name').innerHTML = Lp5locale.t('NAME (net)');
       document.querySelector('.en-lang').innerHTML = Lp5locale.t('LANG');
-      document.querySelector('.en-title').innerHTML = Lp5locale.t('BLOCK NAMES');
-      document.querySelector('.en-pannels').innerHTML = Lp5locale.t('PANNELS');
-      document.querySelector('.en-pannels-vert').innerHTML = Lp5locale.t('VERTICAL');
-      document.querySelector('.en-pannels-horiz').innerHTML = Lp5locale.t('HORIZONTAL');
-      document.querySelector('.en-pannels-tabs').innerHTML = Lp5locale.t('TABS');
       document.querySelector('.en-linenumbers').innerHTML = Lp5locale.t('LINE NUMBERS');
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
@@ -73,4 +71,8 @@ Lp5locale.init({
       lang_msg.exit_app = Lp5locale.t('No more fun?')
       lang_msg.snip = Lp5locale.t('Snippet loaded -> ')
       lang_msg.snip_err = Lp5locale.t('Error on load -> ')
+      lang_msg.cam_init = Lp5locale.t('Initializing camera')
+      lang_msg.cam_loaded = Lp5locale.t('Camera ready')
+      lang_msg.local_server_mode = Lp5locale.t('can be used on LOCAL or SERVER mode only')
+      lang_msg.not_declared = Lp5locale.t('not declared')
 });

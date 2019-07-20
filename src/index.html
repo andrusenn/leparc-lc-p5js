@@ -13,40 +13,25 @@
 <body>
 	<main id="main">
 		<div id="win">
-			<!-- tabs  -->
-			<span id="lp5-tabs" class="tabs">
-				<span id="lp5-tab-aux" class="tab">aux</span>
-				<span id="lp5-tab-setup" class="tab">setup</span>
-				<span id="lp5-tab-draw" class="tab">loop</span>
-			</span>
-			<div id="codeblock-resizable" class="codeblock-resizable">
-				<!-- aux pannel --------------------------------------------- -->
-				<div id="lp5-aux-pannel">
-					<span class="pannel-title" id="aux-title">aux:</span><br>
-					<div class="lp5-code-parent">
-						<div id="lp5-aux"></div><br>
-					</div>
-					<span class="pannel-title"></span><br>
-				</div>
-				<!-- setup pannel ----------------------------------------- -->
-				<div id="lp5-setup-pannel">
-					<span class="pannel-title" id="setup-title"></span><br>
-					<div class="lp5-code-parent">
-						<div id="lp5-setup"></div><br>
-					</div>
-					<span class="pannel-title" id="setup-title-end"></span><br>
+			<!-- aux pannel --------------------------------------------- -->
+			<div id="lp5-aux-pannel">
+				<div class="lp5-code-parent">
+					<div id="lp5-aux"></div><br>
 				</div>
 			</div>
-			<div id="codeblock" class="codeblock">
-				<!-- draw pannel ------------------------------------------- -->
-				<div id="lp5-draw-pannel">
-					<span class="pannel-title" id="draw-title"></span><br>
-					<div class="lp5-code-parent">
-						<div id="lp5-draw"></div><br>
-					</div>
-					<span class="pannel-title" id="draw-title-end"></span><br>
+
+			<!-- <div id="lp5-frag-pannel">
+				<div class="lp5-code-parent">
+					<span>Fragment Shader</span>
+					<div id="lp5-frag"></div><br>
 				</div>
 			</div>
+			<div id="lp5-vert-pannel">
+				<div class="lp5-code-parent">
+					<span>Vertex Shader</span>
+					<div id="lp5-vert"></div><br>
+				</div>
+			</div> -->
 			<!-- console pannel -->
 			<span id="lp5-console" class="console-out">
 				<span id="lp5-os-status" class="_"> &laquo;</span>
@@ -65,11 +50,21 @@
 			<div class="modal-win">
 				<table>
 					<tr>
+						<td class="col2"><label for="cnf-playmode" class="en-playmode">PLAY MODE</label>
+						</td>
+						<td class="col1">
+							<select id="cnf-playmode">
+								<option value="livecoding">LIVECODING</option>
+								<option value="static">STATIC</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="option-renderonfly">
 						<td class="col2"><label for="cnf-renderonfly" class="en-autorender">AUTO
 								RENDER</label></td>
 						<td class="col1"><input id="cnf-renderonfly" type="checkbox" /></td>
 					</tr>
-					<tr>
+					<tr id="option-render">
 						<td class="col2"><label for="cnf-render" class="en-render">RENDER</label></td>
 						<td class="col1">
 							<select id="cnf-render">
@@ -84,11 +79,7 @@
 						<td class="col1"><input id="cnf-linenumbers" value="1" type="checkbox" checked />
 						</td>
 					</tr>
-					<tr>
-						<td class="col2"><label for="cnf-titles" class="en-title">BLOCK NAMES</label></td>
-						<td class="col1"><input id="cnf-titles" value="1" type="checkbox" /></td>
-					</tr>
-					<tr>
+					<tr id="option-server-mode">
 						<td class="col2"><label for="cnf-server" class="en-mode">MODE (net)</label></td>
 						<td class="col1">
 							<select id="cnf-server">
@@ -98,11 +89,17 @@
 							</select>
 						</td>
 					</tr>
-					<tr>
+					<tr id="option-server-hidecanvas">
+						<td class="col2"><label for="cnf-hidecanvas" class="en-hidecanvas">HIDE
+								CANVAS</label></td>
+						<td class="col1"><input id="cnf-hidecanvas" value="1" type="checkbox" />
+						</td>
+					</tr>
+					<tr id="option-server-sync">
 						<td class="col2"><label for="cnf-sync">SYNC (net)</label></td>
 						<td class="col1"><input id="cnf-sync" type="checkbox" /></td>
 					</tr>
-					<tr>
+					<tr id="option-server-name">
 						<td class="col2"><label for="cnf-server" class="en-name">NAME (net)</label></td>
 						<td class="col1">
 							<input type="text" id="cnf-name" />
@@ -114,16 +111,6 @@
 							<select id="cnf-lang">
 								<option value="es">ES</option>
 								<option value="en">EN</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="col2"><label for="cnf-pannels" class="en-pannels">PANNELS</label></td>
-						<td class="col1">
-							<select id="cnf-pannels">
-								<option class="en-pannels-vert" value="vert">VERTICAL</option>
-								<option class="en-pannels-horiz" value="horiz">HORIZONTAL</option>
-								<option class="en-pannels-tabs" value="tabs">TABS</option>
 							</select>
 						</td>
 					</tr>
@@ -140,6 +127,7 @@
 	<script src="libs/codemirror/codemirror.js"></script>
 	<script src="libs/codemirror/comment.js"></script>
 	<script src="libs/codemirror/matchbrackets.js"></script>
+	<script src="libs/codemirror/closebrackets.js"></script>
 	<script src="libs/jsbeautify.min.js"></script>
 	<script src="libs/lp5.js"></script>
 	<script src="libs/lp5-renderer.js"></script>

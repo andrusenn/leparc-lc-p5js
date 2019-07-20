@@ -49,8 +49,6 @@ function initServer(_lp5) {
             // envia codigo del servidor
             let o = {
                   frameSync: frameCount,
-                  codeSetup: lp5.cmSetup.getValue(),
-                  codeDraw: lp5.cmDraw.getValue(),
                   codeAux: lp5.cmAux.getValue()
             }
             sio.emit('broadcast', o)
@@ -58,32 +56,28 @@ function initServer(_lp5) {
 
             // recive desde cliente
             socket.on('liveleparc1', data => {
-                  lp5.cmSetup.setValue(data.codeSetup)
-                  lp5.cmDraw.setValue(data.codeDraw)
                   lp5.cmAux.setValue(data.codeAux)
-
+                  // if (data.cmAux == data.cmAuxTo) {
+                  //       lp5.cmAux.replaceRange(data.codeAux, { line: data.cAux.line, ch: 0 }, { line: data.cAux.line, ch: 9999999999 })
+                  // } else {
+                  //       lp5.cmAux.replaceRange(data.codeAux, { line: data.cAux.line, ch: data.cAux.ch }, { line: data.cAuxTo.line, ch: data.cAuxTo.ch })
+                  // }
                   // Restaurar cursor local despues de la actualizacion
-                  lp5.restoreCursor(lp5.cmSetup, lp5.cmSetupCp)
-                  lp5.restoreCursor(lp5.cmDraw, lp5.cmDrawCp)
                   lp5.restoreCursor(lp5.cmAux, lp5.cmAuxCp)
 
                   // Actualiza marcadores -----------------------------------
                   let label = (data.nodeName != '') ? data.nodeName : data.id
                   lp5.markers[data.id.toString()].el.innerHTML = '<span class="label">' + label + '</span>'
-                  //console.log(data.cmContext)
+
                   if (data.cmContext) {
-                        if (data.cmContext == 'draw') lp5.cmDraw.setBookmark(data.cDraw, { widget: lp5.markers[data.id.toString()].el })
-                        if (data.cmContext == 'setup') lp5.cmSetup.setBookmark(data.cSetup, { widget: lp5.markers[data.id.toString()].el })
                         if (data.cmContext == 'aux') lp5.cmAux.setBookmark(data.cAux, { widget: lp5.markers[data.id.toString()].el })
                   }
                   // Reenvia la actualizacion a clientes
                   let o = {
                         // ID
                         id: socket.id,
-                        cmContext: lp5.cmFocused,
+                        cmContext: 'aux',
                         frameSync: frameCount,
-                        codeSetup: data.codeSetup,
-                        codeDraw: data.codeDraw,
                         codeAux: data.codeAux
                   }
                   socket.broadcast.emit('liveleparc1', o)
@@ -91,9 +85,25 @@ function initServer(_lp5) {
             // Eval
 
             socket.on('eval', eval => {
-                  if (eval == 'draw') lp5.evalDraw()
-                  if (eval == 'setup') lp5.evalSetup()
-                  if (eval == 'aux') lp5.evalAux()
+
+                  if (eval.isFunc) {
+                        if (eval.func == 'setup') {
+                              lp5.renderCodeSetup = lp5.doGlobals("'use strict';" + eval.code)
+                              lp5.tryEval('setup')
+                        }
+                        if (eval.func == 'draw') {
+                              lp5.renderCodeDraw = lp5.doGlobals("'use strict';" + eval.code)
+                              lp5.evalDraw()
+                        }
+                        if (eval.func == 'any') {
+                              lp5.renderCodeAux = lp5.doGlobals("'use strict';" + eval.code)
+                              lp5.tryEval('aux')
+                        }
+                  } else {
+                        lp5.renderCodeAux = lp5.doGlobals("'use strict';" + eval.code)
+                        lp5.tryEval('aux')
+                  }
+                  lp5.evalLineFx('lp5-aux', eval.lf, eval.lt)
                   // Reenvia la actualizacion a clientes
                   socket.broadcast.emit('eval', eval)
             })
@@ -120,20 +130,17 @@ exports.initServer = function (lp5) {
 }
 exports.sendClient = function (fc) {
       // envia a cliente    
-      let cSetup = lp5.cmSetup.getCursor()
-      let cDraw = lp5.cmDraw.getCursor()
+      // cursores 
       let cAux = lp5.cmAux.getCursor()
 
       let o = {
-            cmContext: lp5.cmFocused,
+            cmContext: 'aux',
             //
             frameSync: fc,
-            codeSetup: lp5.cmSetup.getValue(),
-            codeDraw: lp5.cmDraw.getValue(),
+            //codeSetup: lp5.cmSetup.getValue(),
+            //codeDraw: lp5.cmDraw.getValue(),
             codeAux: lp5.cmAux.getValue(),
             // cursores
-            cSetup: cSetup,
-            cDraw: cDraw,
             cAux: cAux,
             nodeName: Lp5.nodeName
       }

@@ -90,34 +90,6 @@ canvas {
   opacity: 1.0;
 }
 
-#setup-title,
-#draw-title,
-#aux-title {
-  display: inline-block;
-  line-height: 1.4rem;
-  padding: 4px;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: #fff;
-  clear: both;
-}
-
-#setup-title-end,
-#draw-title-end,
-#aux-title-end {
-  display: inline-block;
-  line-height: 1.4rem;
-  padding: 0;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: #fff;
-  clear: both;
-}
-
-#draw-title {
-  cursor: ew-resize;
-}
-
 .error {
   border-left: 6px solid rgba(255, 0, 0, 0.5) !important;
 }
@@ -287,33 +259,6 @@ canvas {
   bottom: 80px;
 }
 
-#win #lp5-tabs {
-  overflow: hidden;
-  font-size: 0.8rem;
-  height: 30px;
-  display: none;
-  width: auto;
-  line-height: 30px;
-  position: fixed;
-  background: transparent;
-  top: 0;
-  right: 0;
-  z-index: 999;
-}
-
-#win #lp5-tabs .tab {
-  background: rgba(0, 0, 0, 0.9);
-  border-radius: 6px;
-  padding: 2px 6px;
-  text-shadow: none;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-}
-
-#win #lp5-tabs .tab-selected {
-  font-weight: bold;
-}
-
 #win #lp5-console {
   overflow: hidden;
   font-size: 0.8rem;
@@ -343,10 +288,6 @@ canvas {
 
 #win #lp5-console .unsave {
   background: rgba(255, 255, 255, 0.6) !important;
-}
-
-#win .codeblock-resizable {
-  overflow: hidden;
 }
 
 #win .codeblock {

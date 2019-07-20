@@ -9,9 +9,9 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.1.2',
+      version: '0.2.0',
       p5: {
-            version: '0.8.0'
+            version: '0.9.0'
       },
       // Canvas
       canvas: null,
@@ -32,6 +32,7 @@ let Lp5 = {
       client: null,
       clients: 0,
       // Env
+      playmode: 'static',
       fullscreen: false,
       devtools: false,
       fps: 0,
@@ -40,66 +41,87 @@ let Lp5 = {
       historyChangesDraw: 0,
       historyChangesAux: 0,
       drawOnFly: false,
-      // Drag pannels
-      dragStart: 0,
-      dragEnd: 0,
-      mousePressed: false,
-      pannelDraggign: false,
-      pannelLWidth: '50%',
-      pannelLRight: '50%',
-      // Codemirror
-      cmFocused: null,
-      cmSetup: null,
-      cmDraw: null,
+      blockData: '',
       cmAux: null,
+      //cmFrag: null,
+      //cmVert: null,
       // cmClient:         null,
-      cmSetupCp: {
-            line: 0,
-            ch: 0
-      },
-      cmDrawCp: {
-            line: 0,
-            ch: 0
-      },
       cmAuxCp: {
             line: 0,
             ch: 0
       },
-      panelIndex: 2,
+      // cmFragCp: {
+      //       line: 0,
+      //       ch: 0
+      // },
+      // cmVertCp: {
+      //       line: 0,
+      //       ch: 0
+      // },
       cmSelect: '',
+      cmFocused: null,
       // DOM en index.html
-      codeSetup: document.getElementById('lp5-setup'),
-      codeDraw: document.getElementById('lp5-draw'),
       codeAux: document.getElementById('lp5-aux'),
+      //codeFrag: document.getElementById('lp5-frag'),
+      //codeVert: document.getElementById('lp5-vert'),
       consoleView: document.getElementById('lp5-console'),
       // Almacena los codigos a evaluar
-      isValidCodeAux: true,
-      isValidCodeSetup: true,
-      isValidCodeDraw: true,
       validCodeDraw: '',
       renderCodeDraw: '',
       validCodeSetup: '',
       renderCodeSetup: '',
       validCodeAux: '',
       renderCodeAux: '',
-      setupTxt: '',
-      drawTxt: '',
+      // Shader
+      //renderCodeFrag: '',
+      //renderCodeVert: '',
+      //
+      renderCodeEvent: {
+            mouseMoved: '',
+            mouseReleased: '',
+            mousePressed: '',
+            mouseClicked: '',
+            doubleClicked: '',
+            mouseDragged: '',
+            mouseWheel: '',
+            keyPressed: '',
+            keyReleased: '',
+            keyTyped: ''
+      },
+      validCodeEvent: {
+            mouseMoved: '',
+            mouseReleased: '',
+            mousePressed: '',
+            mouseClicked: '',
+            doubleClicked: '',
+            mouseDragged: '',
+            mouseWheel: '',
+            keyPressed: '',
+            keyReleased: '',
+            keyTyped: ''
+      },
+      renderExtends: [
+            'snip',
+            'loadLib',
+            'loadImage',
+            'loadModel',
+            'loadStrings',
+            'loadShader',
+            'loadJSON',
+            'loadStrings',
+            'loadTable',
+            'loadXML',
+            'loadFont',
+            'loadBytes'
+
+      ],
       auxTxt: '',
       // Escala de los campos a
       scale_st: 1,
-      scale_dr: 1,
-      scale_ax: 1,
       // bg alfa
       bg_code_alpha: 0.4,
-      // p5 externas
-      setup: null,
       // Mostrar ventanas
-      showSetupWin: true,
-      showDrawWin: true,
-      showAuxWin: true,
       showWin: true,
-      // Imagenes
-      // imagesBank: new Array(),
       // Funciones
       beautify_js: function (data) {
             let ob = {
@@ -108,12 +130,15 @@ let Lp5 = {
             }
             return js_beautify(data, ob);
       },
+      // Get DOM element by ID
       el: function (id) {
             return document.getElementById(id)
       },
+      // Get DOM element by query
       querySel: function (qs) {
             return document.querySelector(qs)
       },
+      // Get DOM elements by query
       querySelAll: function (qs, fn = null) {
             let all = document.querySelectorAll(qs)
             if (typeof fn == 'function') {
@@ -130,6 +155,7 @@ let Lp5 = {
             let len = el.getValue().length;
             el.setCursor(len)
       },
+      // Add reserved words
       addSysName: function (name) {
             this.prog.push(name)
       },
@@ -143,7 +169,24 @@ let Lp5 = {
                   elsln[i].style.backgroundColor = "rgba(0,0,0," + this.bg_code_alpha + ")";
             }
       },
-      // Palabras reservadas / reserved words
+      // p5 functions
+      p5Words: [
+            'mouseClicked',
+            'mouseMoved',
+            'mouseDragged',
+            'mousePressed',
+            'mouseReleased',
+            'keyReleased',
+            'keyPressed',
+            'doubleClicked',
+            'mouseWheel',
+            'windowResized',
+            'setup',
+            'draw',
+            'preload'
+
+      ],
+      // Reserved words
       prog: {
             setup: [
                   'draw',
@@ -173,15 +216,15 @@ let Lp5 = {
                   'canvas',
                   'createCanvas',
                   'remove',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
                   'mouseClicked',
                   'mouseMoved',
                   'mouseDragged',
@@ -200,11 +243,10 @@ let Lp5 = {
                   'draw',
                   'size',
                   'setup',
+                  'clearDraw',
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
                   'useCam',
                   'useAudio',
                   'remove',
@@ -229,17 +271,16 @@ let Lp5 = {
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
+                  'clearDraw',
+                  //'text',
+                  //'textAlign',
+                  //'textLeading',
+                  //'textSize',
+                  //'textStyle',
+                  //'textWidth',
+                  //'textAscent',
+                  //'textDescent',
+                  //'textFont',
                   'useCam',
                   'useAudio',
                   'remove',
@@ -263,10 +304,6 @@ let Lp5 = {
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'useCam',
-                  'useAudio',
                   'remove',
                   '___audio',
                   '___fft',
@@ -279,19 +316,15 @@ let Lp5 = {
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'use2d',
-                  'use3d',
-                  'text',
-                  'textAlign',
-                  'textLeading',
-                  'textSize',
-                  'textStyle',
-                  'textWidth',
-                  'textAscent',
-                  'textDescent',
-                  'textFont',
-                  'useCam',
-                  'useAudio',
+                  // 'text',
+                  // 'textAlign',
+                  // 'textLeading',
+                  // 'textSize',
+                  // 'textStyle',
+                  // 'textWidth',
+                  // 'textAscent',
+                  // 'textDescent',
+                  // 'textFont',
                   'remove',
                   '___audio',
                   '___fft',
@@ -299,22 +332,217 @@ let Lp5 = {
                   'ZOOM_SCALE'
             ]
       },
+      // Load files from extends folder
       extendsFile: function (file) {
             return this.main.path().join(this.main.resourcesPath(), 'leparc_resources', 'extends', file)
       },
       checkProgWord: function (_word) {
             // verifica que no se redefinan variables o funciones de p5
-            return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s ]*${_word})`
+            return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
       },
       doGlobals: function (_code) {
+            // Cambia a globales las variables fuera de las funciones
             return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
       },
-      getBlockRange: function (cm, cp) {
+      // Get functions or lines from editor by context
+      getCodeBlock: function (cm, cp) {
             let lfrom = cp.line
             let lto = cp.line
-            while (lfrom >= 0 && cm.getLine(lfrom) != "") { lfrom-- }
-            while (lto < cm.lineCount() && cm.getLine(lto) != "") { lto++ }
-            return { lf: lfrom, lt: lto, code: cm.getRange({ line: lfrom, ch: 0 }, { line: lto, ch: 0 }) }
+            let lfromc = cp.line
+            let ltoc = cp.line
+            let linepos = cp.line
+            let out = ''
+            let func = ''
+            let code = ''
+            // Encuentra la funcion setup o draw / Find draw or setup
+            evtsln:
+            while (lfrom >= 0) {
+                  // Setup
+                  lto = lfrom
+                  if (cm.getLine(lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                        func = 'setup'
+                        break;
+                  }
+                  // Draw
+                  if (cm.getLine(lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                        func = 'draw'
+                        break;
+                  }
+                  // Funcion evento
+                  for (var key in this.renderCodeEvent) {
+                        let reg = new RegExp("function[\\t ]+" + key + "[\\t ]*\\([\\t ]*\\)", "g")
+                        if (cm.getLine(lfrom).match(reg)) {
+                              func = key
+                              break evtsln;
+                        }
+                  }
+                  // Funcion generica
+                  if (cm.getLine(lfrom).match(/\$[a-zA-Z_0-9]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[a-zA-Z0-9_]*[\t\s ]*\)|\([\t\s ]*[a-zA-Z0-9_]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                        func = 'any'
+                        break;
+                  }
+                  // Funcion load -> /sinp/loadStrings/etc...
+                  // Declaradas en "renderExtends"
+                  for (let i = 0; i < this.renderExtends.length; i++) {
+                        let fname = this.renderExtends[i]
+                        let reg = new RegExp("[\\t\\s ]*(?<=\$)[\\t\\s ]*" + fname, "g")
+                        if (cm.getLine(lfrom).match(reg)) {
+                              let tmp_lfrom = lfrom
+                              //linepos = lfrom
+                              let opens = 0
+                              let brackets = false
+                              // check if inside other function
+                              while (tmp_lfrom >= 0) {
+                                    if (brackets && opens < 0) {
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                                                func = 'setup'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                                                func = 'draw'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                                          brackets = true
+                                          let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                                          if (len > 1) {
+                                                opens += len;
+                                          } else {
+                                                opens++;
+                                          }
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                                          brackets = true
+                                          let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                                          if (len > 1) {
+                                                opens -= len;
+                                          } else {
+                                                opens--;
+                                          }
+                                    }
+                                    tmp_lfrom--
+                              }
+                              func = fname
+                              break evtsln;
+                        }
+                  }
+                  lfrom--
+            }
+            if (func == 'setup' || func == 'draw') {
+                  let opens = 0
+                  let brackets = false
+                  while (lto < cm.lineCount()) {
+                        if (cm.getLine(lto).match(/\{/g)) {
+                              brackets = true
+                              opens++;
+                        }
+                        if (cm.getLine(lto).match(/\}/g) && opens > 0) {
+                              opens--;
+                        }
+                        if (brackets && opens == 0) {
+                              break;
+                        }
+                        lto++
+                  }
+                  code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+            }
+            if (func == 'any') {
+                  let opens = 0
+                  let brackets = false
+                  while (lto < cm.lineCount()) {
+                        if (cm.getLine(lto).match(/\{/g)) {
+                              brackets = true
+                              opens++;
+                        }
+                        if (opens > 0 && cm.getLine(lto).match(/\}/g)) {
+                              opens--;
+                        }
+                        if (brackets && opens == 0) {
+                              break;
+                        }
+                        lto++
+                  }
+                  //Funcion completa
+                  code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+            }
+            for (var key in this.renderCodeEvent) {
+                  if (func == key) {
+                        let opens = 0
+                        let brackets = false
+                        while (lto < cm.lineCount()) {
+                              if (cm.getLine(lto).match(/\{/g)) {
+                                    brackets = true
+                                    opens++;
+                              }
+                              if (cm.getLine(lto).match(/\}/g) && opens > 0) {
+                                    opens--;
+                              }
+                              if (brackets && opens == 0) {
+                                    break;
+                              }
+                              lto++
+                        }
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                        break;
+                  }
+            }
+            // load code
+            for (let i = 0; i < this.renderExtends.length; i++) {
+                  let fname = this.renderExtends[i]
+                  if (func == fname) {
+                        let brackets = false
+                        let opens = 0
+                        while (lto < cm.lineCount()) {
+                              if (cm.getLine(lto).match(/\(/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(lto).match(/\(/g).length
+                                    if (len > 1) {
+                                          // mas de una en la misma linea / more than one in the same line
+                                          opens += len
+                                    } else {
+                                          opens++
+                                    }
+                              }
+                              if (cm.getLine(lto).match(/\)/g) && opens > 0) {
+                                    let len = cm.getLine(lto).match(/\)/g).length
+                                    if (len > 1) {
+                                          opens -= len
+                                    } else {
+                                          opens--
+                                    }
+                              }
+                              if (brackets && opens == 0) {
+                                    break;
+                              }
+
+                              lto++
+                        }
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+                        break;
+                  }
+            }
+            // Verifica que el cursor este entre llaves
+            // Check if cursor/caret is between brackets
+            if (func != '' && linepos >= lfrom && linepos <= lto) {
+                  out = { lf: lfrom - 1, lt: lto + 1, code: code.trim(), func: func, isFunc: true }
+            } else {
+                  while (lfromc >= 0 && cm.getLine(lfromc) != "") {
+                        if (cm.getLine(lfromc).match(/\}/g)) break;
+                        lfromc--
+                  }
+                  while (ltoc < cm.lineCount() && cm.getLine(ltoc) != "") {
+                        if (cm.getLine(ltoc).match(/function/g)) break;
+                        ltoc++
+                  }
+                  code = cm.getRange({ line: lfromc + 1, ch: 0 }, { line: ltoc, ch: 0 })
+                  out = { lf: lfromc, lt: ltoc, code: code.trim(), func: '', isFunc: false }
+            }
+            return out;
       },
       evalFx(_el) {
             let els = this.el(_el).querySelectorAll('.CodeMirror-line>span')
@@ -345,9 +573,12 @@ let Lp5 = {
       getLinesSelected(cm) {
             return { from: cm.getCursor('from').line, to: cm.getCursor('to').line }
       },
+      // En modo STATIC, las funciones se resetean en cada evaluacion
+      // Using STATIC mode set null every evaluation
       clearEvts: function () {
             // p5js events prop
             mouseClicked = null
+            windowResized = null
             mouseMoved = null
             mouseDragged = null
             mousePressed = null
@@ -356,10 +587,48 @@ let Lp5 = {
             keyReleased = null
             keyPressed = null
             mouseWheel = null
+            draw = null
+            setup = null
+            preload = null
       },
-      evalDraw: function () {
-            this.renderCodeDraw = this.doGlobals("'use strict';" + this.cmDraw.getValue());
-            this.evalFx('lp5-draw')
+      startDraw: function () {
+            // FPS
+            this.fps = getFrameRate();
+            // // Revisar
+            if ((this.historyChangesSetup + this.historyChangesDraw + this.historyChangesAux) > 0) {
+                  this.el('lp5-os-status').classList.add('unsave')
+            } else {
+                  this.el('lp5-os-status').classList.remove('unsave')
+            }
+            // Clear -------------------------------
+            //if (Lp5.cmDraw.getValue().trim() == '') clear()
+
+            // reset -------------------------------
+            strokeWeight(1)
+            blendMode(BLEND)
+            stroke(0)
+
+            // funciones en WEBGL ----
+            try {
+                  if (___webgl) {
+                        // en use3d -> default
+                        directionalLight(100, 100, 100, 1, 1, 0)
+                        ambientLight(50)
+                        colorMode(RGB, 255, 255, 255)
+                        ambientMaterial(color(167, 167, 167))
+                  } else {
+                        noTint()
+
+                  }
+                  textLeading(15)
+                  textSize(15)
+                  textAlign(LEFT, TOP)
+                  textStyle(NORMAL)
+            } catch (e) {
+                  //
+            }
+      },
+      evalDraw: function (onfly = false) {
             try {
                   let valid = true;
                   let word = '';
@@ -385,47 +654,109 @@ let Lp5 = {
                   try {
                         new Function(this.renderCodeDraw)()
                   } catch (e) {
+                        if (onfly) new Function(Lp5.validCodeDraw)()
                         valid = false
                         this.el('lp5-console-out').innerHTML = 'draw: ' + e
-                        this.el('lp5-draw').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('error');
                   }
                   if (valid) {
                         this.validCodeDraw = this.renderCodeDraw;
-                        this.el('lp5-draw').parentElement.classList.remove('error');
-                        this.el('lp5-draw').parentElement.classList.remove('change');
-                        //this.main.saveCode('draw', this.validCodeDraw)
+                        if (onfly) new Function(Lp5.validCodeDraw)()
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
                   } else {
-                        this.el('lp5-draw').parentElement.classList.add('error');
+                        this.el('lp5-aux').parentElement.classList.add('error');
+                        if (onfly) new Function(Lp5.validCodeDraw)()
                   }
             } catch (e) {
-                  this.el('lp5-draw').parentElement.classList.add('error');
+                  this.el('lp5-aux').parentElement.classList.add('error');
                   this.el('lp5-console-out').innerHTML = '| draw: ' + e
+                  if (onfly) new Function(Lp5.validCodeDraw)()
             }
       },
-      tryEvalAux: function () {
+      evalAll: function () {
+            try {
+                  new Function(this.renderCodeAux)()
+                  this.el('lp5-aux').parentElement.classList.remove('error');
+                  this.el('lp5-aux').parentElement.classList.remove('change');
+
+            } catch (e) {
+                  //new Function(this.renderCodeAux)()
+                  this.el('lp5-aux').parentElement.classList.add('error');
+                  this.el('lp5-console-out').innerHTML = e
+                  console.log(e)
+            }
+      },
+      tryEval: function (_block) {
+            try {
+                  let valid = true;
+                  let word = '';
+                  let render = this.main.globalSettings().renderer
+                  let wordList, renderCode
+                  if (_block == 'aux') {
+                        renderCode = this.renderCodeAux
+                        wordList = (render == 'webgl') ? this.prog.aux3d : this.prog.aux
+                  } else {
+                        renderCode = this.renderCodeSetup
+                        wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
+                  }
+
+                  for (let i = 0; i < wordList.length; i++) {
+                        word = wordList[i]
+                        if (renderCode.includes(word)) {
+                              let r = new RegExp(this.checkProgWord(word))
+                              if (!renderCode.match(r)) {
+                                    valid = false;
+                                    if (render == 'webgl') {
+                                          this.el('lp5-console-out').innerHTML = '| ' + _block + ': ' + word + ' ' + lang_msg.priv_words_render
+                                    } else {
+                                          this.el('lp5-console-out').innerHTML = '| ' + _block + ': ' + word + ' ' + lang_msg.priv_words
+                                    }
+                              }
+                        }
+                  }
+                  if (valid) {
+                        if (_block == 'aux') {
+                              this.validCodeAux = renderCode;
+                              new Function(this.validCodeAux)(global);
+                        }
+                        if (_block == 'setup') this.validCodeSetup = renderCode;
+
+                        this.el('lp5-aux').parentElement.classList.remove('error');
+                        this.el('lp5-aux').parentElement.classList.remove('change');
+                        this.el('lp5-console-out').innerHTML = ''
+                        if (_block == 'setup') setup();
+                  } else {
+                        this.el('lp5-aux').parentElement.classList.add('error');
+                  }
+            } catch (e) {
+                  console.trace('en ' + _block + ': ' + e);
+                  this.el('lp5-console-out').innerHTML = '| ' + _block + ': ' + e
+                  this.el('lp5-aux').parentElement.classList.add('error');
+            }
+      },
+      tryEvalEvent: function (_evt) {
             try {
                   let valid = true;
                   let word = '';
                   let render = this.main.globalSettings().renderer
                   let wordList = (render == 'webgl') ? this.prog.aux3d : this.prog.aux
                   for (let i = 0; i < wordList.length; i++) {
-                        word = wordList[i]
-                        if (this.renderCodeAux.includes(word)) {
+                        word = wordList[i];
+                        if (this.renderCodeEvent[_evt].includes(word)) {
                               let r = new RegExp(this.checkProgWord(word))
-                              if (!this.renderCodeAux.match(r)) {
+                              if (!this.renderCodeEvent[_evt].match(r)) {
                                     valid = false;
                                     if (render == 'webgl') {
-                                          this.el('lp5-console-out').innerHTML = '| aux: ' + word + ' ' + lang_msg.priv_words_render
+                                          this.el('lp5-console-out').innerHTML = '| ' + _evt + ': ' + word + ' ' + lang_msg.priv_words_render
                                     } else {
-                                          this.el('lp5-console-out').innerHTML = '| aux: ' + word + ' ' + lang_msg.priv_words
+                                          this.el('lp5-console-out').innerHTML = '| ' + _evt + ': ' + word + ' ' + lang_msg.priv_words
                                     }
                               }
                         }
                   }
                   if (valid) {
-                        this.clearEvts()
-                        this.validCodeAux = this.doGlobals("'use strict';" + this.renderCodeAux);
-                        new Function(this.validCodeAux)();
+                        this.validCodeEvent[_evt] = this.renderCodeEvent[_evt];
                         this.el('lp5-aux').parentElement.classList.remove('error');
                         this.el('lp5-aux').parentElement.classList.remove('change');
                         this.el('lp5-console-out').innerHTML = ''
@@ -433,65 +764,19 @@ let Lp5 = {
                         this.el('lp5-aux').parentElement.classList.add('error');
                   }
             } catch (e) {
-                  console.trace('en aux: ' + e);
-                  this.el('lp5-console-out').innerHTML = '| aux: ' + e
+                  this.el('lp5-console-out').innerHTML = 'setup: ' + e
                   this.el('lp5-aux').parentElement.classList.add('error');
             }
       },
-      evalAux: function () {
-            if (this.cmAux.somethingSelected()) {
-                  this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getSelection());
-                  this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmAux))
-            } else {
-                  this.renderCodeAux = this.doGlobals("'use strict';" + this.cmAux.getValue());
-                  this.evalFx('lp5-aux')
-            }
-            this.tryEvalAux()
-      },
-      tryEvalSetup: function () {
-            try {
-                  let valid = true;
-                  let word = '';
-                  let render = this.main.globalSettings().renderer
-                  let wordList = (render == 'webgl') ? this.prog.setup3d : this.prog.setup
-                  for (let i = 0; i < wordList.length; i++) {
-                        word = wordList[i];
-                        if (this.renderCodeSetup.includes(word)) {
-                              let r = new RegExp(this.checkProgWord(word))
-                              if (!this.renderCodeSetup.match(r)) {
-                                    valid = false;
-                                    if (render == 'webgl') {
-                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words_render
-                                    } else {
-                                          this.el('lp5-console-out').innerHTML = '| setup: ' + word + ' ' + lang_msg.priv_words
-                                    }
-                              }
-                        }
-                  }
-                  if (valid) {
-                        this.validCodeSetup = this.renderCodeSetup;
-                        this.el('lp5-setup').parentElement.classList.remove('error');
-                        this.el('lp5-setup').parentElement.classList.remove('change');
-                        this.el('lp5-console-out').innerHTML = ''
-                        //this.main.saveCode('setup', this.validCodeSetup)
-                        setup();
-                  } else {
-                        this.el('lp5-setup').parentElement.classList.add('error');
-                  }
-            } catch (e) {
-                  this.el('lp5-console-out').innerHTML = 'setup: ' + e
-                  this.el('lp5-setup').parentElement.classList.add('error');
-            }
-      },
-      evalSetup: function () {
-            if (this.cmSetup.somethingSelected()) {
-                  this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getSelection());
-                  this.evalSelectFx('lp5-setup', this.getLinesSelected(this.cmSetup))
-            } else {
-                  this.renderCodeSetup = this.doGlobals("'use strict';" + this.cmSetup.getValue());
-                  this.evalFx('lp5-setup')
-            }
-            this.tryEvalSetup()
+      evalEvent: function (_evt) {
+            // if (this.cmAux.somethingSelected()) {
+            //       this.renderCodeSetup = "'use strict';" + this.cmAux.getSelection();
+            //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmSetup))
+            // } else {
+            //this.renderCodeSetup = "'use strict';" + this.cmAux.getValue();
+            //this.evalFx('lp5-aux')
+            //}
+            this.tryEvalEvent(_evt)
       },
       // Config
       toggleModal: function (el) {
@@ -501,74 +786,18 @@ let Lp5 = {
                   this.el(el).style.display = 'none'
             }
       },
-      // Panels
-      showAllPannels: function () {
-            this.el('lp5-aux-pannel').style.display = 'inline';
-            this.showAuxWin = true;
-            this.cmAux.refresh()
-            this.el('lp5-setup-pannel').style.display = 'inline';
-            this.showSetupWin = true;
-            this.cmSetup.refresh()
-            this.el('lp5-draw-pannel').style.display = 'inline';
-            this.showDrawWin = true;
-            this.cmDraw.refresh()
-      },
-      hideAllPannels: function () {
-            this.el('lp5-aux-pannel').style.display = 'none';
-            this.showAuxWin = false;
-            this.el('lp5-setup-pannel').style.display = 'none';
-            this.showSetupWin = false;
-            this.el('lp5-draw-pannel').style.display = 'none';
-            this.showDrawWin = false;
-      },
-      showPannel: function (tab) {
-            let els = document.querySelectorAll(".tabs>span")
-            for (let i = 0; i < els.length; i++) {
-                  els[i].classList.remove('tab-selected')
-            }
-            if (tab == 'aux') {
-                  this.hideAllPannels()
-                  this.el('lp5-aux-pannel').style.display = 'inline';
-                  this.el('lp5-tab-aux').classList.add('tab-selected')
-                  this.showAuxWin = true;
-                  this.cmAux.refresh()
-            }
-            if (tab == 'setup') {
-                  this.hideAllPannels()
-                  this.el('lp5-setup-pannel').style.display = 'inline';
-                  this.el('lp5-tab-setup').classList.add('tab-selected')
-                  this.showSetupWin = true;
-                  this.cmSetup.refresh()
-            }
-            if (tab == 'draw') {
-                  this.hideAllPannels()
-                  this.el('lp5-draw-pannel').style.display = 'inline';
-                  this.el('lp5-tab-draw').classList.add('tab-selected')
-                  this.showDrawWin = true;
-                  this.cmDraw.refresh()
-            }
-      },
       pannelFocus: function (pannel, cur = { line: 0, ch: 0 }) {
             if (pannel == 'aux' && this.cmAux) {
                   this.cmAux.focus()
-                  this.cmFocused = 'aux'
                   this.cmAux.setCursor(cur)
-            }
-            if (pannel == 'setup' && this.cmSetup) {
-                  this.cmSetup.focus()
-                  this.cmFocused = 'setup'
-                  this.cmSetup.setCursor(cur)
-            }
-            if (pannel == 'draw' && this.cmDraw) {
-                  this.cmDraw.focus()
-                  this.cmFocused = 'draw'
-                  this.cmDraw.setCursor(cur)
             }
       },
       // Modo: CLIENTE-SERVIDOR
-      evalConn: function (block) {
-            if (this.mode == 'CLIENT') this.client.eval(block)
-            if (this.mode == 'SERVER') this.server.eval(block)
+      evalConn: function (obj) {
+            if (Lp5.playmode == 'livecoding') {
+                  if (this.mode == 'CLIENT') this.client.eval(obj)
+                  if (this.mode == 'SERVER') this.server.eval(obj)
+            }
       }
 
 }

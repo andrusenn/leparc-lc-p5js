@@ -1,6 +1,10 @@
 # LeParc p5js livecoder
 
+<<<<<<< HEAD
 > ATENCIÓN -> Se está trabajando en una rama que cambia los tres bloques de código que están separados por un solo. La evaluación de cada bloque (setup,draw) será dependiendo del contexto [ver rama](https://github.com/andrusenn/leparc-lc-p5js/tree/bloque1)
+=======
+Esta referencia es para versiones 0.2 o mayores.
+>>>>>>> bloque1
 
 > (Español) - [English](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.md)
 
@@ -42,8 +46,6 @@ leparc_resources/
       ├── media/
       ├── save/
       │      ├── auxcode.txt
-      │      ├── draw.txt
-      │      └── setup.txt
       └── snippets/
             └── espiro/
                   └── espiro.js
@@ -64,14 +66,19 @@ leparc_resources/
 
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
+## Referencia rápida
+
+IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para utilizar: 
+
+* `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene).
+* `LIVECODING` Cada bloque es evaluado por separado. Esto permite ejecutar código en vivo, y hay diferencias con el modo estático en la declaración de variables globales.
+  
 ### Comandos
 
 Atajo de teclado | Acción
 --- | ---
 `Ctrl+Enter` | Evaluar bloque de código
-`Alt+Enter` | Evaluar línea de código (solo en setup() y aux())
 `Ctrl+H` | Mostrar/ocultar código
-`F1 F2 F3` | Mostrar/ocultar paneles  (aux) (setup) (draw)
 `F11` | Pantalla completa (fullscreen)
 `F10` | Muestra/oculta herramientas de desarrollo para debug (dev tools)
 `F5` | Recarga pantalla (se debe volver a evaluar)
@@ -79,30 +86,19 @@ Atajo de teclado | Acción
 `Alt+mousewheel` | Modifica la transparencia del fondo del códivo
 `Ctrl+Alt+mousewheel` | Modifica valor seleccionado suma/resta 1
 `Ctrl+Alt+Shift+mousewheel` | Modifica valor seleccionado suma/resta 0.1
-`Ctrl+ArrowUP` | Cambia el cursor/foco de panel hacia arriba
-`Ctrl+ArrowDOWN` | Cambia el cursor/foco de panel hacia abajo
 `Ctrl+F` | Formatea el código bloque
 `Ctrl+L` | alterna loop()/noLoop()
 `Ctrl+Shift+C` | Comenta/Descomenta código
 
 ### Bloques de código
 
-> `function setup(){}` y `function draw(){}` son solo ayudas visuales. No se pueden modificar. Hay tareas que se ejecutan en esos bloques. Ver código fuente (lp5-renderer.js)
-> Los bloques se evalúan por separado y se agrega el bloque `aux:` que ejecuta código por fuera de los otros dos.
-> Se pueden utilizar las funciones/metodos de p5js en cualquier bloque
+`function setup(){}` y `function draw(){}` son los bloques principales. El códigi se evalúa (`Ctrl+Enter`) selectivamente dependiendo del contexto.
 
-- `setup:` -> `function setup(){ // }`
-- `loop:` -> `function draw(){ // }`
+Se pueden utilizar las funciones/metodos de p5js.
   
-#### Diferencia entre setup(){} y aux(){}
+## Variables y funciones globales  (`Livecoding mode`)
 
-El bloque `setup` reinicializa varios objetos y funciones de p5, mientras que `aux` no.
-
-### Variables y funciones globales
-
-Para acceder a variables desde otros bloques, se provee un objeto global para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
-
-> En aux
+Para acceder a variables globales se provee un objeto para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
 
 ~~~js
 
@@ -120,12 +116,6 @@ $miFuncion = function(){
       console.log('Hola LeParc!')
 }
 
-~~~
-
-> En draw
-
-~~~js
-
 lp.miFuncion() // salida -> Hola LeParc!
 console.log(lp.x) // salida -> code!
 // o abreviada
@@ -136,16 +126,10 @@ console.log($x) // salida -> code!
 
 ### Eventos
 
-Se pueden declarar los eventos en el bloque `aux`
-
 ~~~js
 
-mouseClicked = function(){
+function mouseClicked(){
   console.log('evt click')
-}
-
-mouseMoved = function(){
-  console.log('evt mousemove')
 }
 
 // Etc
@@ -153,26 +137,26 @@ mouseMoved = function(){
 
 ### Funciones extendidas de p5j
 
-|Método|Desc|
-|---|---|
-|`mirrorX()`|Espejo - Refleja la imagen desde la mitad sobre el eje X|
-|`mirrorY()`|Espejo - Refleja la imagen desde la mitad sobre el eje Y|
-|`imirrorX()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida|
-|`imirrorY()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida|
-|`kaleido()`|Efecto caleidoscopio 4 caras (repite la cara superior derecha)|
-|`zoom(escala)`|Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`|
-|`displace(velx,vely)`|Desplaza la pantalla en la direccion `velx`  y  `vely` (+ o -)|
-|`displace(x,y,w,h,velx,vely)`|Recorta una porcion de la imagen y la desplaza|
-|`beginRot(vel_in_radians[,scale])` y `endRot()`|rota lo que está contenido entre esas dos funciones|
-|`freq(mult)`|Abreviación de la sentencia `frameCount * mult`|
-|`osc([freq])`|Abreviacion de `sin( frameCount * freq )`|
-|`cosc([freq])`|Abreviacion de `{sin: sin( frameCount * freq ), cos: cos( frameCount * freq )}`|
-|`pulse(n_fotogramas)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas `if(frameCount % n_fotogramas == 0 ) return true`|
-|`gate(n_fotogramas, duracion)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas con una duracion x `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true`|
-| `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset` |
-| `trange(number [,millis_duration])` | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration` |
+Método|Desc
+---|---
+`mirrorX()`|Espejo - Refleja la imagen desde la mitad sobre el eje X
+`mirrorY()`|Espejo - Refleja la imagen desde la mitad sobre el eje Y
+`imirrorX()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
+`imirrorY()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
+`kaleido()`|Efecto caleidoscopio 4 caras (repite la cara superior derecha)
+`zoom(escala)`|Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`
+`displace(velx,vely)`|Desplaza la pantalla en la direccion `velx`  y  `vely` (+ o -)
+`displace(x,y,w,h,velx,vely)`|Recorta una porcion de la imagen y la desplaza
+`beginRot(vel_in_radians[,scale])` y `endRot()`|rota lo que está contenido entre esas dos funciones
+`freq([mult])`|Abreviación de la sentencia `millis()/1000 [* mult]`
+`sinOsc([mult])`|Abreviacion de `sin( (millis()/1000) * TWO_PI [* mult] )`
+`cosOsc([mult])`|Abreviacion de `cos( (millis()/1000) * TWO_PI [* mult] )`
+`pulse(n_fotogramas)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas `if(frameCount % n_fotogramas == 0 ) return true`
+`gate(n_fotogramas, duracion)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas con una duracion x `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true`
+ `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset`
+ `trange(number [,millis_duration])` | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration`
 
-#### Media
+#### Media (`Livecoding mode`)
 
 ##### Webcam
 
@@ -192,8 +176,8 @@ El método `mediaPath()` devuelve la ruta absoluta a ese directorio.
 ~~~js
 
 // ~home/leparc_resources/media/
-loadImage( mediaPath() + '/miImagen.jpg',(i)=>{
-  lp.im = i
+loadImage( mediaPath('miImagen.jpg'),(i)=>{
+  $im = i
 })
 
 ~~~
@@ -207,7 +191,7 @@ Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE,
 - `Ctrl+TAB` Abre popup de configuraciones
   - **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
   - **RENDER** -> 2D o 3D
-  - **BLOCK NAMES** -> Nombre de los bloques (ayuda visual)
+  - **NÚMEROS DE LÍNEA** Muestra/oculta los numeros de línea
   - **MODE (net)**
     - LOCAL -> Por defecto
     - SERVER -> Activa el modo servidor

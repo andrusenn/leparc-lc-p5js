@@ -31,6 +31,68 @@ if (!p5.prototype.hasOwnProperty('console_msg')) {
             }
       }
 }
+
+/**
+ * Escrib fadeIn -> to full color
+ * 
+ * @method console_msg
+ * @param {String} msg      mensaje
+ * @param {String} type     tipo de mensaje (info, warning,error)
+ */
+if (!p5.prototype.hasOwnProperty('___fadeAlpha')) {
+      p5.prototype.___fadeAlpha = 0
+}
+if (!p5.prototype.hasOwnProperty('fadeIn')) {
+      p5.prototype.fadeIn = function () {
+            let arg = arguments
+            let vel = 5
+            let col = color(0, ___fadeAlpha)
+            if (arg.length == 1) {
+                  vel = arg[0]
+                  col = color(0, ___fadeAlpha)
+            }
+            if (arg.length == 2) {
+                  vel = arg[0]
+                  col = color(arg[1], ___fadeAlpha)
+            }
+
+            if (___fadeAlpha > 255) ___fadeAlpha = 255
+            if (___fadeAlpha < 0) ___fadeAlpha = 0
+            push()
+            rectMode(CORNER)
+            noStroke()
+            fill(col)
+            rect(0, 0, width, height)
+            pop()
+            ___fadeAlpha -= vel
+      }
+}
+
+if (!p5.prototype.hasOwnProperty('fadeOut')) {
+      p5.prototype.fadeOut = function () {
+            let arg = arguments
+            let vel = 5
+            let col = color(0, ___fadeAlpha)
+            if (arg.length == 1) {
+                  vel = arg[0]
+                  col = color(0, ___fadeAlpha)
+            }
+            if (arg.length == 2) {
+                  vel = arg[0]
+                  col = color(arg[1], ___fadeAlpha)
+            }
+
+            if (___fadeAlpha > 255) ___fadeAlpha = 255
+            if (___fadeAlpha < 0) ___fadeAlpha = 0
+            push()
+            rectMode(CORNER)
+            noStroke()
+            fill(col)
+            rect(0, 0, width, height)
+            pop()
+            ___fadeAlpha += vel
+      }
+}
 /**
  * Setea el ancho y alto de la ventana (electron)
  * @method winSize
@@ -94,48 +156,37 @@ if (!p5.prototype.hasOwnProperty('bg')) {
  * @method fade
  * 1 param
  * @param {Number} a          alfa
- * 2 param
- * @param {Number} c          color
- * @param {Number} a          alfa
  * 4 param
- * @param {Number} r          color
- * @param {Number} g          color
- * @param {Number} b          color
+ * @param {Number} r          red
+ * @param {Number} g          green
+ * @param {Number} b          blue
  * @param {Number} a          alfa
+ * 5 param
+ * @param {Number} r          red
+ * @param {Number} g          green
+ * @param {Number} b          blue
+ * @param {Number} a          alfa
+ * @param {Number} mode       RGB/HSB
  */
 if (!p5.prototype.hasOwnProperty('fade')) {
       p5.prototype.fade = function () {
             let arg = arguments;
             if (arg.length == 1) {
                   push()
-                  colorMode(RGB, 255, 255, 255)
-                  rectMode(CORNER)
-                  fill(0, arg[0])
-                  strokeWeight(1)
-                  stroke(0)
-                  rect(0, 0, width, height)
-                  pop()
-            }
-            if (arg.length == 2) {
-                  push()
-                  colorMode(RGB, 255, 255, 255)
-                  noStroke()
-                  rectMode(CORNER)
-                  strokeWeight(1)
-                  stroke(arg[0], arg[1])
-                  fill(arg[0], arg[1])
-                  rect(0, 0, width, height)
+                  colorMode(RGB, 255)
+                  background(0, 0, 0, arg[0])
                   pop()
             }
             if (arg.length == 4) {
                   push()
-                  colorMode(RGB, 255, 255, 255)
-                  noStroke()
-                  rectMode(CORNER)
-                  strokeWeight(1)
-                  stroke(arg[0], arg[1], arg[2], arg[3])
-                  fill(arg[0], arg[1], arg[2], arg[3])
-                  rect(0, 0, width, height)
+                  colorMode(RGB, 255)
+                  background(arg[0], arg[1], arg[2], arg[3])
+                  pop()
+            }
+            if (arg.length == 5) {
+                  push()
+                  colorMode(arg[4], 255)
+                  background(arg[0], arg[1], arg[2], arg[3])
                   pop()
             }
       }
@@ -166,16 +217,14 @@ if (!p5.prototype.hasOwnProperty('displace')) {
                   imageMode(CORNER);
                   image(i, arg[0] + arg[4], arg[1] + arg[5])
                   pop()
-            } else
-                  if (arg.length == 2) {
-                        let i = get()
-                        push()
-                        imageMode(CORNER);
-                        image(i, arg[0], arg[1])
-                        pop()
-                  } else {
-                        console.log('no entra')
-                  }
+            }
+            if (arg.length == 2) {
+                  let i = get()
+                  push()
+                  imageMode(CORNER);
+                  image(i, arg[0], arg[1])
+                  pop()
+            }
             return this;
       }
 }
@@ -205,7 +254,7 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
             if (arg.length == 0) {
                   push();
                   translate(width / 2, height / 2);
-                  rotate(freq(0.01))
+                  rotate(counter(1))
                   translate(-width / 2, -height / 2);
             }
             if (arg.length == 1) {
@@ -233,6 +282,72 @@ if (!p5.prototype.hasOwnProperty('beginRot')) {
                   scale(arg[3])
                   rotate(arg[0])
                   translate(-arg[1], -arg[2]);
+            }
+      }
+}
+
+/**
+ * beginRot3(vel) y endRot() se utilizan
+ * juntas
+ * 
+ * @method beginRot3
+ * 1 parametro
+ * @param {Number} velr       velocidad rotacion en x,y,z
+ * 3 parametros
+ * @param {Number} velx       velocidad rotacion
+ * @param {Number} vely       velocidad rotacion
+ * @param {Number} velz       velocidad rotacion
+ * 4 parametros
+ * @param {Number} velr       velocidad rotacion en x,y,z
+ * @param {Number} centrox    punto ancla de referencia x
+ * @param {Number} centroy    punto ancla de referencia y
+ * @param {Number} centroz    punto ancla de referencia z
+ * 6 parametros
+ * @param {Number} velx       velocidad rotacion
+ * @param {Number} vely       velocidad rotacion
+ * @param {Number} velz       velocidad rotacion
+ * @param {Number} centrox    punto ancla de referencia x
+ * @param {Number} centroy    punto ancla de referencia y
+ * @param {Number} centroz    punto ancla de referencia z
+ */
+if (!p5.prototype.hasOwnProperty('beginRot3')) {
+      p5.prototype.beginRot3 = function () {
+            let arg = arguments;
+            if (arg.length == 0) {
+                  push();
+                  //translate(width / 2, height / 2);
+                  rotateX(counter())
+                  rotateY(counter())
+                  rotateZ(counter())
+                  //translate(-width / 2, -height / 2);
+            }
+            if (arg.length == 1) {
+                  push();
+                  rotateX(arg[0])
+                  rotateY(arg[0])
+                  rotateZ(arg[0])
+            }
+            if (arg.length == 3) {
+                  push();
+                  rotateX(arg[0])
+                  rotateY(arg[1])
+                  rotateZ(arg[2])
+            }
+            if (arg.length == 4) {
+                  push();
+                  translate(arg[1], arg[2], arg[3]);
+                  rotateX(arg[0])
+                  rotateY(arg[0])
+                  rotateZ(arg[0])
+                  translate(-arg[1], -arg[2], -arg[3]);
+            }
+            if (arg.length == 6) {
+                  push();
+                  translate(arg[3], arg[4], arg[5]);
+                  rotateX(arg[0])
+                  rotateY(arg[1])
+                  rotateZ(arg[2])
+                  translate(-arg[3], -arg[4], -arg[5]);
             }
       }
 }
@@ -300,6 +415,7 @@ if (!p5.prototype.hasOwnProperty('mirrorY')) {
       p5.prototype.mirrorY = function () {
             let i = get(0, 0, width / 2, height);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(width, 0)
             scale(-1, 1)
@@ -317,6 +433,7 @@ if (!p5.prototype.hasOwnProperty('imirrorY')) {
       p5.prototype.imirrorY = function () {
             let i = get(0, 0, width / 2, height);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(width, height)
             scale(-1, -1)
@@ -333,6 +450,7 @@ if (!p5.prototype.hasOwnProperty('mirrorX')) {
       p5.prototype.mirrorX = function () {
             let i = get(0, 0, width, height / 2);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(0, height)
             scale(1, -1)
@@ -350,6 +468,7 @@ if (!p5.prototype.hasOwnProperty('imirrorX')) {
       p5.prototype.imirrorX = function () {
             let i = get(0, 0, width, height / 2);
             push()
+            blendMode(BLEND)
             imageMode(CORNER)
             translate(width, height)
             scale(-1, -1)
@@ -368,6 +487,7 @@ if (!p5.prototype.hasOwnProperty('kaleido')) {
       p5.prototype.kaleido = function () {
             let i = get(0, 0, width / 2, height / 2);
             imageMode(CORNER)
+            blendMode(BLEND)
             push()
             translate(0, 0)
             translate(- 1, 0)
@@ -399,60 +519,53 @@ if (!p5.prototype.hasOwnProperty('kaleido')) {
       }
 }
 /**
- * Metodo abreviado de la sentencia -> sin(frameCount)
+ * Metodo abreviado de la sentencia -> sin((millis()/1000) * TWO_PI [* arg])
  * 
- * @method osc
+ * @method sinOsc
  * @param {Number}  n          multiplicador frecuencia
  * @return {Number}
  */
-if (!p5.prototype.hasOwnProperty('osc')) {
-      p5.prototype.osc = function () {
+if (!p5.prototype.hasOwnProperty('sinOsc')) {
+      p5.prototype.sinOsc = function () {
             let arg = arguments
-            let freq = 1
-            if (arg.length == 0) {
-                  freq = frameCount * 0.001 * 10
-            }
+            let freq = (millis() / 1000) * TWO_PI
             if (arg.length == 1) {
-                  freq = frameCount * 0.001 * arg[0]
+                  freq = (millis() / 1000) * arg[0] * TWO_PI
             }
-            return sin(freq);
+            return Math.sin(freq);
       }
 }
 /**
- * Metodo abreviado de la sentencia -> {sin: sin(frameCount * n), cos: cos(frameCount * n)}
+ * Metodo abreviado de la sentencia -> cos((millis()/1000) * TWO_PI [* arg])
  * 
- * @method cosc
+ * @method cosOsc
  * @param {Number}  n          multiplicador frecuencia
- * @return {Object} 
+ * @return {Number}
  */
-if (!p5.prototype.hasOwnProperty('cosc')) {
-      p5.prototype.cosc = function () {
+if (!p5.prototype.hasOwnProperty('cosOsc')) {
+      p5.prototype.cosOsc = function () {
             let arg = arguments
-            let freq = 1
-            if (arg.length == 0) {
-                  freq = frameCount * 0.001 * 10
-            }
+            let freq = (millis() / 1000) * TWO_PI
             if (arg.length == 1) {
-                  freq = frameCount * 0.001 * arg[0]
+                  freq = (millis() / 1000) * arg[0] * TWO_PI
             }
-            return { sin: sin(freq), cos: cos(freq) };
+            return Math.cos(freq);
       }
 }
 /**
- * Metodo abreviado de la sentencia -> frameCount * n
+ * Metodo abreviado de la sentencia -> millis()/1000 [* arg]
  * 
- * @method freq
- * @param {Number} m      multiplicador para reducir frameCount
+ * @method counter
+ * @param {Number} m      multiplicador
  */
-if (!p5.prototype.hasOwnProperty('freq')) {
-      p5.prototype.freq = function () {
+if (!p5.prototype.hasOwnProperty('counter')) {
+      p5.prototype.counter = function () {
             let arg = arguments
-            let freq
+            let count = millis() / 10000
             if (arg.length == 1) {
-                  freq = arg[0]
-                  return frameCount * arg[0]
+                  count = millis() / 1000 * arg[0]
             }
-            return 1;
+            return count;
       }
 }
 /**
@@ -555,6 +668,10 @@ if (!p5.prototype.hasOwnProperty('libsPath')) {
  * 
  * @method loadLib
  * @param {String} name      nombre del directorio
+ * 
+ * example:
+ * 
+ * $milib = loadLib("milib.js")
  */
 if (!p5.prototype.hasOwnProperty('loadLib')) {
       p5.prototype.loadLib = function () {
@@ -598,18 +715,23 @@ if (!p5.prototype.hasOwnProperty('useCam')) {
       p5.prototype.useCam = function () {
             if (Lp5.mode == 'SERVER' || Lp5.mode == 'LOCAL') {
                   let arg = arguments;
+                  console_msg(lang_msg.cam_init, 'info');
                   if (arg.length == 0) {
-                        ___webcam = createCapture(VIDEO);
-                        ___webcam.size(320, 240);
-                        ___webcam.hide()
+                        ___webcam = createCapture(VIDEO, () => {
+                              ___webcam.size(320, 240);
+                              ___webcam.hide()
+                              console_msg(lang_msg.cam_loaded, 'info');
+                        });
                   }
                   if (arg.length == 2) {
-                        ___webcam = createCapture(VIDEO);
-                        ___webcam.size(arg[0], arg[1]);
-                        ___webcam.hide()
+                        ___webcam = createCapture(VIDEO, () => {
+                              ___webcam.size(arg[0], arg[1]);
+                              ___webcam.hide()
+                              console_msg(lang_msg.cam_loaded, 'info');
+                        });
                   }
             } else {
-                  console_msg('useCam() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  console_msg('useCam() ' + lang_msg.local_server_mode, 'warning');
             }
       }
 }
@@ -629,30 +751,32 @@ if (!p5.prototype.hasOwnProperty('getCam')) {
                   if (___webcam == null) {
                         console_msg('useCam() no esta declarado')
                   }
-                  if (arg.length == 1 && ___webcam != null) {
-                        arg[0].push()
-                        // https://github.com/processing/p5.js/issues/1087
-                        // tint // noTint issue -> loadPixels() fix it 
-                        ___webcam.loadPixels()
-                        arg[0].image(___webcam, 0, 0)
-                        arg[0].pop()
-                  }
-                  if (arg.length == 2 && ___webcam != null) {
-                        push()
-                        translate(arg[0], arg[1])
-                        ___webcam.loadPixels()
-                        image(___webcam, 0, 0)
-                        pop()
-                  }
-                  if (arg.length == 3 && ___webcam != null) {
-                        arg[0].push()
-                        arg[0].translate(arg[1], arg[2])
-                        ___webcam.loadPixels()
-                        arg[0].image(___webcam, 0, 0)
-                        arg[0].pop()
+                  if (___webcam.loadedmetadata) {
+                        if (arg.length == 1 && ___webcam != null) {
+                              arg[0].push()
+                              // https://github.com/processing/p5.js/issues/1087
+                              // tint // noTint issue -> loadPixels() fix it 
+                              ___webcam.loadPixels()
+                              arg[0].image(___webcam, 0, 0)
+                              arg[0].pop()
+                        }
+                        if (arg.length == 2 && ___webcam != null) {
+                              push()
+                              translate(arg[0], arg[1])
+                              ___webcam.loadPixels()
+                              image(___webcam, 0, 0)
+                              pop()
+                        }
+                        if (arg.length == 3 && ___webcam != null) {
+                              arg[0].push()
+                              arg[0].translate(arg[1], arg[2])
+                              ___webcam.loadPixels()
+                              arg[0].image(___webcam, 0, 0)
+                              arg[0].pop()
+                        }
                   }
             } else {
-                  console_msg('useCam() - Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  console_msg('useCam() ' + lang_msg.local_server_mode, 'warning');
             }
       }
 }
@@ -677,10 +801,22 @@ if (!p5.prototype.hasOwnProperty('imgCam')) {
                   ___webcam.loadPixels()
                   return ___webcam
             } else {
-                  console_msg('useCam() - Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  console_msg('useCam() ' + lang_msg.local_server_mode, 'warning');
                   return null
             }
             return null
+      }
+}
+
+/**
+ * Limpia el bloque draw()
+ * 
+ * @method clearDraw
+ */
+
+if (!p5.prototype.hasOwnProperty('clearDraw')) {
+      p5.prototype.clearDraw = function () {
+            Lp5.validCodeDraw = ''
       }
 }
 /******************************************************/
@@ -735,7 +871,7 @@ if (!p5.prototype.hasOwnProperty('useAudio')) {
                         }
                   })
             } else {
-                  console_msg('useAudio() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  console_msg('useAudio() ' + lang_msg.local_server_mode, 'warning');
             }
       }
 }
@@ -755,7 +891,7 @@ if (!p5.prototype.hasOwnProperty('audioVol')) {
                         return null;
                   }
             } else {
-                  console_msg('audioVol() Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  console_msg('audioVol() ' + lang_msg.local_server_mode, 'warning');
             }
       }
 }
@@ -776,11 +912,11 @@ if (!p5.prototype.hasOwnProperty('audioBeat')) {
                         if (band > spectrum.length) band = spectrum.length
                         return spectrum[band] + 140
                   } else {
-                        console_msg('audioBeat() -> useAudio() no esta declarado')
+                        console_msg('audioBeat() -> useAudio() ' + lang_msg.not_declared)
                         return null;
                   }
             } else {
-                  console_msg('Solo puede conectarse en modo LOCAL o SERVER');
+                  console_msg('audioBeat() ' + lang_msg.local_server_mode, 'warning');
             }
       }
 }
@@ -800,50 +936,49 @@ if (!p5.prototype.hasOwnProperty('audioEnergy')) {
                         ___fft.analyze();
                         return ___fft.getEnergy(f1, f2)
                   } else {
-                        console_msg('audioEnergy() -> useAudio() no esta declarado')
+                        console_msg('audioEnergy() -> useAudio() ' + lang_msg.not_declared)
                         return null;
                   }
             } else {
-                  console_msg('Solo puede conectarse en modo LOCAL o SERVER', 'warning');
+                  console_msg('audioEnergy() ' + lang_msg.local_server_mode, 'warning');
             }
       }
 }
 
-/**
- * Almacena verdadero si el render en webgl
- * 
- * @property ___webgl
- */
-
-if (!p5.prototype.hasOwnProperty('___webgl')) {
-      if (Lp5.main.globalSettings().renderer == 'p2d') {
-            p5.prototype.___webgl = false
-      } else {
-            p5.prototype.___webgl = true
-      }
-}
-
 // /**
-//  * Crea un canvas con WEBGL
+//  * Crea un canvas
 //  * Recarga la pantalla
 //  * 
-//  * @method use3D
+//  * @method useRender
 //  */
-// if (!p5.prototype.hasOwnProperty('use3d')) {
-//       p5.prototype.use3d = function () {
-//             if (Lp5.main.globalSettings().renderer == 'p2d') Lp5.main.reload('webgl')
-//       }
-// }
+// if (!p5.prototype.hasOwnProperty('useRender')) {
+//       p5.prototype.useRender = function () {
+//             let arg = arguments
 
-// /**
-//  * Crea un canvas con P2D
-//  * Recarga la pantalla
-//  * 
-//  * @method use2d
-//  */
-// if (!p5.prototype.hasOwnProperty('use2d')) {
-//       p5.prototype.use2d = function () {
-//             if (Lp5.main.globalSettings().renderer == 'webgl') Lp5.main.reload('p2d')
+//             let r = P2D
+
+//             if (arg.length == 0) {
+//                   console_msg('arg missing WEBGL or P2D')
+//             }
+//             if (arg.length == 1) {
+//                   r = arg[0]
+//                   Lp5.canvas = createCanvas(windowWidth, windowHeight, r)
+//                   Lp5.renderer = arg[0]
+//             }
+//             if (arg.length == 3) {
+//                   r = arg[3]
+//                   Lp5.canvas = createCanvas(arg[0], arg[1], r)
+//                   Lp5.renderer = WEBGL
+//             }
+//             if (arg.length > 0) {
+//                   if (r == WEBGL) {
+//                         ___webgl = true
+//                         Lp5.el('lp5-os-r').style.display = 'inline'
+//                   } else {
+//                         ___webgl = false
+//                         Lp5.el('lp5-os-r').style.display = 'one'
+//                   }
+//             }
 //       }
 // }
 
@@ -875,7 +1010,7 @@ if (!p5.prototype.hasOwnProperty('tpulse')) {
             if (_t < 10) _t = 10
             if (_g < 20) _g = 20
             if (_of < 0) _of = 0
-            if (Math.floor((millis()+_of) / _t * 2 % _t) % 2 == 0 && Math.floor(millis()+_of) % _t < _g) {
+            if (Math.floor((millis() + _of) / _t * 2 % _t) % 2 == 0 && Math.floor(millis() + _of) % _t < _g) {
                   return true
             } else {
                   return false
@@ -905,11 +1040,11 @@ if (!p5.prototype.hasOwnProperty('trange')) {
  * @param fn {Function}
  */
 if (!p5.prototype.hasOwnProperty('frange')) {
-      p5.prototype.frange = function (_n = 10, _t = 1000,fn=null) {
+      p5.prototype.frange = function (_n = 10, _t = 1000, fn = null) {
             if (_t < 10) _t = 10
             if (_n < 1) _n = 1
             let i = Math.floor(millis() / _t * _n % _t) % _n
-            if(typeof fn == 'function'){
+            if (typeof fn == 'function') {
                   fn(i)
             }
       }
@@ -1017,16 +1152,36 @@ if (!p5.prototype.hasOwnProperty('setPixel')) {
  */
 if (!p5.prototype.hasOwnProperty('getCode')) {
       p5.prototype.getCode = function () {
-            let code = Lp5.cmAux.getValue() + "\n" + Lp5.cmSetup.getValue() + "\n" + Lp5.cmDraw.getValue()
+            let code = Lp5.cmAux.getValue()
             return code
+      }
+}
+/**
+ * ----------------------
+ * 
+ * @method -------------
+ */
+if (!p5.prototype.hasOwnProperty('___shader')) {
+      p5.prototype.___shader = null
+}
+if (!p5.prototype.hasOwnProperty('___createShader')) {
+      p5.prototype.___createShader = function () {
+            let frag = Lp5.cmFrag.getValue()
+            let vert = Lp5.cmVert.getValue()
+            ___shader = createShader(vert, frag)
+      }
+}
+if (!p5.prototype.hasOwnProperty('getShader')) {
+      p5.prototype.getShader = function () {
+            return ___shader
       }
 }
 /**
  * Eventos key
  */
-if (!p5.prototype.hasOwnProperty('keyPressed')) {
+/*if (!p5.prototype.hasOwnProperty('keyPressed')) {
       p5.prototype.keyPressed = null
 }
 if (!p5.prototype.hasOwnProperty('keyReleased')) {
       p5.prototype.keyReleased = null
-}
+}*/
