@@ -202,8 +202,3 @@ In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **p
 - **NAME (net)** -> Client node name (Default: id socket)
 - **LANG** -> ES/EN Language of interface
   
-----
-
-### Examples and howtos
-
-> [View docs](https://github.com/andrusenn/leparc-lc-p5js/blob/master/docs/en/ejemplos.md)
