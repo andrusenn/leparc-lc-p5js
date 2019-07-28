@@ -459,7 +459,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                                     break;
                               }
                         }
-                        if (Lp5.blockData.func == 'any') {
+                        if (Lp5.blockData.func == 'any' || Lp5.blockData.func == 'any_named') {
                               Lp5.renderCodeAux = Lp5.doGlobals("'use strict';" + Lp5.blockData.code)
                               Lp5.tryEval('aux')
                         }

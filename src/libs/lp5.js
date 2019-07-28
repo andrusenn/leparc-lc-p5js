@@ -376,9 +376,14 @@ let Lp5 = {
                               break evtsln;
                         }
                   }
-                  // Funcion generica
-                  if (cm.getLine(lfrom).match(/\$[a-zA-Z_0-9]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[a-zA-Z0-9_]*[\t\s ]*\)|\([\t\s ]*[a-zA-Z0-9_]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                  // Funcion generica anonima
+                  if (cm.getLine(lfrom).match(/\$[a-zA-Z_0-9]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[a-zA-Z0-9_,]*[\t\s ]*\)|\([\t\s ]*[a-zA-Z0-9_,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
                         func = 'any'
+                        break;
+                  }
+                  // Funcion generica named
+                  if (cm.getLine(lfrom).match(/function[\t\s ]+[a-zA-Z0-9_]+/gi)) {
+                        func = 'any_named'
                         break;
                   }
                   // Funcion load -> /sinp/loadStrings/etc...
@@ -451,7 +456,7 @@ let Lp5 = {
                   }
                   code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
             }
-            if (func == 'any') {
+            if (func == 'any' || func == 'any_named') {
                   let opens = 0
                   let brackets = false
                   while (lto < cm.lineCount()) {
@@ -469,6 +474,10 @@ let Lp5 = {
                   }
                   //Funcion completa
                   code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+                  // Try convert nammed function to global
+                  if (func == 'any_named') {
+                        code = code.replace(/function[\s\t ]/gi, "window.").replace(/(window\.[a-zA-Z0-9_]+)+/gi, "$1 = function")
+                  }
             }
             for (var key in this.renderCodeEvent) {
                   if (func == key) {
@@ -718,7 +727,7 @@ let Lp5 = {
                   if (valid) {
                         if (_block == 'aux') {
                               this.validCodeAux = renderCode;
-                              new Function(this.validCodeAux)(global);
+                              new Function(this.validCodeAux)();
                         }
                         if (_block == 'setup') this.validCodeSetup = renderCode;
 
