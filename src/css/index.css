@@ -290,6 +290,11 @@ canvas {
   background: rgba(255, 255, 255, 0.6) !important;
 }
 
+#win #lp5-console #lp5-lp-ar span {
+  background: rgba(255, 255, 255, 0.5);
+  color: #680009;
+}
+
 #win .codeblock {
   position: relative;
 }
