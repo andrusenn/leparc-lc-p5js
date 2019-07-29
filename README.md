@@ -31,7 +31,7 @@ You can report if you find an error or bug. I also encourage you to fork the pro
 
 On first run, a folder call "leparc_resources" will be created in "home" user account:
 
-~~~
+~~~txt
 
 leparc_resources/
       ├── config/
@@ -62,14 +62,14 @@ leparc_resources/
 
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
----
+----
 
 ## Quick reference
 
 IMPORTANT! There are two modes in configurations (`Ctrl+Tab`) for play:
 
-* `STATIC` All code written is evaluated. This is for teach/learn or experimentation p5js. NO ERRROR HANDLERS (If there are any error the main loop will stop)
-* `LIVECODING` Each code is evaluate depend of it context. This allow play code on live session and there are some differences with global vars declarations.
+- `STATIC` All code written is evaluated. This is for teach/learn or experimentation p5js. NO ERRROR HANDLERS (If there are any error the main loop will stop)
+- `LIVECODING` Each code is evaluate depend of it context. This allow play code on live session and there are some differences with global vars declarations.
 
 ## Commands
 
@@ -97,6 +97,8 @@ You can use functions/methods of p5js.
 ## Global vars and functions (`Livecoding mode`)
 
 In `LIVECODING` mode,  an object is provided for global acces: `lp`, or shorthand manner with `$` prefix.
+
+For better visualization, functions can be declared as `function my_function(){}` too. LeParc set this function to global and can be used anywhere.
 
 ~~~js
 
@@ -156,19 +158,19 @@ Method | Description
 
 ## Media (`Livecoding mode`)
 
-#### Webcam
+### Webcam
 
 Shorthand of `creteCapture(VIDEO)`
 
 - In setup: `useCam([width,height])`
 - In draw: `getCam(x,y)`
 
-#### Audio
+### Audio
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
 - In draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies. Return 0 to 255.
 
-#### External media files
+### External media files
 
 Assets must be placed in *media* dir.
 The method `mediaPath()` return absolute path to *media* folder.

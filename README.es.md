@@ -31,7 +31,7 @@ Puedes reportar si encuentras algún error o bug. Te intivo también a forkear e
 
 En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo:
 
-~~~
+~~~txt
 
 leparc_resources/
       ├── config/
@@ -64,10 +64,10 @@ leparc_resources/
 
 ## Referencia rápida
 
-IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para utilizar: 
+IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para utilizar:
 
-* `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene).
-* `LIVECODING` Cada bloque es evaluado por separado. Esto permite ejecutar código en vivo, y hay diferencias con el modo estático en la declaración de variables globales.
+- `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene).
+- `LIVECODING` Cada bloque es evaluado por separado. Esto permite ejecutar código en vivo, y hay diferencias con el modo estático en la declaración de variables globales.
   
 ### Comandos
 
@@ -96,6 +96,8 @@ Se pueden utilizar las funciones/metodos de p5js.
 
 Para acceder a variables globales se provee un objeto para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
 
+Para una mejor visualización, las funciones pueden ser declaradas como `function my_function(){}` también. LeParc las convierte en globales para que se puedan utilizar en cualquier parte.
+
 ~~~js
 
 x = 1 // error -> se está utilizando strict mode
@@ -120,7 +122,7 @@ console.log($x) // salida -> code!
 
 ~~~
 
-### Eventos
+## Eventos
 
 ~~~js
 
@@ -131,7 +133,7 @@ function mouseClicked(){
 // Etc
 ~~~
 
-### Funciones extendidas de p5j
+## Funciones extendidas de p5j
 
 Método|Desc
 ---|---
@@ -152,19 +154,19 @@ Método|Desc
  `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset`
  `trange(number [,millis_duration])` | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration`
 
-#### Media (`Livecoding mode`)
+## Media (`Livecoding mode`)
 
-##### Webcam
+### Webcam
 
 - En setup: `useCam([ancho,alto])`
 - En draw: `getCam(x,y)`
 
-##### Audio
+### Audio
 
 - En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
 - En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias. Retorna de 0 a 255
 
-##### Carga archivos externos
+### Carga archivos externos
 
 Para la carga de archivos (imágenes, videos, sonidos), se utiliza el directorio *media*.
 El método `mediaPath()` devuelve la ruta absoluta a ese directorio.
@@ -178,11 +180,11 @@ loadImage( mediaPath('miImagen.jpg'),(i)=>{
 
 ~~~
 
-### Modo cliente/servidor
+## Modo cliente/servidor
 
 Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE, modificar la variable **server-ip** y **port** en *leparc_resources/config/config.txt*
 
-### Ventana de configuraciones
+## Ventana de configuraciones
 
 - `Ctrl+TAB` Abre popup de configuraciones
   - **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
