@@ -9,7 +9,7 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.2.0',
+      version: '0.2.1',
       p5: {
             version: '0.9.0'
       },
@@ -338,11 +338,51 @@ let Lp5 = {
       },
       checkProgWord: function (_word) {
             // verifica que no se redefinan variables o funciones de p5
-            return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
+            //return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
+            return `(?<=["\'\.a-zA-Z0-9])[\s\t ]*${_word}`;
       },
       doGlobals: function (_code) {
             // Cambia a globales las variables fuera de las funciones
             return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
+      },
+      evalLivecoding:function(onfly){
+            if (this.blockData.isFunc) {
+                  if (this.blockData.func == 'setup') {
+                        this.renderCodeSetup = this.doGlobals("'use strict';" + this.blockData.code)
+                        this.tryEval('setup')
+                  }
+                  if (this.blockData.func == 'draw') {
+                        this.renderCodeDraw = this.doGlobals("'use strict';" + this.blockData.code)
+                        this.evalDraw()
+
+                  }
+                  for (var key in this.renderCodeEvent) {
+                        if (this.blockData.func == key) {
+                              this.renderCodeEvent[key] = this.doGlobals("'use strict';" + this.blockData.code)
+                              this.evalEvent(key)
+                              break;
+
+                        }
+                  }
+                  for (let i = 0; i < this.renderExtends.length; i++) {
+                        let fname = this.renderExtends[i]
+                        if (this.blockData.func == fname) {
+                              this.renderCodeAux = this.doGlobals("'use strict';" + this.blockData.code)
+                              this.tryEval('aux')
+                              break;
+                        }
+                  }
+                  if (this.blockData.func == 'any' || this.blockData.func == 'any_named') {
+                        this.renderCodeAux = this.doGlobals("'use strict';" + this.blockData.code)
+                        this.tryEval('aux')
+                  }
+            } else {
+                  this.renderCodeAux = this.doGlobals("'use strict';" + this.blockData.code)
+                  this.tryEval('aux')
+            }
+            if(!onfly) this.evalLineFx('lp5-aux', this.blockData.lf, this.blockData.lt)
+            // 
+            this.evalConn(Lp5.blockData)
       },
       // Get functions or lines from editor by context
       getCodeBlock: function (cm, cp) {
@@ -377,14 +417,94 @@ let Lp5 = {
                         }
                   }
                   // Funcion generica anonima
-                  if (cm.getLine(lfrom).match(/\$[a-zA-Z_0-9]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[a-zA-Z0-9_,]*[\t\s ]*\)|\([\t\s ]*[a-zA-Z0-9_,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                  if (cm.getLine(lfrom).match(/\$[\w]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                        let tmp_lfrom = lfrom
+                        //linepos = lfrom
+                        let opens = 0
+                        let brackets = false
+                        // check if inside other function
+                        while (tmp_lfrom >= 0) {
+                              if (brackets && opens < 0) {
+                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                                          func = 'setup'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                                          func = 'draw'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                                    if (len > 1) {
+                                          opens += len;
+                                    } else {
+                                          opens++;
+                                    }
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                                    if (len > 1) {
+                                          opens -= len;
+                                    } else {
+                                          opens--;
+                                    }
+                              }
+                              tmp_lfrom--
+                        }
                         func = 'any'
-                        break;
+                        break evtsln;
                   }
                   // Funcion generica named
-                  if (cm.getLine(lfrom).match(/function[\t\s ]+[a-zA-Z0-9_]+/gi)) {
+                  if (cm.getLine(lfrom).match(/function[\t\s ]+[\w]+/gi)) {
+                        let tmp_lfrom = lfrom
+                        //linepos = lfrom
+                        let opens = 0
+                        let brackets = false
+                        // check if inside other function
+                        while (tmp_lfrom >= 0) {
+                              if (brackets && opens < 0) {
+                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                                          func = 'setup'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                                          func = 'draw'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                                    if (len > 1) {
+                                          opens += len;
+                                    } else {
+                                          opens++;
+                                    }
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                                    if (len > 1) {
+                                          opens -= len;
+                                    } else {
+                                          opens--;
+                                    }
+                              }
+                              tmp_lfrom--
+                        }
                         func = 'any_named'
-                        break;
+                        break evtsln;
                   }
                   // Funcion load -> /sinp/loadStrings/etc...
                   // Declaradas en "renderExtends"
@@ -476,7 +596,9 @@ let Lp5 = {
                   code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
                   // Try convert nammed function to global
                   if (func == 'any_named') {
-                        code = code.replace(/function[\s\t ]/gi, "window.").replace(/(window\.[a-zA-Z0-9_]+)+/gi, "$1 = function")
+                        // Algunos errores no pueden ser atrapados. Se incluye try en el contenido
+                        code = code.replace(/(function[\s\t ]+[\w]+\([\s\t ]*[\w,]*\)[\s\t ]*\{[\s\t ]*)([\w,\/\s\t \:;\|\?\.\=\+\-\%\&\\"\'\*\^\(\)\>\<\{\}]*)(\})/igm,"$1try{\n$2\n}catch(e){\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}\n$3")
+                        code = code.replace(/function[\s\t ]/gi, "window.").replace(/(window\.[\w]+)+/gi, "$1 = function")
                   }
             }
             for (var key in this.renderCodeEvent) {
@@ -660,13 +782,16 @@ let Lp5 = {
                   // Try eval
                   // Verificar que se ejecuta correctamente
                   // Para no detener el loop
-                  try {
-                        new Function(this.renderCodeDraw)()
-                  } catch (e) {
-                        if (onfly) new Function(Lp5.validCodeDraw)()
-                        valid = false
-                        this.el('lp5-console-out').innerHTML = 'draw: ' + e
-                        this.el('lp5-aux').parentElement.classList.remove('error');
+                  if (valid) {
+                        try {
+                              // Verrifica errores / check errors
+                              new Function(this.renderCodeDraw)()
+                        } catch (e) {
+                              if (onfly) new Function(Lp5.validCodeDraw)()
+                              valid = false
+                              this.el('lp5-console-out').innerHTML = 'draw: ' + e
+                              this.el('lp5-aux').parentElement.classList.remove('error');
+                        }
                   }
                   if (valid) {
                         this.validCodeDraw = this.renderCodeDraw;
