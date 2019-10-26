@@ -1,1 +1,21 @@
-// aux --------------------------
+// Hola LeParc!
+// LIVECODING MODE
+// No need to create canvas
+function draw() {
+	//fade(abs(sinOsc(0.1) * 255))
+	blendMode(DIFFERENCE)
+	// zoom(0.01)
+	if(gate(200,50)) displace(-50, -10)
+	rectMode(CENTER)
+	stroke(255)
+	noFill()
+
+	circle(width / 2, height / 2, 500)
+	circle(width * 0.25 + cosOsc(0.2) * 250, height * 0.25, 300 + sinOsc(0.1) * 200)
+
+	beginRot()
+	rect(width / 2, height / 2, 500 + sinOsc(0.2) * 400, 500)
+	endRot()
+
+	kaleido()
+}
