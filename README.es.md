@@ -75,6 +75,7 @@ Atajo de teclado | Acción
 --- | ---
 `Ctrl+Enter` | Evaluar bloque de código
 `Ctrl+H` | Mostrar/ocultar código
+`Ctrl+N` |  Mostrar/ocultar números de línea
 `F11` | Pantalla completa (fullscreen)
 `F10` | Muestra/oculta herramientas de desarrollo para debug (dev tools)
 `F5` | Recarga pantalla (se debe volver a evaluar)
@@ -113,6 +114,10 @@ lp.miFuncion = function(){
 $miFuncion = function(){
       console.log('Hola LeParc!')
 }
+// o en global -> window.miFuncion
+function miFuncion(){
+      console.log('Hola LeParc!')
+}
 
 lp.miFuncion() // salida -> Hola LeParc!
 console.log(lp.x) // salida -> code!
@@ -137,12 +142,15 @@ function mouseClicked(){
 
 Método|Desc
 ---|---
+`fade(alpha)` | fade in a nagro `alpha` 0 a 255
+`fade(r,g,b,a)` | fade in a r,g,b,a
+`fade(r,g,b,a,color_mode)` | fade in a r,g,b,a y colorMode (RGB, HSB)
 `mirrorX()`|Espejo - Refleja la imagen desde la mitad sobre el eje X
 `mirrorY()`|Espejo - Refleja la imagen desde la mitad sobre el eje Y
 `imirrorX()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
 `imirrorY()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
 `kaleido()`|Efecto caleidoscopio 4 caras (repite la cara superior derecha)
-`zoom(escala)`|Escala la imagen en cada loop sumando el valor del parámetro: `zoom(0.01)` o negativo `zoom(-0.01)`
+`zoom(escala)`|Escala la imagen en cada loop sumando el valor del parámetro: `zoom(numero)` o negativo `zoom(-numero)`
 `displace(velx,vely)`|Desplaza la pantalla en la direccion `velx`  y  `vely` (+ o -)
 `displace(x,y,w,h,velx,vely)`|Recorta una porcion de la imagen y la desplaza
 `beginRot(vel_in_radians[,scale])` y `endRot()`|rota lo que está contenido entre esas dos funciones
@@ -161,7 +169,7 @@ Método|Desc
 - En setup: `useCam([ancho,alto])`
 - En draw: `getCam(x,y)`
 
-### Audio
+### Audio In
 
 - En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
 - En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias. Retorna de 0 a 255

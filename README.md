@@ -77,6 +77,7 @@ Keyboard shortcut | Action
 --- | ---
 `Ctrl+Enter` | Evaluate code block depend of `PLAY MODE` option
 `Ctrl+H` | Show / hide code
+`Ctrl+N` | Show / hide line numbers
 `F11` | Fullscreen
 `F10` | Show / hide development tools for debug (dev tools)
 `F5` | Screen reload (must be re-evaluated)
@@ -115,6 +116,10 @@ lp.myFunction = function(){
 $myFunction = function(){
       console.log('Hola LeParc!')
 }
+// or global -> window.myFunction
+function myFunction(){
+      console.log('Hola LeParc!')
+}
 
 lp.myFunction() // out -> Hola LeParc!
 console.log(lp.x) // out -> code!
@@ -139,12 +144,15 @@ function mouseClicked(){
 
 Method | Description
 --- | ---
+`fade(alpha)` | fade in to black `alpha` 0 to 255
+`fade(r,g,b,a)` | fade in to r,g,b,a
+`fade(r,g,b,a,color_mode)` | fade in to r,g,b,a and set colorMode (RGB, HSB)
 `mirrorX()` | Mirror - Reflects the image from the middle on the X axis
 `mirrorY()` | Mirror - Reflects the image from the middle on the Y axis
 `imirrorX()` | Inverted Mirror - Reflects the image from the middle on the inverted X axis
 `imirrorY()` | Inverted Mirror - Reflects the image from the middle on the inverted Y axis
 `kaleido()` | Kaleidoscope effect 4 faces (repeat the upper left face)
-`zoom(escala)` | Scales output image in each loop: `zoom(0.01)` or negative `zoom(-0.01)`
+`zoom(escala)` | Scales output image in each loop: `zoom(number)` or negative `zoom(-number)`
 `displace(velx,vely)` | Displace output image `velx`  y  `vely` (+ o -)
 `displace(x,y,w,h,velx,vely)` | Cut out a portion of the image and displace it
 `beginRot(vel_in_radians[,scale])` and `endRot()` | rotate what is contained between those two functions
@@ -165,7 +173,7 @@ Shorthand of `creteCapture(VIDEO)`
 - In setup: `useCam([width,height])`
 - In draw: `getCam(x,y)`
 
-### Audio
+### Audio In
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
 - In draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies. Return 0 to 255.
