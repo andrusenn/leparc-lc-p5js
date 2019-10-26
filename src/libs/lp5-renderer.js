@@ -628,7 +628,7 @@ document.addEventListener('keydown', function (ev) {
       // Config options --------------------
 
       // AUTORENDER ------------------------
-      if (!ev.altKey && ev.shiftKey && !ev.ctrlKey && ev.keyCode == 65) {
+      if (Lp5.playmode == 'livecoding' && !ev.altKey && ev.shiftKey && !ev.ctrlKey && ev.keyCode == 65) {
             ev.preventDefault()
             if (Lp5.el('cnf-renderonfly').checked) {
                   Lp5.el('cnf-renderonfly').checked = false
@@ -641,7 +641,7 @@ document.addEventListener('keydown', function (ev) {
             }
       }
       // LINE NUMBERS ------------------------
-      if (!ev.altKey && ev.shiftKey && !ev.ctrlKey && ev.keyCode == 78) {
+      if (!ev.altKey && !ev.shiftKey && ev.ctrlKey && ev.keyCode == 78) {
             ev.preventDefault()
             if (Lp5.el('cnf-linenumbers').checked) {
                   Lp5.el('cnf-linenumbers').checked = false
