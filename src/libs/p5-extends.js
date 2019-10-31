@@ -1294,7 +1294,7 @@ if (!p5.prototype.hasOwnProperty('loadVideo')) {
             if (!document.getElementById('leparc' + hash)) {
                   let video = createVideo(v, () => {
                         video.id('leparc' + hash)
-                        if(typeof arg[1] == 'function'){
+                        if (typeof arg[1] == 'function') {
                               arg[1](video)
                         }
                   })

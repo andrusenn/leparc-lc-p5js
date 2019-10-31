@@ -61,7 +61,8 @@
       },
       "devDependencies": {
             "electron": "^4.2.7",
-            "electron-builder": "^20.43.0"
+            "electron-builder": "^20.43.0",
+            "electron-rebuild": "^1.8.6"
       },
       "dependencies": {
             "express": "^4.16.4",

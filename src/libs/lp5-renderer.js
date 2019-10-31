@@ -3,7 +3,6 @@
  *  
  */
 
-
 // Global var scope -----------------------------------------
 if (!global.hasOwnProperty('lp')) {
       global.lp = {
@@ -15,15 +14,14 @@ if (!global.hasOwnProperty('lp')) {
 // Init -----------------------------------------------------
 window.addEventListener('load', function () {
 
+      // OSC ------------------------------------------------
+      Lp5.oscLib = require("osc")
       // Extends --------------------------------------------
       try {
             require(Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'extends', 'lp-extends.js'))
       } catch (e) {
             console.trace('No se pudo cargar lp-extends.js')
       }
-      // OSC ------------------------------------------------
-
-      Lp5.oscLib = require('osc')
       // Get Sys RAM ----------------------------------------
       setInterval(() => {
             // Memoria
@@ -199,7 +197,7 @@ function preload() {
                         }
                   }, 2000)
             }
-            
+
       })
 }
 // ********************************************************************
