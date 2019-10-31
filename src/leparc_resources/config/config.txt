@@ -1,3 +1,5 @@
-server-ip=192.168.1.4
+server-ip=127.0.0.1
 port=7777
+osc-ip=127.0.0.1
+osc-port=12345
 mfr=0.001

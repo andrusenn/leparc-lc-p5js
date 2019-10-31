@@ -9,9 +9,9 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.2.1',
+      version: '0.2.2',
       p5: {
-            version: '0.9.0'
+            version: '0.10.2'
       },
       // Canvas
       canvas: null,
@@ -31,6 +31,10 @@ let Lp5 = {
       clientRq: null,
       client: null,
       clients: 0,
+      oscData:[],
+      oscLib:null,
+      oscReady:false,
+      oscUDP:null,
       // Env
       playmode: 'static',
       fullscreen: false,
@@ -103,6 +107,7 @@ let Lp5 = {
       renderExtends: [
             'snip',
             'loadLib',
+            'loadVideo',
             'loadImage',
             'loadModel',
             'loadStrings',
@@ -248,6 +253,7 @@ let Lp5 = {
                   'canvas',
                   'createCanvas',
                   'useCam',
+                  'useOSC',
                   'useAudio',
                   'remove',
                   'mouseClicked',
@@ -282,6 +288,7 @@ let Lp5 = {
                   //'textDescent',
                   //'textFont',
                   'useCam',
+                  'useOSC',
                   'useAudio',
                   'remove',
                   'mouseClicked',
@@ -425,7 +432,7 @@ let Lp5 = {
                         }
                   }
                   // Funcion generica anonima
-                  if (cm.getLine(lfrom).match(/\$[\w]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                  if (cm.getLine(lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
                         let tmp_lfrom = lfrom
                         //linepos = lfrom
                         let opens = 0
@@ -518,7 +525,7 @@ let Lp5 = {
                   // Declaradas en "renderExtends"
                   for (let i = 0; i < this.renderExtends.length; i++) {
                         let fname = this.renderExtends[i]
-                        let reg = new RegExp("[\\t\\s ]*(?<=\$)[\\t\\s ]*" + fname, "g")
+                        let reg = new RegExp(fname, "g")
                         if (cm.getLine(lfrom).match(reg)) {
                               let tmp_lfrom = lfrom
                               //linepos = lfrom

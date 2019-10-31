@@ -107,6 +107,7 @@ function initServer(_lp5) {
                   // Reenvia la actualizacion a clientes
                   socket.broadcast.emit('eval', eval)
             })
+
       })
       // Sync
       // Sincroniza frameCount con clientes

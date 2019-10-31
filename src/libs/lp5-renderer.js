@@ -21,6 +21,9 @@ window.addEventListener('load', function () {
       } catch (e) {
             console.trace('No se pudo cargar lp-extends.js')
       }
+      // OSC ------------------------------------------------
+
+      Lp5.oscLib = require('osc')
       // Get Sys RAM ----------------------------------------
       setInterval(() => {
             // Memoria
@@ -152,6 +155,7 @@ window.addEventListener('load', function () {
 
       // Console clear --------------------------------------
       console.clear()
+
 });
 // ********************************************************************
 // ********************************************************************
@@ -195,6 +199,7 @@ function preload() {
                         }
                   }, 2000)
             }
+            
       })
 }
 // ********************************************************************
@@ -628,7 +633,7 @@ document.addEventListener('keydown', function (ev) {
       // Config options --------------------
 
       // AUTORENDER ------------------------
-      if (Lp5.playmode == 'livecoding' && !ev.altKey && ev.shiftKey && !ev.ctrlKey && ev.keyCode == 65) {
+      if (Lp5.playmode == 'livecoding' && !ev.altKey && ev.shiftKey && ev.ctrlKey && ev.keyCode == 65) {
             ev.preventDefault()
             if (Lp5.el('cnf-renderonfly').checked) {
                   Lp5.el('cnf-renderonfly').checked = false

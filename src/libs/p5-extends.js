@@ -33,6 +33,21 @@ if (!p5.prototype.hasOwnProperty('console_msg')) {
 }
 
 /**
+ * Create hash
+ * url: https://gist.github.com/hyamamoto/fd435505d29ebfa3d9716fd2be8d42f0
+ * @method hashCode
+ * @param {String} s      string to hash
+ */
+if (!p5.prototype.hasOwnProperty('hashCode')) {
+      p5.prototype.hashCode = function (s) {
+            let h;
+            for (let i = 0; i < s.length; i++) {
+                  h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+            }
+            return h;
+      }
+}
+/**
  * Escrib fadeIn -> to full color
  * 
  * @method console_msg
@@ -406,23 +421,50 @@ if (!p5.prototype.hasOwnProperty('zoom')) {
 }
 
 /**
- * Efecto de espejo sobre eje de Y
+ * Efecto de espejo sobre eje de Y / Mirror on y axis
  * 
  * @method mirrorY
  */
-
 if (!p5.prototype.hasOwnProperty('mirrorY')) {
       p5.prototype.mirrorY = function () {
-            let i = get(0, 0, width / 2, height);
-            push()
-            blendMode(BLEND)
-            imageMode(CORNER)
-            translate(width, 0)
-            scale(-1, 1)
-            image(i, 0, 0)
-            pop()
+
+            let arg = arguments
+            if (arg.length == 0) {
+                  let img = get(0, 0, width / 2, height);
+                  push()
+                  blendMode(BLEND)
+                  imageMode(CORNER)
+                  translate(width, 0)
+                  scale(-1, 1)
+                  image(img, 0, 0)
+                  pop()
+            }
+            if (arg.length == 1 && arg[0] > 1) {
+                  let num = arg[0]
+                  // Center
+                  let p = 1.0 / num
+                  let img = get(width / 2 - (width * p), 0, width * p, height);
+
+                  // ->
+                  for (let i = 0; i < num; i++) {
+                        // 1
+                        push()
+                        blendMode(BLEND)
+                        imageMode(CORNER)
+                        if (i % 2 == 0) {
+                              translate((i * width * p) + (width * p), 0)
+                              scale(-1, 1)
+                        } else {
+                              translate((i * width * p), 0)
+                        }
+                        image(img, 0, 0)
+                        pop()
+                  }
+
+            }
       }
 }
+
 /**
  * Efecto de espejo sobre eje de Y invertido
  * 
@@ -442,20 +484,47 @@ if (!p5.prototype.hasOwnProperty('imirrorY')) {
       }
 }
 /**
- * Efecto de espejo sobre eje de X
+ * Efecto de espejo sobre eje de X / Mirror on X axis
  * 
  * @method mirrorX
  */
 if (!p5.prototype.hasOwnProperty('mirrorX')) {
       p5.prototype.mirrorX = function () {
-            let i = get(0, 0, width, height / 2);
-            push()
-            blendMode(BLEND)
-            imageMode(CORNER)
-            translate(0, height)
-            scale(1, -1)
-            image(i, 0, 0)
-            pop()
+
+            let arg = arguments
+            if (arg.length == 0) {
+                  let i = get(0, 0, width, height / 2);
+                  push()
+                  blendMode(BLEND)
+                  imageMode(CORNER)
+                  translate(0, height)
+                  scale(1, -1)
+                  image(i, 0, 0)
+                  pop()
+            }
+            if (arg.length == 1 && arg[0] > 1) {
+                  let num = arg[0]
+                  // Center
+                  let p = 1.0 / num
+                  let img = get(0, height / 2 - (height * p), width, height * p);
+
+                  // ->
+                  for (let i = 0; i < num; i++) {
+                        // 1
+                        push()
+                        blendMode(BLEND)
+                        imageMode(CORNER)
+                        if (i % 2 == 0) {
+                              translate(0, (i * height * p) + (height * p))
+                              scale(1, -1)
+                        } else {
+                              translate(0, (i * height * p))
+                        }
+                        image(img, 0, 0)
+                        pop()
+                  }
+
+            }
       }
 }
 /**
@@ -819,6 +888,7 @@ if (!p5.prototype.hasOwnProperty('clearDraw')) {
             Lp5.validCodeDraw = ''
       }
 }
+
 /******************************************************/
 /* Audio **********************************************/
 /******************************************************/
@@ -944,43 +1014,6 @@ if (!p5.prototype.hasOwnProperty('audioEnergy')) {
             }
       }
 }
-
-// /**
-//  * Crea un canvas
-//  * Recarga la pantalla
-//  * 
-//  * @method useRender
-//  */
-// if (!p5.prototype.hasOwnProperty('useRender')) {
-//       p5.prototype.useRender = function () {
-//             let arg = arguments
-
-//             let r = P2D
-
-//             if (arg.length == 0) {
-//                   console_msg('arg missing WEBGL or P2D')
-//             }
-//             if (arg.length == 1) {
-//                   r = arg[0]
-//                   Lp5.canvas = createCanvas(windowWidth, windowHeight, r)
-//                   Lp5.renderer = arg[0]
-//             }
-//             if (arg.length == 3) {
-//                   r = arg[3]
-//                   Lp5.canvas = createCanvas(arg[0], arg[1], r)
-//                   Lp5.renderer = WEBGL
-//             }
-//             if (arg.length > 0) {
-//                   if (r == WEBGL) {
-//                         ___webgl = true
-//                         Lp5.el('lp5-os-r').style.display = 'inline'
-//                   } else {
-//                         ___webgl = false
-//                         Lp5.el('lp5-os-r').style.display = 'one'
-//                   }
-//             }
-//       }
-// }
 
 /**
  * Emite un trigger -> true cada n fotogramas
@@ -1154,6 +1187,118 @@ if (!p5.prototype.hasOwnProperty('getCode')) {
       p5.prototype.getCode = function () {
             let code = Lp5.cmAux.getValue()
             return code
+      }
+}
+
+/****************************************************
+ * OSC
+ ***************************************************/
+
+/**
+ * Inicia OSC
+ * 
+ * @method OSC
+ */
+
+if (!p5.prototype.hasOwnProperty('useOSC')) {
+      p5.prototype.useOSC = function () {
+            let arg = arguments
+            let port = Lp5.configs['osc-port']
+            let ip = Lp5.configs['osc-ip']
+
+            if (arg.length == 1 && (typeof arg[0] === 'string' || arg[0] instanceof String)) {
+                  ip = arg[0]
+            }
+
+            if (arg.length == 1 && (typeof arg[0] === 'number' && isFinite(arg[0]))) {
+                  port = arg[0]
+            }
+            if (arg.length == 2) {
+                  ip = arg[0]
+                  port = arg[1]
+            }
+
+            if (Lp5.oscReady) Lp5.oscUDP.close();
+
+            Lp5.oscUDP = new Lp5.oscLib.UDPPort({
+                  localAddress: ip,
+                  localPort: port,
+                  metadata: true
+            });
+
+            //
+            Lp5.oscUDP.on("message", function (oscMsg, timeTag, info) {
+                  Lp5.oscData[oscMsg.address] = oscMsg
+            });
+
+            Lp5.oscUDP.open();
+            Lp5.oscUDP.on("ready", function () {
+                  Lp5.oscReady = true
+                  console.log('osc ip: ' + ip)
+                  console.log('osc port: ' + port)
+            });
+      }
+}
+/**
+ * Obtiene / get OSC
+ * 1 param
+ * @param {String} address    address 
+ * 2 param
+ * @param {String} address    address
+ * @param {Number} index      index array position
+ * 
+ * @method osc
+ */
+if (!p5.prototype.hasOwnProperty('osc')) {
+      p5.prototype.osc = function () {
+            if (Lp5.oscReady) {
+                  let data = Lp5.oscData
+                  let arg = arguments
+                  if (arg.length == 1) {
+                        let address = arg[0]
+                        if (data[address]) {
+                              return data[address].args[0].value
+                        }
+                  }
+                  if (arg.length == 2) {
+                        let address = arg[0]
+                        let index = arg[1]
+                        if (data[address]) {
+                              return data[address].args[index].value
+                        }
+                  }
+                  return -1
+
+            } else {
+                  console_msg('OSC init', 'error')
+                  return -1
+            }
+      }
+}
+
+/**
+ * Carga video / Load video
+ * 1 param
+ * @param {String} address    address 
+ * 2 param
+ * @param {String} address    address
+ * @param {Number} index      index array position
+ * 
+ * @method osc
+ */
+if (!p5.prototype.hasOwnProperty('loadVideo')) {
+      p5.prototype.loadVideo = function () {
+            let arg = arguments
+            let v = mediaPath(arg[0])
+            let hash = hashCode(arg[0])
+            if (!document.getElementById('leparc' + hash)) {
+                  let video = createVideo(v, () => {
+                        video.id('leparc' + hash)
+                        if(typeof arg[1] == 'function'){
+                              arg[1](video)
+                        }
+                  })
+            }
       }
 }
 /**
