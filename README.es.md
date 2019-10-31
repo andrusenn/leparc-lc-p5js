@@ -66,7 +66,7 @@ leparc_resources/
 
 IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para utilizar:
 
-- `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene).
+- `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene). Se debe crear el CANVAS en `setup` `createCanvas(width,height)`
 - `LIVECODING` Cada bloque es evaluado por separado. Esto permite ejecutar código en vivo, y hay diferencias con el modo estático en la declaración de variables globales.
   
 ### Comandos
@@ -86,6 +86,7 @@ Atajo de teclado | Acción
 `Ctrl+F` | Formatea el código bloque
 `Ctrl+L` | alterna loop()/noLoop()
 `Ctrl+Shift+C` | Comenta/Descomenta código
+`Ctrl+Shift+A` | Habilita Autorender (Evaluación automática)
 
 ### Bloques de código
 
@@ -161,6 +162,54 @@ Método|Desc
 `gate(n_fotogramas, duracion)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas con una duracion x `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true`
  `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset`
  `trange(number [,millis_duration])` | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration`
+`useOSC(['ip',port])` | Inicializa OSC (UDP) para mensajes entrantes. IP por defecto `127.0.0.1` y puerto `12345`
+`useOSC('ip')` | Cambiar IP (Pasar como cadena)
+`useOSC(port)` | Cambiar puerto (Pasar como entero)
+`osc('/address')` | retorna valor enviado
+`osc('/address',index)` | (multiple args) retorna valor en la posicion de array index
+
+## OSC Messages
+
+Por defecto, se abre el puerto 12345 en localhost
+
+~~~js
+
+useOSC()
+
+let x = osc('/mi_address')
+// o, si hay multiple args, se pasa la posicion index
+let x = osc('/mi_address',0)
+~~~
+
+### Ejemplo
+
+~~~js
+//useOSC()
+useOSC('192.168.0.5', 12345)
+
+function setup() {
+      rectMode(CENTER)
+}
+
+function draw() {
+      fade(10)
+      displace(0, osc('/displace'))
+      noFill()
+      stroke(255)
+      beginRot(counter(2))
+      rect(width / 2, height / 2, 20, 600)
+      endRot()
+      mirrorY(8)
+}
+~~~
+
+Cambiar ip y puerto por defecto:
+
+En `leparc_resources/config/config.txt`
+~~~
+osc-ip=127.0.0.1
+osc-port=12345
+~~~
 
 ## Media (`Livecoding mode`)
 
@@ -180,11 +229,19 @@ Para la carga de archivos (imágenes, videos, sonidos), se utiliza el directorio
 El método `mediaPath()` devuelve la ruta absoluta a ese directorio.
 
 ~~~js
-
+// Todos los archivos multimedia
 // ~home/leparc_resources/media/
 loadImage( mediaPath('miImagen.jpg'),(i)=>{
   $im = i
 })
+
+// Utilizar loadVideo en vez de createVideo
+// A diferencia de loadImage, no hace falta utilizar el mediaPath
+loadVideo('myImage.jpg',(v)=>{
+  $v = v
+  // $v.play()
+})
+$v.play()
 
 ~~~
 

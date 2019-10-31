@@ -68,26 +68,27 @@ leparc_resources/
 
 IMPORTANT! There are two modes in configurations (`Ctrl+Tab`) for play:
 
-- `STATIC` All code written is evaluated. This is for teach/learn or experimentation p5js. NO ERRROR HANDLERS (If there are any error the main loop will stop)
+- `STATIC` All code written is evaluated. This is for teach/learn or experimentation p5js. NO ERRROR HANDLERS (If there are any error the main loop will stop). The CANVAS must be created in `setup` `createCanvas(width,height)`
 - `LIVECODING` Each code is evaluate depend of it context. This allow play code on live session and there are some differences with global vars declarations.
 
 ## Commands
 
-Keyboard shortcut | Action
---- | ---
-`Ctrl+Enter` | Evaluate code block depend of `PLAY MODE` option
-`Ctrl+H` | Show / hide code
-`Ctrl+N` | Show / hide line numbers
-`F11` | Fullscreen
-`F10` | Show / hide development tools for debug (dev tools)
-`F5` | Screen reload (must be re-evaluated)
-`Ctrl+mousewheel` | Increase / decrease code size
-`Alt+mousewheel` | Modify the transparency of the background of the code
-`Ctrl+Alt+mousewheel` | Modify selected value addition / subtraction by 1
-`Ctrl+Alt+Shift+mousewheel` | Modify value selected addition / subtraction by 0.1
-`Ctrl+F` | Format  (beautify) the block code
-`Ctrl+L` | Toggle `loop()`/`noLoop()`
-`Ctrl+Shift+C` | Comment / Uncomment code
+| Keyboard shortcut           | Action                                                |
+| --------------------------- | ----------------------------------------------------- |
+| `Ctrl+Enter`                | Evaluate code block depend of `PLAY MODE` option      |
+| `Ctrl+H`                    | Show / hide code                                      |
+| `Ctrl+N`                    | Show / hide line numbers                              |
+| `F11`                       | Fullscreen                                            |
+| `F10`                       | Show / hide development tools for debug (dev tools)   |
+| `F5`                        | Screen reload (must be re-evaluated)                  |
+| `Ctrl+mousewheel`           | Increase / decrease code size                         |
+| `Alt+mousewheel`            | Modify the transparency of the background of the code |
+| `Ctrl+Alt+mousewheel`       | Modify selected value addition / subtraction by 1     |
+| `Ctrl+Alt+Shift+mousewheel` | Modify value selected addition / subtraction by 0.1   |
+| `Ctrl+F`                    | Format  (beautify) the block code                     |
+| `Ctrl+L`                    | Toggle `loop()`/`noLoop()`                            |
+| `Ctrl+Shift+C`              | Comment / Uncomment code                              |
+| `Ctrl+Shift+A`              | Enable Autorender (Auto-Evaluate code block)          |
 
 ## Code blocks
 
@@ -142,27 +143,76 @@ function mouseClicked(){
 
 ## Extended functions p5j
 
-Method | Description
---- | ---
-`fade(alpha)` | fade in to black `alpha` 0 to 255
-`fade(r,g,b,a)` | fade in to r,g,b,a
-`fade(r,g,b,a,color_mode)` | fade in to r,g,b,a and set colorMode (RGB, HSB)
-`mirrorX()` | Mirror - Reflects the image from the middle on the X axis
-`mirrorY()` | Mirror - Reflects the image from the middle on the Y axis
-`imirrorX()` | Inverted Mirror - Reflects the image from the middle on the inverted X axis
-`imirrorY()` | Inverted Mirror - Reflects the image from the middle on the inverted Y axis
-`kaleido()` | Kaleidoscope effect 4 faces (repeat the upper left face)
-`zoom(escala)` | Scales output image in each loop: `zoom(number)` or negative `zoom(-number)`
-`displace(velx,vely)` | Displace output image `velx`  y  `vely` (+ o -)
-`displace(x,y,w,h,velx,vely)` | Cut out a portion of the image and displace it
-`beginRot(vel_in_radians[,scale])` and `endRot()` | rotate what is contained between those two functions
-`freq([mult])`|Shorthand of sentence `millis()/1000 [* mult]`
-`sinOsc([mult])`|Shorthand of sentence `sin( (millis()/1000) * TWO_PI [* mult] )`
-`cosOsc([mult])`|Shorthand of sentence `cos( (millis()/1000) * TWO_PI [* mult] )`
-`pulse(n_frames)` | Flag (based on frameCount). Return true each n frame `if(frameCount % n_frames == 0 ) return true`
-`gate(n_frames, duration)` | Flag (based on frameCount). Return true each n_frames with an x duration `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true`
-`tpulse(millis [,millis_duration, millis_offset])` | Flag (based on millis). Return `true` each millis with a `millis_ duration` and offset by `millis_offset`
-`trange(number [,millis_duration])` | Flag (based on millis). Return  `0` to `number` in a `millis_duration`
+| Method                                             | Description                                                                                                                                     |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fade(alpha)`                                      | fade in to black `alpha` 0 to 255                                                                                                               |
+| `fade(r,g,b,a)`                                    | fade in to r,g,b,a                                                                                                                              |
+| `fade(r,g,b,a,color_mode)`                         | fade in to r,g,b,a and set colorMode (RGB, HSB)                                                                                                 |
+| `mirrorX([num_faces])`                             | Mirror - Reflects the image from the middle on the X axis by `num_faces`                                                                        |
+| `mirrorY([num_faces])`                             | Mirror - Reflects the image from the middle on the Y axis by `num_faces`                                                                        |
+| `imirrorX()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted X axis                                                                     |
+| `imirrorY()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted Y axis                                                                     |
+| `kaleido()`                                        | Kaleidoscope effect 4 faces (repeat the upper left face)                                                                                        |
+| `zoom(escala)`                                     | Scales output image in each loop: `zoom(number)` or negative `zoom(-number)`                                                                    |
+| `displace(velx,vely)`                              | Displace output image `velx`  y  `vely` (+ o -)                                                                                                 |
+| `displace(x,y,w,h,velx,vely)`                      | Cut out a portion of the image and displace it                                                                                                  |
+| `beginRot(vel_in_radians[,scale])` and `endRot()`  | rotate what is contained between those two functions                                                                                            |
+| `freq([mult])`                                     | Shorthand of sentence `millis()/1000 [* mult]`                                                                                                  |
+| `sinOsc([mult])`                                   | Shorthand of sentence `sin( (millis()/1000) * TWO_PI [* mult] )`                                                                                |
+| `cosOsc([mult])`                                   | Shorthand of sentence `cos( (millis()/1000) * TWO_PI [* mult] )`                                                                                |
+| `pulse(n_frames)`                                  | Flag (based on frameCount). Return true each n frame `if(frameCount % n_frames == 0 ) return true`                                              |
+| `gate(n_frames, duration)`                         | Flag (based on frameCount). Return true each n_frames with an x duration `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true` |
+| `tpulse(millis [,millis_duration, millis_offset])` | Flag (based on millis). Return `true` each millis with a `millis_ duration` and offset by `millis_offset`                                       |
+| `trange(number [,millis_duration])`                | Flag (based on millis). Return  `0` to `number` in a `millis_duration`                                                                          |
+| `useOSC(['ip',port])`                              | Start OSC (UDP) for incoming messages. Default ip `127.0.0.1` and port `12345`                                                                  |
+| `useOSC('ip')`                                     | Use different ip (pass string argument)                                                                                                         |
+| `useOSC(port)`                                     | Use different port (pass int argument)                                                                                                          |
+| `osc('/address')`                                  | return osc value                                                                                                                                |
+| `osc('/address',index)`                            | (multiple args) return osc value on index array position                                                                                        |
+
+## OSC Messages
+
+By default, port 12345 is opened for listen in localhost
+
+~~~js
+
+useOSC()
+
+let x = osc('/my_address')
+// or, if multiple args, pass index position
+let x = osc('/my_address',0)
+~~~
+
+### Example
+
+~~~js
+//useOSC()
+useOSC('192.168.0.5', 12345)
+
+function setup() {
+      rectMode(CENTER)
+}
+
+function draw() {
+      fade(10)
+      displace(0, osc('/displace'))
+      noFill()
+      stroke(255)
+      beginRot(counter(2))
+      rect(width / 2, height / 2, 20, 600)
+      endRot()
+      mirrorY(8)
+}
+~~~
+
+Change default ip and port:
+
+On `leparc_resources/config/config.txt`
+
+~~~txt
+osc-ip=127.0.0.1
+osc-port=12345
+~~~
 
 ## Media (`Livecoding mode`)
 
@@ -184,11 +234,21 @@ Assets must be placed in *media* dir.
 The method `mediaPath()` return absolute path to *media* folder.
 
 ~~~js
-
+// All media files
 // ~home/leparc_resources/media/
+
+// Image use p5js method
 loadImage( mediaPath('myImage.jpg'),(i)=>{
   $im = i
 })
+
+// Use loadVideo instead of createVideo
+// It is not necessary to use mediaPath, write the name file directly
+loadVideo('myImage.jpg',(v)=>{
+  $v = v
+  // $v.play()
+})
+$v.play()
 
 ~~~
 

@@ -1,5 +1,23 @@
 # REVISIONES / REVISIONS
 
+## Version 0.2.2
+
+> [es]
+
+- Se implementó servidor OSC para mensajes entrantes
+- Nuevo metodo `useOSC(['ip',port])` inicializa OSC
+- Nuevo metodo `osc('/mi_address')` o `osc('/mi_address',index)`
+- Se actualizó p5js a la v.0.10.2 y sound.js v.0.3.11
+- Inclusión de parámetro `num_caras` en `mirrorX([num_caras])` y `mirrorY([num_caras])`
+
+> [en]
+
+- OSC was implamented for incoming messages
+- New method `useOSC(['ip',port])` init OSC
+- New method `osc('/my_address')` or `osc('/my_address',index)`
+- Updated versions p5js v.0.10.2 and sound.js v.0.3.11
+- `num_faces` param added in `mirrorX([num_faces])` y `mirrorY([num_faces])`
+
 ## Version 0.2.0
 
 > [es]
