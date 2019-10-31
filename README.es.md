@@ -56,12 +56,16 @@ leparc_resources/
 
 1. clonar repositorio
 2. `cd src` (directorio raiz)
-3. `npm install && npm run rebuild` (rebuild modules for run correctly in Electron)
+3. `npm install && npm run rebuild` (recompila los modulos para Electron utilizando `electron-rebuild`)
 4. `npm start`
+
+Para reinicializar la instalación de node_modules cuando Electron da problemas con las versiones, utilizar `npm run restart`
+Este comando borra `node_modules` y `package-lock.json` y lo re-instala
+ver documentación [doc](https://electronjs.org/docs/tutorial/using-native-node-modules)
 
 #### Compilar
 
-4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
+1. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
 #### Electron version 4.2.12
 

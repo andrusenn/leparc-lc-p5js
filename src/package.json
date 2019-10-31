@@ -14,12 +14,13 @@
       },
       "main": "main.js",
       "scripts": {
+            "restart": "rm -f ./package-lock.json && rm -r -f node_modules && npm i && npm run rebuild && electron .",
             "start": "electron .",
             "dist-win": "electron-builder --win",
             "dist-linux": "electron-builder --linux",
             "dist-mac": "electron-builder --mac",
             "dist-all": "electron-builder -mwl",
-            "rebuild": "electron-rebuild"
+            "rebuild": "./node_modules/.bin/electron-rebuild"
       },
       "keywords": [
             "livecoding",

@@ -59,9 +59,13 @@ leparc_resources/
 3. `npm install && npm run rebuild` (rebuild modules for run correctly in Electron)
 4. `npm start`
 
+For re-install and re-compile node_modules when Electron gives problems, use `npm run restart`
+This command delete `node_modules` and `package-lock.json`
+See [doc](https://electronjs.org/docs/tutorial/using-native-node-modules)
+
 #### Build
 
-4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
+1. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
 
 #### Electron version 4.2.12
 
