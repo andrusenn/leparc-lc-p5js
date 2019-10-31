@@ -1,6 +1,9 @@
 # REVISIONES / REVISIONS
 
-## Version 0.2.2
+## Version 0.2.3
+
+Version 0.2.2 fue eliminada por errores en la carga de la librería osc
+Version 0.2.2 was removed due to a fatal error loading osc lib
 
 > [es]
 
