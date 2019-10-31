@@ -6,7 +6,7 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "description": "p5 livecoding",
       "repository": {
             "type": "git",
@@ -69,6 +69,7 @@
             "i18next": "^15.0.8",
             "ip": "^1.1.5",
             "js-beautify": "^1.9.0",
+            "osc": "^2.3.1",
             "socket.io": "^2.2.0"
       }
 }
