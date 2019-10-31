@@ -6,7 +6,7 @@
       },
       "license": "MIT",
       "homepage": "http://andressenn.com",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "description": "p5 livecoding",
       "repository": {
             "type": "git",
@@ -18,7 +18,8 @@
             "dist-win": "electron-builder --win",
             "dist-linux": "electron-builder --linux",
             "dist-mac": "electron-builder --mac",
-            "dist-all": "electron-builder -mwl"
+            "dist-all": "electron-builder -mwl",
+            "rebuild": "electron-rebuild"
       },
       "keywords": [
             "livecoding",
@@ -60,7 +61,7 @@
             }
       },
       "devDependencies": {
-            "electron": "^4.2.7",
+            "electron": "^4.2.12",
             "electron-builder": "^20.43.0",
             "electron-rebuild": "^1.8.6"
       },

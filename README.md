@@ -56,11 +56,20 @@ leparc_resources/
 
 1. clone repository
 2. `cd src` (root dir)
-3. `npm install && npm start`
+3. `npm install && npm run rebuild` (rebuild modules for run correctly in Electron)
+4. `npm start`
 
 #### Build
 
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
+
+#### Electron version 4.2.12
+
+Electron 4.x is the last supported version before jump to 6/7/8. LeParc is compiled whit 4x version to run in older GL ¿?
+
+You can experiment with latest Electron's releases:
+
+- abrir consola en `src` y ejecutar `npm i -D electron@latest electron-builder@latest`
 
 ----
 

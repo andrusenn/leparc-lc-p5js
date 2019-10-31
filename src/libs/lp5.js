@@ -9,7 +9,7 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.2.2',
+      version: '0.2.3',
       p5: {
             version: '0.10.2'
       },
@@ -107,6 +107,9 @@ let Lp5 = {
       renderExtends: [
             'snip',
             'loadLib',
+            'useOSC',
+            'useAudio',
+            'useCam',
             'loadVideo',
             'loadImage',
             'loadModel',

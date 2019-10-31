@@ -56,11 +56,22 @@ leparc_resources/
 
 1. clonar repositorio
 2. `cd src` (directorio raiz)
-3. `npm install && npm start`
+3. `npm install && npm run rebuild` (rebuild modules for run correctly in Electron)
+4. `npm start`
 
 #### Compilar
 
 4. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
+
+#### Electron version 4.2.12
+
+Es la última version 4.x soportada antes de lanzar las versiones 6/7/8. Se utiliza esta version para que funcione en sistemas operativos con GL viejos ¿?
+
+Si eres experto/a, puedes experimentar instalando la ultima version de electron:
+
+- abrir consola en `src` y ejecutar `npm i -D electron@latest electron-builder@latest`
+
+----
 
 ## Referencia rápida
 
