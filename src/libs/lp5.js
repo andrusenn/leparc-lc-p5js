@@ -127,7 +127,7 @@ let Lp5 = {
       // Escala de los campos a
       scale_st: 1,
       // bg alfa
-      bg_code_alpha: 0.4,
+      bg_code_alpha: 0.8,
       // Mostrar ventanas
       showWin: true,
       // Funciones

@@ -103,7 +103,9 @@ window.addEventListener('load', function () {
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
             matchBrackets: true,
+            theme: 'blackboard',
             autoCloseBrackets: true,
+            indentUnit: 4,
             lineNumbers: (localStorage.linenumbers == 1) ? true : false
       });
       Lp5.cmAux.on('change', function (cm, ob) {
@@ -361,7 +363,11 @@ function windowResized() {
 // -----------------------------------------------------
 // EVENTS ----------------------------------------------
 
+Lp5.codeAux.addEventListener('mouseup', (ev) => {
+      Lp5.changeBgLineAlpha()
+})
 Lp5.codeAux.addEventListener('mousedown', (ev) => {
+      Lp5.changeBgLineAlpha()
       // Obtiene la ultima posicion del cursor
       Lp5.cmAuxCp.line = Lp5.cmAux.getCursor().line;
       Lp5.cmAuxCp.ch = Lp5.cmAux.getCursor().ch;
@@ -454,7 +460,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
             // Si hay cambios -> formatea
             try {
                   Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
-                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
+                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line })
             } catch (e) {
                   console.trace(e)
             }
@@ -562,7 +568,16 @@ document.addEventListener('keyup', (ev) => {
             // Node name
             Lp5.nodeName = Lp5.el('cnf-name').value
       }
-
+      // if (!ev.ctrlKey && !ev.shiftKey && !ev.altKey && ev.keyCode == 13) {
+      //       ev.preventDefault();
+      //       try {
+      //             Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
+      //             // Lp5.cmAux.cm.indentLine({line: Lp5.cmAuxCp.line, dir: 'smart'})
+      //             Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line })
+      //       } catch (e) {
+      //             console.trace(e)
+      //       }
+      // }
 
 });
 // Global keydown event -----------------------------------
@@ -571,7 +586,8 @@ document.addEventListener('keydown', function (ev) {
       if (ev.shiftKey && !ev.altKey && ev.ctrlKey && ev.keyCode == 67) {
             ev.preventDefault();
             Lp5.cmAux.toggleComment({
-                  lineComment: '//'
+                  lineComment: '//',
+                  indent: true
             })
       }
       // Format code ----------------------
@@ -580,7 +596,7 @@ document.addEventListener('keydown', function (ev) {
             // Si hay cambios -> formatea
             try {
                   Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()))
-                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line, ch: 0 })
+                  Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line })
             } catch (e) {
                   console.trace(e)
             }
