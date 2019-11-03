@@ -158,30 +158,31 @@ function mouseClicked(){
 
 | Method                                             | Description                                                                                                                                     |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fade(alpha)`                                      | fade in to black `alpha` 0 to 255                                                                                                               |
-| `fade(r,g,b,a)`                                    | fade in to r,g,b,a                                                                                                                              |
-| `fade(r,g,b,a,color_mode)`                         | fade in to r,g,b,a and set colorMode (RGB, HSB)                                                                                                 |
-| `mirrorX([num_faces])`                             | Mirror - Reflects the image from the middle on the X axis by `num_faces`                                                                        |
-| `mirrorY([num_faces])`                             | Mirror - Reflects the image from the middle on the Y axis by `num_faces`                                                                        |
-| `imirrorX()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted X axis                                                                     |
-| `imirrorY()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted Y axis                                                                     |
-| `kaleido()`                                        | Kaleidoscope effect 4 faces (repeat the upper left face)                                                                                        |
-| `zoom(escala)`                                     | Scales output image in each loop: `zoom(number)` or negative `zoom(-number)`                                                                    |
-| `displace(velx,vely)`                              | Displace output image `velx`  y  `vely` (+ o -)                                                                                                 |
-| `displace(x,y,w,h,velx,vely)`                      | Cut out a portion of the image and displace it                                                                                                  |
-| `beginRot(vel_in_radians[,scale])` and `endRot()`  | rotate what is contained between those two functions                                                                                            |
-| `freq([mult])`                                     | Shorthand of sentence `millis()/1000 [* mult]`                                                                                                  |
-| `sinOsc([mult])`                                   | Shorthand of sentence `sin( (millis()/1000) * TWO_PI [* mult] )`                                                                                |
-| `cosOsc([mult])`                                   | Shorthand of sentence `cos( (millis()/1000) * TWO_PI [* mult] )`                                                                                |
-| `pulse(n_frames)`                                  | Flag (based on frameCount). Return true each n frame `if(frameCount % n_frames == 0 ) return true`                                              |
-| `gate(n_frames, duration)`                         | Flag (based on frameCount). Return true each n_frames with an x duration `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true` |
-| `tpulse(millis [,millis_duration, millis_offset])` | Flag (based on millis). Return `true` each millis with a `millis_ duration` and offset by `millis_offset`                                       |
-| `trange(number [,millis_duration])`                | Flag (based on millis). Return  `0` to `number` in a `millis_duration`                                                                          |
-| `useOSC(['ip',port])`                              | Start OSC (UDP) for incoming messages. Default ip `127.0.0.1` and port `12345`                                                                  |
-| `useOSC('ip')`                                     | Use different ip (pass string argument)                                                                                                         |
-| `useOSC(port)`                                     | Use different port (pass int argument)                                                                                                          |
-| `osc('/address')`                                  | return osc value                                                                                                                                |
-| `osc('/address',index)`                            | (multiple args) return osc value on index array position                                                                                        |
+`counter(n)`                                       | Returns an increased number based on `millis ()`. Shorthand of `millis () / 1000 [* n]`
+`fade(alpha)`                                      | fade out to black `alpha` 0 to 255 every loop  
+`fade(r,g,b,a)`                                    | fade out to r,g,b,a every loop
+`fade(r,g,b,a,color_mode)`                         | fade out to r,g,b,a and set colorMode (RGB, HSB) every loop
+`mirrorX([num_faces])`                             | Mirror - Reflects the image from the middle on the X axis by `num_faces`
+`mirrorY([num_faces])`                             | Mirror - Reflects the image from the middle on the Y axis by `num_faces`
+`imirrorX()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted X axis
+`imirrorY()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted Y axis
+`kaleido()`                                        | Kaleidoscope effect 4 faces (repeat the upper left face)
+`zoom(escala)`                                     | Scales output image in each loop: `zoom(number)` or negative `zoom(-number)`
+`displace(velx,vely)`                              | Displace output image `velx`  y  `vely` (+ o -)
+`displace(x,y,w,h,velx,vely)`                      | Cut out a portion of the image and displace it
+`beginRot(vel_in_radians[,scale])` and `endRot()`  | rotate what is contained between those two functions
+`freq([mult])`                                     | Shorthand of sentence `millis()/1000 [* mult]`
+`sinOsc([mult])`                                   | Shorthand of sentence `sin( (millis()/1000) * TWO_PI [* mult] )`
+`cosOsc([mult])`                                   | Shorthand of sentence `cos( (millis()/1000) * TWO_PI [* mult] )`
+`pulse(n_frames)`                                  | Flag (based on frameCount). Return true each n frame `if(frameCount % n_frames == 0 ) return true`
+`gate(n_frames, duration)`                         | Flag (based on frameCount). Return true each n_frames with an x duration `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true`
+`tpulse(millis [,millis_duration, millis_offset])` | Flag (based on millis). Return `true` each millis with a `millis_ duration` and offset by `millis_offset`
+`trange(number [,millis_duration])`                | Flag (based on millis). Return  `0` to `number` in a `millis_duration`
+`useOSC(['ip',port])`                              | Start OSC (UDP) for incoming messages. Default ip `127.0.0.1` and port `12345`
+`useOSC('ip')`                                     | Use different ip (pass string argument)
+`useOSC(port)`                                     | Use different port (pass int argument)
+`osc('/address')`                                  | return osc value
+`osc('/address',index)`                            | (multiple args) return osc value on index array position
 
 ## OSC Messages
 
@@ -236,6 +237,8 @@ Shorthand of `creteCapture(VIDEO)`
 - In setup: `useCam([width,height])`
 - In draw: `getCam(x,y)`
 
+For get image output `imgCam()`
+
 ### Audio In
 
 - In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
@@ -257,7 +260,7 @@ loadImage( mediaPath('myImage.jpg'),(i)=>{
 
 // Use loadVideo instead of createVideo
 // It is not necessary to use mediaPath, write the name file directly
-loadVideo('myImage.jpg',(v)=>{
+loadVideo('myImage.mp4',(v)=>{
   $v = v
   // $v.play()
 })

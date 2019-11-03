@@ -158,9 +158,10 @@ function mouseClicked(){
 
 Método|Desc
 ---|---
-`fade(alpha)` | fade in a nagro `alpha` 0 a 255
-`fade(r,g,b,a)` | fade in a r,g,b,a
-`fade(r,g,b,a,color_mode)` | fade in a r,g,b,a y colorMode (RGB, HSB)
+`counter(n)` | Retorna un numero incrementado por `millis ()`. Abreviatura de `millis () / 1000 [* n]`
+`fade(alpha)` | fade out a nagro `alpha` 0 a 255 en cada loop
+`fade(r,g,b,a)` | fade out a r,g,b, en cada loop
+`fade(r,g,b,a,color_mode)` | fade out a r,g,b,a y colorMode (RGB, HSB) en cada loop
 `mirrorX()`|Espejo - Refleja la imagen desde la mitad sobre el eje X
 `mirrorY()`|Espejo - Refleja la imagen desde la mitad sobre el eje Y
 `imirrorX()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
@@ -221,6 +222,7 @@ function draw() {
 Cambiar ip y puerto por defecto:
 
 En `leparc_resources/config/config.txt`
+
 ~~~
 osc-ip=127.0.0.1
 osc-port=12345
@@ -232,6 +234,8 @@ osc-port=12345
 
 - En setup: `useCam([ancho,alto])`
 - En draw: `getCam(x,y)`
+  
+Obtener la imagen de salida `imgCam()`
 
 ### Audio In
 
@@ -252,7 +256,7 @@ loadImage( mediaPath('miImagen.jpg'),(i)=>{
 
 // Utilizar loadVideo en vez de createVideo
 // A diferencia de loadImage, no hace falta utilizar el mediaPath
-loadVideo('myImage.jpg',(v)=>{
+loadVideo('myImage.mp4',(v)=>{
   $v = v
   // $v.play()
 })
