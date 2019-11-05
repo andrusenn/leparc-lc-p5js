@@ -192,11 +192,15 @@ canvas {
   min-width: 150px;
 }
 
+.CodeMirror-lines > div > :nth-child(3) {
+  z-index: 6 !important;
+}
+
 .CodeMirror-line > span {
   padding: 4px 10px;
   line-height: 1.7rem;
   text-shadow: 0 2px 4px #000, 0 -2px 4px #000, 2px 0 4px #000, -2px 0 4px #000;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
 }
 

@@ -22,6 +22,7 @@ Lp5locale.init({
                         'Snippet loaded -> ': 'Snippet loaded -> ',
                         'Error on load -> ': 'Error on load -> ',
                         "LINE NUMBERS": "LINE NUMBERS",
+                        "CODE HELPER": "CODE HELPER",
                         "Initializing camera": "Initializing camera",
                         "Camera ready": "Camera ready",
                         "can be used on LOCAL or SERVER mode only":"can be used on LOCAL or SERVER mode only",
@@ -45,6 +46,7 @@ Lp5locale.init({
                         'Snippet loaded -> ': 'Snippet cargado -> ',
                         'Error on load -> ': 'Error al cargar -> ',
                         "LINE NUMBERS": "NUMEROS DE LINEA",
+                        "CODE HELPER": "AYUDA CODIGO",
                         "Initializing camera": "Inicializando cámara",
                         "Camera ready": "Cámara lista",
                         "can be used on LOCAL or SERVER mode only":"Solo puede conectarse en modo LOCAL o SERVER",
@@ -64,6 +66,7 @@ Lp5locale.init({
       document.querySelector('.en-name').innerHTML = Lp5locale.t('NAME (net)');
       document.querySelector('.en-lang').innerHTML = Lp5locale.t('LANG');
       document.querySelector('.en-linenumbers').innerHTML = Lp5locale.t('LINE NUMBERS');
+      document.querySelector('.en-codehelper').innerHTML = Lp5locale.t('CODE HELPER');
       // Mensajes / Messages
       lang_msg.saved = Lp5locale.t('Saved!')
       lang_msg.priv_words = Lp5locale.t('can not be defined in this block')

@@ -7,6 +7,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>LeParc - livecoding - P5js</title>
 	<link rel="stylesheet" href="libs/codemirror/codemirror.css">
+	<link rel="stylesheet" href="libs/codemirror/blackboard.css">
+	<link rel="stylesheet" href="libs/codemirror/show-hint.css">
 	<link rel="stylesheet" href="css/index.min.css">
 </head>
 
@@ -80,6 +82,12 @@
 						<td class="col1"><input id="cnf-linenumbers" value="1" type="checkbox" checked />
 						</td>
 					</tr>
+					<tr>
+						<td class="col2"><label for="cnf-codehelper" class="en-codehelper">CODE
+								HELPER</label></td>
+						<td class="col1"><input id="cnf-codehelper" value="1" type="checkbox" />
+						</td>
+					</tr>
 					<tr id="option-server-mode">
 						<td class="col2"><label for="cnf-server" class="en-mode">MODE (net)</label></td>
 						<td class="col1">
@@ -125,8 +133,11 @@
 	<script src="libs/p5/p5.min.js"></script>
 	<script src="libs/p5/p5.sound.min.js"></script>
 	<script src="libs/codemirror/codemirror.js"></script>
+	<script src="libs/codemirror/javascript.js"></script>
 	<script src="libs/codemirror/comment.js"></script>
 	<script src="libs/codemirror/matchbrackets.js"></script>
+	<script src="libs/codemirror/show-hint.js"></script>
+	<script src="libs/codemirror/javascript-hint.js"></script>
 	<script src="libs/codemirror/closebrackets.js"></script>
 	<script src="libs/jsbeautify.min.js"></script>
 	<script src="libs/lp5.js"></script>

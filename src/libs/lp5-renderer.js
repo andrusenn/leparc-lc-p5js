@@ -76,6 +76,10 @@ window.addEventListener('load', function () {
       // IP -------------------------------------------------
       Lp5.IP = Lp5.main.getIP()
       // Lang -----------------------------------------------
+      if (!localStorage.lang) {
+            Lp5.el('cnf-lang').options[1].selected = true
+            localStorage.lang = 'en'
+      }
       if (localStorage.lang == 'es') {
             Lp5.el('cnf-lang').options[0].selected = true
       }
@@ -91,6 +95,16 @@ window.addEventListener('load', function () {
       } else {
             Lp5.el('cnf-linenumbers').checked = false
       }
+      // Code Helper ------------------------------------------
+      if (!localStorage.codehelper) {
+            localStorage.codehelper = 0;
+      }
+      if (localStorage.codehelper == 1) {
+            Lp5.el('cnf-codehelper').checked = true
+      } else {
+            Lp5.el('cnf-codehelper').checked = false
+      }
+
       if (Lp5.main.globalSettings().renderer == 'webgl') {
             Lp5.el('lp5-os-r').style.display = 'inline'
             Lp5.el('cnf-render').options[1].selected = true
@@ -100,13 +114,18 @@ window.addEventListener('load', function () {
       }
       // ----------------------------------------------------
       // Code mirror ----------------------------------------
+
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
             matchBrackets: true,
             theme: 'blackboard',
             autoCloseBrackets: true,
             indentUnit: 4,
-            lineNumbers: (localStorage.linenumbers == 1) ? true : false
+            lineWrapping: true,
+            lineNumbers: (localStorage.linenumbers == 1) ? true : false,
+            extraKeys: {
+                  'Ctrl-Space': (localStorage.codehelper == 1) ? 'autocomplete' : null
+            }
       });
       Lp5.cmAux.on('change', function (cm, ob) {
             if (Lp5.renderCodeAux != Lp5.doGlobals("'use strict';" + cm.getValue())) {
@@ -116,36 +135,7 @@ window.addEventListener('load', function () {
                   Lp5.el('lp5-aux').parentElement.classList.remove('change');
             }
       })
-      // Fragment Shader -------------------------------------
-      // Lp5.cmFrag = CodeMirror(Lp5.codeFrag, {
-      //       mode: "javascript",
-      //       matchBrackets: true,
-      //       autoCloseBrackets: true,
-      //       lineNumbers: (localStorage.linenumbers == 1) ? true : false
-      // });
-      // Lp5.cmFrag.on('change', function (cm, ob) {
-      //       if (Lp5.renderCodeFrag != cm.getValue()) {
-      //             Lp5.historyChangesFrag = 1
-      //             Lp5.el('lp5-frag').parentElement.classList.add('change');
-      //       } else {
-      //             Lp5.el('lp5-frag').parentElement.classList.remove('change');
-      //       }
-      // })
-      // // Vertex Shader -------------------------------------
-      // Lp5.cmVert = CodeMirror(Lp5.codeVert, {
-      //       mode: "javascript",
-      //       matchBrackets: true,
-      //       autoCloseBrackets: true,
-      //       lineNumbers: (localStorage.linenumbers == 1) ? true : false
-      // });
-      // Lp5.cmVert.on('change', function (cm, ob) {
-      //       if (Lp5.renderCodeVert != cm.getValue()) {
-      //             Lp5.historyChangesAux = 1
-      //             Lp5.el('lp5-vert').parentElement.classList.add('change');
-      //       } else {
-      //             Lp5.el('lp5-vert').parentElement.classList.remove('change');
-      //       }
-      // })
+
       // Win Title ------------------------------------------
       let playmode = (Lp5.playmode == 'static') ? ' | STATIC' : ''
       document.title = 'LeParc - livecoder - P5js - v' + Lp5.version + playmode
@@ -363,7 +353,7 @@ function windowResized() {
 // -----------------------------------------------------
 // EVENTS ----------------------------------------------
 
-Lp5.codeAux.addEventListener('mouseup', (ev) => {
+Lp5.codeAux.addEventListener('click', (ev) => {
       Lp5.changeBgLineAlpha()
 })
 Lp5.codeAux.addEventListener('mousedown', (ev) => {
@@ -794,6 +784,19 @@ Lp5.el('cnf-linenumbers').addEventListener('click', () => {
       } else {
             localStorage.linenumbers = 0
             Lp5.cmAux.setOption('lineNumbers', false)
+      }
+});
+Lp5.el('cnf-codehelper').addEventListener('click', () => {
+      if (Lp5.el('cnf-codehelper').checked) {
+            localStorage.codehelper = 1
+            Lp5.cmAux.setOption('extraKeys', {
+                  'Ctrl-Space': 'autocomplete'
+            })
+      } else {
+            localStorage.codehelper = 0
+            Lp5.cmAux.setOption('extraKeys', {
+                  'Ctrl-Space': null
+            })
       }
 });
 Lp5.el('cnf-hidecanvas').addEventListener('click', () => {
