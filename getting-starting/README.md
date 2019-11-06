@@ -1,8 +1,8 @@
-# EXAMPLES
+# GETTING STARTING
 
 ## Index
 
-- [EXAMPLES](#examples)
+- [GETTING STARTING](#getting-starting)
   - [Index](#index)
     - [Basics](#basics)
       - [Differece between STATIC MODE and LIVECODE MODE](#differece-between-static-mode-and-livecode-mode)
