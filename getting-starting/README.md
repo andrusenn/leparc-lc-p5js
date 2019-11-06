@@ -11,6 +11,8 @@
 
 ### Basics
 
+---
+
 #### Differece between STATIC MODE and LIVECODE MODE
 
 (Press `Ctrl+TAB` to toggle config popup an select `STATIC`)
@@ -57,6 +59,10 @@ Yes! you can have multiple loops! but run only one on eval.
 
 Another substantial difference is error handling. In the `STATIC` if the code has errors, the loop will stop. While in `LIVECODE` the loop does not stop (or that is the idea!) It is not perfect, but there are many errors handlers working to maintain the flow.
 
+[Index](#Index)
+
+---
+
 #### Interface
 
 ![Image](http://andressenn.com/leparc-lc/interfaz/interfaz.jpg)
@@ -81,6 +87,25 @@ A quick review of the interface.
 
 1. 3d mode is enabled (WEBGL)
 
+![Image](http://andressenn.com/leparc-lc/interfaz/config.jpg)
+
+`Ctrl+TAB` to toggle config window:
+
+- **PLAY MODE** [LIVECODING or STATIC]
+- **AUTORENDER** Auto eval code
+- **RENDER** [2D or 3D]
+- **LINE NUMBERS** Show / hide line numbers
+- **CODE HELPER** Enable code hinter
+- **MODE (net)** Enable Server or local mode
+- **HIDE CANVAS** Show / hide main canvas (can be used when you are connected to a server)
+- **SYNC (net)** Sync local with server (framecount)
+- **NAME (net)** Name tag on server
+- **LANG** Change interface language
+
+[Index](#Index)
+
+---
+
 #### Basic functions
 
 Using:
@@ -94,6 +119,8 @@ Using:
 
 ~~~js
 // Copy and paste
+
+// LIVECODE MODE
 
 function setup() {
       rectMode(CENTER)
