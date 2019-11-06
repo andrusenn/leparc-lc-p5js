@@ -1,5 +1,21 @@
 # REVISIONES / REVISIONS
 
+## Version 0.2.4???
+
+> [es]
+
+- Se implementó javascript mode
+- Se implemetó el tema en codemirror
+- Codemirror autoindent
+- Opción de autofill (hint)
+
+> [en]
+
+- Codemirror theme
+- Codemirror javascript mode
+- Codemirror autoindent
+- Autofill option (hint)
+
 ## Version 0.2.3
 
 Version 0.2.2 fue eliminada por errores en la carga de la librería osc

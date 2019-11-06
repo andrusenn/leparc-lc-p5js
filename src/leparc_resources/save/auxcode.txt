@@ -1,21 +1,26 @@
-// Hola LeParc!
-// LIVECODING MODE
-// No need to create canvas
+colorMode(HSB, 255)
+
 function draw() {
-	//fade(abs(sinOsc(0.1) * 255))
+	zoom(-0.01)
+	fade(20)
+	noStroke()
+	displace(-2, 0)
+	mod1()
 	blendMode(DIFFERENCE)
-	// zoom(0.01)
-	if(gate(200,50)) displace(-50, -10)
-	rectMode(CENTER)
-	stroke(255)
-	noFill()
-
-	circle(width / 2, height / 2, 500)
-	circle(width * 0.25 + cosOsc(0.2) * 250, height * 0.25, 300 + sinOsc(0.1) * 200)
-
-	beginRot()
-	rect(width / 2, height / 2, 500 + sinOsc(0.2) * 400, 500)
-	endRot()
-
+	mod2()
+	mirrorY(8)
 	kaleido()
+}
+
+function mod1() {
+	fill(45, 255, 255, 100)
+	circle(width / 2, height / 2, 100 + sinOsc(0.1) * 100)
+}
+
+function mod2() {
+	rectMode(CENTER)
+	fill(240, 255, 255, 200)
+	beginRot()
+	rect(width / 2, height / 2, 800, 100)
+	endRot()
 }
