@@ -1,15 +1,17 @@
+// Hola LeParc!
+
 colorMode(HSB, 255)
 
 function draw() {
-	zoom(-0.01)
-	fade(20)
+	zoom(0.01)
+	fade(10)
 	noStroke()
 	displace(-2, 0)
 	mod1()
 	blendMode(DIFFERENCE)
 	mod2()
 	mirrorY(8)
-	kaleido()
+	// kaleido()
 }
 
 function mod1() {
