@@ -56,7 +56,8 @@
 /* CURSOR */
 
 .CodeMirror-cursor {
-      border: 2px solid white;
+      border-left: 2px solid white;
+      border-right: 2px solid white;
       /* background:rgba(145, 255, 0, 0.5); */
       /* border-right: 2px solid black; */
       width: 0;
