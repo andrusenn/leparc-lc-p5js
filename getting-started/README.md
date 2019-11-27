@@ -1,8 +1,8 @@
-# GETTING STARTING
+# GETTING STARTED
 
 ## Index
 
-- [GETTING STARTING](#getting-starting)
+- [GETTING STARTED](#getting-started)
   - [Index](#index)
     - [Basics](#basics)
       - [Differece between STATIC MODE and LIVECODE MODE](#differece-between-static-mode-and-livecode-mode)
