@@ -77,6 +77,10 @@ You can experiment with latest Electron's releases:
 
 ----
 
+## Getting starting
+
+[Interface and basic functions](https://github.com/andrusenn/leparc-lc-p5js/tree/master/getting-starting)
+
 ## Quick reference
 
 IMPORTANT! There are two modes in configurations (`Ctrl+Tab`) for play:
