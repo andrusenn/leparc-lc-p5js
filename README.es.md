@@ -79,7 +79,7 @@ Si eres experto/a, puedes experimentar instalando la ultima version de electron:
 
 ## Comenzando
 
-[Interfaz y funciones básicas](https://github.com/andrusenn/leparc-lc-p5js/tree/master/getting-starting)
+[Interfaz y funciones básicas](https://github.com/andrusenn/leparc-lc-p5js/tree/master/getting-started)
 
 ## Referencia rápida
 

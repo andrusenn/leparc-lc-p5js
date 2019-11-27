@@ -77,9 +77,9 @@ You can experiment with latest Electron's releases:
 
 ----
 
-## Getting starting
+## Getting started
 
-[Interface and basic functions](https://github.com/andrusenn/leparc-lc-p5js/tree/master/getting-starting)
+[Interface and basic functions](https://github.com/andrusenn/leparc-lc-p5js/tree/master/getting-started)
 
 ## Quick reference
 
