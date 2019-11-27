@@ -7,7 +7,7 @@
       "license": "MIT",
       "homepage": "http://andressenn.com",
       "version": "0.2.3",
-      "description": "p5 livecoding",
+      "description": "p5js livecoding",
       "repository": {
             "type": "git",
             "url": "https://github.com/andrusenn/leparc-lc-p5js.git"
@@ -32,8 +32,8 @@
             "productName": "LeParc-LC",
             "files": [
                   "!**/libs/p5/{p5.js,p5.sound.js,p5.dom.js}",
-                  "!**/leparc_resources/{config,media,save}",
-                  "!**/leparc_resources/snippets/{gpu,tnoise,toxi,loadvideos,varios}",
+                  "!**/leparc_resources/{config,media,save,snippets}",
+                  "!**/leparc_resources/snippets/",
                   "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
             ],
             "directories": {

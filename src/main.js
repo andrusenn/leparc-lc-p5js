@@ -3,17 +3,24 @@ const os = require("os")
 const ip = require("ip")
 const fs = require('fs-extra')
 const path = require('path')
-
 // Paths
 let appPath = app.getAppPath();
 let resourcesPath = (app.isPackaged) ? app.getPath("home") + "" : app.getAppPath();
-
+// config
+let config = {}
+try {
+      config = require(path.join(resourcesPath, 'leparc_resources', 'config', 'config.js'))
+} catch (e) {
+      //
+}
 let mainWindow
 
 function createWindow() {
       mainWindow = new BrowserWindow({
-            width: 1280,
-            height: 720,
+            width: 800,
+            height: 450,
+            frame: (config.env) ? config.env.frame : true,
+            alwaysOnTop: (config.env) ? config.env.alwaysOnTop : false,
             icon: path.join(appPath, 'assets', 'icon.png')
       })
       mainWindow.setMenu(null);
@@ -40,6 +47,7 @@ function createWindow() {
                   // Directorio -> leparc_resources/config
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'config'), () => {
                         writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.txt'), "server-ip=127.0.0.1\nport=7777\nosc-ip=127.0.0.1\nosc-port=12345\nmfr=0.001")
+                        writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.js'),"let cnf = {\n// Window frame\nframe : true,\n// Win always on top\nalwaysOnTop: false\}\n")
                   })
                   // Directorio -> leparc_resources/extends
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'extends'), () => {
