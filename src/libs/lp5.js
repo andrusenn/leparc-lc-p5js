@@ -31,10 +31,10 @@ let Lp5 = {
       clientRq: null,
       client: null,
       clients: 0,
-      oscData:[],
-      oscLib:null,
-      oscReady:false,
-      oscUDP:null,
+      oscData: [],
+      oscLib: null,
+      oscReady: false,
+      oscUDP: null,
       // Env
       playmode: 'static',
       fullscreen: false,
@@ -201,6 +201,10 @@ let Lp5 = {
                   'setup',
                   'preload',
                   'canvas',
+                  'window\.draw',
+                  'window\.setup',
+                  'global\.draw',
+                  'global\.setup',
                   'createCanvas',
                   'remove',
                   'mouseClicked',
@@ -222,6 +226,10 @@ let Lp5 = {
                   'setup',
                   'preload',
                   'canvas',
+                  'window\.draw',
+                  'window\.setup',
+                  'global\.draw',
+                  'global\.setup',
                   'createCanvas',
                   'remove',
                   // 'text',
@@ -254,6 +262,10 @@ let Lp5 = {
                   'clearDraw',
                   'preload',
                   'canvas',
+                  'window\.draw',
+                  'window\.setup',
+                  'global\.draw',
+                  'global\.setup',
                   'createCanvas',
                   'useCam',
                   'useOSC',
@@ -281,6 +293,10 @@ let Lp5 = {
                   'canvas',
                   'createCanvas',
                   'clearDraw',
+                  'window\.draw',
+                  'window\.setup',
+                  'global\.draw',
+                  'global\.setup',
                   //'text',
                   //'textAlign',
                   //'textLeading',
@@ -311,10 +327,10 @@ let Lp5 = {
             aux: [
                   'draw',
                   'setup',
-                  'window.draw',
-                  'window.setup',
-                  'global.draw',
-                  'global.setup',
+                  'window\.draw',
+                  'window\.setup',
+                  'global\.draw',
+                  'global\.setup',
                   'preload',
                   'canvas',
                   'createCanvas',
@@ -326,14 +342,14 @@ let Lp5 = {
             ],
             aux3d: [
                   'draw',
-                  'setup',
+                  'setup ',
                   'preload',
                   'canvas',
                   'createCanvas',
-                  'window.draw',
-                  'window.setup',
-                  'global.draw',
-                  'global.setup',
+                  'window\.draw',
+                  'window\.setup',
+                  'global\.draw',
+                  'global\.setup',
                   // 'text',
                   // 'textAlign',
                   // 'textLeading',
@@ -357,13 +373,13 @@ let Lp5 = {
       checkProgWord: function (_word) {
             // verifica que no se redefinan variables o funciones de p5
             //return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
-            return `(?<=["\'\.a-zA-Z0-9])[\s\t ]*${_word}`;
+            return `((?<=["\'\.a-zA-Z0-9])[\s\t ]*${_word}|${_word}(?=[a-zA-Z0-9]))`;
       },
       doGlobals: function (_code) {
             // Cambia a globales las variables fuera de las funciones
             return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
       },
-      evalLivecoding:function(onfly){
+      evalLivecoding: function (onfly) {
             if (this.blockData.isFunc) {
                   if (this.blockData.func == 'setup') {
                         this.renderCodeSetup = this.doGlobals("'use strict';" + this.blockData.code)
@@ -398,7 +414,7 @@ let Lp5 = {
                   this.renderCodeAux = this.doGlobals("'use strict';" + this.blockData.code)
                   this.tryEval('aux')
             }
-            if(!onfly) this.evalLineFx('lp5-aux', this.blockData.lf, this.blockData.lt)
+            if (!onfly) this.evalLineFx('lp5-aux', this.blockData.lf, this.blockData.lt)
             // 
             this.evalConn(Lp5.blockData)
       },
@@ -436,91 +452,104 @@ let Lp5 = {
                   }
                   // Funcion generica anonima
                   if (cm.getLine(lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
-                        let tmp_lfrom = lfrom
-                        //linepos = lfrom
-                        let opens = 0
-                        let brackets = false
-                        // check if inside other function
-                        while (tmp_lfrom >= 0) {
-                              if (brackets && opens < 0) {
-                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
-                                          func = 'setup'
-                                          lfrom = tmp_lfrom
-                                          lto = lfrom
-                                          break evtsln;
-                                    }
-                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
-                                          func = 'draw'
-                                          lfrom = tmp_lfrom
-                                          lto = lfrom
-                                          break evtsln;
-                                    }
-                              }
-                              if (cm.getLine(tmp_lfrom).match(/\}/g)) {
-                                    brackets = true
-                                    let len = cm.getLine(tmp_lfrom).match(/\}/g).length
-                                    if (len > 1) {
-                                          opens += len;
-                                    } else {
-                                          opens++;
-                                    }
-                              }
-                              if (cm.getLine(tmp_lfrom).match(/\{/g)) {
-                                    brackets = true
-                                    let len = cm.getLine(tmp_lfrom).match(/\{/g).length
-                                    if (len > 1) {
-                                          opens -= len;
-                                    } else {
-                                          opens--;
-                                    }
-                              }
-                              tmp_lfrom--
-                        }
+                        // let tmp_lfrom = lfrom
+                        // //linepos = lfrom
+                        // let opens = 0
+                        // let brackets = false
+                        // // check if inside other function
+                        // while (tmp_lfrom >= 0) {
+                        //       if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                        //             brackets = true
+                        //             let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                        //             if (len > 1) {
+                        //                   opens += len;
+                        //             } else {
+                        //                   opens++;
+                        //             }
+                        //       }
+                        //       if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                        //             brackets = true
+                        //             let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                        //             if (len > 1) {
+                        //                   opens -= len;
+                        //             } else {
+                        //                   opens--;
+                        //             }
+                        //       }
+                        //       if (brackets && opens < 0) {
+                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                        //                   func = 'setup'
+                        //                   lfrom = tmp_lfrom
+                        //                   lto = lfrom
+                        //                   break evtsln;
+                        //             }
+                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                        //                   func = 'draw'
+                        //                   lfrom = tmp_lfrom
+                        //                   lto = lfrom
+                        //                   break evtsln;
+                        //             }
+                        //             if (cm.getLine(tmp_lfrom).match(/function[\t\s ]+[\w]+/g)) {
+                        //                   func = 'any_named'
+                        //                   lfrom = tmp_lfrom
+                        //                   lto = lfrom
+                        //                   break evtsln;
+                        //             }
+                        //       }
+                        //       tmp_lfrom--
+                        // }
                         func = 'any'
                         break evtsln;
                   }
                   // Funcion generica named
-                  if (cm.getLine(lfrom).match(/function[\t\s ]+[\w]+/gi)) {
-                        let tmp_lfrom = lfrom
-                        //linepos = lfrom
-                        let opens = 0
-                        let brackets = false
-                        // check if inside other function
-                        while (tmp_lfrom >= 0) {
-                              if (brackets && opens < 0) {
-                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
-                                          func = 'setup'
-                                          lfrom = tmp_lfrom
-                                          lto = lfrom
-                                          break evtsln;
-                                    }
-                                    if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
-                                          func = 'draw'
-                                          lfrom = tmp_lfrom
-                                          lto = lfrom
-                                          break evtsln;
-                                    }
-                              }
-                              if (cm.getLine(tmp_lfrom).match(/\}/g)) {
-                                    brackets = true
-                                    let len = cm.getLine(tmp_lfrom).match(/\}/g).length
-                                    if (len > 1) {
-                                          opens += len;
-                                    } else {
-                                          opens++;
-                                    }
-                              }
-                              if (cm.getLine(tmp_lfrom).match(/\{/g)) {
-                                    brackets = true
-                                    let len = cm.getLine(tmp_lfrom).match(/\{/g).length
-                                    if (len > 1) {
-                                          opens -= len;
-                                    } else {
-                                          opens--;
-                                    }
-                              }
-                              tmp_lfrom--
-                        }
+                  if (cm.getLine(lfrom).match(/function[\t ]+[\w]+/g)) {
+                        // let tmp_lfrom = lfrom
+                        // //linepos = lfrom
+                        // let opens = 0
+                        // let brackets = false
+                        // // check if inside other function
+                        // while (tmp_lfrom >= 0) {
+                        //       if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                        //             brackets = true
+                        //             let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                        //             if (len > 1) {
+                        //                   opens += len;
+                        //             } else {
+                        //                   opens++;
+                        //             }
+                        //       }
+                        //       if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                        //             brackets = true
+                        //             let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                        //             if (len > 1) {
+                        //                   opens -= len;
+                        //             } else {
+                        //                   opens--;
+                        //             }
+                        //       }
+                        //       if (brackets && opens < 0) {
+                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                        //                   func = 'setup'
+                        //                   lfrom = tmp_lfrom
+                        //                   lto = lfrom
+                        //                   break evtsln;
+                        //             }
+                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                        //                   func = 'draw'
+                        //                   lfrom = tmp_lfrom
+                        //                   lto = lfrom
+                        //                   break evtsln;
+                        //             }
+
+                        //             if (cm.getLine(tmp_lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                        //                   func = 'any'
+                        //                   lfrom = tmp_lfrom
+                        //                   lto = lfrom
+                        //                   break evtsln;
+                        //             }
+                        //       }
+                        //       tmp_lfrom--
+                        // }
                         func = 'any_named'
                         break evtsln;
                   }
@@ -531,25 +560,11 @@ let Lp5 = {
                         let reg = new RegExp(fname, "g")
                         if (cm.getLine(lfrom).match(reg)) {
                               let tmp_lfrom = lfrom
-                              //linepos = lfrom
+                              // linepos = lfrom
                               let opens = 0
                               let brackets = false
                               // check if inside other function
                               while (tmp_lfrom >= 0) {
-                                    if (brackets && opens < 0) {
-                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
-                                                func = 'setup'
-                                                lfrom = tmp_lfrom
-                                                lto = lfrom
-                                                break evtsln;
-                                          }
-                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
-                                                func = 'draw'
-                                                lfrom = tmp_lfrom
-                                                lto = lfrom
-                                                break evtsln;
-                                          }
-                                    }
                                     if (cm.getLine(tmp_lfrom).match(/\}/g)) {
                                           brackets = true
                                           let len = cm.getLine(tmp_lfrom).match(/\}/g).length
@@ -566,6 +581,34 @@ let Lp5 = {
                                                 opens -= len;
                                           } else {
                                                 opens--;
+                                          }
+                                    }
+                                    if (brackets && opens < 0) {
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                                                func = 'setup'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                                                func = 'draw'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+
+                                          if (cm.getLine(tmp_lfrom).match(/function[\t\s ]+[\w]+/g)) {
+                                                func = 'any_named'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
+                                          }
+
+                                          if (cm.getLine(tmp_lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
+                                                func = 'any'
+                                                lfrom = tmp_lfrom
+                                                lto = lfrom
+                                                break evtsln;
                                           }
                                     }
                                     tmp_lfrom--
@@ -615,7 +658,7 @@ let Lp5 = {
                   // Try convert nammed function to global
                   if (func == 'any_named') {
                         // Algunos errores no pueden ser atrapados. Se incluye try en el contenido
-                        code = code.replace(/(function[\s\t ]+[\w]+\([\s\t ]*[\w,]*\)[\s\t ]*\{[\s\t ]*)([\w,\/\s\t \:;\|\?\.\=\+\-\%\&\\"\'\*\^\(\)\>\<\{\}]*)(\})/igm,"$1try{\n$2\n}catch(e){\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}\n$3")
+                        code = code.replace(/(function[\s\t ]+[\w]+\([\s\t ]*[\w,]*\)[\s\t ]*\{[\s\t ]*)([\w,\/\s\t \:;\|\?\.\=\+\-\%\&\\"\'\*\^\(\)\>\<\{\}]*)(\})/igm, "$1try{\n$2\n}catch(e){\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}\n$3")
                         code = code.replace(/function[\s\t ]/gi, "window.").replace(/(window\.[\w]+)+/gi, "$1 = function")
                   }
             }
@@ -751,7 +794,8 @@ let Lp5 = {
             }
             // Clear -------------------------------
             //if (Lp5.cmDraw.getValue().trim() == '') clear()
-
+            CENTERW = width / 2
+            CENTERH = height / 2
             // reset -------------------------------
             strokeWeight(1)
             blendMode(BLEND)

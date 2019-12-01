@@ -394,7 +394,7 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   let brackets = false
                   // Get content of draw function -----------------------
                   while (lfrom < Lp5.cmAux.lineCount()) {
-                        if (Lp5.cmAux.getLine(lfrom) != "" && Lp5.cmAux.getLine(lfrom).match(/function[\t\s\ ]+draw/g)) {
+                        if (Lp5.cmAux.getLine(lfrom) != "" && Lp5.cmAux.getLine(lfrom).match(/function[\t\s\ ]+draw[\t\s\ ]*\([\t\s\ ]*\)/g)) {
                               break;
                         }
                         lfrom++
@@ -422,17 +422,17 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   // For [function name()] -> [name = function()]
                   for (let i = 0; i < Lp5.p5Words.length; i++) {
                         let word = Lp5.p5Words[i]
-                        let exp = new RegExp("function[\\t\\s ]+" + word, "g")
+                        let exp = new RegExp("function[\\t\\s ]+" + word + "[\\t\\s ]*\\([\\t\\s ]*\\)", "g")
                         // draw -> will replaced / se reemplaza -> [_________draw function()]
                         if (word == 'draw') word = 'let _________draw'
-                        code = code.replace(exp, word + " = function")
+                        code = code.replace(exp, word + " = function()")
                   }
                   // se crea draw function() / create draw function()
                   code = code + drawCode
                   // si están declaradas / if are declared
-                  if (code.match(/preload/g)) code = code + ";preload()"
-                  if (code.match(/setup/g)) code = code + ";setup()"
-                  if (code.match(/draw/g)) code = code + ";draw()"
+                  if (code.match(/[ ]*preload[\t ]*\=/g)) code = code + ";preload()"
+                  if (code.match(/[ ]*setup[\t ]*\=/g)) code = code + ";setup()"
+                  if (code.match(/[ ]*draw[\t ]*\=/g)) code = code + ";draw()"
                   // Eval
                   Lp5.renderCodeAux = "'use strict';" + code
                   Lp5.evalAll()
