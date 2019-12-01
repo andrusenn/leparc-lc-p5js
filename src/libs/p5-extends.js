@@ -1301,6 +1301,26 @@ if (!p5.prototype.hasOwnProperty('loadVideo')) {
             }
       }
 }
+
+/**
+ * Centro horizontal del lienzo / Center horizontal of the canvas
+ * 
+ * @property CENTERW
+ */
+
+if (!p5.prototype.hasOwnProperty('CENTERW')) {
+      p5.prototype.CENTERW = 0
+}
+
+/**
+ * Centro vertical del lienzo / Center vertical of the canvas
+ * 
+ * @property CENTERH
+ */
+
+if (!p5.prototype.hasOwnProperty('CENTERH')) {
+      p5.prototype.CENTERH = 0
+}
 /**
  * ----------------------
  * 
