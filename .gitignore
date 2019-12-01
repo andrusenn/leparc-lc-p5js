@@ -1,4 +1,5 @@
 src/node_modules/
+src/leparc_resources/media/
 node_modules/
 src/*.zip
 dist*
