@@ -188,6 +188,14 @@ Método|Desc
 `osc('/address')` | retorna valor enviado
 `osc('/address',index)` | (multiple args) retorna valor en la posicion de array index
 
+## Propiedades extendidas p5j
+
+| Propiedad                                             | Description                                                                                                                                     |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+`CENTERW` | Centro del canvas en x `width / 2`
+`CENTERH` | Centro del canvas en y `height / 2`
+
+
 ## OSC Messages
 
 Por defecto, se abre el puerto 12345 en localhost
@@ -239,7 +247,7 @@ osc-port=12345
 - En setup: `useCam([ancho,alto])`
 - En draw: `getCam(x,y)`
   
-Obtener la imagen de salida `imgCam()`
+Obtener la imagen de salida `imgCam()` -> `image(imgCam(),0,0)` o `texture(imgCam())`
 
 ### Audio In
 

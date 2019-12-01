@@ -188,6 +188,13 @@ function mouseClicked(){
 `osc('/address')`                                  | return osc value
 `osc('/address',index)`                            | (multiple args) return osc value on index array position
 
+## Extended properties p5j
+
+| Property                                             | Description                                                                                                                                     |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+`CENTERW` | Center x of the canvas `width / 2`
+`CENTERH` | Center y of the canvas `height / 2`
+
 ## OSC Messages
 
 By default, port 12345 is opened for listen in localhost
@@ -241,7 +248,7 @@ Shorthand of `creteCapture(VIDEO)`
 - In setup: `useCam([width,height])`
 - In draw: `getCam(x,y)`
 
-For get image output `imgCam()`
+For get image output `imgCam()` -> `image(imgCam(),0,0)` or `texture(imgCam())`
 
 ### Audio In
 
