@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>LeParc - livecoding - P5js</title>
 	<link rel="stylesheet" href="libs/codemirror/codemirror.css">
-	<link rel="stylesheet" href="libs/codemirror/blackboard.css">
+	<link id="_theme" rel="stylesheet" href="libs/codemirror/theme/none.css">
 	<link rel="stylesheet" href="libs/codemirror/show-hint.css">
 	<link rel="stylesheet" href="css/index.min.css">
 </head>
@@ -53,74 +53,121 @@
 			<div class="modal-win">
 				<table>
 					<tr>
-						<td class="col2"><label for="cnf-playmode" class="en-playmode">PLAY MODE</label>
+						<td>
+							<table>
+								<tr>
+									<td class="col2"><label for="cnf-playmode"
+											class="en-playmode">PLAY MODE</label>
+									</td>
+									<td class="col1">
+										<select id="cnf-playmode">
+											<option value="livecoding">LIVECODING</option>
+											<option value="static">STATIC</option>
+										</select>
+									</td>
+								</tr>
+								<tr id="option-renderonfly">
+									<td class="col2"><label for="cnf-renderonfly"
+											class="en-autorender">AUTO
+											RENDER</label></td>
+									<td class="col1"><input id="cnf-renderonfly" type="checkbox" />
+									</td>
+								</tr>
+								<tr id="option-render">
+									<td class="col2"><label for="cnf-render"
+											class="en-render">RENDER</label></td>
+									<td class="col1">
+										<select id="cnf-render">
+											<option value="p2d">2D</option>
+											<option value="webgl">3D</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="col2"><label for="cnf-linenumbers"
+											class="en-linenumbers">LINE
+											NUMBERS</label></td>
+									<td class="col1"><input id="cnf-linenumbers" value="1"
+											type="checkbox" checked />
+									</td>
+								</tr>
+								<tr>
+									<td class="col2"><label for="cnf-codehelper"
+											class="en-codehelper">CODE
+											HELPER</label></td>
+									<td class="col1"><input id="cnf-codehelper" value="1"
+											type="checkbox" />
+									</td>
+								</tr>
+								<tr>
+									<td class="col2"><label for="cnf-lang"
+											class="en-lang">LANG</label></td>
+									<td class="col1">
+										<select id="cnf-lang">
+											<option value="es">ES</option>
+											<option value="en">EN</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+
 						</td>
-						<td class="col1">
-							<select id="cnf-playmode">
-								<option value="livecoding">LIVECODING</option>
-								<option value="static">STATIC</option>
-							</select>
-						</td>
-					</tr>
-					<tr id="option-renderonfly">
-						<td class="col2"><label for="cnf-renderonfly" class="en-autorender">AUTO
-								RENDER</label></td>
-						<td class="col1"><input id="cnf-renderonfly" type="checkbox" /></td>
-					</tr>
-					<tr id="option-render">
-						<td class="col2"><label for="cnf-render" class="en-render">RENDER</label></td>
-						<td class="col1">
-							<select id="cnf-render">
-								<option value="p2d">2D</option>
-								<option value="webgl">3D</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="col2"><label for="cnf-linenumbers" class="en-linenumbers">LINE
-								NUMBERS</label></td>
-						<td class="col1"><input id="cnf-linenumbers" value="1" type="checkbox" checked />
-						</td>
-					</tr>
-					<tr>
-						<td class="col2"><label for="cnf-codehelper" class="en-codehelper">CODE
-								HELPER</label></td>
-						<td class="col1"><input id="cnf-codehelper" value="1" type="checkbox" />
-						</td>
-					</tr>
-					<tr id="option-server-mode">
-						<td class="col2"><label for="cnf-server" class="en-mode">MODE (net)</label></td>
-						<td class="col1">
-							<select id="cnf-server">
-								<option value="LOCAL" class="en-local">LOCAL</option>
-								<option value="SERVER" class="en-server">SERVER</option>
-								<option value="CLIENT" class="en-client">CLIENT</option>
-							</select>
-						</td>
-					</tr>
-					<tr id="option-server-hidecanvas">
-						<td class="col2"><label for="cnf-hidecanvas" class="en-hidecanvas">HIDE
-								CANVAS</label></td>
-						<td class="col1"><input id="cnf-hidecanvas" value="1" type="checkbox" />
-						</td>
-					</tr>
-					<tr id="option-server-sync">
-						<td class="col2"><label for="cnf-sync">SYNC (net)</label></td>
-						<td class="col1"><input id="cnf-sync" type="checkbox" /></td>
-					</tr>
-					<tr id="option-server-name">
-						<td class="col2"><label for="cnf-server" class="en-name">NAME (net)</label></td>
-						<td class="col1">
-							<input type="text" id="cnf-name" />
-						</td>
-					</tr>
-					<tr>
-						<td class="col2"><label for="cnf-server" class="en-lang">LANG</label></td>
-						<td class="col1">
-							<select id="cnf-lang">
-								<option value="es">ES</option>
-								<option value="en">EN</option>
-							</select>
+						<td>
+
+							<table>
+
+								<tr>
+									<td class="col2"><label for="cnf-theme"
+											class="en-theme">THEME</label></td>
+									<td class="col1">
+										<select id="cnf-theme">
+											<option value="none">No theme</option>
+											<option value="default">Default</option>
+											<option value="3024-day">3024-day</option>
+											<option value="blackboard">blackboard</option>
+											<option value="lesser-dark">lesser-dark</option>
+											<option value="ttcn">ttcn</option>
+										</select>
+									</td>
+								</tr>
+								<tr id="option-server-hidecanvas">
+									<td class="col2"><label for="cnf-hidecanvas"
+											class="en-hidecanvas">HIDE
+											CANVAS</label></td>
+									<td class="col1"><input id="cnf-hidecanvas" value="1"
+											type="checkbox" />
+									</td>
+								</tr>
+								<tr id="option-server-mode">
+									<td class="col2"><label for="cnf-server" class="en-mode">MODE
+											(net)</label></td>
+									<td class="col1">
+										<select id="cnf-server">
+											<option value="LOCAL" class="en-local">LOCAL</option>
+											<option value="SERVER" class="en-server">SERVER
+											</option>
+											<option value="CLIENT" class="en-client">CLIENT
+											</option>
+										</select>
+									</td>
+								</tr>
+								<tr id="option-server-sync">
+									<td class="col2"><label for="cnf-sync">SYNC (net)</label></td>
+									<td class="col1"><input id="cnf-sync" type="checkbox" /></td>
+								</tr>
+								<tr id="option-server-name">
+									<td class="col2"><label for="cnf-name" class="en-name">NAME
+											(net)</label></td>
+									<td class="col1">
+										<input type="text" id="cnf-name" />
+									</td>
+								</tr>
+								<tr>
+									<td class="col2">&nbsp;</td>
+									<td class="col1">&nbsp;</td>
+								</tr>
+							</table>
+
 						</td>
 					</tr>
 				</table>
