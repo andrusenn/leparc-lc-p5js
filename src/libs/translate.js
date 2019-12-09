@@ -20,7 +20,9 @@ Lp5locale.init({
                         'can not be defined in this block': 'can not be defined in this block',
                         'No more fun?': 'No more fun?',
                         'Snippet loaded -> ': 'Snippet loaded -> ',
+                        'Library loaded -> ': 'Library loaded -> ',
                         'Error on load -> ': 'Error on load -> ',
+                        'Error on load lib -> ': 'Error on load lib -> ',
                         "LINE NUMBERS": "LINE NUMBERS",
                         "CODE HELPER": "CODE HELPER",
                         "Initializing camera": "Initializing camera",
@@ -44,7 +46,9 @@ Lp5locale.init({
                         'can not be defined in this block': 'no puede ser definida en este bloque',
                         'No more fun?': 'Se terminó la diversión?',
                         'Snippet loaded -> ': 'Snippet cargado -> ',
+                        'Library loaded -> ': 'Libreria cargada -> ',
                         'Error on load -> ': 'Error al cargar -> ',
+                        'Error on load lib -> ': 'Error en la carga de librería -> ',
                         "LINE NUMBERS": "NUMEROS DE LINEA",
                         "CODE HELPER": "AYUDA CODIGO",
                         "Initializing camera": "Inicializando cámara",
@@ -74,6 +78,8 @@ Lp5locale.init({
       lang_msg.exit_app = Lp5locale.t('No more fun?')
       lang_msg.snip = Lp5locale.t('Snippet loaded -> ')
       lang_msg.snip_err = Lp5locale.t('Error on load -> ')
+      lang_msg.lib = Lp5locale.t('Library loaded -> ')
+      lang_msg.lib_err = Lp5locale.t('Error on load lib -> ')
       lang_msg.cam_init = Lp5locale.t('Initializing camera')
       lang_msg.cam_loaded = Lp5locale.t('Camera ready')
       lang_msg.local_server_mode = Lp5locale.t('can be used on LOCAL or SERVER mode only')
