@@ -9,7 +9,7 @@
 // -----------------------------------------------------
 let Lp5 = {
       // Version
-      version: '0.2.3',
+      version: '0.2.4',
       p5: {
             version: '0.10.2'
       },
@@ -104,25 +104,26 @@ let Lp5 = {
             keyReleased: '',
             keyTyped: ''
       },
-      renderExtends: [
-            'snip',
-            'loadLib',
-            'useOSC',
-            'useAudio',
-            'useCam',
-            'loadVideo',
-            'loadImage',
-            'loadModel',
-            'loadStrings',
-            'loadShader',
-            'loadJSON',
-            'loadStrings',
-            'loadTable',
-            'loadXML',
-            'loadFont',
-            'loadBytes'
+      // renderExtends: [
+      //       'snip',
+      //       'loadLib',
+      //       'useLib',
+      //       'useOSC',
+      //       'useAudio',
+      //       'useCam',
+      //       'loadVideo',
+      //       'loadImage',
+      //       'loadModel',
+      //       'loadStrings',
+      //       'loadShader',
+      //       'loadJSON',
+      //       'loadStrings',
+      //       'loadTable',
+      //       'loadXML',
+      //       'loadFont',
+      //       'loadBytes'
 
-      ],
+      // ],
       auxTxt: '',
       // Escala de los campos a
       scale_st: 1,
@@ -373,7 +374,7 @@ let Lp5 = {
       checkProgWord: function (_word) {
             // verifica que no se redefinan variables o funciones de p5
             //return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
-            return `((?<=["\'\.a-zA-Z0-9])[\s\t ]*${_word}|${_word}(?=[a-zA-Z0-9]))`;
+            return `((?<=["\'\.a-zA-Z0-9])[\t \u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000]*${_word}|(?<=\/\/[ \u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000]*)${_word}|${_word}(?=[a-zA-Z0-9]))`;
       },
       doGlobals: function (_code) {
             // Cambia a globales las variables fuera de las funciones
@@ -398,15 +399,7 @@ let Lp5 = {
 
                         }
                   }
-                  for (let i = 0; i < this.renderExtends.length; i++) {
-                        let fname = this.renderExtends[i]
-                        if (this.blockData.func == fname) {
-                              this.renderCodeAux = this.doGlobals("'use strict';" + this.blockData.code)
-                              this.tryEval('aux')
-                              break;
-                        }
-                  }
-                  if (this.blockData.func == 'any' || this.blockData.func == 'any_named') {
+                  if (this.blockData.func == 'any' || this.blockData.func == 'any_named' || this.blockData.func == 'method') {
                         this.renderCodeAux = this.doGlobals("'use strict';" + this.blockData.code)
                         this.tryEval('aux')
                   }
@@ -419,6 +412,7 @@ let Lp5 = {
             this.evalConn(Lp5.blockData)
       },
       // Get functions or lines from editor by context
+      // Obtener funciones o lineas para evaluar segun el contexto
       getCodeBlock: function (cm, cp) {
             let lfrom = cp.line
             let lto = cp.line
@@ -433,191 +427,117 @@ let Lp5 = {
             while (lfrom >= 0) {
                   // Setup
                   lto = lfrom
-                  if (cm.getLine(lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
+                  if (cm.getLine(lfrom).match(/^[\t ]*function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
                         func = 'setup'
                         break;
                   }
                   // Draw
-                  if (cm.getLine(lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
+                  if (cm.getLine(lfrom).match(/^[\t ]*function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
                         func = 'draw'
                         break;
                   }
+                  // Funcion generica named
+                  if (cm.getLine(lfrom).match(/^[\t ]*function[\t ]+[\w]+\(/g)) {
+                        func = 'any_named'
+                        break evtsln;
+                  }
                   // Funcion evento
                   for (var key in this.renderCodeEvent) {
-                        let reg = new RegExp("function[\\t ]+" + key + "[\\t ]*\\([\\t ]*\\)", "g")
+                        let reg = new RegExp("^[\t ]*function[\\t ]+" + key + "[\\t ]*\\([\\t ]*\\)", "g")
                         if (cm.getLine(lfrom).match(reg)) {
                               func = key
                               break evtsln;
                         }
                   }
                   // Funcion generica anonima
-                  if (cm.getLine(lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
-                        // let tmp_lfrom = lfrom
-                        // //linepos = lfrom
-                        // let opens = 0
-                        // let brackets = false
-                        // // check if inside other function
-                        // while (tmp_lfrom >= 0) {
-                        //       if (cm.getLine(tmp_lfrom).match(/\}/g)) {
-                        //             brackets = true
-                        //             let len = cm.getLine(tmp_lfrom).match(/\}/g).length
-                        //             if (len > 1) {
-                        //                   opens += len;
-                        //             } else {
-                        //                   opens++;
-                        //             }
-                        //       }
-                        //       if (cm.getLine(tmp_lfrom).match(/\{/g)) {
-                        //             brackets = true
-                        //             let len = cm.getLine(tmp_lfrom).match(/\{/g).length
-                        //             if (len > 1) {
-                        //                   opens -= len;
-                        //             } else {
-                        //                   opens--;
-                        //             }
-                        //       }
-                        //       if (brackets && opens < 0) {
-                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
-                        //                   func = 'setup'
-                        //                   lfrom = tmp_lfrom
-                        //                   lto = lfrom
-                        //                   break evtsln;
-                        //             }
-                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
-                        //                   func = 'draw'
-                        //                   lfrom = tmp_lfrom
-                        //                   lto = lfrom
-                        //                   break evtsln;
-                        //             }
-                        //             if (cm.getLine(tmp_lfrom).match(/function[\t\s ]+[\w]+/g)) {
-                        //                   func = 'any_named'
-                        //                   lfrom = tmp_lfrom
-                        //                   lto = lfrom
-                        //                   break evtsln;
-                        //             }
-                        //       }
-                        //       tmp_lfrom--
-                        // }
+                  if (cm.getLine(lfrom).match(/^[\t ]*[\$\w]+[\t ]*\=[\t ]*(function[\t ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) {
                         func = 'any'
                         break evtsln;
                   }
-                  // Funcion generica named
-                  if (cm.getLine(lfrom).match(/function[\t ]+[\w]+/g)) {
-                        // let tmp_lfrom = lfrom
-                        // //linepos = lfrom
-                        // let opens = 0
-                        // let brackets = false
-                        // // check if inside other function
-                        // while (tmp_lfrom >= 0) {
-                        //       if (cm.getLine(tmp_lfrom).match(/\}/g)) {
-                        //             brackets = true
-                        //             let len = cm.getLine(tmp_lfrom).match(/\}/g).length
-                        //             if (len > 1) {
-                        //                   opens += len;
-                        //             } else {
-                        //                   opens++;
-                        //             }
-                        //       }
-                        //       if (cm.getLine(tmp_lfrom).match(/\{/g)) {
-                        //             brackets = true
-                        //             let len = cm.getLine(tmp_lfrom).match(/\{/g).length
-                        //             if (len > 1) {
-                        //                   opens -= len;
-                        //             } else {
-                        //                   opens--;
-                        //             }
-                        //       }
-                        //       if (brackets && opens < 0) {
-                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
-                        //                   func = 'setup'
-                        //                   lfrom = tmp_lfrom
-                        //                   lto = lfrom
-                        //                   break evtsln;
-                        //             }
-                        //             if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
-                        //                   func = 'draw'
-                        //                   lfrom = tmp_lfrom
-                        //                   lto = lfrom
-                        //                   break evtsln;
-                        //             }
+                  // Metodos
+                  if (cm.getLine(lfrom).match(/^[\t ]*(?!=\.)[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                        let tmp_lfrom = lfrom
+                        let opens = 0
+                        let brackets = false
+                        // check if inside other function
+                        while (tmp_lfrom > 0) {
+                              tmp_lfrom--
+                              if (cm.getLine(tmp_lfrom).match(/\}/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\}/g).length
+                                    opens += len;
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\{/g)) {
+                                    brackets = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\{/g).length
+                                    opens -= len;
+                              }
+                              if (brackets && opens < 0) {
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*function[\t\s ]+setup[\t\s ]*\([\t\s ]*\)/g)) {
+                                          func = 'setup'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*function[\t\s ]+draw[\t\s ]*\([\t\s ]*\)/g)) {
+                                          func = 'draw'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*function[\t\s ]+[\w]+\(.*\)/g)) {
+                                          func = 'any_named'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*[\w\$]+[\t ]*\=[\t ]*(function[\t\s ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) {
+                                          func = 'any'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
 
-                        //             if (cm.getLine(tmp_lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
-                        //                   func = 'any'
-                        //                   lfrom = tmp_lfrom
-                        //                   lto = lfrom
-                        //                   break evtsln;
-                        //             }
-                        //       }
-                        //       tmp_lfrom--
-                        // }
-                        func = 'any_named'
+                                    }
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*(?<=\.)[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                                          func = 'method'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
+                              }
+                        }
+                        func = 'method'
                         break evtsln;
                   }
-                  // Funcion load -> /sinp/loadStrings/etc...
-                  // Declaradas en "renderExtends"
-                  for (let i = 0; i < this.renderExtends.length; i++) {
-                        let fname = this.renderExtends[i]
-                        let reg = new RegExp(fname, "g")
-                        if (cm.getLine(lfrom).match(reg)) {
-                              let tmp_lfrom = lfrom
-                              // linepos = lfrom
-                              let opens = 0
-                              let brackets = false
-                              // check if inside other function
-                              while (tmp_lfrom >= 0) {
-                                    if (cm.getLine(tmp_lfrom).match(/\}/g)) {
-                                          brackets = true
-                                          let len = cm.getLine(tmp_lfrom).match(/\}/g).length
-                                          if (len > 1) {
-                                                opens += len;
-                                          } else {
-                                                opens++;
-                                          }
-                                    }
-                                    if (cm.getLine(tmp_lfrom).match(/\{/g)) {
-                                          brackets = true
-                                          let len = cm.getLine(tmp_lfrom).match(/\{/g).length
-                                          if (len > 1) {
-                                                opens -= len;
-                                          } else {
-                                                opens--;
-                                          }
-                                    }
-                                    if (brackets && opens < 0) {
-                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+setup[\t ]*\([\t ]*\)/g)) {
-                                                func = 'setup'
-                                                lfrom = tmp_lfrom
-                                                lto = lfrom
-                                                break evtsln;
-                                          }
-                                          if (cm.getLine(tmp_lfrom).match(/function[\t ]+draw[\t ]*\([\t ]*\)/g)) {
-                                                func = 'draw'
-                                                lfrom = tmp_lfrom
-                                                lto = lfrom
-                                                break evtsln;
-                                          }
-
-                                          if (cm.getLine(tmp_lfrom).match(/function[\t\s ]+[\w]+/g)) {
-                                                func = 'any_named'
-                                                lfrom = tmp_lfrom
-                                                lto = lfrom
-                                                break evtsln;
-                                          }
-
-                                          if (cm.getLine(tmp_lfrom).match(/[\w\$]+[\t\s ]*\=[\t\s ]*(function[\t\s ]*\([\t\s ]*[\w,]*[\t\s ]*\)|\([\t\s ]*[\w,]*[\t\s ]*\)[\t\s ]*\=\>[\t\s ]*)/g)) {
-                                                func = 'any'
-                                                lfrom = tmp_lfrom
-                                                lto = lfrom
-                                                break evtsln;
-                                          }
-                                    }
-                                    tmp_lfrom--
-                              }
-                              func = fname
-                              break evtsln;
-                        }
-                  }
                   lfrom--
+            }
+            if (func == 'method') {
+                  let opens = 0
+                  let brackets = true
+                  while (lto < cm.lineCount()) {
+
+                        if (cm.getLine(lto).match(/\)/g)) {
+                              brackets = true
+                              let len = cm.getLine(lto).match(/\)/g).length
+                              opens += len;
+                        }
+                        if (cm.getLine(lto).match(/\(/g)) {
+                              brackets = true
+                              let len = cm.getLine(lto).match(/\(/g).length
+                              opens -= len;
+                        }
+                        if (brackets && opens == 0 && cm.getLine(lto).match(/\)/g)) {
+                              break
+                        }
+                        lto++
+                  }
+                  if (opens == 0) {
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim()
+                  } else {
+                        lto = 0
+                        lfrom = 0
+                        code = ''
+                  }
             }
             if (func == 'setup' || func == 'draw') {
                   let opens = 0
@@ -635,7 +555,13 @@ let Lp5 = {
                         }
                         lto++
                   }
-                  code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                  if (opens == 0) {
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                  } else {
+                        lto = 0
+                        lfrom = 0
+                        code = ''
+                  }
             }
             if (func == 'any' || func == 'any_named') {
                   let opens = 0
@@ -645,7 +571,7 @@ let Lp5 = {
                               brackets = true
                               opens++;
                         }
-                        if (opens > 0 && cm.getLine(lto).match(/\}/g)) {
+                        if (cm.getLine(lto).match(/\}/g) && opens > 0) {
                               opens--;
                         }
                         if (brackets && opens == 0) {
@@ -653,13 +579,19 @@ let Lp5 = {
                         }
                         lto++
                   }
-                  //Funcion completa
-                  code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
-                  // Try convert nammed function to global
-                  if (func == 'any_named') {
-                        // Algunos errores no pueden ser atrapados. Se incluye try en el contenido
-                        code = code.replace(/(function[\s\t ]+[\w]+\([\s\t ]*[\w,]*\)[\s\t ]*\{[\s\t ]*)([\w,\/\s\t \:;\|\?\.\=\+\-\%\&\\"\'\*\^\(\)\>\<\{\}]*)(\})/igm, "$1try{\n$2\n}catch(e){\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}\n$3")
-                        code = code.replace(/function[\s\t ]/gi, "window.").replace(/(window\.[\w]+)+/gi, "$1 = function")
+                  if (opens == 0) {
+                        //Funcion completa
+                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
+                        // Try convert nammed function to global
+                        if (func == 'any_named') {
+                              // Algunos errores no pueden ser atrapados. Se incluye try en el contenido
+                              code = code.replace(/(function[\s\t ]+[\w]+\(.*\)[\s\t ]*\{[\s\t ]*)(.*\n\r)(\})/igm, "$1try{\n$2\n}catch(e){\nLp5.el('lp5-console-out').innerHTML = e;\nLp5.el('lp5-aux').parentElement.classList.add('error');}\n$3")
+                              code = code.replace(/function[\s\t ]/gi, "window.").replace(/(window\.[\w]+)+/gi, "$1 = function")
+                        }
+                  } else {
+                        lto = 0
+                        lfrom = 0
+                        code = ''
                   }
             }
             for (var key in this.renderCodeEvent) {
@@ -679,42 +611,14 @@ let Lp5 = {
                               }
                               lto++
                         }
-                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
-                        break;
-                  }
-            }
-            // load code
-            for (let i = 0; i < this.renderExtends.length; i++) {
-                  let fname = this.renderExtends[i]
-                  if (func == fname) {
-                        let brackets = false
-                        let opens = 0
-                        while (lto < cm.lineCount()) {
-                              if (cm.getLine(lto).match(/\(/g)) {
-                                    brackets = true
-                                    let len = cm.getLine(lto).match(/\(/g).length
-                                    if (len > 1) {
-                                          // mas de una en la misma linea / more than one in the same line
-                                          opens += len
-                                    } else {
-                                          opens++
-                                    }
-                              }
-                              if (cm.getLine(lto).match(/\)/g) && opens > 0) {
-                                    let len = cm.getLine(lto).match(/\)/g).length
-                                    if (len > 1) {
-                                          opens -= len
-                                    } else {
-                                          opens--
-                                    }
-                              }
-                              if (brackets && opens == 0) {
-                                    break;
-                              }
 
-                              lto++
+                        if (opens == 0) {
+                              code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 }).trim().replace(new RegExp('^function[\\t ]+' + func + '[\\t ]*\\([\\t ]*\\)[\\t\\n\\s ]*\\{', 'g'), '').replace(new RegExp('\\}$', 'g'), '')
+                        } else {
+                              lto = 0
+                              lfrom = 0
+                              code = ''
                         }
-                        code = cm.getRange({ line: lfrom, ch: 0 }, { line: lto + 1, ch: 0 })
                         break;
                   }
             }
@@ -724,11 +628,11 @@ let Lp5 = {
                   out = { lf: lfrom - 1, lt: lto + 1, code: code.trim(), func: func, isFunc: true }
             } else {
                   while (lfromc >= 0 && cm.getLine(lfromc) != "") {
-                        if (cm.getLine(lfromc).match(/\}/g)) break;
+                        if (cm.getLine(lfromc).match(/^[\t ]*\}/g)) break;
                         lfromc--
                   }
                   while (ltoc < cm.lineCount() && cm.getLine(ltoc) != "") {
-                        if (cm.getLine(ltoc).match(/function/g)) break;
+                        if (cm.getLine(ltoc).match(/^[\t ]*(function[\t ]*[\w]*[\t ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) break;
                         ltoc++
                   }
                   code = cm.getRange({ line: lfromc + 1, ch: 0 }, { line: ltoc, ch: 0 })

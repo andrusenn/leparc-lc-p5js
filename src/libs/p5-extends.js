@@ -419,7 +419,63 @@ if (!p5.prototype.hasOwnProperty('zoom')) {
             }
       }
 }
+/**
+ * Efecto de shakeX in X axis
+ * 
+ * 
+ * @method shakeX
+ * @param {Number} from       distance from position
+ * @param {Number} to         distance from position
+ * 
+ */
 
+if (!p5.prototype.hasOwnProperty('shakeX')) {
+      p5.prototype.shakeX = function () {
+            let arg = arguments;
+            if (arg.length == 2) {
+                  translate(random(arg[0], arg[1]), 0)
+            }
+      }
+}
+/**
+ * Efecto de shakeY in Y axis
+ * 
+ * 
+ * @method shakeY
+ * @param {Number} from       distance from position
+ * @param {Number} to         distance from position
+ * 
+ */
+
+if (!p5.prototype.hasOwnProperty('shakeY')) {
+      p5.prototype.shakeY = function () {
+            let arg = arguments;
+            if (arg.length == 2) {
+                  translate(0, random(arg[0], arg[1]))
+            }
+      }
+}
+/**
+ * Efecto de shakeZ in Z axis (SCALE)
+ * 
+ * 
+ * @method shakeZ
+ * @param {Number} from       acale from position
+ * @param {Number} to         scale from position
+ * 
+ */
+
+if (!p5.prototype.hasOwnProperty('shakeZ')) {
+      p5.prototype.shakeZ = function () {
+            let arg = arguments;
+            if (arg.length == 2) {
+                  translate(width / 2, height / 2)
+                  scale(random(arg[0], arg[1]))
+                  translate(-width / 2, -height / 2)
+                  
+            }
+      }
+}
 /**
  * Efecto de espejo sobre eje de Y / Mirror on y axis
  * 
@@ -690,6 +746,38 @@ if (!p5.prototype.hasOwnProperty('snipPath')) {
                   return Lp5.main.path().join(Lp5.main.resourcesPath(), 'leparc_resources', 'snippets', arg[0])
             }
             return null;
+      }
+}
+/**
+ * Carga libreria externa desde carpeta leparc_resources/libs
+ * Load external lib from leparc_resources/libs
+ * 
+ * @method useLib
+ * @param {String} name             filename
+ * @param {function} callback       callback function
+ */
+
+if (!p5.prototype.hasOwnProperty('useLib')) {
+      p5.prototype.useLib = function () {
+            let arg = arguments
+            let s = document.getElementById(arg[0])
+            if (!s) {
+                  let script = document.createElement('script');
+                  script.src = libsPath(arg[0]); // URL for the third-party library being loaded.
+                  script.id = arg[0]; // e.g., googleMaps or stripe
+                  script.type = 'text/javascript'
+                  try {
+                        document.body.appendChild(script);
+                        if (arg.length > 1) {
+                              script.onload = () => {
+                                    console_msg(lang_msg.lib + arg[0], 'info')
+                                    if (typeof arg[1] == 'function') arg[1]();
+                              };
+                        }
+                  } catch (e) {
+                        console_msg(lang_msg.lib_err + arg[0], 'error')
+                  }
+            }
       }
 }
 /**
@@ -1302,6 +1390,11 @@ if (!p5.prototype.hasOwnProperty('loadVideo')) {
       }
 }
 
+if (!p5.prototype.hasOwnProperty('buffer3d')) {
+      p5.prototype.buffer3d = function () {
+            return createGraphics(width, height, WEBGL)
+      }
+}
 /**
  * Centro horizontal del lienzo / Center horizontal of the canvas
  * 
@@ -1341,12 +1434,3 @@ if (!p5.prototype.hasOwnProperty('getShader')) {
             return ___shader
       }
 }
-/**
- * Eventos key
- */
-/*if (!p5.prototype.hasOwnProperty('keyPressed')) {
-      p5.prototype.keyPressed = null
-}
-if (!p5.prototype.hasOwnProperty('keyReleased')) {
-      p5.prototype.keyReleased = null
-}*/

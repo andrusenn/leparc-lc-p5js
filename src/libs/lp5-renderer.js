@@ -112,13 +112,30 @@ window.addEventListener('load', function () {
             Lp5.el('lp5-os-r').style.display = 'none'
             Lp5.el('cnf-render').options[0].selected = true
       }
+      // Theme ----------------------------------------------
+      if (!localStorage.theme) {
+            localStorage.theme = 'default';
+            Lp5.el('_theme').href = 'libs/codemirror/theme/none.css'
+      } else {
+            if (localStorage.theme == 'default' || localStorage.theme == '') {
+                  Lp5.el('_theme').href = 'libs/codemirror/theme/none.css'
+            } else {
+                  Lp5.el('_theme').href = 'libs/codemirror/theme/' + localStorage.theme + '.css'
+            }
+            for (let i = 0; i < Lp5.el('cnf-theme').options.length; i++) {
+                  if (Lp5.el('cnf-theme').options[i].value == localStorage.theme) {
+                        Lp5.el('cnf-theme').options[i].selected = true
+                        break;
+                  }
+            }
+      }
       // ----------------------------------------------------
       // Code mirror ----------------------------------------
 
       Lp5.cmAux = CodeMirror(Lp5.codeAux, {
             mode: "javascript",
             matchBrackets: true,
-            theme: 'blackboard',
+            theme: localStorage.theme,
             autoCloseBrackets: true,
             indentUnit: 4,
             lineWrapping: true,
@@ -135,7 +152,6 @@ window.addEventListener('load', function () {
                   Lp5.el('lp5-aux').parentElement.classList.remove('change');
             }
       })
-
       // Win Title ------------------------------------------
       let playmode = (Lp5.playmode == 'static') ? ' | STATIC' : ''
       document.title = 'LeParc - livecoder - P5js - v' + Lp5.version + playmode
@@ -144,7 +160,7 @@ window.addEventListener('load', function () {
       Lp5.pannelFocus('aux')
 
       // Console clear --------------------------------------
-      console.clear()
+      //console.clear()
 
 });
 // ********************************************************************
@@ -356,6 +372,11 @@ function windowResized() {
 Lp5.codeAux.addEventListener('click', (ev) => {
       Lp5.changeBgLineAlpha()
 })
+
+Lp5.codeAux.addEventListener('paste', function (ev) {
+      Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()));
+      Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line })
+});
 Lp5.codeAux.addEventListener('mousedown', (ev) => {
       Lp5.changeBgLineAlpha()
       // Obtiene la ultima posicion del cursor
@@ -810,6 +831,16 @@ Lp5.el('cnf-hidecanvas').addEventListener('click', () => {
 Lp5.el('cnf-lang').addEventListener('change', () => {
       localStorage.lang = Lp5.el('cnf-lang').value
       Lp5.main.reload()
+});
+Lp5.el('cnf-theme').addEventListener('change', () => {
+      localStorage.theme = Lp5.el('cnf-theme').value
+      Lp5.cmAux.setOption('theme', localStorage.theme)
+      if (localStorage.theme == 'default' || localStorage.theme == '') {
+            Lp5.el('_theme').href = 'libs/codemirror/theme/none.css'
+      } else {
+            Lp5.el('_theme').href = 'libs/codemirror/theme/' + localStorage.theme + '.css'
+      }
+      // Lp5.main.reload()
 });
 Lp5.el('cnf-render').addEventListener('change', () => {
       Lp5.main.reload(Lp5.el('cnf-render').value)
