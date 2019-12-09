@@ -1,5 +1,7 @@
 src/node_modules/
 src/leparc_resources/media/
+src/leparc_resources/libs/
+src/leparc_resources/snippets/
 node_modules/
 src/*.zip
 dist*
