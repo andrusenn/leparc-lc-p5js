@@ -455,10 +455,12 @@ let Lp5 = {
                         break evtsln;
                   }
                   // Metodos
-                  if (cm.getLine(lfrom).match(/^[\t ]*(?!=\.)[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                  if (cm.getLine(lfrom).match(/^[\t ]*[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
                         let tmp_lfrom = lfrom
                         let opens = 0
+                        let opens2 = 0
                         let brackets = false
+                        let brackets2 = false
                         // check if inside other function
                         while (tmp_lfrom > 0) {
                               tmp_lfrom--
@@ -471,6 +473,24 @@ let Lp5 = {
                                     brackets = true
                                     let len = cm.getLine(tmp_lfrom).match(/\{/g).length
                                     opens -= len;
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\)/g)) {
+                                    brackets2 = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\)/g).length
+                                    opens2 += len;
+                              }
+                              if (cm.getLine(tmp_lfrom).match(/\(/g)) {
+                                    brackets2 = true
+                                    let len = cm.getLine(tmp_lfrom).match(/\(/g).length
+                                    opens2 -= len;
+                              }
+                              if (brackets2 && opens2 < 0) {
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*(?<=\.)[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                                          func = 'method'
+                                          lfrom = tmp_lfrom
+                                          lto = lfrom
+                                          break evtsln;
+                                    }
                               }
                               if (brackets && opens < 0) {
                                     if (cm.getLine(tmp_lfrom).match(/^[\t ]*function[\t\s ]+setup[\t\s ]*\([\t\s ]*\)/g)) {
@@ -497,12 +517,6 @@ let Lp5 = {
                                           lto = lfrom
                                           break evtsln;
 
-                                    }
-                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*(?<=\.)[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
-                                          func = 'method'
-                                          lfrom = tmp_lfrom
-                                          lto = lfrom
-                                          break evtsln;
                                     }
                               }
                         }
