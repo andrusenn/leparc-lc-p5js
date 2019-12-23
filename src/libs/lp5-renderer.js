@@ -160,7 +160,7 @@ window.addEventListener('load', function () {
       Lp5.pannelFocus('aux')
 
       // Console clear --------------------------------------
-      //console.clear()
+      console.clear()
 
 });
 // ********************************************************************
@@ -374,8 +374,41 @@ Lp5.codeAux.addEventListener('click', (ev) => {
 })
 
 Lp5.codeAux.addEventListener('paste', function (ev) {
-      Lp5.cmAux.setValue(Lp5.beautify_js(Lp5.cmAux.getValue()));
-      Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line })
+      // let lng = Lp5.clipboard.split('\n')
+      // if (Lp5.selected) {
+      //       Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line + (lng.length - 1), ch: Lp5.cmAuxCp.ch })
+      // // } else if(Lp5.cmAux.somethingSelected()) {
+      // //       console.log('2')
+      // //       ev.preventDefault()
+      // //       let sel = Lp5.cmAux.getSelection()
+      // //       Lp5.cmAux.replaceSelection(Lp5.clipboard)
+      // //       Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line + (lng.length - 1), ch: Lp5.cmAuxCp.ch + lng[lng.length - 1].length+sel.length })
+      // }else{
+      //       Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line + (lng.length - 1), ch: Lp5.cmAuxCp.ch + lng[lng.length - 1].length })
+      // }
+      // if (Lp5.cmAux.somethingSelected()) {
+      //       Lp5.selected = true
+      // }else{
+      //       Lp5.selected = false
+      // }
+});
+Lp5.codeAux.addEventListener('copy', function (ev) {
+      // if (Lp5.cmAux.somethingSelected()) {
+      //       Lp5.selected = true
+      // }else{
+      //       Lp5.selected = false
+      // }
+      // Lp5.clipboard = ''
+      // Lp5.clipboard = ev.srcElement.value
+});
+Lp5.codeAux.addEventListener('cut', function (ev) {
+      // if (Lp5.cmAux.somethingSelected()) {
+      //       Lp5.selected = true
+      // }else{
+      //       Lp5.selected = false
+      // }
+      // Lp5.clipboard = ''
+      // Lp5.clipboard = ev.srcElement.value
 });
 Lp5.codeAux.addEventListener('mousedown', (ev) => {
       Lp5.changeBgLineAlpha()
