@@ -36,6 +36,8 @@ let Lp5 = {
       oscReady: false,
       oscUDP: null,
       // Env
+      clipboard:'',
+      selected:false,
       playmode: 'static',
       fullscreen: false,
       devtools: false,
@@ -132,10 +134,11 @@ let Lp5 = {
       // Mostrar ventanas
       showWin: true,
       // Funciones
-      beautify_js: function (data) {
+      beautify_js: function (data,o={}) {
             let ob = {
                   "indent_size": 1,
-                  "indent_char": "\t"
+                  "indent_char": "\t",
+                  ...o
             }
             return js_beautify(data, ob);
       },
@@ -450,12 +453,12 @@ let Lp5 = {
                         }
                   }
                   // Funcion generica anonima
-                  if (cm.getLine(lfrom).match(/^[\t ]*[\$\w]+[\t ]*\=[\t ]*(function[\t ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) {
+                  if (cm.getLine(lfrom).match(/^[\t ]*[\$\w\.]+[\t ]*\=[\t ]*(function[\t ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) {
                         func = 'any'
                         break evtsln;
                   }
                   // Metodos
-                  if (cm.getLine(lfrom).match(/^[\t ]*[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                  if (cm.getLine(lfrom).match(/^[\t ]*(?!=\.)[\$\w\.\= ]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
                         let tmp_lfrom = lfrom
                         let opens = 0
                         let opens2 = 0
@@ -485,7 +488,7 @@ let Lp5 = {
                                     opens2 -= len;
                               }
                               if (brackets2 && opens2 < 0) {
-                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*(?<=\.)[\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*[\$\w\.\= ]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
                                           func = 'method'
                                           lfrom = tmp_lfrom
                                           lto = lfrom
