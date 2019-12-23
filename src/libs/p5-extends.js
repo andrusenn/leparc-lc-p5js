@@ -1434,3 +1434,13 @@ if (!p5.prototype.hasOwnProperty('getShader')) {
             return ___shader
       }
 }
+
+if (!p5.prototype.hasOwnProperty('listMediaBanksPaths')) {
+      p5.prototype.listMediaBanksPaths = function () {
+            let arg = arguments
+            if (arg.length == 1) {
+                  return Lp5.main.getMediaBanks(arg[0].toString())
+            }
+            return null;
+      }
+}
