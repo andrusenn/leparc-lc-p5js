@@ -3,6 +3,7 @@ const os = require("os")
 const ip = require("ip")
 const fs = require('fs-extra')
 const path = require('path')
+const url = require('url')
 // Paths
 let appPath = app.getAppPath();
 let resourcesPath = (app.isPackaged) ? app.getPath("home") + "" : app.getAppPath();
@@ -47,7 +48,7 @@ function createWindow() {
                   // Directorio -> leparc_resources/config
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'config'), () => {
                         writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.txt'), "server-ip=127.0.0.1\nport=7777\nosc-ip=127.0.0.1\nosc-port=12345\nmfr=0.001")
-                        writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.js'),"let cnf = {\n// Window frame\nframe : true,\n// Win always on top\nalwaysOnTop: false\}\n")
+                        writef(path.join(resourcesPath, 'leparc_resources', 'config', 'config.js'), "let cnf = {\n// Window frame\nframe : true,\n// Win always on top\nalwaysOnTop: false\}\n")
                   })
                   // Directorio -> leparc_resources/extends
                   mkdir(path.join(resourcesPath, 'leparc_resources', 'extends'), () => {
@@ -138,6 +139,29 @@ exports.reload = function () {
 }
 exports.resourcesPath = function () {
       return resourcesPath;
+}
+exports.getMediaBanks = function (dir) {
+      let files = fs.readdirSync(dir);
+      let res = []
+      let folderName = []
+      files.forEach((file) => {
+            if (fs.statSync(path.join(dir, file)).isDirectory()) {
+                  if (!folderName.includes(file)) {
+                        folderName.push(file.trim())
+                  }
+                  let path2 = path.join(dir, file)
+                  let files2 = fs.readdirSync(path2);
+                  files2.forEach((file2) => {
+                        if (!fs.statSync(path.join(path2, file2)).isDirectory()) {
+                              res.push(path.join(path2, file2))
+                        }
+                  })
+            }
+      })
+      return {
+            paths: res,
+            folderName: folderName
+      }
 }
 
 // Utils
