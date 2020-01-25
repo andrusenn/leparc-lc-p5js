@@ -36,8 +36,8 @@ let Lp5 = {
       oscReady: false,
       oscUDP: null,
       // Env
-      clipboard:'',
-      selected:false,
+      clipboard: '',
+      selected: false,
       playmode: 'static',
       fullscreen: false,
       devtools: false,
@@ -106,6 +106,7 @@ let Lp5 = {
             keyReleased: '',
             keyTyped: ''
       },
+      customMethods: [],
       // renderExtends: [
       //       'snip',
       //       'loadLib',
@@ -134,7 +135,12 @@ let Lp5 = {
       // Mostrar ventanas
       showWin: true,
       // Funciones
-      beautify_js: function (data,o={}) {
+      registerMethodToEval(m = null) {
+            if (m) {
+                  this.customMethods.push(m.toString().trim())
+            }
+      },
+      beautify_js: function (data, o = {}) {
             let ob = {
                   "indent_size": 1,
                   "indent_char": "\t",
@@ -381,7 +387,7 @@ let Lp5 = {
       },
       doGlobals: function (_code) {
             // Cambia a globales las variables fuera de las funciones
-            return _code.replace(/\$(?!\{)(?! )/g, 'lp.')
+            return _code.replace(/\$(?!\{)(?! )(?!\&)/g, 'lp.')
       },
       evalLivecoding: function (onfly) {
             if (this.blockData.isFunc) {
@@ -413,6 +419,50 @@ let Lp5 = {
             if (!onfly) this.evalLineFx('lp5-aux', this.blockData.lf, this.blockData.lt)
             // 
             this.evalConn(Lp5.blockData)
+      },
+      checkInside(cm, o) {
+            let opens2 = 0
+            let brackets2 = false
+            // check if inside other function
+            let o2 = {
+                  lf: o.lf
+            }
+            while (o2.lf > 0) {
+                  o2.lf--
+                  if (cm.getLine(o2.lf).match(/\)/g)) {
+                        brackets2 = true
+                        let len = cm.getLine(o2.lf).match(/\)/g).length
+                        opens2 += len;
+                  }
+                  if (cm.getLine(o2.lf).match(/\(/g)) {
+                        brackets2 = true
+                        let len = cm.getLine(o2.lf).match(/\(/g).length
+                        opens2 -= len;
+                  }
+                  if (brackets2 && opens2 < 0) {
+                        if (cm.getLine(o2.lf).match(/[\t ]*[\$\w\= ]+[\t ]*\(/g) && !cm.getLine(o2.lf).match(/^[\t s]*\.[\t ]*[\$\w]+[\t ]*\(/g) && !cm.getLine(o2.lf).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                              this.checkInside(cm, o2)
+                              o.lf = o2.lf
+                        }
+                  }
+
+            }
+      },
+      getCodeLines: function (cm, cp) {
+            let lfrom = cp.line
+            let lto = cp.line
+            let out = ''
+            let code = ''
+
+            while (lfrom >= 0 && cm.getLine(lfrom) != "") {
+                  lfrom--
+            }
+            while (lto < cm.lineCount() && cm.getLine(lto) != '') {
+                  lto++
+            }
+            code = cm.getRange({ line: lfrom + 1, ch: 0 }, { line: lto, ch: 0 })
+            out = { lf: lfrom, lt: lto, code: code.trim(), func: '', isFunc: false }
+            return out
       },
       // Get functions or lines from editor by context
       // Obtener funciones o lineas para evaluar segun el contexto
@@ -446,9 +496,18 @@ let Lp5 = {
                   }
                   // Funcion evento
                   for (var key in this.renderCodeEvent) {
-                        let reg = new RegExp("^[\t ]*function[\\t ]+" + key + "[\\t ]*\\([\\t ]*\\)", "g")
+                        let reg = new RegExp("^[\\t ]*function[\\t ]+" + key + "[\\t ]*\\([\\t ]*\\)", "g")
                         if (cm.getLine(lfrom).match(reg)) {
                               func = key
+                              break evtsln;
+                        }
+                  }
+                  // Method custom
+                  for (let i = 0; i < this.customMethods.length; i++) {
+                        let key = this.customMethods[i]
+                        let reg = new RegExp("^[\\t ]*(?!=\\.)" + key + "[\\t ]*\\(", "g")
+                        if (cm.getLine(lfrom).match(reg)) {
+                              func = 'method'
                               break evtsln;
                         }
                   }
@@ -458,7 +517,7 @@ let Lp5 = {
                         break evtsln;
                   }
                   // Metodos
-                  if (cm.getLine(lfrom).match(/^[\t ]*(?!=\.)[\$\w\.\= ]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                  if (cm.getLine(lfrom).match(/^[\t ]*[\$\w\.\= ]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/^[\t s]*\.[\t ]*[\$\w]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
                         let tmp_lfrom = lfrom
                         let opens = 0
                         let opens2 = 0
@@ -488,10 +547,16 @@ let Lp5 = {
                                     opens2 -= len;
                               }
                               if (brackets2 && opens2 < 0) {
-                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*[\$\w\.\= ]+[\t ]*\(/g) && !cm.getLine(lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                                    if (cm.getLine(tmp_lfrom).match(/^[\t ]*[\$\w\= ]+[\t ]*\(/g) && !cm.getLine(tmp_lfrom).match(/^[\t s]*\.[\t ]*[\$\w]+[\t ]*\(/g) && !cm.getLine(tmp_lfrom).match(/(?:^[\t ]*for[\t ]*\(|^[\t ]*if[\t ]*\(|^[\t ]*while[\t ]*\(|^[\t ]*catch[\t ]*\(|^[\t ]*switch[\t ]*\()/g)) {
+                                          let o = {
+                                                lf: tmp_lfrom
+                                          }
+                                          this.checkInside(cm, o)
                                           func = 'method'
-                                          lfrom = tmp_lfrom
+                                          lfrom = o.lf
                                           lto = lfrom
+                                          // last found ???
+                                          //tmp_lfrom = o.lf
                                           break evtsln;
                                     }
                               }
@@ -649,7 +714,7 @@ let Lp5 = {
                         lfromc--
                   }
                   while (ltoc < cm.lineCount() && cm.getLine(ltoc) != "") {
-                        if (cm.getLine(ltoc).match(/^[\t ]*(function[\t ]*[\w]*[\t ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) break;
+                        if (cm.getLine(ltoc).match(/^[\t ]*(function[\t ]*[\w\$]*[\t ]*\(.*\)|\(.*\)[\t ]*\=\>[\t ]*|[\w]+[\t ]*\=\>[\t ]*)/g)) break;
                         ltoc++
                   }
                   code = cm.getRange({ line: lfromc + 1, ch: 0 }, { line: ltoc, ch: 0 })
