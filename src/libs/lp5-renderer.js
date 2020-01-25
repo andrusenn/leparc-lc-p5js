@@ -499,6 +499,13 @@ Lp5.codeAux.addEventListener('keydown', (ev) => {
                   Lp5.evalLivecoding(false)
             }
       }
+      if (!ev.ctrlKey && !ev.shiftKey && ev.altKey && ev.keyCode == 13) {
+            ev.preventDefault();
+            if (Lp5.playmode == 'livecoding') {
+                  Lp5.blockData = Lp5.getCodeLines(Lp5.cmAux, Lp5.cmAuxCp)
+                  Lp5.evalLivecoding(false)
+            }
+      }
       if (ev.ctrlKey && ev.keyCode == 70) {
             ev.preventDefault();
             // Si hay cambios -> formatea
