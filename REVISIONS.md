@@ -1,17 +1,17 @@
 # REVISIONES / REVISIONS
 
-## Version 0.2.4???
+## Version 0.2.4
 
 > [es]
 
 - Se implementó javascript mode
-- Se implemetó el tema en codemirror
+- Se implemetó el temas en codemirror
 - Codemirror autoindent
 - Opción de autofill (hint)
 
 > [en]
 
-- Codemirror theme
+- Codemirror themes
 - Codemirror javascript mode
 - Codemirror autoindent
 - Autofill option (hint)
