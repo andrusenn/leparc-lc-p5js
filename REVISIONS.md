@@ -1,5 +1,27 @@
 # REVISIONES / REVISIONS
 
+## Version 0.2.5
+
+> [es]
+
+- Se actualizó version p5js 1.0
+- Se implementó MIDI básico [webmidi](http://djipco.github.io/webmidi/latest/)
+- Se agregó metodo de registro de nombre de bloque para compilar código en contexto
+- Se agregó reconocimiento de bloque para definir "class"
+- Se implementó infinite loop error handler [(https://github.com/xieranmaya/infinite-loop-detector)](https://github.com/xieranmaya/infinite-loop-detector)
+- Cambios en "auto eval"
+- Experimental: Se agregó metodo para buffers (createGraphics) - useBuffer / buffer
+
+> [en]
+
+- p5js 1.0 update
+- Basic MIDI implementation [webmidi](http://djipco.github.io/webmidi/latest/)
+- Add name registration method for context compiling
+- "class" definition block recognitions
+- Add infinite loop error handler [(https://github.com/xieranmaya/infinite-loop-detector)](https://github.com/xieranmaya/infinite-loop-detector)
+- Changes in "on the fly" evaluation
+- Experimental: buffers method added (createGraphics) - useBuffer / buffer
+
 ## Version 0.2.4
 
 > [es]
