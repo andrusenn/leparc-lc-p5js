@@ -1,78 +1,79 @@
 {
-      "name": "leparc-lc",
-      "author": {
-            "name": "Andres Senn",
-            "email": "hola@andressenn.com"
-      },
-      "license": "MIT",
-      "homepage": "http://andressenn.com",
-      "version": "0.2.4",
-      "description": "p5js livecoding",
-      "repository": {
-            "type": "git",
-            "url": "https://github.com/andrusenn/leparc-lc-p5js.git"
-      },
-      "main": "main.js",
-      "scripts": {
-            "restart": "rm -f ./package-lock.json && rm -r -f node_modules && npm i && npm run rebuild && electron .",
-            "start": "electron .",
-            "dist-win": "electron-builder --win",
-            "dist-linux": "electron-builder --linux",
-            "dist-mac": "electron-builder --mac",
-            "dist-all": "electron-builder -mwl",
-            "rebuild": "./node_modules/.bin/electron-rebuild"
-      },
-      "keywords": [
-            "livecoding",
-            "p5js",
-            "processing"
-      ],
-      "build": {
-            "appId": "andrusenn.leparc",
-            "productName": "LeParc-LC",
-            "files": [
-                  "!**/libs/p5/{p5.js,p5.sound.js,p5.dom.js}",
-                  "!**/leparc_resources/{config,media,save,snippets}",
-                  "!**/leparc_resources/snippets/",
-                  "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
+    "name": "leparc-lc",
+    "author": {
+        "name": "Andres Senn",
+        "email": "hola@andressenn.com"
+    },
+    "license": "MIT",
+    "homepage": "http://andressenn.com",
+    "version": "0.2.5",
+    "description": "p5js livecoding",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrusenn/leparc-lc-p5js.git"
+    },
+    "main": "main.js",
+    "scripts": {
+        "restart": "rm -f ./package-lock.json && rm -r -f node_modules && npm i && npm run rebuild && electron .",
+        "start": "electron .",
+        "dist-win": "electron-builder --win",
+        "dist-linux": "electron-builder --linux",
+        "dist-mac": "electron-builder --mac",
+        "dist-all": "electron-builder -mwl",
+        "rebuild": "./node_modules/.bin/electron-rebuild"
+    },
+    "keywords": [
+        "livecoding",
+        "p5js",
+        "processing"
+    ],
+    "build": {
+        "appId": "andrusenn.leparc",
+        "productName": "LeParc-LC",
+        "files": [
+            "!**/libs/p5/{p5.js,p5.sound.js,p5.dom.js}",
+            "!**/leparc_resources/{config,media,save,snippets}",
+            "!**/leparc_resources/snippets/",
+            "!**/css/{index.css,index.css.map,index.min.css.map,index.scss}"
+        ],
+        "directories": {
+            "output": "../dist"
+        },
+        "win": {
+            "target": "zip",
+            "icon": "assets/icon.ico"
+        },
+        "linux": {
+            "target": [
+                {
+                    "target": "AppImage",
+                    "arch": [
+                        "x64",
+                        "armv7l",
+                        "arm64"
+                    ]
+                }
             ],
-            "directories": {
-                  "output": "../dist"
-            },
-            "win": {
-                  "target": "zip",
-                  "icon": "assets/icon.ico"
-            },
-            "linux": {
-                  "target": [
-                        {
-                              "target": "AppImage",
-                              "arch": [
-                                    "x64",
-                                    "armv7l",
-                                    "arm64"
-                              ]
-                        }
-                  ],
-                  "icon": "assets/icon.png"
-            },
-            "mac": {
-                  "target": "zip",
-                  "icon": "assets/icon.icns"
-            }
-      },
-      "devDependencies": {
-            "electron": "^4.2.12",
-            "electron-builder": "^20.43.0",
-            "electron-rebuild": "^1.8.6"
-      },
-      "dependencies": {
-            "express": "^4.16.4",
-            "fs-extra": "^7.0.1",
-            "i18next": "^15.0.8",
-            "ip": "^1.1.5",
-            "js-beautify": "^1.9.0",
-            "osc": "^2.3.1",
-            "socket.io": "^2.2.0"
-      }
+            "icon": "assets/icon.png"
+        },
+        "mac": {
+            "target": "zip",
+            "icon": "assets/icon.icns"
+        }
+    },
+    "devDependencies": {
+        "electron": "^4.2.12",
+        "electron-builder": "^20.43.0",
+        "electron-rebuild": "^1.8.6"
+    },
+    "dependencies": {
+        "express": "^4.16.4",
+        "fs-extra": "^7.0.1",
+        "i18next": "^15.0.8",
+        "ip": "^1.1.5",
+        "js-beautify": "^1.9.0",
+        "osc": "^2.3.1",
+        "socket.io": "^2.2.0",
+        "webmidi": "^2.5.1"
+    }
 }
