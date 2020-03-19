@@ -90,22 +90,22 @@ IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para uti
   
 ### Comandos
 
-Atajo de teclado | Acción
---- | ---
-`Ctrl+Enter` | Evaluar bloque de código
-`Ctrl+H` | Mostrar/ocultar código
-`Ctrl+N` |  Mostrar/ocultar números de línea
-`F11` | Pantalla completa (fullscreen)
-`F10` | Muestra/oculta herramientas de desarrollo para debug (dev tools)
-`F5` | Recarga pantalla (se debe volver a evaluar)
-`Ctrl+mousewheel` | Aumenta/disminuye tamaño del código
-`Alt+mousewheel` | Modifica la transparencia del fondo del códivo
-`Ctrl+Alt+mousewheel` | Modifica valor seleccionado suma/resta 1
-`Ctrl+Alt+Shift+mousewheel` | Modifica valor seleccionado suma/resta 0.1
-`Ctrl+F` | Formatea el código bloque
-`Ctrl+L` | alterna loop()/noLoop()
-`Ctrl+Shift+C` | Comenta/Descomenta código
-`Ctrl+Shift+A` | Habilita Autorender (Evaluación automática)
+| Atajo de teclado            | Acción                                                           |
+| --------------------------- | ---------------------------------------------------------------- |
+| `Ctrl+Enter`                | Evaluar bloque de código                                         |
+| `Ctrl+H`                    | Mostrar/ocultar código                                           |
+| `Ctrl+N`                    | Mostrar/ocultar números de línea                                 |
+| `F11`                       | Pantalla completa (fullscreen)                                   |
+| `F10`                       | Muestra/oculta herramientas de desarrollo para debug (dev tools) |
+| `F5`                        | Recarga pantalla (se debe volver a evaluar)                      |
+| `Ctrl+mousewheel`           | Aumenta/disminuye tamaño del código                              |
+| `Alt+mousewheel`            | Modifica la transparencia del fondo del códivo                   |
+| `Ctrl+Alt+mousewheel`       | Modifica valor seleccionado suma/resta 1                         |
+| `Ctrl+Alt+Shift+mousewheel` | Modifica valor seleccionado suma/resta 0.1                       |
+| `Ctrl+F`                    | Formatea el código bloque                                        |
+| `Ctrl+L`                    | alterna loop()/noLoop()                                          |
+| `Ctrl+Shift+C`              | Comenta/Descomenta código                                        |
+| `Ctrl+Shift+A`              | Habilita Autorender (Evaluación automática)                      |
 
 ### Bloques de código
 
@@ -160,40 +160,45 @@ function mouseClicked(){
 
 ## Funciones extendidas de p5j
 
-Método|Desc
----|---
-`counter(n)` | Retorna un numero incrementado por `millis ()`. Abreviatura de `millis () / 1000 [* n]`
-`fade(alpha)` | fade out a nagro `alpha` 0 a 255 en cada loop
-`fade(r,g,b,a)` | fade out a r,g,b, en cada loop
-`fade(r,g,b,a,color_mode)` | fade out a r,g,b,a y colorMode (RGB, HSB) en cada loop
-`mirrorX()`|Espejo - Refleja la imagen desde la mitad sobre el eje X
-`mirrorY()`|Espejo - Refleja la imagen desde la mitad sobre el eje Y
-`imirrorX()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida
-`imirrorY()`|Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida
-`kaleido()`|Efecto caleidoscopio 4 caras (repite la cara superior derecha)
-`zoom(escala)`|Escala la imagen en cada loop sumando el valor del parámetro: `zoom(numero)` o negativo `zoom(-numero)`
-`displace(velx,vely)`|Desplaza la pantalla en la direccion `velx`  y  `vely` (+ o -)
-`displace(x,y,w,h,velx,vely)`|Recorta una porcion de la imagen y la desplaza
-`beginRot(vel_in_radians[,scale])` y `endRot()`|rota lo que está contenido entre esas dos funciones
-`freq([mult])`|Abreviación de la sentencia `millis()/1000 [* mult]`
-`sinOsc([mult])`|Abreviacion de `sin( (millis()/1000) * TWO_PI [* mult] )`
-`cosOsc([mult])`|Abreviacion de `cos( (millis()/1000) * TWO_PI [* mult] )`
-`pulse(n_fotogramas)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas `if(frameCount % n_fotogramas == 0 ) return true`
-`gate(n_fotogramas, duracion)`|Bandera (flag basado en frameCount) emite verdadero cada n fotogramas con una duracion x `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true`
- `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset`
- `trange(number [,millis_duration])` | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration`
-`useOSC(['ip',port])` | Inicializa OSC (UDP) para mensajes entrantes. IP por defecto `127.0.0.1` y puerto `12345`
-`useOSC('ip')` | Cambiar IP (Pasar como cadena)
-`useOSC(port)` | Cambiar puerto (Pasar como entero)
-`osc('/address')` | retorna valor enviado
-`osc('/address',index)` | (multiple args) retorna valor en la posicion de array index
-
+| Método                                             | Desc                                                                                                                                                            |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `counter(n)`                                       | Retorna un numero incrementado por `millis ()`. Abreviatura de `millis () / 1000 [* n]`                                                                         |
+| `fade(alpha)`                                      | fade out a nagro `alpha` 0 a 255 en cada loop                                                                                                                   |
+| `fade(r,g,b,a)`                                    | fade out a r,g,b, en cada loop                                                                                                                                  |
+| `fade(r,g,b,a,color_mode)`                         | fade out a r,g,b,a y colorMode (RGB, HSB) en cada loop                                                                                                          |
+| `mirrorX()`                                        | Espejo - Refleja la imagen desde la mitad sobre el eje X                                                                                                        |
+| `mirrorY()`                                        | Espejo - Refleja la imagen desde la mitad sobre el eje Y                                                                                                        |
+| `imirrorX()`                                       | Espejo Invertido - Refleja la imagen desde la mitad sobre el eje X invertida                                                                                    |
+| `imirrorY()`                                       | Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida                                                                                    |
+| `kaleido()`                                        | Efecto caleidoscopio 4 caras (repite la cara superior derecha)                                                                                                  |
+| `zoom(escala)`                                     | Escala la imagen en cada loop sumando el valor del parámetro: `zoom(numero)` o negativo `zoom(-numero)`                                                         |
+| `displace(velx,vely)`                              | Desplaza la pantalla en la direccion `velx`  y  `vely` (+ o -)                                                                                                  |
+| `displace(x,y,w,h,velx,vely)`                      | Recorta una porcion de la imagen y la desplaza                                                                                                                  |
+| `beginRot(vel_in_radians[,scale])` y `endRot()`    | rota lo que está contenido entre esas dos funciones                                                                                                             |
+| `freq([mult])`                                     | Abreviación de la sentencia `millis()/1000 [* mult]`                                                                                                            |
+| `sinOsc([mult])`                                   | Abreviacion de `sin( (millis()/1000) * TWO_PI [* mult] )`                                                                                                       |
+| `cosOsc([mult])`                                   | Abreviacion de `cos( (millis()/1000) * TWO_PI [* mult] )`                                                                                                       |
+| `pulse(n_fotogramas)`                              | Bandera (flag basado en frameCount) emite verdadero cada n fotogramas `if(frameCount % n_fotogramas == 0 ) return true`                                         |
+| `gate(n_fotogramas, duracion)`                     | Bandera (flag basado en frameCount) emite verdadero cada n fotogramas con una duracion x `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true` |
+| `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset`                           |
+| `trange(number [,millis_duration])`                | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration`                                                              |
+| `useOSC(['ip',port])`                              | Inicializa OSC (UDP) para mensajes entrantes. IP por defecto `127.0.0.1` y puerto `12345`                                                                       |
+| `useOSC('ip')`                                     | Cambiar IP (Pasar como cadena)                                                                                                                                  |
+| `useOSC(port)`                                     | Cambiar puerto (Pasar como entero)                                                                                                                              |
+| `osc('/address')`                                  | retorna valor enviado                                                                                                                                           |
+| `osc('/address',index)`                            | (multiple args) retorna valor en la posicion de array index                                                                                                     |
+| `useMIDI([channel],[deviceIndex|deviceName])`      | (multiple args) Inicializa Midi                                                                                                                                 |
+| `midiNoteOn(channel[,type="number"][,callback])`   | Retorna NoteOn [number,name,velocity,octave]                                                                                                                    |
+| `midiNoteOff(channel[,type="number"][,callback])`  | Retorna NoteOff params [number,name,octave]                                                                                                                     |
+| `midiController(channel,number[,callback])`        | Retorna controller params                                                                                                                                       |
+| `midiPitch(channel[,callback])`                    | Retorna pitchbending params                                                                                                                                     |
+| `midiNrpn(channel[,type="entry"][,callback])`      | Retorna mensajes nrpn                                                                                                                                           |
 ## Propiedades extendidas p5j
 
-| Propiedad                                             | Description                                                                                                                                     |
-| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-`CENTERW` | Centro del canvas en x `width / 2`
-`CENTERH` | Centro del canvas en y `height / 2`
+| Propiedad | Description                         |
+| --------- | ----------------------------------- |
+| `CENTERW` | Centro del canvas en x `width / 2`  |
+| `CENTERH` | Centro del canvas en y `height / 2` |
 
 
 ## OSC Messages
@@ -235,9 +240,31 @@ Cambiar ip y puerto por defecto:
 
 En `leparc_resources/config/config.txt`
 
-~~~
+~~~txt
 osc-ip=127.0.0.1
 osc-port=12345
+~~~
+
+## MIDI Messages
+
+~~~js
+
+useMIDI() // por defecto: canal "all" (todos) y todos los dispositivos
+// useMIDI(1) // usar canal 1
+// useMIDI("all", "Nombre del dispositivo") // usar canal "all" (todos) y "Nombre del dispositivo"
+
+function draw(){
+      let noteon = midiNoteOn(1); // noteon on channel 1
+      // or use callback
+      midiNoteOn(1, (data)=>{
+            console.log(data);
+      })
+      // Controlchange (canal,numero de controlador, funcion callback)
+      midiController(1, 1, (data)=>{
+            console.log(data);
+      })
+}
+
 ~~~
 
 ## Media (`Livecoding mode`)
