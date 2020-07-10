@@ -20,7 +20,8 @@
         "dist-linux": "electron-builder --linux",
         "dist-mac": "electron-builder --mac",
         "dist-all": "electron-builder -mwl",
-        "rebuild": "./node_modules/.bin/electron-rebuild"
+        "rebuild": "./node_modules/.bin/electron-rebuild",
+        "postinstall": "electron-builder install-app-deps"
     },
     "keywords": [
         "livecoding",
@@ -62,9 +63,10 @@
         }
     },
     "devDependencies": {
-        "electron": "^4.2.12",
-        "electron-builder": "^20.43.0",
-        "electron-rebuild": "^1.8.6"
+        "electron": "^9.1.0",
+        "electron-builder": "^22.7.0",
+        "electron-rebuild": "^1.8.6",
+        "node-abi": "^2.18.0"
     },
     "dependencies": {
         "express": "^4.16.4",

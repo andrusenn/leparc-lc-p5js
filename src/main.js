@@ -30,6 +30,9 @@ function createWindow() {
         frame: config.env ? config.env.frame : true,
         alwaysOnTop: config.env ? config.env.alwaysOnTop : false,
         icon: path.join(appPath, "assets", "icon.png"),
+        webPreferences: {
+            nodeIntegration: true,
+        },
     });
     mainWindow.setMenu(null);
     mainWindow.center();
@@ -126,49 +129,49 @@ function createWindow() {
     global.settings = {
         renderer: "p2d",
     };
-    // mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools();
     // mainWindow.webContents.openDevTools({ mode: 'detach' })
 
-    mainWindow.on("closed", function() {
+    mainWindow.on("closed", function () {
         mainWindow = null;
     });
 }
 
 app.on("ready", createWindow);
 
-app.on("window-all-closed", function() {
+app.on("window-all-closed", function () {
     if (process.platform !== "darwin") {
         app.quit();
     }
 });
-app.on("activate", function() {
+app.on("activate", function () {
     if (mainWindow === null) {
         createWindow();
     }
 });
-exports.exit = function() {
+exports.exit = function () {
     app.exit();
 };
-exports.path = function() {
+exports.path = function () {
     return path;
 };
-exports.globalSettings = function() {
+exports.globalSettings = function () {
     return global.settings;
 };
-exports.setFull = function() {
+exports.setFull = function () {
     mainWindow.setKiosk(true);
     mainWindow.setMenu(null);
     mainWindow.setMenuBarVisibility(false);
 };
-exports.setUnFull = function() {
+exports.setUnFull = function () {
     mainWindow.setKiosk(false);
     mainWindow.setMenu(null);
     mainWindow.setMenuBarVisibility(false);
 };
-exports.getMemory = function() {
+exports.getMemory = function () {
     return Math.round((os.freemem() / os.totalmem()) * 100);
 };
-exports.getIP = function() {
+exports.getIP = function () {
     return ip.address();
 };
 
@@ -176,12 +179,12 @@ exports.saveCode = (file, data) => {
     fs.writeFile(
         path.join(resourcesPath, "leparc_resources", "save", file + ".txt"),
         data,
-        function(err) {
+        function (err) {
             if (err) throw err;
         },
     );
 };
-exports.resizeWin = function(w, h) {
+exports.resizeWin = function (w, h) {
     if (mainWindow.isMaximized()) {
         mainWindow.unmaximize();
     } else if (mainWindow.isKiosk()) {
@@ -191,23 +194,23 @@ exports.resizeWin = function(w, h) {
     mainWindow.setBounds({ width: w, height: h });
     mainWindow.center();
 };
-exports.devTools = function(open) {
+exports.devTools = function (open) {
     if (open) {
         mainWindow.webContents.openDevTools({ mode: "right" });
     } else {
         mainWindow.webContents.closeDevTools();
     }
 };
-exports.reload = function() {
+exports.reload = function () {
     if (arguments.length == 1) {
         global.settings.renderer = arguments[0];
     }
     mainWindow.loadFile("index.html");
 };
-exports.resourcesPath = function() {
+exports.resourcesPath = function () {
     return resourcesPath;
 };
-exports.getMediaBanks = function(dir) {
+exports.getMediaBanks = function (dir) {
     let files = fs.readdirSync(dir);
     let res = [];
     let folderName = [];
@@ -235,7 +238,7 @@ exports.getMediaBanks = function(dir) {
 function mkdir(path, fn) {
     fs.mkdir(path, (err) => {
         if (!err) {
-            fs.chmod(path, "0777", function(err) {
+            fs.chmod(path, "0777", function (err) {
                 if (!err) {
                     if (typeof fn == "function") {
                         fn();
@@ -247,16 +250,16 @@ function mkdir(path, fn) {
 }
 function chmodall(dir) {
     let files = fs.readdirSync(dir);
-    files.forEach(function(file) {
+    files.forEach(function (file) {
         if (fs.statSync(path.join(dir, file)).isDirectory()) {
             fs.chmod(path.join(dir, file), "0777");
         }
     });
 }
 function writef(path, content, fn) {
-    fs.writeFile(path, content, function(err) {
+    fs.writeFile(path, content, function (err) {
         if (!err) {
-            fs.chmod(path, "0777", function(err) {
+            fs.chmod(path, "0777", function (err) {
                 if (!err) {
                     if (typeof fn == "function") {
                         fn();
