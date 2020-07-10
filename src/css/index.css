@@ -61,8 +61,37 @@ canvas {
   width: 5px;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-  opacity: 0.0;
+  opacity: 0;
   background: rgba(255, 255, 255, 0.3);
+}
+
+#lp5-aux-pannel {
+  display: -ms-grid;
+  display: grid;
+  grid-auto-flow: column;
+  -ms-grid-columns: minmax(70%, auto);
+      grid-template-columns: minmax(70%, auto);
+}
+
+#lp5-aux-pannel #lp5-info {
+  display: none;
+  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#lp5-aux-pannel #lp5-info ul {
+  list-style: none;
+}
+
+#lp5-aux-pannel #lp5-info h1 {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: normal;
+  border-bottom: 1px solid #ccc;
+}
+
+#lp5-aux-pannel #lp5-info * {
+  color: #fff;
 }
 
 .client-cursor {
@@ -87,7 +116,7 @@ canvas {
 }
 
 .change::before {
-  opacity: 1.0;
+  opacity: 1;
 }
 
 .error {
@@ -169,7 +198,7 @@ canvas {
   color: #fff;
 }
 
-.modal .modal-win input[type=text],
+.modal .modal-win input[type="text"],
 .modal .modal-win select {
   width: 100%;
 }
