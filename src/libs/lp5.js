@@ -44,15 +44,97 @@ let Lp5 = {
     midiIn: {
         noteon: [],
         noteoff: [],
+        midimessage: [],
         pitchbend: [],
         controlchange: [],
         reset: [],
         controlchangeValue: [],
-        notePressed: [],
         nrpn: [],
         message: {},
     },
+    midiFnc: {
+        nrpn(e) {
+            if (
+                typeof Lp5.midiIn.nrpn[e.channel] == "function" &&
+                e.type === "nrpn"
+            ) {
+                Lp5.midiIn.nrpn[e.channel](e);
+            }
+        },
+        controlchange(e) {
+            if (
+                typeof Lp5.midiIn.controlchange[e.channel] == "function" &&
+                e.type === "controlchange"
+            ) {
+                Lp5.midiIn.controlchange[e.channel](e);
+            }
+        },
+        midimessage(e) {
+            if (
+                typeof Lp5.midiIn.midimessage[e.channel] == "function" &&
+                e.type === "midimessage"
+            ) {
+                Lp5.midiIn.midimessage[e.channel](e);
+            }
+        },
+        pitchbend(e) {
+            if (
+                typeof Lp5.midiIn.pitchbend[e.channel] == "function" &&
+                e.type === "pitchbend"
+            ) {
+                Lp5.midiIn.pitchbend[e.channel](e);
+            }
+        },
+        reset(e) {
+            if (
+                typeof Lp5.midiIn.reset[e.channel] == "function" &&
+                e.type === "reset"
+            ) {
+                Lp5.midiIn.reset[e.channel](e);
+            }
+        },
+        noteoff(e) {
+            if (
+                typeof Lp5.midiIn.noteoff[e.channel] == "function" &&
+                e.type === "noteoff"
+            ) {
+                Lp5.midiIn.noteoff[e.channel](e);
+            }
+        },
+        noteon(e) {
+            if (
+                typeof Lp5.midiIn.noteon[e.channel] == "function" &&
+                e.type === "noteon"
+            ) {
+                Lp5.midiIn.noteon[e.channel](e);
+            }
+        },
+    },
     midiOut: {},
+    midiInit: function (i) {
+        i.enable((err) => {
+            if (err) {
+                console_msg("MIDI error");
+                this.midiReady = false;
+            } else {
+                document.getElementById("midi-info").innerHTML = "";
+                console_msg("MIDI enabled!");
+                this.midiReady = true;
+                this.midiInputs = i.inputs;
+                let title = "<h1>Midi</h1>";
+                let devices = "";
+                let index = 0;
+                this.midiInputs.forEach((input) => {
+                    devices += "<li>[" + index + "] " + input.name + "</li>";
+                    index++;
+                });
+                this.midiOutputs = i.outputs;
+                let divMidi = document.createElement("div");
+                divMidi.innerHTML = title + "<ul>" + devices + "</ul>";
+                document.getElementById("midi-info").appendChild(divMidi);
+            }
+        });
+    },
     // Env
     numBuffers: 10,
     clipboard: "",
@@ -159,7 +241,7 @@ let Lp5 = {
             this.customMethods.push(m.toString().trim());
         }
     },
-    beautify_js: function(data, o = {}) {
+    beautify_js: function (data, o = {}) {
         let ob = {
             indent_size: 1,
             indent_char: "\t",
@@ -168,15 +250,15 @@ let Lp5 = {
         return js_beautify(data, ob);
     },
     // Get DOM element by ID
-    el: function(id) {
+    el: function (id) {
         return document.getElementById(id);
     },
     // Get DOM element by query
-    querySel: function(qs) {
+    querySel: function (qs) {
         return document.querySelector(qs);
     },
     // Get DOM elements by query
-    querySelAll: function(qs, fn = null) {
+    querySelAll: function (qs, fn = null) {
         let all = document.querySelectorAll(qs);
         if (typeof fn == "function") {
             for (let i = 0; i < all.length; i++) {
@@ -184,7 +266,7 @@ let Lp5 = {
             }
         }
     },
-    restoreCursor: function(cm, cmc) {
+    restoreCursor: function (cm, cmc) {
         //cm.focus()
         cm.setCursor({ line: cmc.line, ch: cmc.ch });
     },
@@ -193,10 +275,10 @@ let Lp5 = {
         el.setCursor(len);
     },
     // Add reserved words
-    addSysName: function(name) {
+    addSysName: function (name) {
         this.prog.push(name);
     },
-    changeBgLineAlpha: function() {
+    changeBgLineAlpha: function () {
         let els = document.querySelectorAll(".CodeMirror-line>span");
         for (let i = 0; i < els.length; i++) {
             els[i].style.backgroundColor =
@@ -399,7 +481,7 @@ let Lp5 = {
         ],
     },
     // Load files from extends folder
-    extendsFile: function(file) {
+    extendsFile: function (file) {
         return this.main
             .path()
             .join(
@@ -409,16 +491,16 @@ let Lp5 = {
                 file,
             );
     },
-    checkProgWord: function(_word) {
+    checkProgWord: function (_word) {
         // verifica que no se redefinan variables o funciones de p5
         //return `((?<=[\'\"][\s\n\t ]*)${_word}|[\.\$]${_word}|[\=|\(]{1}[\s\n\t ]*[\{]{1}[\s\n\t ]*[0-9a-zA-Z\:\'\"\,\. \s]*[\s\n\t ]*${_word}[\s\n\t ]*[\:]{1}|[\/]{2}[\s\t\'\"\n ]*${_word})`
         return `((?<=["\'\.a-zA-Z0-9])[\t \u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000]*${_word}|(?<=\/\/[ \u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000]*)${_word}|${_word}(?=[a-zA-Z0-9]))`;
     },
-    doGlobals: function(_code) {
+    doGlobals: function (_code) {
         // Cambia a globales las variables fuera de las funciones
         return _code.replace(/\$(?!\{)(?! )(?!\&)/g, "lp.");
     },
-    evalLivecoding: function(onfly) {
+    evalLivecoding: function (onfly) {
         if (this.blockData.isFunc) {
             if (this.blockData.func == "setup") {
                 this.renderCodeSetup = this.doGlobals(
@@ -501,7 +583,7 @@ let Lp5 = {
             }
         }
     },
-    getCodeLines: function(cm, cp) {
+    getCodeLines: function (cm, cp) {
         let lfrom = cp.line;
         let lto = cp.line;
         let out = "";
@@ -525,7 +607,7 @@ let Lp5 = {
     },
     // Get functions or lines from editor by context
     // Obtener funciones o lineas para evaluar segun el contexto
-    getCodeBlock: function(cm, cp) {
+    getCodeBlock: function (cm, cp) {
         let lfrom = cp.line;
         let lto = cp.line;
         let lfromc = cp.line;
@@ -958,7 +1040,7 @@ let Lp5 = {
     },
     // En modo STATIC, las funciones se resetean en cada evaluacion
     // Using STATIC mode set null every evaluation
-    clearEvts: function() {
+    clearEvts: function () {
         // p5js events prop
         mouseClicked = null;
         windowResized = null;
@@ -974,7 +1056,7 @@ let Lp5 = {
         setup = null;
         preload = null;
     },
-    startDraw: function() {
+    startDraw: function () {
         // FPS
         this.fps = getFrameRate();
         // // Revisar
@@ -1016,7 +1098,7 @@ let Lp5 = {
             //
         }
     },
-    evalDraw: function(onfly = false) {
+    evalDraw: function (onfly = false) {
         try {
             let valid = true;
             let word = "";
@@ -1073,7 +1155,7 @@ let Lp5 = {
             //if (onfly) new Function(Lp5.validCodeDraw)();
         }
     },
-    evalAll: function() {
+    evalAll: function () {
         try {
             new Function(this.renderCodeAux)();
             this.el("lp5-aux").parentElement.classList.remove("error");
@@ -1085,7 +1167,7 @@ let Lp5 = {
             console.log(e);
         }
     },
-    tryEval: function(_block) {
+    tryEval: function (_block) {
         try {
             let valid = true;
             let word = "";
@@ -1146,7 +1228,7 @@ let Lp5 = {
             this.el("lp5-aux").parentElement.classList.add("error");
         }
     },
-    tryEvalEvent: function(_evt) {
+    tryEvalEvent: function (_evt) {
         try {
             let valid = true;
             let word = "";
@@ -1191,7 +1273,7 @@ let Lp5 = {
             this.el("lp5-aux").parentElement.classList.add("error");
         }
     },
-    evalEvent: function(_evt) {
+    evalEvent: function (_evt) {
         // if (this.cmAux.somethingSelected()) {
         //       this.renderCodeSetup = "'use strict';" + this.cmAux.getSelection();
         //       //this.evalSelectFx('lp5-aux', this.getLinesSelected(this.cmSetup))
@@ -1202,21 +1284,21 @@ let Lp5 = {
         this.tryEvalEvent(_evt);
     },
     // Config
-    toggleModal: function(el) {
+    toggleModal: function (el) {
         if (this.el(el).style.display == "none") {
             this.el(el).style.display = "block";
         } else {
             this.el(el).style.display = "none";
         }
     },
-    pannelFocus: function(pannel, cur = { line: 0, ch: 0 }) {
+    pannelFocus: function (pannel, cur = { line: 0, ch: 0 }) {
         if (pannel == "aux" && this.cmAux) {
             this.cmAux.focus();
             this.cmAux.setCursor(cur);
         }
     },
     // Modo: CLIENTE-SERVIDOR
-    evalConn: function(obj) {
+    evalConn: function (obj) {
         if (Lp5.playmode == "livecoding") {
             if (this.mode == "CLIENT") this.client.eval(obj);
             if (this.mode == "SERVER") this.server.eval(obj);
@@ -1227,7 +1309,7 @@ let Lp5 = {
 /*****************************************************
  * USED IN EVAL ON THE FLY ************************
  *****************************************************/
-let infiniteLoopDetector = (function() {
+let infiniteLoopDetector = (function () {
     var map = {};
     // define an InfiniteLoopError class
     function InfiniteLoopError(msg, type) {
@@ -1244,6 +1326,12 @@ let infiniteLoopDetector = (function() {
                     "InfiniteLoopError",
                 );
                 e.type = "InfiniteLoopError";
+                if (e.type == "InfiniteLoopError") {
+                    console_msg(
+                        "Oh! Infinite or long loop somewhere?",
+                        "warning",
+                    );
+                }
                 throw e;
             }
         } else {
@@ -1251,14 +1339,14 @@ let infiniteLoopDetector = (function() {
         }
     }
 
-    infiniteLoopDetector.wrap = function(codeStr) {
+    infiniteLoopDetector.wrap = function (codeStr) {
         if (typeof codeStr !== "string") {
             throw new Error(
                 "Can only wrap code represented by string, not any other thing at the time! If you want to wrap a function, convert it to string first.",
             );
         }
         // this is not a strong regex, but enough to use at the time
-        return codeStr.replace(/for *\(.*\{|while *\(.*\{|do *\{/g, function(
+        return codeStr.replace(/for *\(.*\{|while *\(.*\{|do *\{/g, function (
             loopHead,
         ) {
             var id = parseInt(Math.random() * Number.MAX_SAFE_INTEGER);
@@ -1266,7 +1354,7 @@ let infiniteLoopDetector = (function() {
         });
     };
 
-    infiniteLoopDetector.unwrap = function(codeStr) {
+    infiniteLoopDetector.unwrap = function (codeStr) {
         return codeStr.replace(/infiniteLoopDetector\([0-9]*?\);/g, "");
     };
 

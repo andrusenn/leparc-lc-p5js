@@ -12,7 +12,7 @@ if (!global.hasOwnProperty("lp")) {
     console.trace('no se pudo crear el objeto global "lp"');
 }
 // Init -----------------------------------------------------
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     // Methods registration
     Lp5.registerMethodToEval("snip");
     Lp5.registerMethodToEval("useLib");
@@ -22,17 +22,7 @@ window.addEventListener("load", function() {
     Lp5.oscLib = require("osc");
     // MIDI -----------------------------------------------
     Lp5.midiLib = require("webmidi");
-    Lp5.midiLib.enable(function(err) {
-        if (err) {
-            console_msg("MIDI error");
-            Lp5.midiReady = false;
-        } else {
-            console_msg("MIDI enabled!");
-            Lp5.midiReady = true;
-            Lp5.midiInputs = Lp5.midiLib.inputs;
-            Lp5.midiOutputs = Lp5.midiLib.outputs;
-        }
-    });
+    Lp5.midiInit(Lp5.midiLib);
     // Extends --------------------------------------------
     try {
         require(Lp5.main
@@ -73,6 +63,7 @@ window.addEventListener("load", function() {
         }
     }, 500);
     Lp5.toggleModal("cnf");
+    Lp5.toggleModal("lp5-info");
     // Play mode ------------------------------------------
     if (!localStorage.playmode) {
         localStorage.playmode = "livecoding";
@@ -169,7 +160,7 @@ window.addEventListener("load", function() {
             "Ctrl-Space": localStorage.codehelper == 1 ? "autocomplete" : null,
         },
     });
-    Lp5.cmAux.on("change", function(cm, ob) {
+    Lp5.cmAux.on("change", function (cm, ob) {
         if (
             Lp5.renderCodeAux != Lp5.doGlobals("'use strict';" + cm.getValue())
         ) {
@@ -244,7 +235,7 @@ function preload() {
             // Checkea si toma muchos recursos y para el loop
             // Check if takes too much resources and stop loop
             if (Lp5.playmode == "livecoding") {
-                let cfps = setInterval(function() {
+                let cfps = setInterval(function () {
                     if (
                         getFrameRate() <
                         _targetFrameRate * parseFloat(Lp5.configs["mfr"])
@@ -441,7 +432,7 @@ Lp5.codeAux.addEventListener("click", (ev) => {
     Lp5.changeBgLineAlpha();
 });
 
-Lp5.codeAux.addEventListener("paste", function(ev) {
+Lp5.codeAux.addEventListener("paste", function (ev) {
     // let lng = Lp5.clipboard.split('\n')
     // if (Lp5.selected) {
     //       Lp5.cmAux.setCursor({ line: Lp5.cmAuxCp.line + (lng.length - 1), ch: Lp5.cmAuxCp.ch })
@@ -460,7 +451,7 @@ Lp5.codeAux.addEventListener("paste", function(ev) {
     //       Lp5.selected = false
     // }
 });
-Lp5.codeAux.addEventListener("copy", function(ev) {
+Lp5.codeAux.addEventListener("copy", function (ev) {
     // if (Lp5.cmAux.somethingSelected()) {
     //       Lp5.selected = true
     // }else{
@@ -469,7 +460,7 @@ Lp5.codeAux.addEventListener("copy", function(ev) {
     // Lp5.clipboard = ''
     // Lp5.clipboard = ev.srcElement.value
 });
-Lp5.codeAux.addEventListener("cut", function(ev) {
+Lp5.codeAux.addEventListener("cut", function (ev) {
     // if (Lp5.cmAux.somethingSelected()) {
     //       Lp5.selected = true
     // }else{
@@ -717,7 +708,7 @@ document.addEventListener("keyup", (ev) => {
     // }
 });
 // Global keydown event -----------------------------------
-document.addEventListener("keydown", function(ev) {
+document.addEventListener("keydown", function (ev) {
     // Comment ----------------------
     if (
         // -> c
@@ -747,6 +738,12 @@ document.addEventListener("keydown", function(ev) {
     if (ev.ctrlKey && ev.keyCode == 9) {
         ev.preventDefault();
         Lp5.toggleModal("cnf");
+    }
+    // ----------------------------------
+    // Info win -----------------------
+    if (ev.ctrlKey && ev.keyCode == 73) {
+        ev.preventDefault();
+        Lp5.toggleModal("lp5-info");
     }
     // Panic Loop --------------------
     // Ctrl+L

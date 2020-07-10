@@ -12,7 +12,7 @@
  * @param {String} type     tipo de mensaje (info, warning,error)
  */
 if (!p5.prototype.hasOwnProperty("console_msg")) {
-    p5.prototype.console_msg = function(msj = "", type = null) {
+    p5.prototype.console_msg = function (msj = "", type = null) {
         msj = msj.toString();
         let sclass = "";
         if (type == "info") {
@@ -40,7 +40,7 @@ if (!p5.prototype.hasOwnProperty("console_msg")) {
  * @param {String} s      string to hash
  */
 if (!p5.prototype.hasOwnProperty("hashCode")) {
-    p5.prototype.hashCode = function(s) {
+    p5.prototype.hashCode = function (s) {
         let h;
         for (let i = 0; i < s.length; i++) {
             h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
@@ -59,7 +59,7 @@ if (!p5.prototype.hasOwnProperty("___fadeAlpha")) {
     p5.prototype.___fadeAlpha = 0;
 }
 if (!p5.prototype.hasOwnProperty("fadeIn")) {
-    p5.prototype.fadeIn = function() {
+    p5.prototype.fadeIn = function () {
         let arg = arguments;
         let vel = 5;
         let col = color(0, ___fadeAlpha);
@@ -85,7 +85,7 @@ if (!p5.prototype.hasOwnProperty("fadeIn")) {
 }
 
 if (!p5.prototype.hasOwnProperty("fadeOut")) {
-    p5.prototype.fadeOut = function() {
+    p5.prototype.fadeOut = function () {
         let arg = arguments;
         let vel = 5;
         let col = color(0, ___fadeAlpha);
@@ -116,7 +116,7 @@ if (!p5.prototype.hasOwnProperty("fadeOut")) {
  * @param {Number} h          alto
  */
 if (!p5.prototype.hasOwnProperty("winSize")) {
-    p5.prototype.winSize = function(w, h) {
+    p5.prototype.winSize = function (w, h) {
         if (w < 150) w = 150;
         if (h < 150) h = 150;
         Lp5.main.resizeWin(w, h);
@@ -129,7 +129,7 @@ if (!p5.prototype.hasOwnProperty("winSize")) {
  * @param {Number} h          alto
  */
 if (!p5.prototype.hasOwnProperty("size")) {
-    p5.prototype.size = function(w, h) {
+    p5.prototype.size = function (w, h) {
         if (w < 150) w = 150;
         if (h < 150) h = 150;
         Lp5.main.resizeWin(w, h);
@@ -152,7 +152,7 @@ if (!p5.prototype.hasOwnProperty("size")) {
  * @param {Number} a          alfa
  */
 if (!p5.prototype.hasOwnProperty("bg")) {
-    p5.prototype.bg = function() {
+    p5.prototype.bg = function () {
         let arg = arguments;
         if (arg.length == 1) {
             background(arg[0]);
@@ -185,7 +185,7 @@ if (!p5.prototype.hasOwnProperty("bg")) {
  * @param {Number} mode       RGB/HSB
  */
 if (!p5.prototype.hasOwnProperty("fade")) {
-    p5.prototype.fade = function() {
+    p5.prototype.fade = function () {
         let arg = arguments;
         if (arg.length == 1) {
             push();
@@ -225,7 +225,7 @@ if (!p5.prototype.hasOwnProperty("fade")) {
  */
 
 if (!p5.prototype.hasOwnProperty("displace")) {
-    p5.prototype.displace = function() {
+    p5.prototype.displace = function () {
         let arg = arguments;
         if (arg.length == 6) {
             let i = get(arg[0], arg[1], arg[2], arg[3]);
@@ -265,7 +265,7 @@ if (!p5.prototype.hasOwnProperty("displace")) {
  * @param {Number} scale      escala
  */
 if (!p5.prototype.hasOwnProperty("beginRot")) {
-    p5.prototype.beginRot = function() {
+    p5.prototype.beginRot = function () {
         let arg = arguments;
         if (arg.length == 0) {
             push();
@@ -327,7 +327,7 @@ if (!p5.prototype.hasOwnProperty("beginRot")) {
  * @param {Number} centroz    punto ancla de referencia z
  */
 if (!p5.prototype.hasOwnProperty("beginRot3")) {
-    p5.prototype.beginRot3 = function() {
+    p5.prototype.beginRot3 = function () {
         let arg = arguments;
         if (arg.length == 0) {
             push();
@@ -374,7 +374,7 @@ if (!p5.prototype.hasOwnProperty("beginRot3")) {
  * @method endRot
  */
 if (!p5.prototype.hasOwnProperty("endRot")) {
-    p5.prototype.endRot = function() {
+    p5.prototype.endRot = function () {
         pop();
     };
 }
@@ -392,7 +392,7 @@ if (!p5.prototype.hasOwnProperty("ZOOM_SCALE")) {
     p5.prototype.ZOOM_SCALE = 1;
 }
 if (!p5.prototype.hasOwnProperty("zoom")) {
-    p5.prototype.zoom = function() {
+    p5.prototype.zoom = function () {
         this.s = 1;
         this.c = null;
         let arg = arguments;
@@ -431,7 +431,7 @@ if (!p5.prototype.hasOwnProperty("zoom")) {
  */
 
 if (!p5.prototype.hasOwnProperty("shakeX")) {
-    p5.prototype.shakeX = function() {
+    p5.prototype.shakeX = function () {
         let arg = arguments;
         if (arg.length == 2) {
             translate(random(arg[0], arg[1]), 0);
@@ -449,7 +449,7 @@ if (!p5.prototype.hasOwnProperty("shakeX")) {
  */
 
 if (!p5.prototype.hasOwnProperty("shakeY")) {
-    p5.prototype.shakeY = function() {
+    p5.prototype.shakeY = function () {
         let arg = arguments;
         if (arg.length == 2) {
             translate(0, random(arg[0], arg[1]));
@@ -467,7 +467,7 @@ if (!p5.prototype.hasOwnProperty("shakeY")) {
  */
 
 if (!p5.prototype.hasOwnProperty("shakeZ")) {
-    p5.prototype.shakeZ = function() {
+    p5.prototype.shakeZ = function () {
         let arg = arguments;
         if (arg.length == 2) {
             translate(width / 2, height / 2);
@@ -482,7 +482,7 @@ if (!p5.prototype.hasOwnProperty("shakeZ")) {
  * @method mirrorY
  */
 if (!p5.prototype.hasOwnProperty("mirrorY")) {
-    p5.prototype.mirrorY = function() {
+    p5.prototype.mirrorY = function () {
         let arg = arguments;
         if (arg.length == 0) {
             let img = get(0, 0, width / 2, height);
@@ -526,7 +526,7 @@ if (!p5.prototype.hasOwnProperty("mirrorY")) {
  */
 
 if (!p5.prototype.hasOwnProperty("imirrorY")) {
-    p5.prototype.imirrorY = function() {
+    p5.prototype.imirrorY = function () {
         let i = get(0, 0, width / 2, height);
         push();
         blendMode(BLEND);
@@ -543,7 +543,7 @@ if (!p5.prototype.hasOwnProperty("imirrorY")) {
  * @method mirrorX
  */
 if (!p5.prototype.hasOwnProperty("mirrorX")) {
-    p5.prototype.mirrorX = function() {
+    p5.prototype.mirrorX = function () {
         let arg = arguments;
         if (arg.length == 0) {
             let i = get(0, 0, width, height / 2);
@@ -586,7 +586,7 @@ if (!p5.prototype.hasOwnProperty("mirrorX")) {
  */
 
 if (!p5.prototype.hasOwnProperty("imirrorX")) {
-    p5.prototype.imirrorX = function() {
+    p5.prototype.imirrorX = function () {
         let i = get(0, 0, width, height / 2);
         push();
         blendMode(BLEND);
@@ -605,7 +605,7 @@ if (!p5.prototype.hasOwnProperty("imirrorX")) {
  */
 
 if (!p5.prototype.hasOwnProperty("kaleido")) {
-    p5.prototype.kaleido = function() {
+    p5.prototype.kaleido = function () {
         let i = get(0, 0, width / 2, height / 2);
         imageMode(CORNER);
         blendMode(BLEND);
@@ -646,7 +646,7 @@ if (!p5.prototype.hasOwnProperty("kaleido")) {
  * @return {Number}
  */
 if (!p5.prototype.hasOwnProperty("sinOsc")) {
-    p5.prototype.sinOsc = function() {
+    p5.prototype.sinOsc = function () {
         let arg = arguments;
         let freq = (millis() / 1000) * TWO_PI;
         if (arg.length == 1) {
@@ -663,7 +663,7 @@ if (!p5.prototype.hasOwnProperty("sinOsc")) {
  * @return {Number}
  */
 if (!p5.prototype.hasOwnProperty("cosOsc")) {
-    p5.prototype.cosOsc = function() {
+    p5.prototype.cosOsc = function () {
         let arg = arguments;
         let freq = (millis() / 1000) * TWO_PI;
         if (arg.length == 1) {
@@ -679,7 +679,7 @@ if (!p5.prototype.hasOwnProperty("cosOsc")) {
  * @param {Number} m      multiplicador
  */
 if (!p5.prototype.hasOwnProperty("counter")) {
-    p5.prototype.counter = function() {
+    p5.prototype.counter = function () {
         let arg = arguments;
         let count = millis() / 10000;
         if (arg.length == 1) {
@@ -697,7 +697,7 @@ if (!p5.prototype.hasOwnProperty("counter")) {
  * @param {String} name      nombre del archivo sin extension .js
  */
 if (!p5.prototype.hasOwnProperty("snip")) {
-    p5.prototype.snip = function(name, fn = null) {
+    p5.prototype.snip = function (name, fn = null) {
         let path = Lp5.main
             .path()
             .join(
@@ -743,7 +743,7 @@ if (!p5.prototype.hasOwnProperty("snip")) {
  * @param {String} name      nombre de la libreria sin extension .js
  */
 if (!p5.prototype.hasOwnProperty("snipPath")) {
-    p5.prototype.snipPath = function() {
+    p5.prototype.snipPath = function () {
         let arg = arguments;
         if (arg.length == 1) {
             return Lp5.main
@@ -768,7 +768,7 @@ if (!p5.prototype.hasOwnProperty("snipPath")) {
  */
 
 if (!p5.prototype.hasOwnProperty("useLib")) {
-    p5.prototype.useLib = function() {
+    p5.prototype.useLib = function () {
         let arg = arguments;
         let s = document.getElementById(arg[0]);
         if (!s) {
@@ -797,7 +797,7 @@ if (!p5.prototype.hasOwnProperty("useLib")) {
  * @param {String} name      nombre del directorio
  */
 if (!p5.prototype.hasOwnProperty("mediaPath")) {
-    p5.prototype.mediaPath = function() {
+    p5.prototype.mediaPath = function () {
         let arg = arguments;
 
         if (arg.length == 0) {
@@ -826,7 +826,7 @@ if (!p5.prototype.hasOwnProperty("mediaPath")) {
  * @param {String} name      nombre del directorio
  */
 if (!p5.prototype.hasOwnProperty("libsPath")) {
-    p5.prototype.libsPath = function() {
+    p5.prototype.libsPath = function () {
         let arg = arguments;
 
         if (arg.length == 0) {
@@ -859,7 +859,7 @@ if (!p5.prototype.hasOwnProperty("libsPath")) {
  * $milib = loadLib("milib.js")
  */
 if (!p5.prototype.hasOwnProperty("loadLib")) {
-    p5.prototype.loadLib = function() {
+    p5.prototype.loadLib = function () {
         let arg = arguments;
         if (arg.length == 1) {
             return require(libsPath(arg[0]));
@@ -897,7 +897,7 @@ p5.prototype.___webcam = null;
  */
 
 if (!p5.prototype.hasOwnProperty("useCam")) {
-    p5.prototype.useCam = function() {
+    p5.prototype.useCam = function () {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             let arg = arguments;
             console_msg(lang_msg.cam_init, "info");
@@ -929,7 +929,7 @@ if (!p5.prototype.hasOwnProperty("useCam")) {
  */
 
 if (!p5.prototype.hasOwnProperty("getCam")) {
-    p5.prototype.getCam = function() {
+    p5.prototype.getCam = function () {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             let arg = arguments;
             if (___webcam == null) {
@@ -973,7 +973,7 @@ if (!p5.prototype.hasOwnProperty("getCam")) {
  */
 
 if (!p5.prototype.hasOwnProperty("imgCam")) {
-    p5.prototype.imgCam = function() {
+    p5.prototype.imgCam = function () {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             let arg = arguments;
             if (___webcam == null) {
@@ -998,7 +998,7 @@ if (!p5.prototype.hasOwnProperty("imgCam")) {
  */
 
 if (!p5.prototype.hasOwnProperty("clearDraw")) {
-    p5.prototype.clearDraw = function() {
+    p5.prototype.clearDraw = function () {
         Lp5.validCodeDraw = "";
     };
 }
@@ -1041,12 +1041,12 @@ if (!p5.prototype.hasOwnProperty("___fft")) {
  */
 
 if (!p5.prototype.hasOwnProperty("useAudio")) {
-    p5.prototype.useAudio = function(source = 0, smoothing = 0.3) {
+    p5.prototype.useAudio = function (source = 0, smoothing = 0.3) {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             ___audio = new p5.AudioIn();
             ___fft = new p5.FFT(smoothing);
             ___audio.start();
-            ___audio.getSources(function(deviceList) {
+            ___audio.getSources(function (deviceList) {
                 if (deviceList.length > 0) {
                     ___audio.setSource(source);
                     ___fft.setInput(___audio);
@@ -1065,7 +1065,7 @@ if (!p5.prototype.hasOwnProperty("useAudio")) {
  * @method audioVol
  */
 if (!p5.prototype.hasOwnProperty("audioVol")) {
-    p5.prototype.audioVol = function() {
+    p5.prototype.audioVol = function () {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             if (___fft != null && ___audio != null) {
                 return ___audio.getLevel();
@@ -1087,7 +1087,7 @@ if (!p5.prototype.hasOwnProperty("audioVol")) {
  * @param {Number} band             Indice de la banda 0 a 128
  */
 if (!p5.prototype.hasOwnProperty("audioBeat")) {
-    p5.prototype.audioBeat = function(band) {
+    p5.prototype.audioBeat = function (band) {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             if (___fft != null && ___audio != null) {
                 let spectrum = ___fft.analyze(128, "db");
@@ -1112,7 +1112,7 @@ if (!p5.prototype.hasOwnProperty("audioBeat")) {
  * @param {Number} fq2 frecuencia 2
  */
 if (!p5.prototype.hasOwnProperty("audioEnergy")) {
-    p5.prototype.audioEnergy = function(f1, f2 = null) {
+    p5.prototype.audioEnergy = function (f1, f2 = null) {
         if (Lp5.mode == "SERVER" || Lp5.mode == "LOCAL") {
             if (___fft != null && ___audio != null) {
                 f2 = f2 == null ? f1 : f2;
@@ -1140,7 +1140,7 @@ if (!p5.prototype.hasOwnProperty("audioEnergy")) {
  * @param {Number} _each      numero en fotogramas
  */
 if (!p5.prototype.hasOwnProperty("pulse")) {
-    p5.prototype.pulse = function(_each) {
+    p5.prototype.pulse = function (_each) {
         if (frameCount % _each == 0) {
             return true;
         } else {
@@ -1157,7 +1157,7 @@ if (!p5.prototype.hasOwnProperty("pulse")) {
  * @param gate {Number}
  */
 if (!p5.prototype.hasOwnProperty("tpulse")) {
-    p5.prototype.tpulse = function(_t = 500, _g = 100, _of = 0) {
+    p5.prototype.tpulse = function (_t = 500, _g = 100, _of = 0) {
         if (_t < 10) _t = 10;
         if (_g < 20) _g = 20;
         if (_of < 0) _of = 0;
@@ -1179,7 +1179,7 @@ if (!p5.prototype.hasOwnProperty("tpulse")) {
  * @param time {Number}
  */
 if (!p5.prototype.hasOwnProperty("trange")) {
-    p5.prototype.trange = function(_n = 10, _t = 1000) {
+    p5.prototype.trange = function (_n = 10, _t = 1000) {
         if (_t < 10) _t = 10;
         if (_n < 1) _n = 1;
         return Math.floor(((millis() / _t) * _n) % _t) % _n;
@@ -1194,7 +1194,7 @@ if (!p5.prototype.hasOwnProperty("trange")) {
  * @param fn {Function}
  */
 if (!p5.prototype.hasOwnProperty("frange")) {
-    p5.prototype.frange = function(_n = 10, _t = 1000, fn = null) {
+    p5.prototype.frange = function (_n = 10, _t = 1000, fn = null) {
         if (_t < 10) _t = 10;
         if (_n < 1) _n = 1;
         let i = Math.floor(((millis() / _t) * _n) % _t) % _n;
@@ -1211,7 +1211,7 @@ if (!p5.prototype.hasOwnProperty("frange")) {
  * @param {Number} _duration   numero en fotogramas que dura abierto
  */
 if (!p5.prototype.hasOwnProperty("gate")) {
-    p5.prototype.gate = function(_cycle, _duration) {
+    p5.prototype.gate = function (_cycle, _duration) {
         if (frameCount % _cycle > _cycle - _duration) {
             return true;
         } else {
@@ -1248,7 +1248,7 @@ if (!p5.prototype.hasOwnProperty("gate")) {
  * @param {Number} a      alpha
  */
 if (!p5.prototype.hasOwnProperty("setPixel")) {
-    p5.prototype.setPixel = function() {
+    p5.prototype.setPixel = function () {
         let arg = arguments;
         if (arg.length == 3) {
             let x = arg[0];
@@ -1305,7 +1305,7 @@ if (!p5.prototype.hasOwnProperty("setPixel")) {
  * @method getCode
  */
 if (!p5.prototype.hasOwnProperty("getCode")) {
-    p5.prototype.getCode = function() {
+    p5.prototype.getCode = function () {
         let code = Lp5.cmAux.getValue();
         return code;
     };
@@ -1322,7 +1322,7 @@ if (!p5.prototype.hasOwnProperty("getCode")) {
  */
 
 if (!p5.prototype.hasOwnProperty("useOSC")) {
-    p5.prototype.useOSC = function() {
+    p5.prototype.useOSC = function () {
         let arg = arguments;
         let port = Lp5.configs["osc-port"];
         let ip = Lp5.configs["osc-ip"];
@@ -1351,12 +1351,12 @@ if (!p5.prototype.hasOwnProperty("useOSC")) {
         });
 
         //
-        Lp5.oscUDP.on("message", function(oscMsg, timeTag, info) {
+        Lp5.oscUDP.on("message", function (oscMsg, timeTag, info) {
             Lp5.oscData[oscMsg.address] = oscMsg;
         });
 
         Lp5.oscUDP.open();
-        Lp5.oscUDP.on("ready", function() {
+        Lp5.oscUDP.on("ready", function () {
             Lp5.oscReady = true;
             console.log("osc ip: " + ip);
             console.log("osc port: " + port);
@@ -1374,7 +1374,7 @@ if (!p5.prototype.hasOwnProperty("useOSC")) {
  * @method osc
  */
 if (!p5.prototype.hasOwnProperty("osc")) {
-    p5.prototype.osc = function() {
+    p5.prototype.osc = function () {
         if (Lp5.oscReady) {
             let data = Lp5.oscData;
             let arg = arguments;
@@ -1410,7 +1410,7 @@ if (!p5.prototype.hasOwnProperty("osc")) {
  * @method osc
  */
 if (!p5.prototype.hasOwnProperty("loadVideo")) {
-    p5.prototype.loadVideo = function() {
+    p5.prototype.loadVideo = function () {
         let arg = arguments;
         let v = mediaPath(arg[0]);
         let hash = hashCode(arg[0]);
@@ -1429,6 +1429,11 @@ if (!p5.prototype.hasOwnProperty("loadVideo")) {
  * MIDI
  ***************************************************/
 
+if (!p5.prototype.hasOwnProperty("midiReload")) {
+    p5.prototype.midiReload = function () {
+        Lp5.midiInit(Lp5.midiLib);
+    };
+}
 /**
  * Inicia MIDI
  *
@@ -1436,7 +1441,7 @@ if (!p5.prototype.hasOwnProperty("loadVideo")) {
  */
 
 if (!p5.prototype.hasOwnProperty("useMIDI")) {
-    p5.prototype.useMIDI = function() {
+    p5.prototype.useMIDI = function () {
         if (!Lp5.midiReady) {
             console_msg("MIDI error", "error");
             return;
@@ -1463,260 +1468,230 @@ if (!p5.prototype.hasOwnProperty("useMIDI")) {
             // By index
             Inputs(Lp5.midiLib.inputs[deviceIndex], ch);
         } else if (deviceName !== null) {
-            // By index
+            // By name
             Inputs(Lp5.midiLib.getInputByName(deviceName), ch);
         }
         function Inputs(input, ch) {
             // Noteon
-            input.addListener("noteon", ch, function(e) {
-                Lp5.midiIn.notePressed[e.channel] = true;
-                Lp5.midiIn.noteon[e.channel] = e;
-            });
+            if (!input.hasListener("noteon", ch, Lp5.midiFnc.noteon)) {
+                input.addListener("noteon", ch, Lp5.midiFnc.noteon);
+            }
             // Noteoff
-            input.addListener("noteoff", ch, function(e) {
-                Lp5.midiIn.notePressed[e.channel] = false;
-                Lp5.midiIn.noteoff[e.channel] = e;
-            });
+            if (!input.hasListener("noteoff", ch, Lp5.midiFnc.noteoff)) {
+                input.addListener("noteoff", ch, Lp5.midiFnc.noteoff);
+            }
             // Reset
-            input.addListener("reset", ch, function(e) {
-                Lp5.midiIn.reset[e.channel] = e;
-            });
+            if (!input.hasListener("reset", ch, Lp5.midiFnc.reset)) {
+                input.addListener("reset", ch, Lp5.midiFnc.reset);
+            }
             // Pitchbend
-            input.addListener("pitchbend", ch, function(e) {
-                Lp5.midiIn.pitchbend[e.channel] = e;
-            });
-            // Midi message
-            input.addListener("midimessage", ch, function(e) {
-                Lp5.midiIn.message = e;
-            });
+            if (!input.hasListener("pitchbend", ch, Lp5.midiFnc.pitchbend)) {
+                input.addListener("pitchbend", ch, Lp5.midiFnc.pitchbend);
+            }
+            // Midi message            function
+            if (
+                !input.hasListener("midimessage", ch, Lp5.midiFnc.midimessage)
+            ) {
+                input.addListener("midimessage", ch, Lp5.midiFnc.midimessage);
+            }
             // Controlchange
-            input.addListener("controlchange", ch, function(e) {
-                Lp5.midiIn.controlchange[e.channel] = e;
-                if (Array.isArray(Lp5.midiIn.controlchangeValue[e.channel])) {
-                    Lp5.midiIn.controlchangeValue[e.channel][
-                        e.controller.number
-                    ] = e.value;
-                } else {
-                    Lp5.midiIn.controlchangeValue[e.channel] = new Array();
-                }
-            });
-            input.addListener("nrpn", ch, function(e) {
-                if (e.controller.type === "entry") {
-                    console.log("Received 'nrpn' 'entry' message.", e);
-                }
-                if (e.controller.type === "decrement") {
-                    console.log("Received 'nrpn' 'decrement' message.", e);
-                }
-                if (e.controller.type === "increment") {
-                    console.log("Received 'nrpn' 'increment' message.", e);
-                }
-                console.log("message value: " + e.controller.value + ".", e);
-                Lp5.midiIn.nrpn[e.channel] = e;
-            });
+            if (
+                !input.hasListener(
+                    "controlchange",
+                    ch,
+                    Lp5.midiFnc.controlchange,
+                )
+            ) {
+                input.addListener(
+                    "controlchange",
+                    ch,
+                    Lp5.midiFnc.controlchange,
+                );
+            }
+            // NRPN
+            if (!input.hasListener("nrpn", ch, Lp5.midiFnc.nrpn)) {
+                input.addListener("nrpn", ch, Lp5.midiFnc.nrpn);
+            }
         }
     };
 }
+
 if (!p5.prototype.hasOwnProperty("midiNoteOn")) {
-    p5.prototype.midiNoteOn = function() {
+    p5.prototype.midiNoteOn = function () {
         if (!Lp5.midiReady) {
             console_msg("MIDI error", "error");
             return;
         }
+        Lp5.midiIn.noteon.forEach((f, i) => {
+            if (typeof Lp5.midiIn.noteon[i] === "function") {
+                Lp5.midiIn.noteon[i] = null;
+            }
+        });
         let arg = arguments;
-        let ch = 0;
-        let data = "number";
+        let ch = 1;
         let fn = null;
-        if (arg.length === 1) {
-            ch = arg[0];
-        }
         if (arg.length === 2) {
             ch = arg[0];
-            if (typeof arg[1] === "string") data = arg[1];
             if (typeof arg[1] === "function") fn = arg[1];
-        }
-        if (arg.length === 3) {
-            ch = arg[0];
-            if (typeof arg[1] === "string") data = arg[1];
-            if (typeof arg[1] === "function") fn = arg[1];
-            if (typeof arg[2] === "string") data = arg[2];
-            if (typeof arg[2] === "function") fn = arg[2];
-        }
-        if (Lp5.midiIn.notePressed[ch] && Lp5.midiIn.noteon[ch]) {
-            if (data === "number") {
-                let o = Lp5.midiIn.noteon[ch].note.number;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (data === "vel" || data === "velocity") {
-                let o = Lp5.midiIn.noteon[ch].velocity;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (data === "rvel" || data === "rvelocity") {
-                let o = Lp5.midiIn.noteon[ch].rawVelocity;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (data === "name") {
-                let o = Lp5.midiIn.noteon[ch].note.name;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (data === "octave") {
-                let o = Lp5.midiIn.noteon[ch].note.octave;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
+            // Lp5.midiIn.notePressed[ch] &&
+            if (typeof fn === "function") {
+                Lp5.midiIn.noteon[ch] = fn;
             }
         }
     };
 }
 if (!p5.prototype.hasOwnProperty("midiNoteOff")) {
-    p5.prototype.midiNoteOff = function() {
+    p5.prototype.midiNoteOff = function () {
+        if (!Lp5.midiReady) {
+            console_msg("MIDI error", "error");
+            return;
+        }
+        Lp5.midiIn.noteoff.forEach((f, i) => {
+            if (typeof Lp5.midiIn.noteoff[i] === "function") {
+                Lp5.midiIn.noteoff[i] = null;
+            }
+        });
+        let arg = arguments;
+        let ch = 1;
+        let fn = null;
+        if (arg.length === 2) {
+            ch = arg[0];
+            if (typeof arg[1] === "function") fn = arg[1];
+            if (typeof fn === "function") {
+                Lp5.midiIn.noteoff[ch] = fn;
+            }
+        }
+    };
+}
+if (!p5.prototype.hasOwnProperty("midiControl")) {
+    p5.prototype.midiControl = function () {
+        if (!Lp5.midiReady) {
+            console_msg("MIDI error", "error");
+            return;
+        }
+        Lp5.midiIn.controlchange.forEach((f, i) => {
+            if (typeof Lp5.midiIn.controlchange[i] === "function") {
+                Lp5.midiIn.controlchange[i] = null;
+            }
+        });
+        let arg = arguments;
+        let ch = 1;
+        let fn = null;
+        if (arg.length === 2) {
+            ch = arg[0];
+            if (typeof arg[1] === "function") fn = arg[1];
+            if (typeof fn === "function") {
+                Lp5.midiIn.controlchange[ch] = fn;
+            }
+        }
+    };
+}
+if (!p5.prototype.hasOwnProperty("midiPitch")) {
+    p5.prototype.midiPitch = function () {
+        if (!Lp5.midiReady) {
+            console_msg("MIDI error", "error");
+            return;
+        }
+        Lp5.midiIn.pitchbend.forEach((f, i) => {
+            if (typeof Lp5.midiIn.pitchbend[i] === "function") {
+                Lp5.midiIn.pitchbend[i] = null;
+            }
+        });
+        let arg = arguments;
+        let ch = 1;
+        let fn = null;
+        if (arg.length === 2) {
+            ch = arg[0];
+            if (typeof arg[1] === "function") fn = arg[1];
+            if (typeof fn === "function") {
+                Lp5.midiIn.pitchbend[ch] = fn;
+            }
+        }
+    };
+}
+if (!p5.prototype.hasOwnProperty("midiMessage")) {
+    p5.prototype.midiMessage = function () {
+        if (!Lp5.midiReady) {
+            console_msg("MIDI error", "error");
+            return;
+        }
+        Lp5.midiIn.midimessage.forEach((f, i) => {
+            if (typeof Lp5.midiIn.midimessage[i] === "function") {
+                Lp5.midiIn.midimessage[i] = null;
+            }
+        });
+        let arg = arguments;
+        let ch = 1;
+        let fn = null;
+        if (arg.length === 2) {
+            ch = arg[0];
+            if (typeof arg[1] === "function") fn = arg[1];
+            if (typeof fn === "function") {
+                Lp5.midiIn.midimessage[ch] = fn;
+            }
+        }
+    };
+}
+
+if (!p5.prototype.hasOwnProperty("midiDevices")) {
+    p5.prototype.midiDevices = function (fn = null) {
+        if (!Lp5.midiReady) {
+            console_msg("MIDI error", "error");
+            return;
+        }
+        if (typeof fn === "function") {
+            fn({
+                inputs: Lp5.midiInputs,
+                outputs: Lp5.midiOutputs,
+            });
+        }
+    };
+}
+if (!p5.prototype.hasOwnProperty("midiReset")) {
+    p5.prototype.midiReset = function () {
+        if (!Lp5.midiReady) {
+            console_msg("MIDI error", "error");
+            return;
+        }
+        Lp5.midiIn.reset.forEach((f, i) => {
+            if (typeof Lp5.midiIn.reset[i] === "function") {
+                Lp5.midiIn.reset[i] = null;
+            }
+        });
+        let arg = arguments;
+        let ch = 1;
+        let fn = null;
+        if (arg.length === 2) {
+            ch = arg[0];
+            if (typeof arg[1] === "function") fn = arg[1];
+            if (typeof fn === "function") {
+                Lp5.midiIn.reset[ch] = fn;
+            }
+        }
+    };
+}
+// Outs
+if (!p5.prototype.hasOwnProperty("midiOut")) {
+    p5.prototype.midiOut = function () {
         if (!Lp5.midiReady) {
             console_msg("MIDI error", "error");
             return;
         }
 
         let arg = arguments;
-        let ch = 0;
-        let data = "number";
-        let fn = null;
-        if (arg.length === 1) {
-            ch = arg[0];
-        }
-        if (arg.length === 2) {
-            ch = arg[0];
-            if (typeof arg[1] === "string") data = arg[1];
-            if (typeof arg[1] === "function") fn = arg[1];
-        }
-        if (arg.length === 3) {
-            ch = arg[0];
-            if (typeof arg[1] === "string") data = arg[1];
-            if (typeof arg[1] === "function") fn = arg[1];
-            if (typeof arg[2] === "string") data = arg[2];
-            if (typeof arg[2] === "function") fn = arg[2];
-        }
-        if (Lp5.midiIn.noteoff[ch]) {
-            if (data === "number") {
-                let o = Lp5.midiIn.noteoff[ch].note.number;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (data === "name") {
-                let o = Lp5.midiIn.noteoff[ch].note.name;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (data === "octave") {
-                let o = Lp5.midiIn.noteoff[ch].note.octave;
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
+        let deviceName = "";
+        let deviceIndex = "number";
+
+        if (typeof arg[0] === "string") {
+            deviceName = arg[0];
+            if (Lp5.midiLib.getOutputByName(deviceName)) {
+                return Lp5.midiLib.getOutputByName(deviceName);
             }
         }
-    };
-}
-if (!p5.prototype.hasOwnProperty("midiController")) {
-    p5.prototype.midiController = function(ch, n, fn = null) {
-        if (!Lp5.midiReady) {
-            console_msg("MIDI error", "error");
-            return;
-        }
-        if (Lp5.midiIn.controlchange[ch]) {
-            let o = Lp5.midiIn.controlchangeValue[ch][n];
-            if (typeof fn === "function") {
-                fn(o);
-            }
-            return o;
-        }
-    };
-}
-if (!p5.prototype.hasOwnProperty("midiPitch")) {
-    p5.prototype.midiPitch = function(ch, fn = null) {
-        if (!Lp5.midiReady) {
-            console_msg("MIDI error", "error");
-            return;
-        }
-        if (Lp5.midiIn.pitchbend[ch]) {
-            let o = Lp5.midiIn.pitchbend[ch].value;
-            if (typeof fn === "function") {
-                fn(o);
-            }
-            return o;
-        }
-    };
-}
-if (!p5.prototype.hasOwnProperty("midiMessage")) {
-    p5.prototype.midiMessage = function(fn = null) {
-        if (!Lp5.midiReady) {
-            console_msg("MIDI error", "error");
-            return;
-        }
-        if (Lp5.midiIn.message.type === "midimessage") {
-            let o = Lp5.midiIn.message;
-            if (
-                typeof fn === "function" &&
-                Lp5.midiIn.message.type === "midimessage"
-            ) {
-                fn(o);
-                Lp5.midiIn.message = {};
-            }
-        }
-    };
-}
-if (!p5.prototype.hasOwnProperty("midiReset")) {
-    p5.prototype.midiReset = function(ch, fn = null) {
-        if (!Lp5.midiReady) {
-            console_msg("MIDI error", "error");
-            return;
-        }
-        if (Lp5.midiIn.reset[ch]) {
-            if (typeof fn === "function") {
-                fn(Lp5.midiIn.reset[ch]);
-            }
-        }
-    };
-}
-if (!p5.prototype.hasOwnProperty("midiNrpn")) {
-    p5.prototype.midiNrpn = function(ch, type = "entry", fn = null) {
-        if (!Lp5.midiReady) {
-            console_msg("MIDI error", "error");
-            return;
-        }
-        if (Lp5.midiIn.nrpn[ch]) {
-            let o = Lp5.midiIn.nrpn[ch].value;
-            if (type === "entry") {
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (type === "decrement") {
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
-            }
-            if (type === "increment") {
-                if (typeof fn === "function") {
-                    fn(o);
-                }
-                return o;
+        if (typeof arg[0] === "number") {
+            deviceIndex = arg[0];
+            if (Lp5.midiLib.outputs[deviceIndex]) {
+                return Lp5.midiLib.outputs[deviceIndex];
             }
         }
     };
@@ -1725,7 +1700,7 @@ if (!p5.prototype.hasOwnProperty("midiNrpn")) {
  *
  */
 if (!p5.prototype.hasOwnProperty("buffer3d")) {
-    p5.prototype.buffer3d = function() {
+    p5.prototype.buffer3d = function () {
         return createGraphics(width, height, WEBGL);
     };
 }
@@ -1734,7 +1709,7 @@ if (!p5.prototype.hasOwnProperty("___BUFFER0")) {
     p5.prototype.___BUFFER = [];
 }
 if (!p5.prototype.hasOwnProperty("useBuffer")) {
-    p5.prototype.useBuffer = function(n, r = P2D) {
+    p5.prototype.useBuffer = function (n, r = P2D) {
         for (let i = 0; i < Lp5.numBuffers; i++) {
             if (n === i) {
                 if (document.getElementById("bufferId" + i)) {
@@ -1748,7 +1723,7 @@ if (!p5.prototype.hasOwnProperty("useBuffer")) {
     };
 }
 if (!p5.prototype.hasOwnProperty("buffer")) {
-    p5.prototype.buffer = function() {
+    p5.prototype.buffer = function () {
         let arg = arguments;
         let x = 0;
         let y = 0;
@@ -1803,20 +1778,20 @@ if (!p5.prototype.hasOwnProperty("___shader")) {
     p5.prototype.___shader = null;
 }
 if (!p5.prototype.hasOwnProperty("___createShader")) {
-    p5.prototype.___createShader = function() {
+    p5.prototype.___createShader = function () {
         let frag = Lp5.cmFrag.getValue();
         let vert = Lp5.cmVert.getValue();
         ___shader = createShader(vert, frag);
     };
 }
 if (!p5.prototype.hasOwnProperty("getShader")) {
-    p5.prototype.getShader = function() {
+    p5.prototype.getShader = function () {
         return ___shader;
     };
 }
 
 if (!p5.prototype.hasOwnProperty("listMediaBanksPaths")) {
-    p5.prototype.listMediaBanksPaths = function() {
+    p5.prototype.listMediaBanksPaths = function () {
         let arg = arguments;
         if (arg.length == 1) {
             return Lp5.main.getMediaBanks(arg[0].toString());
