@@ -11,7 +11,7 @@ Este proyecto nace como una herramienta de uso personal, y fue girando a una her
 
 El objetivo es que sea un entorno extensible (hackeable) en donde se puedan programar recursos o snippets para utilizar y compartir. Además, cargar las librerías js compatibles con p5js.
 
-El corazón de *LeParc* es Javascript y librerías p5js, Codemirror (editor), jsbeautify (formateador). Y con Electronjs (node.js, chromium, v8) para crear aplicaciones nativas.
+El corazón de _LeParc_ es Javascript y librerías p5js, Codemirror (editor), jsbeautify (formateador). Y con Electronjs (node.js, chromium, v8) para crear aplicaciones nativas.
 
 Puedes reportar si encuentras algún error o bug. Te intivo también a forkear el proyecto.
 
@@ -19,7 +19,7 @@ Puedes reportar si encuentras algún error o bug. Te intivo también a forkear e
 
 [Ver código de la imagen (gist)](https://gist.github.com/andrusenn/c5557160e3b0bb6c0d3f87024e66b5f2)
 
-----
+---
 
 ## Uso
 
@@ -31,7 +31,7 @@ Puedes reportar si encuentras algún error o bug. Te intivo también a forkear e
 
 En la primer ejecución se creará el directorio "leparc_resources" en el "home" o cuenta de usuario de su sistema operativo:
 
-~~~txt
+```txt
 
 leparc_resources/
       ├── config/
@@ -46,9 +46,9 @@ leparc_resources/
             └── espiro/
                   └── espiro.js
 
-~~~
+```
 
-- Usuarios linux: AppImage deberán seleccionar "ejecutar como programa"
+-   Usuarios linux: AppImage deberán seleccionar "ejecutar como programa"
 
 #### Bajar fuente
 
@@ -65,17 +65,15 @@ ver documentación [doc](https://electronjs.org/docs/tutorial/using-native-node-
 
 #### Compilar
 
-1. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
+1. `npm run dist-linux` | `npm run dist-win` | `npm run dist-mac`
 
-#### Electron version 4.2.12
-
-Es la última version 4.x soportada antes de lanzar las versiones 6/7/8. Se utiliza esta version para que funcione en sistemas operativos con GL viejos ¿?
+#### Electron
 
 Si eres experto/a, puedes experimentar instalando la ultima version de electron:
 
-- abrir consola en `src` y ejecutar `npm i -D electron@latest electron-builder@latest`
+-   abrir consola en `src` y ejecutar `npm i -D electron@latest electron-builder@latest`
 
-----
+---
 
 ## Comenzando
 
@@ -85,9 +83,9 @@ Si eres experto/a, puedes experimentar instalando la ultima version de electron:
 
 IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para utilizar:
 
-- `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene). Se debe crear el CANVAS en `setup` `createCanvas(width,height)`
-- `LIVECODING` Cada bloque es evaluado por separado. Esto permite ejecutar código en vivo, y hay diferencias con el modo estático en la declaración de variables globales.
-  
+-   `STATIC` Todo el código escrito es evaluado. En este modo se puede enseñar/aprender o experimentar. NO HAY GESTOR DE ERRORES (Si hay algún error el loop se detiene). Se debe crear el CANVAS en `setup` `createCanvas(width,height)`
+-   `LIVECODING` Cada bloque es evaluado por separado. Esto permite ejecutar código en vivo, y hay diferencias con el modo estático en la declaración de variables globales.
+
 ### Comandos
 
 | Atajo de teclado            | Acción                                                           |
@@ -112,51 +110,48 @@ IMPORTANTE! Hay dos modos disponibles en la configuración (`Ctrl+Tab`) para uti
 `function setup(){}` y `function draw(){}` son los bloques principales. El códigi se evalúa (`Ctrl+Enter`) selectivamente dependiendo del contexto.
 
 Se pueden utilizar las funciones/metodos de p5js.
-  
-## Variables y funciones globales  (`Livecoding mode`)
+
+## Variables y funciones globales (`Livecoding mode`)
 
 Para acceder a variables globales se provee un objeto para utilizar: `lp`, y de forma simplificada toda variable con prefijo `$` se transformará en global
 
 Para una mejor visualización, las funciones pueden ser declaradas como `function my_function(){}` también. LeParc las convierte en globales para que se puedan utilizar en cualquier parte.
 
-~~~js
+```js
+x = 1; // error -> se está utilizando strict mode
 
-x = 1 // error -> se está utilizando strict mode
-
-lp.x = 'code!'
+lp.x = "code!";
 // o abreviada
-$x = 'code!'
+$x = "code!";
 
-lp.miFuncion = function(){
-      console.log('Hola LeParc!')
-}
+lp.miFuncion = function () {
+    console.log("Hola LeParc!");
+};
 // o abreviada
-$miFuncion = function(){
-      console.log('Hola LeParc!')
-}
+$miFuncion = function () {
+    console.log("Hola LeParc!");
+};
 // o en global -> window.miFuncion
-function miFuncion(){
-      console.log('Hola LeParc!')
+function miFuncion() {
+    console.log("Hola LeParc!");
 }
 
-lp.miFuncion() // salida -> Hola LeParc!
-console.log(lp.x) // salida -> code!
+lp.miFuncion(); // salida -> Hola LeParc!
+console.log(lp.x); // salida -> code!
 // o abreviada
-$miFuncion() // salida -> Hola LeParc!
-console.log($x) // salida -> code!
-
-~~~
+$miFuncion(); // salida -> Hola LeParc!
+console.log($x); // salida -> code!
+```
 
 ## Eventos
 
-~~~js
-
-function mouseClicked(){
-  console.log('evt click')
+```js
+function mouseClicked() {
+    console.log("evt click");
 }
 
 // Etc
-~~~
+```
 
 ## Funciones extendidas de p5j
 
@@ -172,7 +167,7 @@ function mouseClicked(){
 | `imirrorY()`                                       | Espejo Invertido - Refleja la imagen desde la mitad sobre el eje Y invertida                                                                                    |
 | `kaleido()`                                        | Efecto caleidoscopio 4 caras (repite la cara superior derecha)                                                                                                  |
 | `zoom(escala)`                                     | Escala la imagen en cada loop sumando el valor del parámetro: `zoom(numero)` o negativo `zoom(-numero)`                                                         |
-| `displace(velx,vely)`                              | Desplaza la pantalla en la direccion `velx`  y  `vely` (+ o -)                                                                                                  |
+| `displace(velx,vely)`                              | Desplaza la pantalla en la direccion `velx` y `vely` (+ o -)                                                                                                    |
 | `displace(x,y,w,h,velx,vely)`                      | Recorta una porcion de la imagen y la desplaza                                                                                                                  |
 | `beginRot(vel_in_radians[,scale])` y `endRot()`    | rota lo que está contenido entre esas dos funciones                                                                                                             |
 | `freq([mult])`                                     | Abreviación de la sentencia `millis()/1000 [* mult]`                                                                                                            |
@@ -181,7 +176,7 @@ function mouseClicked(){
 | `pulse(n_fotogramas)`                              | Bandera (flag basado en frameCount) emite verdadero cada n fotogramas `if(frameCount % n_fotogramas == 0 ) return true`                                         |
 | `gate(n_fotogramas, duracion)`                     | Bandera (flag basado en frameCount) emite verdadero cada n fotogramas con una duracion x `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true` |
 | `tpulse(millis [,millis_duration, millis_offset])` | Bandera (flag basado en milisegundos). Return `true` cada n millis con una duracion de `millis_ duration` y offset de `millis_offset`                           |
-| `trange(number [,millis_duration])`                | Bandera (flag basado en milisegundos). Return  `0` a `number` en una duración de `millis_duration`                                                              |
+| `trange(number [,millis_duration])`                | Bandera (flag basado en milisegundos). Return `0` a `number` en una duración de `millis_duration`                                                               |
 | `useOSC(['ip',port])`                              | Inicializa OSC (UDP) para mensajes entrantes. IP por defecto `127.0.0.1` y puerto `12345`                                                                       |
 | `useOSC('ip')`                                     | Cambiar IP (Pasar como cadena)                                                                                                                                  |
 | `useOSC(port)`                                     | Cambiar puerto (Pasar como entero)                                                                                                                              |
@@ -193,6 +188,7 @@ function mouseClicked(){
 | `midiController(channel,number[,callback])`        | Retorna controller params                                                                                                                                       |
 | `midiPitch(channel[,callback])`                    | Retorna pitchbending params                                                                                                                                     |
 | `midiNrpn(channel[,type="entry"][,callback])`      | Retorna mensajes nrpn                                                                                                                                           |
+
 ## Propiedades extendidas p5j
 
 | Propiedad | Description                         |
@@ -200,123 +196,124 @@ function mouseClicked(){
 | `CENTERW` | Centro del canvas en x `width / 2`  |
 | `CENTERH` | Centro del canvas en y `height / 2` |
 
-
 ## OSC Messages
 
 Por defecto, se abre el puerto 12345 en localhost
 
-~~~js
+```js
+useOSC();
 
-useOSC()
-
-let x = osc('/mi_address')
+let x = osc("/mi_address");
 // o, si hay multiple args, se pasa la posicion index
-let x = osc('/mi_address',0)
-~~~
+let x = osc("/mi_address", 0);
+```
 
 ### Ejemplo
 
-~~~js
+```js
 //useOSC()
-useOSC('192.168.0.5', 12345)
+useOSC("192.168.0.5", 12345);
 
 function setup() {
-      rectMode(CENTER)
+    rectMode(CENTER);
 }
 
 function draw() {
-      fade(10)
-      displace(0, osc('/displace'))
-      noFill()
-      stroke(255)
-      beginRot(counter(2))
-      rect(width / 2, height / 2, 20, 600)
-      endRot()
-      mirrorY(8)
+    fade(10);
+    displace(0, osc("/displace"));
+    noFill();
+    stroke(255);
+    beginRot(counter(2));
+    rect(width / 2, height / 2, 20, 600);
+    endRot();
+    mirrorY(8);
 }
-~~~
+```
 
 Cambiar ip y puerto por defecto:
 
 En `leparc_resources/config/config.txt`
 
-~~~txt
+```txt
 osc-ip=127.0.0.1
 osc-port=12345
-~~~
+```
 
 ## MIDI Messages
 
-~~~js
+```js
+function setup() {
+	// Crear eventos
+    useMIDI()
+    // MIDI IN -> Recibe midi data
+	midiNoteOn(1, (rawData) => {
+		console.log('noteon', rawData)
 
-useMIDI() // por defecto: canal "all" (todos) y todos los dispositivos
-// useMIDI(1) // usar canal 1
-// useMIDI("all", "Nombre del dispositivo") // usar canal "all" (todos) y "Nombre del dispositivo"
-
-function draw(){
-      let noteon = midiNoteOn(1); // noteon on channel 1
-      // or use callback
-      midiNoteOn(1, (data)=>{
-            console.log(data);
-      })
-      // Controlchange (canal,numero de controlador, funcion callback)
-      midiController(1, 1, (data)=>{
-            console.log(data);
-      })
+	})
+	midiNoteOff(1, (rawData) => {
+		console.log('noteoff')
+	})
+	midiControl(1, (rawData) => {
+		console.log('control')
+	})
+	midiPitch(1, (rawData) => {
+		console.log('pitch')
+	})
+	midiMessage(1, (rawData) => {
+		console.log('message')
+	})
 }
-
-~~~
+```
 
 ## Media (`Livecoding mode`)
 
 ### Webcam
 
-- En setup: `useCam([ancho,alto])`
-- En draw: `getCam(x,y)`
-  
+-   En setup: `useCam([ancho,alto])`
+-   En draw: `getCam(x,y)`
+
 Obtener la imagen de salida `imgCam()` -> `image(imgCam(),0,0)` o `texture(imgCam())`
 
 ### Audio In
 
-- En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias  (0 rápido hasta 1 lento)
-- En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias. Retorna de 0 a 255
+-   En setup: `useAudio([source[,smoothing]])` -> source 0 es el índice por defecto / 1,2,n.. dependiendo el hardware. Smoothing es el suavizado en las respuestas de las frecuencias (0 rápido hasta 1 lento)
+-   En draw: `audioEnergy(fracuencia1[,frecuencia2])` -> obtiene la energía (volume) de la frecuencia o rango de frecuencias. Retorna de 0 a 255
 
 ### Carga archivos externos
 
-Para la carga de archivos (imágenes, videos, sonidos), se utiliza el directorio *media*.
+Para la carga de archivos (imágenes, videos, sonidos), se utiliza el directorio _media_.
 El método `mediaPath()` devuelve la ruta absoluta a ese directorio.
 
-~~~js
+```js
 // Todos los archivos multimedia
 // ~home/leparc_resources/media/
-loadImage( mediaPath('miImagen.jpg'),(i)=>{
-  $im = i
-})
+loadImage(mediaPath("miImagen.jpg"), (i) => {
+    $im = i;
+});
 
 // Utilizar loadVideo en vez de createVideo
 // A diferencia de loadImage, no hace falta utilizar el mediaPath
-loadVideo('myImage.mp4',(v)=>{
-  $v = v
-  // $v.play()
-})
-$v.play()
-
-~~~
+loadVideo("myImage.mp4", (v) => {
+    $v = v;
+    // $v.play()
+});
+$v.play();
+```
 
 ## Modo cliente/servidor
 
-Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE, modificar la variable **server-ip** y **port** en *leparc_resources/config/config.txt*
+Para la configuración de la IP a la cual se conectan los nodos en modo CLIENTE, modificar la variable **server-ip** y **port** en _leparc_resources/config/config.txt_
 
 ## Ventana de configuraciones
 
-- `Ctrl+TAB` Abre popup de configuraciones
-  - **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
-  - **RENDER** -> 2D o 3D
-  - **NÚMEROS DE LÍNEA** Muestra/oculta los numeros de línea
-  - **MODE (net)**
-    - LOCAL -> Por defecto
-    - SERVER -> Activa el modo servidor
-    - CLIENT -> Activa el modo cliente
-  - **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
-  - **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
-  - **LANG** -> EN/ES Idioma de la interfaz
+-   `Ctrl+TAB` Abre popup de configuraciones
+    -   **AUTO RENDER** -> Solo es funcional en el bloque de `draw(){}`
+    -   **RENDER** -> 2D o 3D
+    -   **NÚMEROS DE LÍNEA** Muestra/oculta los numeros de línea
+    -   **MODE (net)**
+        -   LOCAL -> Por defecto
+        -   SERVER -> Activa el modo servidor
+        -   CLIENT -> Activa el modo cliente
+    -   **SYNC (net)** -> Activa/desactiva la sincro con el cliente (afecta el `frameRate`)
+    -   **NAME (net)** -> Nombre del nodo cliente (por defecto el id socket)
+    -   **LANG** -> EN/ES Idioma de la interfaz

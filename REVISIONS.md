@@ -11,6 +11,7 @@
 - Se implementó infinite loop error handler [(https://github.com/xieranmaya/infinite-loop-detector)](https://github.com/xieranmaya/infinite-loop-detector)
 - Cambios en "auto eval"
 - Experimental: Se agregó metodo para buffers (createGraphics) - useBuffer / buffer
+- Actualización de seguridad a Electron v9.1.0
 
 > [en]
 
@@ -21,6 +22,7 @@
 - Add infinite loop error handler [(https://github.com/xieranmaya/infinite-loop-detector)](https://github.com/xieranmaya/infinite-loop-detector)
 - Changes in "on the fly" evaluation
 - Experimental: buffers method added (createGraphics) - useBuffer / buffer
+- Electron upgrade to v9.1.0
 
 ## Version 0.2.4
 

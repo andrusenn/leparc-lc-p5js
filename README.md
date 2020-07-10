@@ -11,7 +11,7 @@ The project was born as a tool for personal use, but it became a performative to
 
 The objective is that it be an extensible environment (hackable) where resources or snippets can be programmed to use and share. Also, load the js libraries compatible with p5js.
 
-The core of *LeParc* is Javascript and libraries p5js, Codemirror (editor), jsbeautify (formatter). And with Electronjs (node.js, chromium, v8) to create native applications.
+The core of _LeParc_ is Javascript and libraries p5js, Codemirror (editor), jsbeautify (formatter). And with Electronjs (node.js, chromium, v8) to create native applications.
 
 You can report if you find an error or bug. I also encourage you to fork the project.
 
@@ -19,7 +19,7 @@ You can report if you find an error or bug. I also encourage you to fork the pro
 
 [Get image code (gist)](https://gist.github.com/andrusenn/c5557160e3b0bb6c0d3f87024e66b5f2)
 
-----
+---
 
 ## Use
 
@@ -31,7 +31,7 @@ You can report if you find an error or bug. I also encourage you to fork the pro
 
 On first run, a folder call "leparc_resources" will be created in "home" user account:
 
-~~~txt
+```txt
 
 leparc_resources/
       ├── config/
@@ -46,9 +46,9 @@ leparc_resources/
             └── espiro/
                   └── espiro.js
 
-~~~
+```
 
-- linux users: AppImage > change permission to make it "executable"
+-   linux users: AppImage > change permission to make it "executable"
 
 #### Download source
 
@@ -65,17 +65,15 @@ See [doc](https://electronjs.org/docs/tutorial/using-native-node-modules)
 
 #### Build
 
-1. `npm run dist-linux` |  `npm run dist-win` | `npm run dist-mac`
+1. `npm run dist-linux` | `npm run dist-win` | `npm run dist-mac`
 
-#### Electron version 4.2.12
-
-Electron 4.x is the last supported version before jump to 6/7/8. LeParc is compiled whit 4x version to run in older GL ¿?
+#### Electron
 
 You can experiment with latest Electron's releases:
 
-- abrir consola en `src` y ejecutar `npm i -D electron@latest electron-builder@latest`
+-   Open console in `src` and run `npm i -D electron@latest electron-builder@latest`
 
-----
+---
 
 ## Getting started
 
@@ -85,8 +83,8 @@ You can experiment with latest Electron's releases:
 
 IMPORTANT! There are two modes in configurations (`Ctrl+Tab`) for play:
 
-- `STATIC` All code written is evaluated. This is for teach/learn or experimentation p5js. NO ERRROR HANDLERS (If there are any error the main loop will stop). The CANVAS must be created in `setup` `createCanvas(width,height)`
-- `LIVECODING` Each code is evaluate depend of it context. This allow play code on live session and there are some differences with global vars declarations.
+-   `STATIC` All code written is evaluated. This is for teach/learn or experimentation p5js. NO ERRROR HANDLERS (If there are any error the main loop will stop). The CANVAS must be created in `setup` `createCanvas(width,height)`
+-   `LIVECODING` Each code is evaluate depend of it context. This allow play code on live session and there are some differences with global vars declarations.
 
 ## Commands
 
@@ -102,7 +100,7 @@ IMPORTANT! There are two modes in configurations (`Ctrl+Tab`) for play:
 | `Alt+mousewheel`            | Modify the transparency of the background of the code |
 | `Ctrl+Alt+mousewheel`       | Modify selected value addition / subtraction by 1     |
 | `Ctrl+Alt+Shift+mousewheel` | Modify value selected addition / subtraction by 0.1   |
-| `Ctrl+F`                    | Format  (beautify) the block code                     |
+| `Ctrl+F`                    | Format (beautify) the block code                      |
 | `Ctrl+L`                    | Toggle `loop()`/`noLoop()`                            |
 | `Ctrl+Shift+C`              | Comment / Uncomment code                              |
 | `Ctrl+Shift+A`              | Enable Autorender (Auto-Evaluate code block)          |
@@ -115,48 +113,45 @@ You can use functions/methods of p5js.
 
 ## Global vars and functions (`Livecoding mode`)
 
-In `LIVECODING` mode,  an object is provided for global acces: `lp`, or shorthand manner with `$` prefix.
+In `LIVECODING` mode, an object is provided for global acces: `lp`, or shorthand manner with `$` prefix.
 
 For better visualization, functions can be declared as `function my_function(){}` too. LeParc set this function to global and can be used anywhere.
 
-~~~js
+```js
+x = 1; // error -> is in strict mode
 
-x = 1 // error -> is in strict mode
-
-lp.x = 'code!'
+lp.x = "code!";
 // or
-$x = 'code!'
+$x = "code!";
 
-lp.myFunction = function(){
-      console.log('Hola LeParc!')
-}
+lp.myFunction = function () {
+    console.log("Hola LeParc!");
+};
 // or
-$myFunction = function(){
-      console.log('Hola LeParc!')
-}
+$myFunction = function () {
+    console.log("Hola LeParc!");
+};
 // or global -> window.myFunction
-function myFunction(){
-      console.log('Hola LeParc!')
+function myFunction() {
+    console.log("Hola LeParc!");
 }
 
-lp.myFunction() // out -> Hola LeParc!
-console.log(lp.x) // out -> code!
+lp.myFunction(); // out -> Hola LeParc!
+console.log(lp.x); // out -> code!
 // or
-$myFunction() // out -> Hola LeParc!
-console.log($x) // out -> code!
-
-~~~
+$myFunction(); // out -> Hola LeParc!
+console.log($x); // out -> code!
+```
 
 ## Events
 
-~~~js
-
-function mouseClicked(){
-  console.log('evt click')
+```js
+function mouseClicked() {
+    console.log("evt click");
 }
 
 // Etc
-~~~
+```
 
 ## Extended functions p5j
 
@@ -172,7 +167,7 @@ function mouseClicked(){
 | `imirrorY()`                                       | Inverted Mirror - Reflects the image from the middle on the inverted Y axis                                                                     |
 | `kaleido()`                                        | Kaleidoscope effect 4 faces (repeat the upper left face)                                                                                        |
 | `zoom(escala)`                                     | Scales output image in each loop: `zoom(number)` or negative `zoom(-number)`                                                                    |
-| `displace(velx,vely)`                              | Displace output image `velx`  y  `vely` (+ o -)                                                                                                 |
+| `displace(velx,vely)`                              | Displace output image `velx` y `vely` (+ o -)                                                                                                   |
 | `displace(x,y,w,h,velx,vely)`                      | Cut out a portion of the image and displace it                                                                                                  |
 | `beginRot(vel_in_radians[,scale])` and `endRot()`  | rotate what is contained between those two functions                                                                                            |
 | `freq([mult])`                                     | Shorthand of sentence `millis()/1000 [* mult]`                                                                                                  |
@@ -181,7 +176,7 @@ function mouseClicked(){
 | `pulse(n_frames)`                                  | Flag (based on frameCount). Return true each n frame `if(frameCount % n_frames == 0 ) return true`                                              |
 | `gate(n_frames, duration)`                         | Flag (based on frameCount). Return true each n_frames with an x duration `if(frameCount % n_fotogramas > n_fotogramas - duracion ) return true` |
 | `tpulse(millis [,millis_duration, millis_offset])` | Flag (based on millis). Return `true` each millis with a `millis_ duration` and offset by `millis_offset`                                       |
-| `trange(number [,millis_duration])`                | Flag (based on millis). Return  `0` to `number` in a `millis_duration`                                                                          |
+| `trange(number [,millis_duration])`                | Flag (based on millis). Return `0` to `number` in a `millis_duration`                                                                           |
 | `useOSC(['ip',port])`                              | Start OSC (UDP) for incoming messages. Default ip `127.0.0.1` and port `12345`                                                                  |
 | `useOSC('ip')`                                     | Use different ip (pass string argument)                                                                                                         |
 | `useOSC(port)`                                     | Use different port (pass int argument)                                                                                                          |
@@ -205,67 +200,70 @@ function mouseClicked(){
 
 By default, port 12345 is opened for listen in localhost
 
-~~~js
+```js
+useOSC();
 
-useOSC()
-
-let x = osc('/my_address')
+let x = osc("/my_address");
 // or, if multiple args, pass index position
-let x = osc('/my_address',0)
-~~~
+let x = osc("/my_address", 0);
+```
 
 ### Example
 
-~~~js
+```js
 //useOSC()
-useOSC('192.168.0.5', 12345)
+useOSC("192.168.0.5", 12345);
 
 function setup() {
-      rectMode(CENTER)
+    rectMode(CENTER);
 }
 
 function draw() {
-      fade(10)
-      displace(0, osc('/displace'))
-      noFill()
-      stroke(255)
-      beginRot(counter(2))
-      rect(width / 2, height / 2, 20, 600)
-      endRot()
-      mirrorY(8)
+    fade(10);
+    displace(0, osc("/displace"));
+    noFill();
+    stroke(255);
+    beginRot(counter(2));
+    rect(width / 2, height / 2, 20, 600);
+    endRot();
+    mirrorY(8);
 }
-~~~
+```
 
 Change default ip and port:
 
 On `leparc_resources/config/config.txt`
 
-~~~txt
+```txt
 osc-ip=127.0.0.1
 osc-port=12345
-~~~
+```
 
 ## MIDI Messages
 
-~~~js
+```js
+function setup() {
+	// Create events
+    useMIDI()
+    // MIDI IN -> Receive data from midi device 
+	midiNoteOn(1, (rawData) => {
+		console.log('noteon', rawData)
 
-useMIDI() // by default: channel "all" and all devices
-// useMIDI(1) // use channel 1
-// useMIDI("all", "Device name") // use channel "all" and "Device name"
-
-function draw(){
-      let noteon = midiNoteOn(1); // noteon on channel 1
-      // or use callback
-      midiNoteOn(1, (data)=>{
-            console.log(data);
-      })
-      // Controlchange (channel,number of controller, function callback)
-      midiController(1, 1, (data)=>{
-            console.log(data);
-      })
+	})
+	midiNoteOff(1, (rawData) => {
+		console.log('noteoff')
+	})
+	midiControl(1, (rawData) => {
+		console.log('control')
+	})
+	midiPitch(1, (rawData) => {
+		console.log('pitch')
+	})
+	midiMessage(1, (rawData) => {
+		console.log('message')
+	})
 }
-
-~~~
+```
 
 ## Media (`Livecoding mode`)
 
@@ -273,57 +271,55 @@ function draw(){
 
 Shorthand of `creteCapture(VIDEO)`
 
-- In setup: `useCam([width,height])`
-- In draw: `getCam(x,y)`
+-   In setup: `useCam([width,height])`
+-   In draw: `getCam(x,y)`
 
 For get image output `imgCam()` -> `image(imgCam(),0,0)` or `texture(imgCam())`
 
 ### Audio In
 
-- In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
-- In draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies. Return 0 to 255.
+-   In setup: `useAudio(source)` -> source 0 is default index / 1,2,n.. depends on hardware. Smoothing is frequency response (0 fast to 1 slow)
+-   In draw: `audioEnergy(fracuencia1[,frecuencia2])` -> get energy (volume) of single frequency or a range of frequencies. Return 0 to 255.
 
 ### External media files
 
-Assets must be placed in *media* dir.
-The method `mediaPath()` return absolute path to *media* folder.
+Assets must be placed in _media_ dir.
+The method `mediaPath()` return absolute path to _media_ folder.
 
-~~~js
+```js
 // All media files
 // ~home/leparc_resources/media/
 
 // Image use p5js method
-loadImage( mediaPath('myImage.jpg'),(i)=>{
-  $im = i
-})
+loadImage(mediaPath("myImage.jpg"), (i) => {
+    $im = i;
+});
 
 // Use loadVideo instead of createVideo
 // It is not necessary to use mediaPath, write the name file directly
-loadVideo('myImage.mp4',(v)=>{
-  $v = v
-  // $v.play()
-})
-$v.play()
-
-~~~
+loadVideo("myImage.mp4", (v) => {
+    $v = v;
+    // $v.play()
+});
+$v.play();
+```
 
 ## Client/Server mode (`Livecoding mode`)
 
-In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **port** in *leparc_resources/config/config.txt*
+In order to config IP and port for CLIENT/SERVER mode, set **server-ip** and **port** in _leparc_resources/config/config.txt_
 
 ## Config window
 
 `Ctrl+TAB` open/close
-  
-- **PLAY MODE** -> Livecoding or Static
-- **AUTO RENDER** -> In `draw(){}` only
-- **RENDER** -> 2D / 3D
-- **LINE NUMBERS** Show/hide line numbers
-- **MODE (net)**
-  - LOCAL -> Default
-  - SERVER -> Server mode
-  - CLIENT -> Client mode
-- **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
-- **NAME (net)** -> Client node name (Default: id socket)
-- **LANG** -> ES/EN Language of interface
-  
+
+-   **PLAY MODE** -> Livecoding or Static
+-   **AUTO RENDER** -> In `draw(){}` only
+-   **RENDER** -> 2D / 3D
+-   **LINE NUMBERS** Show/hide line numbers
+-   **MODE (net)**
+    -   LOCAL -> Default
+    -   SERVER -> Server mode
+    -   CLIENT -> Client mode
+-   **SYNC (net)** -> On/Off syncro with server (change `frameRate` of the client)
+-   **NAME (net)** -> Client node name (Default: id socket)
+-   **LANG** -> ES/EN Language of interface
