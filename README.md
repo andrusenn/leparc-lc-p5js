@@ -1,5 +1,7 @@
 # LeParc p5js livecoder
 
+This repository is not under maintenance. Feel free to clone/fork it and improve it :)
+
 This reference is for versions 0.2 or higher.
 
 > (English) - [Español](https://github.com/andrusenn/leparc-lc-p5js/blob/master/README.es.md)
