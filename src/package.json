@@ -69,7 +69,7 @@
         "node-abi": "^2.18.0"
     },
     "dependencies": {
-        "express": "^4.16.4",
+        "express": "^4.17.3",
         "fs-extra": "^7.0.1",
         "i18next": "^15.0.8",
         "ip": "^1.1.5",
